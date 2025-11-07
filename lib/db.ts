@@ -146,8 +146,8 @@ export async function getUniqueLocations(): Promise<string[]> {
   data.forEach((row) => {
     if (row.location) {
       // Split by comma and process each part
-      const parts = row.location.split(',').map(part => part.trim());
-      parts.forEach(part => {
+      const parts = row.location.split(',').map((part: string) => part.trim());
+      parts.forEach((part: string) => {
         if (part) {
           // Capitalize first letter, rest lowercase for consistency
           const normalized = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
@@ -159,7 +159,7 @@ export async function getUniqueLocations(): Promise<string[]> {
 
   // Get unique locations (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allLocations.forEach(loc => {
+  allLocations.forEach((loc: string) => {
     const key = loc.toLowerCase();
     if (!uniqueMap.has(key)) {
       uniqueMap.set(key, loc);
@@ -186,8 +186,8 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
   data.forEach((row) => {
     if (row.cuisine_type) {
       // Split by comma and process each part
-      const parts = row.cuisine_type.split(',').map(part => part.trim());
-      parts.forEach(part => {
+      const parts = row.cuisine_type.split(',').map((part: string) => part.trim());
+      parts.forEach((part: string) => {
         if (part) {
           // Capitalize first letter, rest lowercase for consistency
           const normalized = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
@@ -199,7 +199,7 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
 
   // Get unique cuisine types (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allCuisineTypes.forEach(type => {
+  allCuisineTypes.forEach((type: string) => {
     const key = type.toLowerCase();
     if (!uniqueMap.has(key)) {
       uniqueMap.set(key, type);
