@@ -4,13 +4,18 @@ import { getAllRestaurants } from "@/lib/db";
 import AdminDashboard from "@/components/AdminDashboard";
 
 export default async function AdminPage() {
-  const isAuthenticated = await checkAuth();
+  try {
+    const isAuthenticated = await checkAuth();
 
-  if (!isAuthenticated) {
-    redirect("/admin/login");
+    if (!isAuthenticated) {
+      redirect("/admin/login");
+    }
+
+    const restaurants = await getAllRestaurants();
+
+    return <AdminDashboard initialRestaurants={restaurants} />;
+  } catch (error) {
+    console.error("Admin page error:", error);
+    throw error;
   }
-
-  const restaurants = await getAllRestaurants();
-
-  return <AdminDashboard initialRestaurants={restaurants} />;
 }
