@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import { Restaurant } from "@/lib/types";
@@ -57,7 +57,7 @@ export default function Home() {
   }, []);
 
   // Calculate available filter options based on current selection using useMemo
-  const getOptionsFromRestaurants = (restaurantList: Restaurant[]) => {
+  const getOptionsFromRestaurants = useCallback((restaurantList: Restaurant[]) => {
     const locationSet = new Set<string>();
     const cuisineSet = new Set<string>();
 
@@ -79,11 +79,11 @@ export default function Home() {
       locations: Array.from(locationSet).sort((a, b) => a.localeCompare(b, 'cs')),
       cuisineTypes: Array.from(cuisineSet).sort((a, b) => a.localeCompare(b, 'cs')),
     };
-  };
+  }, []);
 
   const availableLocations = useMemo(() => {
     // If cuisine type is selected, show only locations that have that cuisine
-    if (selectedCuisineType && !selectedLocation) {
+    if (selectedCuisineType) {
       const filtered = restaurants.filter((r) => {
         const cuisineTypes = r.cuisine_type.split(',').map((type: string) => type.trim().toLowerCase());
         return cuisineTypes.some((type: string) => type === selectedCuisineType.toLowerCase());
@@ -93,11 +93,11 @@ export default function Home() {
     }
     // Otherwise show all locations
     return allLocations;
-  }, [selectedCuisineType, selectedLocation, restaurants, allLocations]);
+  }, [selectedCuisineType, restaurants, allLocations, getOptionsFromRestaurants]);
 
   const availableCuisineTypes = useMemo(() => {
     // If location is selected, show only cuisine types available in that location
-    if (selectedLocation && !selectedCuisineType) {
+    if (selectedLocation) {
       const filtered = restaurants.filter((r) => {
         const locations = r.location.split(',').map((loc: string) => loc.trim().toLowerCase());
         return locations.some((loc: string) => loc === selectedLocation.toLowerCase());
@@ -107,7 +107,7 @@ export default function Home() {
     }
     // Otherwise show all cuisine types
     return allCuisineTypes;
-  }, [selectedLocation, selectedCuisineType, restaurants, allCuisineTypes]);
+  }, [selectedLocation, restaurants, allCuisineTypes, getOptionsFromRestaurants]);
 
   // Apply filters
   useEffect(() => {
