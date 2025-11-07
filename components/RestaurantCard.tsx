@@ -15,7 +15,14 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
         {[...Array(fullStars)].map((_, i) => (
           <span key={`full-${i}`} className="text-purple-400 text-lg">★</span>
         ))}
-        {halfStar && <span className="text-purple-400 text-lg">★</span>}
+        {halfStar && (
+          <span className="relative inline-block text-lg" style={{ width: '1.125rem' }}>
+            <span className="text-gray-700">★</span>
+            <span className="absolute top-0 left-0 text-purple-400 overflow-hidden" style={{ width: '50%' }}>
+              ★
+            </span>
+          </span>
+        )}
         {[...Array(emptyStars)].map((_, i) => (
           <span key={`empty-${i}`} className="text-gray-700 text-lg">☆</span>
         ))}
