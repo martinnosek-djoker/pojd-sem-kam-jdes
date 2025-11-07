@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
-import { Restaurant } from "@/lib/types";
+import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -75,6 +75,11 @@ export default function Home() {
       });
     });
 
+    // Add parent categories to cuisine types
+    Object.keys(CUISINE_HIERARCHY).forEach(category => {
+      cuisineSet.add(category);
+    });
+
     return {
       locations: Array.from(locationSet).sort((a, b) => a.localeCompare(b, 'cs')),
       cuisineTypes: Array.from(cuisineSet).sort((a, b) => a.localeCompare(b, 'cs')),
@@ -85,8 +90,8 @@ export default function Home() {
     // If cuisine type is selected, show only locations that have that cuisine
     if (selectedCuisineType) {
       const filtered = restaurants.filter((r) => {
-        const cuisineTypes = r.cuisine_type.split(',').map((type: string) => type.trim().toLowerCase());
-        return cuisineTypes.some((type: string) => type === selectedCuisineType.toLowerCase());
+        const cuisineTypes = r.cuisine_type.split(',').map((type: string) => type.trim());
+        return cuisineTypes.some((type: string) => cuisineMatchesFilter(type, selectedCuisineType));
       });
       const options = getOptionsFromRestaurants(filtered);
       return options.locations;
@@ -103,7 +108,19 @@ export default function Home() {
         return locations.some((loc: string) => loc === selectedLocation.toLowerCase());
       });
       const options = getOptionsFromRestaurants(filtered);
-      return options.cuisineTypes;
+
+      // Filter to only show categories and specific types that actually exist
+      return options.cuisineTypes.filter(cuisineType => {
+        // Always include parent categories
+        if (CUISINE_HIERARCHY[cuisineType]) {
+          return true;
+        }
+        // Include specific types that exist in filtered restaurants
+        return filtered.some(r => {
+          const types = r.cuisine_type.split(',').map((t: string) => t.trim().toLowerCase());
+          return types.some((t: string) => t === cuisineType.toLowerCase());
+        });
+      });
     }
     // Otherwise show all cuisine types
     return allCuisineTypes;
@@ -123,9 +140,9 @@ export default function Home() {
 
     if (selectedCuisineType) {
       filtered = filtered.filter((r) => {
-        // Split by comma and check if any part matches (case-insensitive)
-        const cuisineTypes = r.cuisine_type.split(',').map(type => type.trim().toLowerCase());
-        return cuisineTypes.some(type => type === selectedCuisineType.toLowerCase());
+        // Split by comma and check if any part matches using hierarchy
+        const cuisineTypes = r.cuisine_type.split(',').map((type: string) => type.trim());
+        return cuisineTypes.some((type: string) => cuisineMatchesFilter(type, selectedCuisineType));
       });
     }
 

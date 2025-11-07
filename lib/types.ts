@@ -1,5 +1,30 @@
 import { z } from "zod";
 
+// Hierarchie typů kuchyně - mapování specifických typů na obecné kategorie
+export const CUISINE_HIERARCHY: Record<string, string[]> = {
+  "Italská": ["pizza", "pizzeria"],
+  "Asijská": ["vietnamská", "indická", "thajská", "čínská", "japonská", "korejská"],
+};
+
+// Pomocná funkce pro kontrolu, jestli typ patří do kategorie
+export function cuisineMatchesFilter(cuisineType: string, selectedFilter: string): boolean {
+  const cuisineLower = cuisineType.toLowerCase();
+  const filterLower = selectedFilter.toLowerCase();
+
+  // Přímá shoda
+  if (cuisineLower === filterLower) {
+    return true;
+  }
+
+  // Kontrola hierarchie - pokud je vybrána kategorie, zkontroluj jestli typ patří pod ni
+  const subcuisines = CUISINE_HIERARCHY[selectedFilter];
+  if (subcuisines && subcuisines.some(sub => cuisineLower.includes(sub))) {
+    return true;
+  }
+
+  return false;
+}
+
 // Database types
 export interface Restaurant {
   id: number;
