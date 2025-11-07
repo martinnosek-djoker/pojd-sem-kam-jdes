@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import { Restaurant } from "@/lib/types";
@@ -10,8 +10,6 @@ export default function Home() {
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
-  const [availableLocations, setAvailableLocations] = useState<string[]>([]);
-  const [availableCuisineTypes, setAvailableCuisineTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [loading, setLoading] = useState(true);
@@ -42,11 +40,9 @@ export default function Home() {
         // Validate filters data
         if (filtersData && Array.isArray(filtersData.locations)) {
           setAllLocations(filtersData.locations);
-          setAvailableLocations(filtersData.locations);
         }
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
-          setAvailableCuisineTypes(filtersData.cuisineTypes);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -60,64 +56,58 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Update available filter options based on current selection
-  useEffect(() => {
-    // Extract unique locations and cuisine types from restaurants based on filters
-    const getOptionsFromRestaurants = (restaurantList: Restaurant[]) => {
-      const locationSet = new Set<string>();
-      const cuisineSet = new Set<string>();
+  // Calculate available filter options based on current selection using useMemo
+  const getOptionsFromRestaurants = (restaurantList: Restaurant[]) => {
+    const locationSet = new Set<string>();
+    const cuisineSet = new Set<string>();
 
-      restaurantList.forEach((r) => {
-        // Split and normalize locations
-        r.location.split(',').forEach(loc => {
-          const normalized = loc.trim().charAt(0).toUpperCase() + loc.trim().slice(1).toLowerCase();
-          if (normalized) locationSet.add(normalized);
-        });
-
-        // Split and normalize cuisine types
-        r.cuisine_type.split(',').forEach(type => {
-          const normalized = type.trim().charAt(0).toUpperCase() + type.trim().slice(1).toLowerCase();
-          if (normalized) cuisineSet.add(normalized);
-        });
+    restaurantList.forEach((r) => {
+      // Split and normalize locations
+      r.location.split(',').forEach((loc: string) => {
+        const normalized = loc.trim().charAt(0).toUpperCase() + loc.trim().slice(1).toLowerCase();
+        if (normalized) locationSet.add(normalized);
       });
 
-      return {
-        locations: Array.from(locationSet).sort((a, b) => a.localeCompare(b, 'cs')),
-        cuisineTypes: Array.from(cuisineSet).sort((a, b) => a.localeCompare(b, 'cs')),
-      };
-    };
+      // Split and normalize cuisine types
+      r.cuisine_type.split(',').forEach((type: string) => {
+        const normalized = type.trim().charAt(0).toUpperCase() + type.trim().slice(1).toLowerCase();
+        if (normalized) cuisineSet.add(normalized);
+      });
+    });
 
+    return {
+      locations: Array.from(locationSet).sort((a, b) => a.localeCompare(b, 'cs')),
+      cuisineTypes: Array.from(cuisineSet).sort((a, b) => a.localeCompare(b, 'cs')),
+    };
+  };
+
+  const availableLocations = useMemo(() => {
+    // If cuisine type is selected, show only locations that have that cuisine
+    if (selectedCuisineType && !selectedLocation) {
+      const filtered = restaurants.filter((r) => {
+        const cuisineTypes = r.cuisine_type.split(',').map((type: string) => type.trim().toLowerCase());
+        return cuisineTypes.some((type: string) => type === selectedCuisineType.toLowerCase());
+      });
+      const options = getOptionsFromRestaurants(filtered);
+      return options.locations;
+    }
+    // Otherwise show all locations
+    return allLocations;
+  }, [selectedCuisineType, selectedLocation, restaurants, allLocations]);
+
+  const availableCuisineTypes = useMemo(() => {
     // If location is selected, show only cuisine types available in that location
     if (selectedLocation && !selectedCuisineType) {
       const filtered = restaurants.filter((r) => {
-        const locations = r.location.split(',').map(loc => loc.trim().toLowerCase());
-        return locations.some(loc => loc === selectedLocation.toLowerCase());
+        const locations = r.location.split(',').map((loc: string) => loc.trim().toLowerCase());
+        return locations.some((loc: string) => loc === selectedLocation.toLowerCase());
       });
       const options = getOptionsFromRestaurants(filtered);
-      setAvailableCuisineTypes(options.cuisineTypes);
-      setAvailableLocations(allLocations);
+      return options.cuisineTypes;
     }
-    // If cuisine type is selected, show only locations that have that cuisine
-    else if (selectedCuisineType && !selectedLocation) {
-      const filtered = restaurants.filter((r) => {
-        const cuisineTypes = r.cuisine_type.split(',').map(type => type.trim().toLowerCase());
-        return cuisineTypes.some(type => type === selectedCuisineType.toLowerCase());
-      });
-      const options = getOptionsFromRestaurants(filtered);
-      setAvailableLocations(options.locations);
-      setAvailableCuisineTypes(allCuisineTypes);
-    }
-    // If both are selected, show all options (user can change either)
-    else if (selectedLocation && selectedCuisineType) {
-      setAvailableLocations(allLocations);
-      setAvailableCuisineTypes(allCuisineTypes);
-    }
-    // If nothing is selected, show all options
-    else {
-      setAvailableLocations(allLocations);
-      setAvailableCuisineTypes(allCuisineTypes);
-    }
-  }, [selectedLocation, selectedCuisineType, restaurants, allLocations, allCuisineTypes]);
+    // Otherwise show all cuisine types
+    return allCuisineTypes;
+  }, [selectedLocation, selectedCuisineType, restaurants, allCuisineTypes]);
 
   // Apply filters
   useEffect(() => {
