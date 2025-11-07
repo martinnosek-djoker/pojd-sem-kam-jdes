@@ -32,8 +32,8 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
     return { label: "2000+ Kč", color: "bg-rose-900/40 text-rose-300 border-rose-600/40" };
   };
 
-  return (
-    <div className="bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-xl shadow-purple-900/10 hover:shadow-purple-600/20 transition-all duration-500 p-6 border border-purple-600/20 hover:border-purple-500/40 group relative overflow-hidden">
+  const CardContent = () => (
+    <>
       {/* Decorative corner */}
       <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-purple-600/30"></div>
       <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-purple-700/20"></div>
@@ -66,17 +66,6 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       <div className="pt-4 border-t border-purple-900/30 space-y-3">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-shrink-0">{renderStars(restaurant.rating)}</div>
-
-          {restaurant.website_url && (
-            <a
-              href={restaurant.website_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors tracking-wide flex-shrink-0"
-            >
-              Web ↗
-            </a>
-          )}
         </div>
 
         <div className="flex items-center justify-between gap-4">
@@ -88,6 +77,25 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           )}
         </div>
       </div>
+    </>
+  );
+
+  if (restaurant.website_url) {
+    return (
+      <a
+        href={restaurant.website_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-xl shadow-purple-900/10 hover:shadow-purple-600/20 transition-all duration-500 p-6 border border-purple-600/20 hover:border-purple-500/40 group relative overflow-hidden cursor-pointer hover:scale-105"
+      >
+        <CardContent />
+      </a>
+    );
+  }
+
+  return (
+    <div className="bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-xl shadow-purple-900/10 transition-all duration-500 p-6 border border-purple-600/20 group relative overflow-hidden">
+      <CardContent />
     </div>
   );
 }
