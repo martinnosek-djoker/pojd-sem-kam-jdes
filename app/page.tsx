@@ -150,7 +150,18 @@ export default function Home() {
       <main className="min-h-screen p-8 bg-black">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-4 text-purple-400 tracking-wide">Pojď sem! Kam jdeš?</h1>
-          <p className="text-lg text-gray-400">Načítám restaurace...</p>
+          <p className="text-lg text-gray-400">
+            Doporučení od{" "}
+            <a
+              href="https://www.instagram.com/pecu_si_zivot/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              @Peču si život
+            </a>
+          </p>
+          <p className="text-lg text-gray-400 mt-2">Načítám restaurace...</p>
         </div>
       </main>
     );
@@ -165,7 +176,15 @@ export default function Home() {
             <h1 className="text-5xl font-bold mb-2 text-purple-400 tracking-widest">Pojď sem! Kam jdeš?</h1>
           </div>
           <p className="text-lg text-gray-300 mt-6">
-            Osobní doporučení {restaurants.length} nejlepších restaurací v Praze
+            Doporučení od{" "}
+            <a
+              href="https://www.instagram.com/pecu_si_zivot/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
+            >
+              @Peču si život
+            </a>
           </p>
         </div>
 
