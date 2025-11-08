@@ -82,10 +82,29 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       </div>
 
       <div className="space-y-3 mb-5">
-        <div className="flex items-center gap-2 text-gray-400">
-          <span className="text-sm">📍</span>
-          <span className="text-sm tracking-wide">{restaurant.location}</span>
-        </div>
+        {/* Location - clickable if address is available */}
+        {restaurant.address ? (
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors group/location w-fit"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="text-sm">📍</span>
+            <span className="text-sm tracking-wide border-b border-transparent group-hover/location:border-purple-400 transition-colors">
+              {restaurant.location}
+            </span>
+            <svg className="w-3 h-3 opacity-0 group-hover/location:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        ) : (
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="text-sm">📍</span>
+            <span className="text-sm tracking-wide">{restaurant.location}</span>
+          </div>
+        )}
 
         <div className="flex items-center gap-2">
           <span className="inline-block px-3 py-1 bg-purple-900/30 text-purple-300 text-sm rounded border border-purple-700/30">

@@ -55,14 +55,14 @@ export async function GET(request: NextRequest) {
 
     const photoReference = place.photos[0].photo_reference;
 
-    // Step 3: Construct photo URL
+    // Step 3: Construct photo URL and return address
     // Max width 400px for optimal loading performance
     const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
 
     return NextResponse.json({
       photoUrl,
+      address: place.formatted_address,
       placeName: place.name,
-      placeAddress: place.formatted_address,
     });
 
   } catch (error: any) {

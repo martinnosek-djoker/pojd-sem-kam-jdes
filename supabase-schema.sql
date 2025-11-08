@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
   location TEXT NOT NULL,
+  address TEXT,
   cuisine_type TEXT NOT NULL,
   specialty TEXT,
   price INTEGER NOT NULL,
@@ -103,3 +104,4 @@ CREATE TRIGGER update_trendings_updated_at
 -- This is safe to run multiple times - it will only add the column if it doesn't exist
 ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE trendings ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS address TEXT;

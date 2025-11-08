@@ -39,6 +39,7 @@ export async function createRestaurant(input: RestaurantInput): Promise<Restaura
     .insert({
       name: input.name,
       location: input.location,
+      address: input.address || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -66,6 +67,7 @@ export async function updateRestaurant(
     .update({
       name: input.name,
       location: input.location,
+      address: input.address || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -211,17 +213,17 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
   return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
 }
 
-// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs and images)
+// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs, images and addresses)
 export async function bulkInsertRestaurants(
   restaurants: RestaurantInput[]
 ): Promise<number> {
-  // Get existing restaurants to preserve their URLs and images
+  // Get existing restaurants to preserve their URLs, images and addresses
   const { data: existingRestaurants } = await supabase
     .from("restaurants")
-    .select("name, website_url, image_url");
+    .select("name, website_url, image_url, address");
 
   const existingDataMap = new Map(
-    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url }])
+    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url, address: r.address }])
   );
 
   const insertData = restaurants.map((restaurant) => {
@@ -229,6 +231,7 @@ export async function bulkInsertRestaurants(
     return {
       name: restaurant.name,
       location: restaurant.location,
+      address: restaurant.address || existing?.address || null,
       cuisine_type: restaurant.cuisine_type,
       specialty: restaurant.specialty || null,
       price: restaurant.price,

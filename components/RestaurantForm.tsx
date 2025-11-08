@@ -31,6 +31,7 @@ export default function RestaurantForm({
     resolver: zodResolver(restaurantSchema),
     defaultValues: {
       specialty: "",
+      address: "",
       website_url: "",
       image_url: "",
     },
@@ -39,6 +40,7 @@ export default function RestaurantForm({
   const imageUrl = watch("image_url");
   const restaurantName = watch("name");
   const restaurantLocation = watch("location");
+  const restaurantAddress = watch("address");
 
   useEffect(() => {
     if (restaurantId) {
@@ -49,6 +51,7 @@ export default function RestaurantForm({
           reset({
             name: data.name,
             location: data.location,
+            address: data.address || "",
             cuisine_type: data.cuisine_type,
             specialty: data.specialty || "",
             price: data.price,
@@ -84,6 +87,10 @@ export default function RestaurantForm({
 
       if (response.ok) {
         setValue("image_url", data.photoUrl);
+        // Also set address if available and not already filled
+        if (data.address && !restaurantAddress) {
+          setValue("address", data.address);
+        }
       } else {
         setError(data.error || "Nepodařilo se načíst fotografii");
       }
@@ -104,6 +111,7 @@ export default function RestaurantForm({
       const cleanData = {
         ...data,
         specialty: data.specialty || null,
+        address: data.address || null,
         website_url: data.website_url || null,
         image_url: data.image_url || null,
       };
@@ -161,14 +169,33 @@ export default function RestaurantForm({
           {/* Location */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Lokalita *
+              Lokalita * (např. "Praha 1", "Vinohrady")
             </label>
             <input
               {...register("location")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Praha 1"
             />
             {errors.location && (
               <p className="text-red-600 text-sm mt-1">{errors.location.message}</p>
+            )}
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Přesná adresa (nepovinné)
+            </label>
+            <input
+              {...register("address")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Sázavská 8, Praha 2"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              💡 Auto-fetch doplní automaticky při načtení fotky
+            </p>
+            {errors.address && (
+              <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
             )}
           </div>
 
