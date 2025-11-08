@@ -18,20 +18,27 @@ export default function TrendingForm({
 }: TrendingFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fetchingPhoto, setFetchingPhoto] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<TrendingInput>({
     resolver: zodResolver(trendingSchema),
     defaultValues: {
       name: "",
       website_url: "",
+      image_url: "",
       display_order: 0,
     },
   });
+
+  const imageUrl = watch("image_url");
+  const trendingName = watch("name");
 
   useEffect(() => {
     if (trendingId) {
@@ -42,6 +49,7 @@ export default function TrendingForm({
           reset({
             name: data.name,
             website_url: data.website_url || "",
+            image_url: data.image_url || "",
             display_order: data.display_order || 0,
           });
         })
@@ -52,6 +60,37 @@ export default function TrendingForm({
     }
   }, [trendingId, reset]);
 
+  const handleFetchPhoto = async () => {
+    if (!trendingName) {
+      setError("Vyplň nejdřív název podniku");
+      return;
+    }
+
+    setFetchingPhoto(true);
+    setError("");
+
+    try {
+      const params = new URLSearchParams({
+        name: trendingName,
+        location: "Praha", // Default to Prague for trendings
+      });
+
+      const response = await fetch(`/api/places/photo?${params}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setValue("image_url", data.photoUrl);
+      } else {
+        setError(data.error || "Nepodařilo se načíst fotografii");
+      }
+    } catch (err) {
+      console.error("Error fetching photo:", err);
+      setError("Nepodařilo se načíst fotografii");
+    } finally {
+      setFetchingPhoto(false);
+    }
+  };
+
   const onSubmit = async (data: TrendingInput) => {
     setLoading(true);
     setError("");
@@ -61,6 +100,7 @@ export default function TrendingForm({
       const cleanData = {
         ...data,
         website_url: data.website_url || null,
+        image_url: data.image_url || null,
       };
 
       const url = trendingId
@@ -142,6 +182,47 @@ export default function TrendingForm({
             />
             {errors.website_url && (
               <p className="text-red-600 text-sm mt-1">{errors.website_url.message}</p>
+            )}
+          </div>
+
+          {/* Image URL with Auto-fetch */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              URL fotky (nepovinné)
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                {...register("image_url")}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="https://..."
+              />
+              <button
+                type="button"
+                onClick={handleFetchPhoto}
+                disabled={fetchingPhoto || !trendingName}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+              >
+                {fetchingPhoto ? "Načítám..." : "🔍 Auto-fetch"}
+              </button>
+            </div>
+            {errors.image_url && (
+              <p className="text-red-600 text-sm mt-1">{errors.image_url.message}</p>
+            )}
+            {imageUrl && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-2">Náhled:</p>
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  className="w-full max-w-md h-48 object-cover rounded-md border border-gray-300"
+                  onError={(e) => {
+                    e.currentTarget.src = "";
+                    e.currentTarget.alt = "Nepodařilo se načíst obrázek";
+                    e.currentTarget.className = "w-full max-w-md h-48 flex items-center justify-center bg-gray-100 rounded-md border border-gray-300 text-gray-500 text-sm";
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>

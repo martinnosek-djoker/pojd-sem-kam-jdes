@@ -69,6 +69,7 @@ export interface Trending {
   id: number;
   name: string;
   website_url: string | null;
+  image_url: string | null;
   display_order: number;
   created_at: string;
   updated_at: string;
@@ -77,6 +78,7 @@ export interface Trending {
 export const trendingSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
   display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
 });
 

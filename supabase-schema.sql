@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS trendings (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
   website_url TEXT,
+  image_url TEXT,
   display_order INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -98,6 +99,7 @@ CREATE TRIGGER update_trendings_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
--- Migration: Add image_url column to existing restaurants table (run this if upgrading)
+-- Migration: Add image_url column to existing tables (run this if upgrading)
 -- This is safe to run multiple times - it will only add the column if it doesn't exist
 ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE trendings ADD COLUMN IF NOT EXISTS image_url TEXT;
