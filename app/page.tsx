@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
+import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 
@@ -241,6 +242,13 @@ export default function Home() {
           onLocationChange={setSelectedLocation}
           onCuisineTypeChange={setSelectedCuisineType}
           onReset={handleReset}
+        />
+
+        {/* Quick Filters */}
+        <QuickFilters
+          selectedCuisineType={selectedCuisineType}
+          onCuisineTypeChange={setSelectedCuisineType}
+          restaurants={restaurants}
         />
 
         {/* Sort and count */}
