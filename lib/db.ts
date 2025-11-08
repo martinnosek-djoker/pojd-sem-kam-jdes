@@ -209,10 +209,19 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
   return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
 }
 
-// Bulk insert/update for CSV import (upsert based on name)
+// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs)
 export async function bulkInsertRestaurants(
   restaurants: RestaurantInput[]
 ): Promise<number> {
+  // Get existing restaurants to preserve their URLs
+  const { data: existingRestaurants } = await supabase
+    .from("restaurants")
+    .select("name, website_url");
+
+  const existingUrlsMap = new Map(
+    (existingRestaurants || []).map(r => [r.name, r.website_url])
+  );
+
   const insertData = restaurants.map((restaurant) => ({
     name: restaurant.name,
     location: restaurant.location,
@@ -220,7 +229,8 @@ export async function bulkInsertRestaurants(
     specialty: restaurant.specialty || null,
     price: restaurant.price,
     rating: restaurant.rating,
-    website_url: restaurant.website_url || null,
+    // Preserve existing URL if CSV doesn't have one
+    website_url: restaurant.website_url || existingUrlsMap.get(restaurant.name) || null,
   }));
 
   const { data, error } = await supabase
@@ -331,9 +341,19 @@ export async function deleteTrending(id: number): Promise<boolean> {
 export async function bulkInsertTrendings(
   trendings: TrendingInput[]
 ): Promise<number> {
+  // Get existing trendings to preserve their URLs
+  const { data: existingTrendings } = await supabase
+    .from("trendings")
+    .select("name, website_url");
+
+  const existingUrlsMap = new Map(
+    (existingTrendings || []).map(t => [t.name, t.website_url])
+  );
+
   const insertData = trendings.map((trending) => ({
     name: trending.name,
-    website_url: trending.website_url || null,
+    // Preserve existing URL if CSV doesn't have one
+    website_url: trending.website_url || existingUrlsMap.get(trending.name) || null,
     display_order: trending.display_order || 0,
   }));
 
