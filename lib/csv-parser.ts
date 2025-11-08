@@ -22,25 +22,15 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
   const trendingNames = new Set<string>();
   const errors: { row: number; error: string }[] = [];
 
-  // Skip first 3 rows (headers) and start from row 4 (index 3)
-  for (let i = 3; i < lines.length; i++) {
+  // Parse TOP 10 trendings from rows 2-11 (Excel D2:D11, array indices 1-10)
+  for (let i = 1; i <= 10 && i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
 
     try {
       const columns = parseCSVLine(line);
-
-      // Sloupce podle CSV struktury:
-      // D (index 3): trendy podniky (TOP 10)
-      // E (index 4): název restaurace
-      // F (index 5): lokalita
-      // G (index 6): kuchyně
-      // H (index 7): nás nezajímá
-      // I (index 8): cena za osobu za večer
-      // J (index 9): úroveň
-
-      // Parse trending place from column D (even if no restaurant data)
       const trendingName = columns[3]?.trim();
+
       if (trendingName && !trendingNames.has(trendingName)) {
         trendingNames.add(trendingName);
         trendings.push({
@@ -49,6 +39,26 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
           display_order: trendings.length,
         });
       }
+    } catch (error) {
+      // Ignore errors in trending parsing
+    }
+  }
+
+  // Parse restaurants - skip first 3 rows (headers) and start from row 4 (index 3)
+  for (let i = 3; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    try {
+      const columns = parseCSVLine(line);
+
+      // Sloupce podle CSV struktury:
+      // E (index 4): název restaurace
+      // F (index 5): lokalita
+      // G (index 6): kuchyně
+      // H (index 7): nás nezajímá
+      // I (index 8): cena za osobu za večer
+      // J (index 9): úroveň
 
       const name = columns[4]?.trim();
 
