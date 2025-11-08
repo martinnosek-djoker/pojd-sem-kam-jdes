@@ -88,9 +88,15 @@ export default function Home() {
       });
     });
 
-    // Add parent categories to cuisine types
-    Object.keys(CUISINE_HIERARCHY).forEach(category => {
-      cuisineSet.add(category);
+    // Add parent categories to cuisine types only if they have matching subcategories
+    Object.entries(CUISINE_HIERARCHY).forEach(([category, subcuisines]) => {
+      const hasMatchingRestaurant = restaurantList.some(r => {
+        const types = r.cuisine_type.split(',').map((t: string) => t.trim().toLowerCase());
+        return types.some((t: string) => subcuisines.some(sub => t.includes(sub)));
+      });
+      if (hasMatchingRestaurant) {
+        cuisineSet.add(category);
+      }
     });
 
     return {
@@ -124,9 +130,14 @@ export default function Home() {
 
       // Filter to only show categories and specific types that actually exist
       return options.cuisineTypes.filter(cuisineType => {
-        // Always include parent categories
+        // Check if this is a parent category
         if (CUISINE_HIERARCHY[cuisineType]) {
-          return true;
+          // Only include parent category if there are restaurants matching its subcategories
+          const subcuisines = CUISINE_HIERARCHY[cuisineType];
+          return filtered.some(r => {
+            const types = r.cuisine_type.split(',').map((t: string) => t.trim().toLowerCase());
+            return types.some((t: string) => subcuisines.some(sub => t.includes(sub)));
+          });
         }
         // Include specific types that exist in filtered restaurants
         return filtered.some(r => {
