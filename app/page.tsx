@@ -5,6 +5,7 @@ import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
+import Logo from "@/components/Logo";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 
 export default function Home() {
@@ -204,8 +205,10 @@ export default function Home() {
     return (
       <main className="min-h-screen p-8 bg-black">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold mb-4 text-purple-400 tracking-wide">Pojď sem! Kam jdeš?</h1>
-          <p className="text-lg text-gray-400">
+          <div className="mb-8">
+            <Logo />
+          </div>
+          <p className="text-lg text-gray-400 text-center">
             Výčet nejlepších restaurací v Praze dle{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
@@ -216,7 +219,7 @@ export default function Home() {
               @Peču si život
             </a>
           </p>
-          <p className="text-lg text-gray-400 mt-2">Načítám restaurace...</p>
+          <p className="text-lg text-gray-400 mt-2 text-center">Načítám restaurace...</p>
         </div>
       </main>
     );
@@ -227,8 +230,8 @@ export default function Home() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-4 mb-4">
-            <h1 className="text-5xl font-bold mb-2 text-purple-400 tracking-widest">Pojď sem! Kam jdeš?</h1>
+          <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
+            <Logo />
           </div>
           <p className="text-lg text-gray-300 mt-6">
             Výčet nejlepších restaurací v Praze dle{" "}
