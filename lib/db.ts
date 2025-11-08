@@ -209,7 +209,7 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
   return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
 }
 
-// Bulk insert for CSV import
+// Bulk insert/update for CSV import (upsert based on name)
 export async function bulkInsertRestaurants(
   restaurants: RestaurantInput[]
 ): Promise<number> {
@@ -225,7 +225,10 @@ export async function bulkInsertRestaurants(
 
   const { data, error } = await supabase
     .from("restaurants")
-    .insert(insertData)
+    .upsert(insertData, {
+      onConflict: 'name',
+      ignoreDuplicates: false
+    })
     .select();
 
   if (error) {
@@ -336,7 +339,10 @@ export async function bulkInsertTrendings(
 
   const { data, error } = await supabase
     .from("trendings")
-    .insert(insertData)
+    .upsert(insertData, {
+      onConflict: 'name',
+      ignoreDuplicates: false
+    })
     .select();
 
   if (error) {
