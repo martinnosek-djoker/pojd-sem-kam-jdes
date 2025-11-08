@@ -8,23 +8,23 @@ interface TrendingCardProps {
 export default function TrendingCard({ trending, rank }: TrendingCardProps) {
   const CardContent = () => (
     <>
-      <div className="flex items-center gap-0 relative overflow-hidden">
-        {/* Image section - left side */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-0 relative overflow-hidden">
+        {/* Image section - top on mobile, left on desktop */}
         {trending.image_url ? (
-          <div className="relative w-32 h-24 flex-shrink-0 overflow-hidden">
+          <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden">
             <img
               src={trending.image_url}
               alt={trending.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-gray-900"></div>
+            <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-transparent via-transparent to-gray-900/50 sm:to-gray-900"></div>
             {/* Rank badge overlaid on image */}
             <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
               <span className="text-lg font-bold text-white">#{rank}</span>
             </div>
           </div>
         ) : (
-          <div className="relative w-32 h-24 flex-shrink-0 bg-gradient-to-br from-purple-900/30 to-gray-900/50 flex items-center justify-center">
+          <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 bg-gradient-to-br from-purple-900/30 to-gray-900/50 flex items-center justify-center">
             <span className="text-4xl opacity-30">🔥</span>
             {/* Rank badge overlaid */}
             <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
@@ -33,11 +33,11 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
           </div>
         )}
 
-        {/* Content section - right side */}
-        <div className="flex-1 px-4 py-3 flex items-center justify-between">
+        {/* Content section - bottom on mobile, right on desktop */}
+        <div className="flex-1 px-4 py-3 flex items-center justify-between gap-2">
           {/* Name and Address */}
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-purple-300 tracking-wide group-hover:text-purple-200 transition-colors">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-purple-300 tracking-wide group-hover:text-purple-200 transition-colors">
               {trending.name}
             </h3>
             {trending.address && (
@@ -45,8 +45,9 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trending.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-gray-400 hover:text-purple-300 underline transition-colors mt-1 block"
+                className="text-xs sm:text-sm text-gray-400 hover:text-purple-300 underline transition-colors mt-1 block truncate"
                 onClick={(e) => e.stopPropagation()}
+                title={trending.address}
               >
                 📍 {trending.address}
               </a>
@@ -56,7 +57,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
           {/* Arrow indicator if has link */}
           {trending.website_url && (
             <div className="flex-shrink-0 text-purple-400 group-hover:text-purple-300 group-hover:translate-x-1 transition-all">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </div>
