@@ -88,11 +88,18 @@ export default function Home() {
       });
     });
 
-    // Add parent categories to cuisine types only if they have matching subcategories
+    // Add parent categories to cuisine types only if they have matching subcategories or direct match
     Object.entries(CUISINE_HIERARCHY).forEach(([category, subcuisines]) => {
       const hasMatchingRestaurant = restaurantList.some(r => {
         const types = r.cuisine_type.split(',').map((t: string) => t.trim().toLowerCase());
-        return types.some((t: string) => subcuisines.some(sub => t.includes(sub)));
+        return types.some((t: string) => {
+          // Check for direct match with parent category
+          if (t === category.toLowerCase()) {
+            return true;
+          }
+          // Check for subcategory match
+          return subcuisines.some(sub => t.includes(sub));
+        });
       });
       if (hasMatchingRestaurant) {
         cuisineSet.add(category);
@@ -132,11 +139,18 @@ export default function Home() {
       return options.cuisineTypes.filter(cuisineType => {
         // Check if this is a parent category
         if (CUISINE_HIERARCHY[cuisineType]) {
-          // Only include parent category if there are restaurants matching its subcategories
+          // Only include parent category if there are restaurants matching its subcategories or direct match
           const subcuisines = CUISINE_HIERARCHY[cuisineType];
           return filtered.some(r => {
             const types = r.cuisine_type.split(',').map((t: string) => t.trim().toLowerCase());
-            return types.some((t: string) => subcuisines.some(sub => t.includes(sub)));
+            return types.some((t: string) => {
+              // Check for direct match with parent category
+              if (t === cuisineType.toLowerCase()) {
+                return true;
+              }
+              // Check for subcategory match
+              return subcuisines.some(sub => t.includes(sub));
+            });
           });
         }
         // Include specific types that exist in filtered restaurants
