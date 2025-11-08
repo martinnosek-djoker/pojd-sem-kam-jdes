@@ -13,6 +13,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [fetchingPhotos, setFetchingPhotos] = useState(false);
+  const [fetchingAddresses, setFetchingAddresses] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
 
   const handleDelete = async (id: number) => {
@@ -76,6 +77,38 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     }
   };
 
+  const handleFetchAllAddresses = async () => {
+    if (!confirm("Chceš automaticky doplnit adresy pro všechny restaurace bez adresy? Může to trvat několik minut.")) {
+      return;
+    }
+
+    setFetchingAddresses(true);
+    setFetchResults(null);
+
+    try {
+      const response = await fetch("/api/admin/fetch-all-addresses", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setFetchResults(data);
+        // Reload restaurants to show new addresses
+        const reloadResponse = await fetch("/api/restaurants");
+        const updatedRestaurants = await reloadResponse.json();
+        setRestaurants(updatedRestaurants);
+      } else {
+        alert(data.error || "Chyba při načítání adres");
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+      alert("Chyba při načítání adres");
+    } finally {
+      setFetchingAddresses(false);
+    }
+  };
+
   return (
     <div className="mb-8">
       {/* Section Header */}
@@ -87,10 +120,17 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
         <div className="flex gap-3">
           <button
             onClick={handleFetchAllPhotos}
-            disabled={fetchingPhotos}
+            disabled={fetchingPhotos || fetchingAddresses}
             className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-green-300 transition-colors font-medium"
           >
             {fetchingPhotos ? "🔄 Načítám fotky..." : "📷 Načíst všechny fotky"}
+          </button>
+          <button
+            onClick={handleFetchAllAddresses}
+            disabled={fetchingPhotos || fetchingAddresses}
+            className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 transition-colors font-medium"
+          >
+            {fetchingAddresses ? "🔄 Načítám adresy..." : "📍 Doplnit všechny adresy"}
           </button>
           <button
             onClick={() => {
