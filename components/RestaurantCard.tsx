@@ -82,38 +82,51 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       </div>
 
       <div className="space-y-3 mb-5">
-        {/* Locations - simple text with underline for clickable */}
+        {/* Locations - group by address for same location */}
         <div className="flex items-start gap-2">
           <span className="text-sm text-gray-400">📍</span>
           <div className="text-sm text-gray-300">
-            {restaurant.location.split(',').map((loc, idx, arr) => {
-              const location = loc.trim();
-              const address = restaurant.addresses?.[location];
-              const isLast = idx === arr.length - 1;
+            {(() => {
+              const locations = restaurant.location.split(',').map(l => l.trim());
 
-              if (address) {
+              // Group locations by address
+              const addressGroups = new Map<string | null, string[]>();
+              locations.forEach(location => {
+                const address = restaurant.addresses?.[location] || null;
+                const existing = addressGroups.get(address) || [];
+                addressGroups.set(address, [...existing, location]);
+              });
+
+              // Render grouped locations
+              const groups = Array.from(addressGroups.entries());
+              return groups.map(([address, locs], groupIdx) => {
+                const isLastGroup = groupIdx === groups.length - 1;
+                const locationText = locs.join(', ');
+
+                if (address) {
+                  return (
+                    <span key={groupIdx}>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline text-purple-300 hover:text-purple-200 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {locationText}
+                      </a>
+                      {!isLastGroup && ', '}
+                    </span>
+                  );
+                }
+
                 return (
-                  <span key={idx}>
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-purple-300 hover:text-purple-200 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {location}
-                    </a>
-                    {!isLast && ', '}
+                  <span key={groupIdx} className="text-gray-400">
+                    {locationText}{!isLastGroup && ', '}
                   </span>
                 );
-              }
-
-              return (
-                <span key={idx} className="text-gray-400">
-                  {location}{!isLast && ', '}
-                </span>
-              );
-            })}
+              });
+            })()}
           </div>
         </div>
 
