@@ -82,38 +82,35 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       </div>
 
       <div className="space-y-3 mb-5">
-        {/* Locations - each as a clickable chip if address is available */}
+        {/* Locations - simple text with underline for clickable */}
         <div className="flex items-start gap-2">
-          <span className="text-sm text-gray-400 mt-1">📍</span>
-          <div className="flex flex-wrap gap-2">
-            {restaurant.location.split(',').map((loc, idx) => {
+          <span className="text-sm text-gray-400">📍</span>
+          <div className="text-sm text-gray-300">
+            {restaurant.location.split(',').map((loc, idx, arr) => {
               const location = loc.trim();
               const address = restaurant.addresses?.[location];
+              const isLast = idx === arr.length - 1;
 
               if (address) {
                 return (
-                  <a
-                    key={idx}
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-2 py-1 bg-purple-900/30 text-purple-300 text-sm rounded border border-purple-700/30 hover:bg-purple-800/40 hover:border-purple-600/50 transition-colors group/loc"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <span>{location}</span>
-                    <svg className="w-3 h-3 opacity-70 group-hover/loc:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
+                  <span key={idx}>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-purple-300 hover:text-purple-200 transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {location}
+                    </a>
+                    {!isLast && ', '}
+                  </span>
                 );
               }
 
               return (
-                <span
-                  key={idx}
-                  className="inline-block px-2 py-1 bg-gray-800/30 text-gray-400 text-sm rounded border border-gray-700/30"
-                >
-                  {location}
+                <span key={idx} className="text-gray-400">
+                  {location}{!isLast && ', '}
                 </span>
               );
             })}
