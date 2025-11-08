@@ -180,7 +180,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-4 text-purple-400 tracking-wide">Pojď sem! Kam jdeš?</h1>
           <p className="text-lg text-gray-400">
-            Doporučení od{" "}
+            Výčet nejlepších restaurací v Praze dle{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -205,7 +205,7 @@ export default function Home() {
             <h1 className="text-5xl font-bold mb-2 text-purple-400 tracking-widest">Pojď sem! Kam jdeš?</h1>
           </div>
           <p className="text-lg text-gray-300 mt-6">
-            Doporučení od{" "}
+            Výčet nejlepších restaurací v Praze dle{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
