@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseRestaurantCSV } from "@/lib/csv-parser";
-import { bulkInsertRestaurants } from "@/lib/db";
+import { bulkInsertRestaurants, bulkInsertTrendings } from "@/lib/db";
 
 // POST /api/import - Import restaurants from CSV
 export async function POST(request: NextRequest) {
@@ -29,14 +29,14 @@ export async function POST(request: NextRequest) {
     console.log("=== CSV Debug ===");
     console.log("First 5 lines:", lines);
 
-    const { success, errors } = parseRestaurantCSV(csvContent);
+    const { restaurants, trendings, errors } = parseRestaurantCSV(csvContent);
 
-    console.log(`Parsed ${success.length} successful records, ${errors.length} errors`);
+    console.log(`Parsed ${restaurants.length} restaurants, ${trendings.length} trendings, ${errors.length} errors`);
     if (errors.length > 0) {
       console.log("First 5 errors:", errors.slice(0, 5));
     }
 
-    if (success.length === 0) {
+    if (restaurants.length === 0 && trendings.length === 0) {
       return NextResponse.json(
         {
           error: "Žádné platné záznamy k importu",
@@ -50,12 +50,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const imported = bulkInsertRestaurants(success);
+    const importedRestaurants = restaurants.length > 0 ? await bulkInsertRestaurants(restaurants) : 0;
+    const importedTrendings = trendings.length > 0 ? await bulkInsertTrendings(trendings) : 0;
 
     return NextResponse.json({
       success: true,
-      imported,
-      total: success.length,
+      importedRestaurants,
+      importedTrendings,
+      totalRestaurants: restaurants.length,
+      totalTrendings: trendings.length,
       errors: errors.length > 0 ? errors : undefined,
     });
   } catch (error) {

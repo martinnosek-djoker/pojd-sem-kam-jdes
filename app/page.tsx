@@ -3,11 +3,13 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
-import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import TrendingCard from "@/components/TrendingCard";
+import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
+  const [trendings, setTrendings] = useState<Trending[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -15,16 +17,18 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
 
-  // Fetch restaurants and filters
+  // Fetch restaurants, trendings, and filters
   useEffect(() => {
     async function fetchData() {
       try {
-        const [restaurantsRes, filtersRes] = await Promise.all([
+        const [restaurantsRes, trendingsRes, filtersRes] = await Promise.all([
           fetch("/api/restaurants"),
+          fetch("/api/trendings"),
           fetch("/api/restaurants/filters"),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
+        const trendingsData = await trendingsRes.json();
         const filtersData = await filtersRes.json();
 
         // Validate that restaurantsData is an array
@@ -35,6 +39,14 @@ export default function Home() {
           console.error("Restaurants data is not an array:", restaurantsData);
           setRestaurants([]);
           setFilteredRestaurants([]);
+        }
+
+        // Validate that trendingsData is an array
+        if (Array.isArray(trendingsData)) {
+          setTrendings(trendingsData);
+        } else {
+          console.error("Trendings data is not an array:", trendingsData);
+          setTrendings([]);
         }
 
         // Validate filters data
@@ -204,6 +216,21 @@ export default function Home() {
             </a>
           </p>
         </div>
+
+        {/* Trendings Section */}
+        {trendings.length > 0 && (
+          <div className="mb-12">
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold text-purple-400 tracking-wide mb-2">🔥 TOP 10 Trendy</h2>
+              <p className="text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {trendings.map((trending, index) => (
+                <TrendingCard key={trending.id} trending={trending} rank={index + 1} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <RestaurantFilter

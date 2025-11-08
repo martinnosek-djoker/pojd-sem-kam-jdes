@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput } from "./types";
 
 // CRUD operations
 
@@ -230,6 +230,117 @@ export async function bulkInsertRestaurants(
 
   if (error) {
     console.error("Error bulk inserting restaurants:", error);
+    throw error;
+  }
+
+  return data?.length || 0;
+}
+
+// ============================================
+// TRENDING OPERATIONS
+// ============================================
+
+export async function getAllTrendings(): Promise<Trending[]> {
+  const { data, error } = await supabase
+    .from("trendings")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching trendings:", error);
+    throw error;
+  }
+
+  return data || [];
+}
+
+export async function getTrendingById(id: number): Promise<Trending | null> {
+  const { data, error } = await supabase
+    .from("trendings")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching trending:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function createTrending(input: TrendingInput): Promise<Trending> {
+  const { data, error } = await supabase
+    .from("trendings")
+    .insert({
+      name: input.name,
+      website_url: input.website_url || null,
+      display_order: input.display_order || 0,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating trending:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateTrending(
+  id: number,
+  input: TrendingInput
+): Promise<Trending | null> {
+  const { data, error } = await supabase
+    .from("trendings")
+    .update({
+      name: input.name,
+      website_url: input.website_url || null,
+      display_order: input.display_order || 0,
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating trending:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function deleteTrending(id: number): Promise<boolean> {
+  const { error } = await supabase
+    .from("trendings")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting trending:", error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function bulkInsertTrendings(
+  trendings: TrendingInput[]
+): Promise<number> {
+  const insertData = trendings.map((trending) => ({
+    name: trending.name,
+    website_url: trending.website_url || null,
+    display_order: trending.display_order || 0,
+  }));
+
+  const { data, error } = await supabase
+    .from("trendings")
+    .insert(insertData)
+    .select();
+
+  if (error) {
+    console.error("Error bulk inserting trendings:", error);
     throw error;
   }
 

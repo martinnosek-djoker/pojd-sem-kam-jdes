@@ -1,7 +1,8 @@
-import { RestaurantInput } from "./types";
+import { RestaurantInput, TrendingInput } from "./types";
 
 export interface CSVParseResult {
-  success: Restaurant[];
+  restaurants: Restaurant[];
+  trendings: Trending[];
   errors: { row: number; error: string }[];
 }
 
@@ -9,9 +10,16 @@ interface Restaurant extends Omit<RestaurantInput, 'website_url'> {
   website_url?: string | null;
 }
 
+interface Trending extends Omit<TrendingInput, 'website_url' | 'display_order'> {
+  website_url?: string | null;
+  display_order: number;
+}
+
 export function parseRestaurantCSV(csvContent: string): CSVParseResult {
   const lines = csvContent.split("\n");
-  const success: Restaurant[] = [];
+  const restaurants: Restaurant[] = [];
+  const trendings: Trending[] = [];
+  const trendingNames = new Set<string>();
   const errors: { row: number; error: string }[] = [];
 
   // Skip first 3 rows (headers) and start from row 4 (index 3)
@@ -23,6 +31,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
       const columns = parseCSVLine(line);
 
       // Sloupce podle CSV struktury:
+      // D (index 3): trendy podniky (TOP 10)
       // E (index 4): název restaurace
       // F (index 5): lokalita
       // G (index 6): kuchyně
@@ -30,15 +39,27 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
       // I (index 8): cena za osobu za večer
       // J (index 9): úroveň
 
+      // Parse trending place from column D (even if no restaurant data)
+      const trendingName = columns[3]?.trim();
+      if (trendingName && !trendingNames.has(trendingName)) {
+        trendingNames.add(trendingName);
+        trendings.push({
+          name: trendingName,
+          website_url: null,
+          display_order: trendings.length,
+        });
+      }
+
       const name = columns[4]?.trim();
+
+      // Skip if name is empty (empty row or only trending data)
+      if (!name) continue;
+
       const location = columns[5]?.trim();
       const cuisineType = columns[6]?.trim();
       const specialty = null; // Už není v datech
       const priceStr = columns[8]?.trim();
       const ratingStr = columns[9]?.trim();
-
-      // Skip if name is empty (empty row or invalid data)
-      if (!name) continue;
 
       // Validate required fields
       if (!location || !cuisineType) {
@@ -78,7 +99,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
         continue;
       }
 
-      success.push({
+      restaurants.push({
         name,
         location,
         cuisine_type: cuisineType,
@@ -95,7 +116,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
     }
   }
 
-  return { success, errors };
+  return { restaurants, trendings, errors };
 }
 
 // Helper function to parse CSV line (handles commas in quotes)

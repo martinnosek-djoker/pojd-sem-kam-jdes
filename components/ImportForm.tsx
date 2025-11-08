@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 
 interface ImportResult {
   success: boolean;
-  imported: number;
-  total: number;
+  importedRestaurants: number;
+  importedTrendings: number;
+  totalRestaurants: number;
+  totalTrendings: number;
   errors?: Array<{ row: number; error: string }>;
 }
 
@@ -116,8 +118,11 @@ export default function ImportForm() {
         {result && (
           <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-900 rounded-md">
             <h3 className="font-semibold mb-2">✓ Import byl úspěšný!</h3>
+            <p className="text-sm mb-1">
+              Restaurace: <strong>{String(result.importedRestaurants || 0)}</strong> z {String(result.totalRestaurants || 0)}
+            </p>
             <p className="text-sm mb-2">
-              Importováno: <strong>{String(result.imported || 0)}</strong> restaurací
+              Trendingy: <strong>{String(result.importedTrendings || 0)}</strong> z {String(result.totalTrendings || 0)}
             </p>
 
             {result.errors && Array.isArray(result.errors) && result.errors.length > 0 && (
@@ -176,6 +181,7 @@ export default function ImportForm() {
           CSV soubor musí obsahovat tyto sloupce (začínající od řádku 4):
         </p>
         <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+          <li>Sloupec D: Trendy podniky (TOP 10)</li>
           <li>Sloupec E: Název restaurace</li>
           <li>Sloupec F: Lokalita</li>
           <li>Sloupec G: Typ kuchyně</li>

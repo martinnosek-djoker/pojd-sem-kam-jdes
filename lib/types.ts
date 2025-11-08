@@ -61,3 +61,21 @@ export interface CSVRestaurant {
   price: number;
   rating: number;
 }
+
+// Trending places types
+export interface Trending {
+  id: number;
+  name: string;
+  website_url: string | null;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export const trendingSchema = z.object({
+  name: z.string().min(1, "Název je povinný"),
+  website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
+});
+
+export type TrendingInput = z.infer<typeof trendingSchema>;
