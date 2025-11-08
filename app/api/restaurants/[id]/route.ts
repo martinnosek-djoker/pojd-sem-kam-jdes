@@ -12,7 +12,7 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const restaurant = getRestaurantById(parseInt(id, 10));
+    const restaurant = await getRestaurantById(parseInt(id, 10));
 
     if (!restaurant) {
       return NextResponse.json(
@@ -38,7 +38,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const body = await request.json();
     const validated = restaurantSchema.parse(body);
 
-    const restaurant = updateRestaurant(parseInt(id, 10), validated);
+    const restaurant = await updateRestaurant(parseInt(id, 10), validated);
 
     if (!restaurant) {
       return NextResponse.json(
@@ -69,7 +69,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const success = deleteRestaurant(parseInt(id, 10));
+    const success = await deleteRestaurant(parseInt(id, 10));
 
     if (!success) {
       return NextResponse.json(
