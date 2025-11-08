@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   price INTEGER NOT NULL,
   rating NUMERIC(3,1) NOT NULL CHECK (rating >= 1 AND rating <= 10),
   website_url TEXT,
+  image_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -96,3 +97,7 @@ CREATE TRIGGER update_trendings_updated_at
   BEFORE UPDATE ON trendings
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
+
+-- Migration: Add image_url column to existing restaurants table (run this if upgrading)
+-- This is safe to run multiple times - it will only add the column if it doesn't exist
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS image_url TEXT;

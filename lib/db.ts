@@ -44,6 +44,7 @@ export async function createRestaurant(input: RestaurantInput): Promise<Restaura
       price: input.price,
       rating: input.rating,
       website_url: input.website_url || null,
+      image_url: input.image_url || null,
     })
     .select()
     .single();
@@ -70,6 +71,7 @@ export async function updateRestaurant(
       price: input.price,
       rating: input.rating,
       website_url: input.website_url || null,
+      image_url: input.image_url || null,
     })
     .eq("id", id)
     .select()
@@ -209,29 +211,33 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
   return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
 }
 
-// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs)
+// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs and images)
 export async function bulkInsertRestaurants(
   restaurants: RestaurantInput[]
 ): Promise<number> {
-  // Get existing restaurants to preserve their URLs
+  // Get existing restaurants to preserve their URLs and images
   const { data: existingRestaurants } = await supabase
     .from("restaurants")
-    .select("name, website_url");
+    .select("name, website_url, image_url");
 
-  const existingUrlsMap = new Map(
-    (existingRestaurants || []).map(r => [r.name, r.website_url])
+  const existingDataMap = new Map(
+    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url }])
   );
 
-  const insertData = restaurants.map((restaurant) => ({
-    name: restaurant.name,
-    location: restaurant.location,
-    cuisine_type: restaurant.cuisine_type,
-    specialty: restaurant.specialty || null,
-    price: restaurant.price,
-    rating: restaurant.rating,
-    // Preserve existing URL if CSV doesn't have one
-    website_url: restaurant.website_url || existingUrlsMap.get(restaurant.name) || null,
-  }));
+  const insertData = restaurants.map((restaurant) => {
+    const existing = existingDataMap.get(restaurant.name);
+    return {
+      name: restaurant.name,
+      location: restaurant.location,
+      cuisine_type: restaurant.cuisine_type,
+      specialty: restaurant.specialty || null,
+      price: restaurant.price,
+      rating: restaurant.rating,
+      // Preserve existing URLs if CSV doesn't have them
+      website_url: restaurant.website_url || existing?.website_url || null,
+      image_url: restaurant.image_url || existing?.image_url || null,
+    };
+  });
 
   const { data, error } = await supabase
     .from("restaurants")

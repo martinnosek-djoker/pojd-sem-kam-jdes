@@ -18,19 +18,27 @@ export default function RestaurantForm({
 }: RestaurantFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fetchingPhoto, setFetchingPhoto] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<RestaurantInput>({
     resolver: zodResolver(restaurantSchema),
     defaultValues: {
       specialty: "",
       website_url: "",
+      image_url: "",
     },
   });
+
+  const imageUrl = watch("image_url");
+  const restaurantName = watch("name");
+  const restaurantLocation = watch("location");
 
   useEffect(() => {
     if (restaurantId) {
@@ -46,6 +54,7 @@ export default function RestaurantForm({
             price: data.price,
             rating: data.rating,
             website_url: data.website_url || "",
+            image_url: data.image_url || "",
           });
         })
         .catch((err) => {
@@ -54,6 +63,37 @@ export default function RestaurantForm({
         });
     }
   }, [restaurantId, reset]);
+
+  const handleFetchPhoto = async () => {
+    if (!restaurantName) {
+      setError("Vyplň nejdřív název restaurace");
+      return;
+    }
+
+    setFetchingPhoto(true);
+    setError("");
+
+    try {
+      const params = new URLSearchParams({
+        name: restaurantName,
+        ...(restaurantLocation && { location: restaurantLocation }),
+      });
+
+      const response = await fetch(`/api/places/photo?${params}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setValue("image_url", data.photoUrl);
+      } else {
+        setError(data.error || "Nepodařilo se načíst fotografii");
+      }
+    } catch (err) {
+      console.error("Error fetching photo:", err);
+      setError("Nepodařilo se načíst fotografii");
+    } finally {
+      setFetchingPhoto(false);
+    }
+  };
 
   const onSubmit = async (data: RestaurantInput) => {
     setLoading(true);
@@ -65,6 +105,7 @@ export default function RestaurantForm({
         ...data,
         specialty: data.specialty || null,
         website_url: data.website_url || null,
+        image_url: data.image_url || null,
       };
 
       const url = restaurantId
@@ -203,6 +244,47 @@ export default function RestaurantForm({
             />
             {errors.website_url && (
               <p className="text-red-600 text-sm mt-1">{errors.website_url.message}</p>
+            )}
+          </div>
+
+          {/* Image URL with Auto-fetch */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              URL fotky (nepovinné)
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                {...register("image_url")}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="https://..."
+              />
+              <button
+                type="button"
+                onClick={handleFetchPhoto}
+                disabled={fetchingPhoto || !restaurantName}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+              >
+                {fetchingPhoto ? "Načítám..." : "🔍 Auto-fetch"}
+              </button>
+            </div>
+            {errors.image_url && (
+              <p className="text-red-600 text-sm mt-1">{errors.image_url.message}</p>
+            )}
+            {imageUrl && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-2">Náhled:</p>
+                <img
+                  src={imageUrl}
+                  alt="Restaurant preview"
+                  className="w-full max-w-md h-48 object-cover rounded-md border border-gray-300"
+                  onError={(e) => {
+                    e.currentTarget.src = "";
+                    e.currentTarget.alt = "Nepodařilo se načíst obrázek";
+                    e.currentTarget.className = "w-full max-w-md h-48 flex items-center justify-center bg-gray-100 rounded-md border border-gray-300 text-gray-500 text-sm";
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>

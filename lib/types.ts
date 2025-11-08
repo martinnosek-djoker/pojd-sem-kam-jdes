@@ -35,6 +35,7 @@ export interface Restaurant {
   price: number;
   rating: number;
   website_url: string | null;
+  image_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -48,6 +49,7 @@ export const restaurantSchema = z.object({
   price: z.number().min(0, "Cena musí být kladné číslo"),
   rating: z.number().min(1).max(10, "Hodnocení musí být mezi 1-10"),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
 });
 
 export type RestaurantInput = z.infer<typeof restaurantSchema>;
