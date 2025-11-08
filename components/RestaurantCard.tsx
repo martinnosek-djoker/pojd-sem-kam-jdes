@@ -46,9 +46,16 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-purple-700/20"></div>
 
       <div className="mb-4 relative">
-        <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">
-          {restaurant.name}
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">
+            {restaurant.name}
+          </h3>
+          {restaurant.website_url && (
+            <svg className="w-5 h-5 text-purple-400 group-hover:text-purple-300 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          )}
+        </div>
       </div>
 
       <div className="space-y-3 mb-5">
