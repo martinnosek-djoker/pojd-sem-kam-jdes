@@ -31,6 +31,7 @@ export default function TrendingForm({
     resolver: zodResolver(trendingSchema),
     defaultValues: {
       name: "",
+      address: "",
       website_url: "",
       image_url: "",
       display_order: 0,
@@ -39,6 +40,7 @@ export default function TrendingForm({
 
   const imageUrl = watch("image_url");
   const trendingName = watch("name");
+  const trendingAddress = watch("address");
 
   useEffect(() => {
     if (trendingId) {
@@ -48,6 +50,7 @@ export default function TrendingForm({
         .then((data) => {
           reset({
             name: data.name,
+            address: data.address || "",
             website_url: data.website_url || "",
             image_url: data.image_url || "",
             display_order: data.display_order || 0,
@@ -79,9 +82,15 @@ export default function TrendingForm({
       const data = await response.json();
 
       if (response.ok) {
-        setValue("image_url", data.photoUrl);
+        if (data.photoUrl) {
+          setValue("image_url", data.photoUrl);
+        }
+        // Also set address if available (from addresses object for Praha)
+        if (data.addresses && data.addresses["Praha"]) {
+          setValue("address", data.addresses["Praha"]);
+        }
       } else {
-        setError(data.error || "Nepodařilo se načíst fotografii");
+        setError(data.error || "Nepodařilo se načíst data");
       }
     } catch (err) {
       console.error("Error fetching photo:", err);
@@ -99,6 +108,7 @@ export default function TrendingForm({
       // Clean up empty strings
       const cleanData = {
         ...data,
+        address: data.address || null,
         website_url: data.website_url || null,
         image_url: data.image_url || null,
       };
@@ -168,6 +178,18 @@ export default function TrendingForm({
               <p className="text-red-600 text-sm mt-1">{errors.display_order.message}</p>
             )}
           </div>
+
+          {/* Address - Display only, filled by auto-fetch */}
+          {trendingAddress && (
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Načtená adresa:
+              </label>
+              <div className="text-sm bg-green-50 p-2 rounded border border-green-200">
+                <span className="text-gray-700">{trendingAddress as string}</span>
+              </div>
+            </div>
+          )}
 
           {/* Website URL */}
           <div className="md:col-span-2">

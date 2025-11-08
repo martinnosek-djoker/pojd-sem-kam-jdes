@@ -35,11 +35,22 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
 
         {/* Content section - right side */}
         <div className="flex-1 px-4 py-3 flex items-center justify-between">
-          {/* Name */}
+          {/* Name and Address */}
           <div className="flex-1">
             <h3 className="text-lg font-bold text-purple-300 tracking-wide group-hover:text-purple-200 transition-colors">
               {trending.name}
             </h3>
+            {trending.address && (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trending.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-400 hover:text-purple-300 underline transition-colors mt-1 block"
+                onClick={(e) => e.stopPropagation()}
+              >
+                📍 {trending.address}
+              </a>
+            )}
           </div>
 
           {/* Arrow indicator if has link */}

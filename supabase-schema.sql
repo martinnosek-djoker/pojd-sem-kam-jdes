@@ -63,6 +63,7 @@ CREATE TRIGGER update_restaurants_updated_at
 CREATE TABLE IF NOT EXISTS trendings (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
+  address TEXT,
   website_url TEXT,
   image_url TEXT,
   display_order INTEGER NOT NULL DEFAULT 0,
@@ -114,3 +115,6 @@ ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS addresses JSONB;
 
 -- Then optionally drop the old column (run this manually after verifying data migration):
 -- ALTER TABLE restaurants DROP COLUMN IF EXISTS address;
+
+-- Migration: Add address column to trendings table
+ALTER TABLE trendings ADD COLUMN IF NOT EXISTS address TEXT;

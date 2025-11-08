@@ -296,6 +296,7 @@ export async function createTrending(input: TrendingInput): Promise<Trending> {
     .from("trendings")
     .insert({
       name: input.name,
+      address: input.address || null,
       website_url: input.website_url || null,
       image_url: input.image_url || null,
       display_order: input.display_order || 0,
@@ -319,6 +320,7 @@ export async function updateTrending(
     .from("trendings")
     .update({
       name: input.name,
+      address: input.address || null,
       website_url: input.website_url || null,
       image_url: input.image_url || null,
       display_order: input.display_order || 0,
@@ -352,20 +354,21 @@ export async function deleteTrending(id: number): Promise<boolean> {
 export async function bulkInsertTrendings(
   trendings: TrendingInput[]
 ): Promise<number> {
-  // Get existing trendings to preserve their URLs and images
+  // Get existing trendings to preserve their URLs, images and addresses
   const { data: existingTrendings } = await supabase
     .from("trendings")
-    .select("name, website_url, image_url");
+    .select("name, address, website_url, image_url");
 
   const existingDataMap = new Map(
-    (existingTrendings || []).map(t => [t.name, { website_url: t.website_url, image_url: t.image_url }])
+    (existingTrendings || []).map(t => [t.name, { address: t.address, website_url: t.website_url, image_url: t.image_url }])
   );
 
   const insertData = trendings.map((trending) => {
     const existing = existingDataMap.get(trending.name);
     return {
       name: trending.name,
-      // Preserve existing URLs if CSV doesn't have them
+      // Preserve existing data if CSV doesn't have them
+      address: trending.address || existing?.address || null,
       website_url: trending.website_url || existing?.website_url || null,
       image_url: trending.image_url || existing?.image_url || null,
       display_order: trending.display_order || 0,
