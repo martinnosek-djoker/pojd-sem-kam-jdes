@@ -32,7 +32,7 @@ interface SortableRowProps {
   onDelete: () => void;
 }
 
-function SortableRow({ trending, rank, onEdit, onDelete }: SortableRowProps) {
+function SortableRow({ trending, rank, onEdit, onDelete, isEditing, editForm }: SortableRowProps & { isEditing: boolean; editForm?: React.ReactNode }) {
   const {
     attributes,
     listeners,
@@ -49,56 +49,65 @@ function SortableRow({ trending, rank, onEdit, onDelete }: SortableRowProps) {
   };
 
   return (
-    <tr ref={setNodeRef} style={style} className="hover:bg-gray-50">
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center gap-3">
-          <button
-            {...attributes}
-            {...listeners}
-            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Drag to reorder"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
-            </svg>
-          </button>
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-            <span className="text-sm font-bold text-white">#{rank}</span>
+    <>
+      <tr ref={setNodeRef} style={style} className="hover:bg-gray-50">
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="flex items-center gap-3">
+            <button
+              {...attributes}
+              {...listeners}
+              className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Drag to reorder"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+              </svg>
+            </button>
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+              <span className="text-sm font-bold text-white">#{rank}</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-900">{trending.name}</div>
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-        {trending.website_url ? (
-          <a
-            href={trending.website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-600 hover:text-purple-900 truncate block max-w-xs"
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">{trending.name}</div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {trending.website_url ? (
+            <a
+              href={trending.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-600 hover:text-purple-900 truncate block max-w-xs"
+            >
+              {trending.website_url}
+            </a>
+          ) : (
+            <span className="text-gray-400">—</span>
+          )}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+          <button
+            onClick={onEdit}
+            className="text-blue-600 hover:text-blue-900 mr-4"
           >
-            {trending.website_url}
-          </a>
-        ) : (
-          <span className="text-gray-400">—</span>
-        )}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button
-          onClick={onEdit}
-          className="text-blue-600 hover:text-blue-900 mr-4"
-        >
-          Upravit
-        </button>
-        <button
-          onClick={onDelete}
-          className="text-red-600 hover:text-red-900"
-        >
-          Smazat
-        </button>
-      </td>
-    </tr>
+            Upravit
+          </button>
+          <button
+            onClick={onDelete}
+            className="text-red-600 hover:text-red-900"
+          >
+            Smazat
+          </button>
+        </td>
+      </tr>
+      {isEditing && (
+        <tr>
+          <td colSpan={4} className="px-6 py-4 bg-gray-50">
+            {editForm}
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
@@ -207,11 +216,11 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
         </button>
       </div>
 
-      {/* Form */}
-      {showForm && (
+      {/* Form for adding new trending (only when not editing existing) */}
+      {showForm && !editingId && (
         <div className="mb-6">
           <TrendingForm
-            trendingId={editingId}
+            trendingId={null}
             onSave={handleSave}
             onCancel={() => {
               setShowForm(false);
@@ -260,6 +269,17 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
                       setShowForm(true);
                     }}
                     onDelete={() => handleDelete(trending.id)}
+                    isEditing={editingId === trending.id}
+                    editForm={
+                      <TrendingForm
+                        trendingId={trending.id}
+                        onSave={handleSave}
+                        onCancel={() => {
+                          setShowForm(false);
+                          setEditingId(null);
+                        }}
+                      />
+                    }
                   />
                 ))}
               </SortableContext>
