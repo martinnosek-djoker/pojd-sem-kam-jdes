@@ -31,7 +31,7 @@ export default function RestaurantForm({
     resolver: zodResolver(restaurantSchema),
     defaultValues: {
       specialty: "",
-      address: "",
+      addresses: null,
       website_url: "",
       image_url: "",
     },
@@ -40,7 +40,7 @@ export default function RestaurantForm({
   const imageUrl = watch("image_url");
   const restaurantName = watch("name");
   const restaurantLocation = watch("location");
-  const restaurantAddress = watch("address");
+  const restaurantAddresses = watch("addresses");
 
   useEffect(() => {
     if (restaurantId) {
@@ -51,7 +51,7 @@ export default function RestaurantForm({
           reset({
             name: data.name,
             location: data.location,
-            address: data.address || "",
+            addresses: data.addresses || null,
             cuisine_type: data.cuisine_type,
             specialty: data.specialty || "",
             price: data.price,
@@ -86,13 +86,15 @@ export default function RestaurantForm({
       const data = await response.json();
 
       if (response.ok) {
-        setValue("image_url", data.photoUrl);
-        // Also set address if available and not already filled
-        if (data.address && !restaurantAddress) {
-          setValue("address", data.address);
+        if (data.photoUrl) {
+          setValue("image_url", data.photoUrl);
+        }
+        // Also set addresses if available
+        if (data.addresses) {
+          setValue("addresses", data.addresses);
         }
       } else {
-        setError(data.error || "Nepodařilo se načíst fotografii");
+        setError(data.error || "Nepodařilo se načíst data");
       }
     } catch (err) {
       console.error("Error fetching photo:", err);
@@ -111,7 +113,7 @@ export default function RestaurantForm({
       const cleanData = {
         ...data,
         specialty: data.specialty || null,
-        address: data.address || null,
+        addresses: data.addresses || null,
         website_url: data.website_url || null,
         image_url: data.image_url || null,
       };
@@ -167,37 +169,39 @@ export default function RestaurantForm({
           </div>
 
           {/* Location */}
-          <div>
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Lokalita * (např. "Praha 1", "Vinohrady")
+              Lokality * (oddělené čárkou pro více poboček)
             </label>
             <input
               {...register("location")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Praha 1"
+              placeholder="Anděl, Letná, Vinohrady"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              💡 Pro restaurace s více pobočkami zadej lokality oddělené čárkou
+            </p>
             {errors.location && (
               <p className="text-red-600 text-sm mt-1">{errors.location.message}</p>
             )}
           </div>
 
-          {/* Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Přesná adresa (nepovinné)
-            </label>
-            <input
-              {...register("address")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Sázavská 8, Praha 2"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              💡 Auto-fetch doplní automaticky při načtení fotky
-            </p>
-            {errors.address && (
-              <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
-            )}
-          </div>
+          {/* Addresses - Display only, filled by auto-fetch */}
+          {restaurantAddresses && Object.keys(restaurantAddresses).length > 0 && (
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Načtené adresy:
+              </label>
+              <div className="space-y-2">
+                {Object.entries(restaurantAddresses).map(([location, address]) => (
+                  <div key={location} className="flex items-start gap-2 text-sm bg-green-50 p-2 rounded border border-green-200">
+                    <span className="font-semibold text-green-700">{location}:</span>
+                    <span className="text-gray-700">{address as string}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Cuisine Type */}
           <div>

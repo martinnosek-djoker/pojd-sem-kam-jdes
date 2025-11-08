@@ -30,7 +30,7 @@ export interface Restaurant {
   id: number;
   name: string;
   location: string;
-  address: string | null;
+  addresses: Record<string, string> | null; // { "Anděl": "adresa1", "Letná": "adresa2" }
   cuisine_type: string;
   specialty: string | null;
   price: number;
@@ -45,7 +45,7 @@ export interface Restaurant {
 export const restaurantSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
   location: z.string().min(1, "Lokalita je povinná"),
-  address: z.string().optional().nullable().or(z.literal("")),
+  addresses: z.record(z.string(), z.string()).optional().nullable(),
   cuisine_type: z.string().min(1, "Typ kuchyně je povinný"),
   specialty: z.string().optional().nullable(),
   price: z.number().min(0, "Cena musí být kladné číslo"),

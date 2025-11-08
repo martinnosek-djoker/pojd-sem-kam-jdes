@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
   location TEXT NOT NULL,
-  address TEXT,
+  addresses JSONB,
   cuisine_type TEXT NOT NULL,
   specialty TEXT,
   price INTEGER NOT NULL,
@@ -104,4 +104,13 @@ CREATE TRIGGER update_trendings_updated_at
 -- This is safe to run multiple times - it will only add the column if it doesn't exist
 ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE trendings ADD COLUMN IF NOT EXISTS image_url TEXT;
-ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS address TEXT;
+
+-- Migration: Change address to addresses (JSONB) - this replaces the old address column
+-- First, add the new column
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS addresses JSONB;
+
+-- If you have existing data in 'address' column, you can migrate it:
+-- UPDATE restaurants SET addresses = jsonb_build_object('default', address) WHERE address IS NOT NULL AND addresses IS NULL;
+
+-- Then optionally drop the old column (run this manually after verifying data migration):
+-- ALTER TABLE restaurants DROP COLUMN IF EXISTS address;

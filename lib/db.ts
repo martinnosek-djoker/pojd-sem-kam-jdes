@@ -39,7 +39,7 @@ export async function createRestaurant(input: RestaurantInput): Promise<Restaura
     .insert({
       name: input.name,
       location: input.location,
-      address: input.address || null,
+      addresses: input.addresses || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -67,7 +67,7 @@ export async function updateRestaurant(
     .update({
       name: input.name,
       location: input.location,
-      address: input.address || null,
+      addresses: input.addresses || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -220,10 +220,10 @@ export async function bulkInsertRestaurants(
   // Get existing restaurants to preserve their URLs, images and addresses
   const { data: existingRestaurants } = await supabase
     .from("restaurants")
-    .select("name, website_url, image_url, address");
+    .select("name, website_url, image_url, addresses");
 
   const existingDataMap = new Map(
-    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url, address: r.address }])
+    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url, addresses: r.addresses }])
   );
 
   const insertData = restaurants.map((restaurant) => {
@@ -231,7 +231,7 @@ export async function bulkInsertRestaurants(
     return {
       name: restaurant.name,
       location: restaurant.location,
-      address: restaurant.address || existing?.address || null,
+      addresses: restaurant.addresses || existing?.addresses || null,
       cuisine_type: restaurant.cuisine_type,
       specialty: restaurant.specialty || null,
       price: restaurant.price,

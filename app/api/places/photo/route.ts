@@ -1,12 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// GET /api/places/photo?name=Restaurant&location=Prague
-// Fetches restaurant photo from Google Places API
+// Helper function to fetch place data for a single location
+async function fetchPlaceData(name: string, location: string, apiKey: string) {
+  const query = `${name}, ${location}`;
+  const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${apiKey}`;
+
+  const searchResponse = await fetch(searchUrl);
+  const searchData = await searchResponse.json();
+
+  if (searchData.status !== "OK" || !searchData.results || searchData.results.length === 0) {
+    return null;
+  }
+
+  return searchData.results[0];
+}
+
+// GET /api/places/photo?name=Restaurant&location=Anděl,Letná,Vinohrady
+// Fetches restaurant photo and addresses from Google Places API
+// Supports multiple locations separated by comma
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const name = searchParams.get("name");
-    const location = searchParams.get("location");
+    const locationParam = searchParams.get("location");
 
     if (!name) {
       return NextResponse.json(
@@ -27,48 +43,55 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Step 1: Find the place using Text Search
-    const query = location ? `${name}, ${location}` : name;
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${apiKey}`;
+    // Parse locations (comma-separated)
+    const locations = locationParam
+      ? locationParam.split(',').map(l => l.trim()).filter(l => l)
+      : ['Praha'];
 
-    console.log("Searching for:", query);
+    console.log("Searching for:", name, "in locations:", locations);
 
-    const searchResponse = await fetch(searchUrl);
-    const searchData = await searchResponse.json();
+    // Fetch data for all locations
+    const addresses: Record<string, string> = {};
+    let photoUrl: string | null = null;
 
-    if (searchData.status !== "OK" || !searchData.results || searchData.results.length === 0) {
+    for (const location of locations) {
+      const place = await fetchPlaceData(name, location, apiKey);
+
+      if (place) {
+        // Save address for this location
+        if (place.formatted_address) {
+          addresses[location] = place.formatted_address;
+        }
+
+        // Use photo from first found place
+        if (!photoUrl && place.photos && place.photos.length > 0) {
+          const photoReference = place.photos[0].photo_reference;
+          photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
+        }
+      }
+
+      // Small delay between requests to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+
+    // Check if we found anything
+    if (!photoUrl && Object.keys(addresses).length === 0) {
       return NextResponse.json(
-        { error: "Restaurace nenalezena", details: searchData.status },
+        { error: "Restaurace nenalezena v žádné z lokalit" },
         { status: 404 }
       );
     }
-
-    const place = searchData.results[0];
-
-    // Step 2: Get photo reference if available
-    if (!place.photos || place.photos.length === 0) {
-      return NextResponse.json(
-        { error: "Pro tuto restauraci nejsou dostupné fotografie" },
-        { status: 404 }
-      );
-    }
-
-    const photoReference = place.photos[0].photo_reference;
-
-    // Step 3: Construct photo URL and return address
-    // Max width 400px for optimal loading performance
-    const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
 
     return NextResponse.json({
-      photoUrl,
-      address: place.formatted_address,
-      placeName: place.name,
+      photoUrl: photoUrl || undefined,
+      addresses: Object.keys(addresses).length > 0 ? addresses : undefined,
+      placeName: name,
     });
 
   } catch (error: any) {
-    console.error("Error fetching place photo:", error);
+    console.error("Error fetching place data:", error);
     return NextResponse.json(
-      { error: "Nepodařilo se načíst fotografii", details: error.message },
+      { error: "Nepodařilo se načíst data", details: error.message },
       { status: 500 }
     );
   }
