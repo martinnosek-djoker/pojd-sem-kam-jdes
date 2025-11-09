@@ -89,10 +89,32 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
             {(() => {
               const locations = restaurant.location.split(',').map(l => l.trim());
 
+              // Helper function to find address - case insensitive and flexible
+              const findAddress = (location: string): string | null => {
+                if (!restaurant.addresses) return null;
+
+                // Try exact match first
+                if (restaurant.addresses[location]) {
+                  return restaurant.addresses[location];
+                }
+
+                // Try case-insensitive match
+                const lowerLocation = location.toLowerCase();
+                const matchingKey = Object.keys(restaurant.addresses).find(
+                  key => key.toLowerCase() === lowerLocation
+                );
+
+                if (matchingKey) {
+                  return restaurant.addresses[matchingKey];
+                }
+
+                return null;
+              };
+
               // Group locations by address
               const addressGroups = new Map<string | null, string[]>();
               locations.forEach(location => {
-                const address = restaurant.addresses?.[location] || null;
+                const address = findAddress(location);
                 const existing = addressGroups.get(address) || [];
                 addressGroups.set(address, [...existing, location]);
               });

@@ -19,6 +19,7 @@ export default function RestaurantForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fetchingPhoto, setFetchingPhoto] = useState(false);
+  const [addressesText, setAddressesText] = useState("");
 
   const {
     register,
@@ -59,6 +60,8 @@ export default function RestaurantForm({
             website_url: data.website_url || "",
             image_url: data.image_url || "",
           });
+          // Set addresses text for textarea
+          setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
         })
         .catch((err) => {
           console.error("Error fetching restaurant:", err);
@@ -66,6 +69,13 @@ export default function RestaurantForm({
         });
     }
   }, [restaurantId, reset]);
+
+  // Sync addressesText when addresses are fetched via auto-fetch
+  useEffect(() => {
+    if (restaurantAddresses) {
+      setAddressesText(JSON.stringify(restaurantAddresses, null, 2));
+    }
+  }, [restaurantAddresses]);
 
   const handleFetchPhoto = async () => {
     if (!restaurantName) {
@@ -186,22 +196,41 @@ export default function RestaurantForm({
             )}
           </div>
 
-          {/* Addresses - Display only, filled by auto-fetch */}
-          {restaurantAddresses && Object.keys(restaurantAddresses).length > 0 && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Načtené adresy:
-              </label>
-              <div className="space-y-2">
-                {Object.entries(restaurantAddresses).map(([location, address]) => (
-                  <div key={location} className="flex items-start gap-2 text-sm bg-green-50 p-2 rounded border border-green-200">
-                    <span className="font-semibold text-green-700">{location}:</span>
-                    <span className="text-gray-700">{address as string}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Addresses - Editable JSON field */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Adresy (JSON formát - nepovinné)
+            </label>
+            <textarea
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+              rows={4}
+              placeholder='{"Václavák": "Václavské náměstí 1, Praha 1", "Anděl": "Nádražní 2, Praha 5"}'
+              value={addressesText}
+              onChange={(e) => {
+                const value = e.target.value;
+                setAddressesText(value);
+
+                try {
+                  const trimmedValue = value.trim();
+                  if (trimmedValue) {
+                    const parsed = JSON.parse(trimmedValue);
+                    setValue("addresses", parsed);
+                  } else {
+                    setValue("addresses", null);
+                  }
+                } catch {
+                  // Invalid JSON, keep the raw string temporarily
+                  // User can continue editing
+                }
+              }}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              💡 Formát: {`{"lokalita": "úplná adresa"}`}. Klíče musí odpovídat názvům lokalit výše.
+            </p>
+            {errors.addresses && (
+              <p className="text-red-600 text-sm mt-1">{errors.addresses.message}</p>
+            )}
+          </div>
 
           {/* Cuisine Type */}
           <div>
