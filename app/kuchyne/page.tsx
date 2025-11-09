@@ -189,17 +189,16 @@ export default function CuisinesPage() {
 
               {/* Horizontal Scrolling Cards */}
               <div className="relative">
-                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin" style={{ scrollSnapType: 'x proximity' }}>
-                  {restaurantsByCuisine[cuisine.name]?.map((restaurant, idx) => (
-                    <div
-                      key={restaurant.id}
-                      className={`flex-shrink-0 w-[85%] sm:w-80 ${idx === 0 ? 'pl-8 sm:pl-0' : ''}`}
-                      style={{ scrollSnapAlign: idx === 0 ? 'start' : 'none' }}
-                    >
+                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+                  {/* Invisible spacer for left padding on mobile */}
+                  <div className="flex-shrink-0 w-0 sm:hidden" aria-hidden="true"></div>
+                  {restaurantsByCuisine[cuisine.name]?.map((restaurant) => (
+                    <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80">
                       <RestaurantCard restaurant={restaurant} />
                     </div>
                   ))}
-                  <div className="flex-shrink-0 w-8 sm:hidden" aria-hidden="true"></div>
+                  {/* Invisible spacer for right padding on mobile */}
+                  <div className="flex-shrink-0 w-0 sm:hidden" aria-hidden="true"></div>
                 </div>
               </div>
             </div>
