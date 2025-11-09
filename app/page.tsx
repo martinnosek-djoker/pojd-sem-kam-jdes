@@ -255,9 +255,9 @@ export default function Home() {
             </div>
             {/* Mobile: Horizontal Carousel */}
             <div className="md:hidden relative">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin" style={{ scrollPaddingLeft: '2rem' }}>
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className={`flex-shrink-0 w-[85%] ${index === 0 ? 'ml-0' : ''}`}>
+                  <div key={trending.id} className={`flex-shrink-0 w-[85%] ${index === 0 ? 'ml-8' : ''}`}>
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
