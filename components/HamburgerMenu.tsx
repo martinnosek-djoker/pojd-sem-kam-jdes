@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,19 @@ export default function HamburgerMenu() {
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const menuItems = [
     { href: "/", label: "Domů", icon: "🏠" },
@@ -95,19 +108,6 @@ export default function HamburgerMenu() {
               </li>
             ))}
           </ul>
-
-          {/* Footer */}
-          <div className="pt-6 border-t border-purple-500/30">
-            <a
-              href="https://www.instagram.com/pecu_si_zivot/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-purple-400 transition-colors"
-            >
-              <span className="text-xl">🍽️</span>
-              <span>@Peču si život</span>
-            </a>
-          </div>
         </div>
       </nav>
     </>
