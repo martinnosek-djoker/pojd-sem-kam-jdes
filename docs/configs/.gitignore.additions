@@ -1,0 +1,11 @@
+# Capacitor
+android/
+ios/
+out/
+
+# Capacitor assets
+resources/android/
+resources/ios/
+
+# Capacitor config (pokud obsahuje citlivá data)
+# capacitor.config.ts

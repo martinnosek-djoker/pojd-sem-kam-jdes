@@ -8,6 +8,11 @@ export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  // Hide menu on admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 

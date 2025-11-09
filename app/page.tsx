@@ -229,11 +229,11 @@ export default function Home() {
     <main className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
+        <div className="mb-6 md:mb-12 text-center">
+          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <p className="text-lg text-gray-300 mt-6">
+          <p className="text-sm md:text-lg text-gray-300 mt-2 md:mt-6 hidden sm:block">
             Výčet nejlepších restaurací v Praze dle{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
@@ -248,10 +248,10 @@ export default function Home() {
 
         {/* Trendings Section */}
         {trendings.length > 0 && (
-          <div className="mb-12">
-            <div className="mb-6">
-              <h2 className="text-3xl font-bold text-purple-400 tracking-wide mb-2">🔥 TOP 10 Trendy</h2>
-              <p className="text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
+          <div className="mb-8 md:mb-12">
+            <div className="mb-4 md:mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 TOP 10 Trendy</h2>
+              <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {trendings.map((trending, index) => (
