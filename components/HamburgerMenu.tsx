@@ -29,23 +29,20 @@ export default function HamburgerMenu() {
         className="fixed top-6 left-6 z-50 p-3 bg-purple-600 hover:bg-purple-700 rounded-lg shadow-lg transition-all duration-300 border border-purple-500"
         aria-label="Toggle menu"
       >
-        <div className="w-6 h-5 flex flex-col justify-between">
-          <span
-            className={`block h-0.5 bg-white transition-all duration-300 ${
-              isOpen ? "rotate-45 translate-y-2" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 bg-white transition-all duration-300 ${
-              isOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 bg-white transition-all duration-300 ${
-              isOpen ? "-rotate-45 -translate-y-2" : ""
-            }`}
-          />
-        </div>
+        {isOpen ? (
+          // Křížek
+          <div className="w-6 h-6 relative">
+            <span className="absolute top-1/2 left-0 w-full h-0.5 bg-white transform rotate-45" />
+            <span className="absolute top-1/2 left-0 w-full h-0.5 bg-white transform -rotate-45" />
+          </div>
+        ) : (
+          // Hamburger
+          <div className="w-6 h-5 flex flex-col justify-between">
+            <span className="block h-0.5 bg-white" />
+            <span className="block h-0.5 bg-white" />
+            <span className="block h-0.5 bg-white" />
+          </div>
+        )}
       </button>
 
       {/* Overlay */}
