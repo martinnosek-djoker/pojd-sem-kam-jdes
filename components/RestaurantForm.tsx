@@ -227,7 +227,7 @@ export default function RestaurantForm({
             <p className="text-xs text-gray-500 mt-1">
               💡 Formát: {`{"lokalita": "úplná adresa"}`}. Klíče musí odpovídat názvům lokalit výše.
             </p>
-            {errors.addresses && (
+            {errors.addresses?.message && (
               <p className="text-red-600 text-sm mt-1">{errors.addresses.message}</p>
             )}
           </div>
