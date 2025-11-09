@@ -20,6 +20,7 @@ export default function RestaurantForm({
   const [error, setError] = useState("");
   const [fetchingPhoto, setFetchingPhoto] = useState(false);
   const [addressesText, setAddressesText] = useState("");
+  const [availablePhotos, setAvailablePhotos] = useState<string[]>([]);
 
   const {
     register,
@@ -62,11 +63,16 @@ export default function RestaurantForm({
           });
           // Set addresses text for textarea
           setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
+          // Clear photo gallery when loading existing restaurant
+          setAvailablePhotos([]);
         })
         .catch((err) => {
           console.error("Error fetching restaurant:", err);
           setError("Nepodařilo se načíst data restaurace");
         });
+    } else {
+      // Clear photo gallery when creating new restaurant
+      setAvailablePhotos([]);
     }
   }, [restaurantId, reset]);
 
@@ -98,6 +104,10 @@ export default function RestaurantForm({
       if (response.ok) {
         if (data.photoUrl) {
           setValue("image_url", data.photoUrl);
+        }
+        // Save all available photos for selection
+        if (data.photoUrls && data.photoUrls.length > 0) {
+          setAvailablePhotos(data.photoUrls);
         }
         // Also set addresses if available
         if (data.addresses) {
@@ -333,7 +343,7 @@ export default function RestaurantForm({
             )}
             {imageUrl && (
               <div className="mt-3">
-                <p className="text-sm text-gray-600 mb-2">Náhled:</p>
+                <p className="text-sm text-gray-600 mb-2">Vybraná fotka:</p>
                 <img
                   src={imageUrl}
                   alt="Restaurant preview"
@@ -344,6 +354,42 @@ export default function RestaurantForm({
                     e.currentTarget.className = "w-full max-w-md h-48 flex items-center justify-center bg-gray-100 rounded-md border border-gray-300 text-gray-500 text-sm";
                   }}
                 />
+              </div>
+            )}
+
+            {/* Photo Gallery */}
+            {availablePhotos.length > 0 && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">
+                  Dostupné fotky ({availablePhotos.length}) - klikněte na fotku pro výběr:
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {availablePhotos.map((photoUrl, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => {
+                        setValue("image_url", photoUrl);
+                      }}
+                      className={`relative h-24 rounded-md overflow-hidden border-2 transition-all hover:border-blue-500 ${
+                        imageUrl === photoUrl
+                          ? "border-blue-600 ring-2 ring-blue-400"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      <img
+                        src={photoUrl}
+                        alt={`Option ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {imageUrl === photoUrl && (
+                        <div className="absolute inset-0 bg-blue-600/20 flex items-center justify-center">
+                          <span className="text-2xl">✓</span>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>

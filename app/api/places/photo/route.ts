@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch data for all locations
     const addresses: Record<string, string> = {};
-    let photoUrl: string | null = null;
+    const photoUrls: string[] = [];
 
     for (const location of locations) {
       const place = await fetchPlaceData(name, location, apiKey);
@@ -63,10 +63,16 @@ export async function GET(request: NextRequest) {
           addresses[location] = place.formatted_address;
         }
 
-        // Use photo from first found place
-        if (!photoUrl && place.photos && place.photos.length > 0) {
-          const photoReference = place.photos[0].photo_reference;
-          photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
+        // Collect all photos from first found place
+        if (photoUrls.length === 0 && place.photos && place.photos.length > 0) {
+          // Get up to 10 photos
+          const photosToGet = Math.min(place.photos.length, 10);
+          for (let i = 0; i < photosToGet; i++) {
+            const photoReference = place.photos[i].photo_reference;
+            photoUrls.push(
+              `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`
+            );
+          }
         }
       }
 
@@ -75,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if we found anything
-    if (!photoUrl && Object.keys(addresses).length === 0) {
+    if (photoUrls.length === 0 && Object.keys(addresses).length === 0) {
       return NextResponse.json(
         { error: "Restaurace nenalezena v žádné z lokalit" },
         { status: 404 }
@@ -83,7 +89,8 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      photoUrl: photoUrl || undefined,
+      photoUrl: photoUrls[0] || undefined, // First photo as default
+      photoUrls: photoUrls.length > 0 ? photoUrls : undefined, // All photos for selection
       addresses: Object.keys(addresses).length > 0 ? addresses : undefined,
       placeName: name,
     });
