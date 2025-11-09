@@ -196,8 +196,6 @@ export default function CuisinesPage() {
                     </div>
                   ))}
                 </div>
-                {/* Subtle gradient fade on mobile to indicate more content */}
-                <div className="absolute top-0 right-8 sm:right-0 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none sm:hidden"></div>
               </div>
             </div>
           ))}

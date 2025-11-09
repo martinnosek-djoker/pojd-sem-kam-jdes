@@ -262,8 +262,6 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              {/* Subtle gradient fade to indicate more content */}
-              <div className="absolute top-0 right-8 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none"></div>
             </div>
             {/* Desktop: Grid */}
             <div className="hidden md:grid md:grid-cols-2 gap-4">
