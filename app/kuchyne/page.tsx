@@ -7,25 +7,54 @@ import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
 
 // Emoji mapping for different cuisine types
 const CUISINE_EMOJIS: Record<string, string> = {
-  "Pizza": "🍕",
-  "Pizzeria": "🍕",
+  // Vlajky národností
   "Italska": "🇮🇹",
-  "Burger": "🍔",
-  "Asijska": "🥢",
+  "Ceska": "🇨🇿",
+  "Mexicka": "🇲🇽",
   "Vietnamska": "🇻🇳",
   "Indicka": "🇮🇳",
   "Thajska": "🇹🇭",
   "Cinska": "🇨🇳",
   "Japonska": "🇯🇵",
   "Korejska": "🇰🇷",
-  "Ceska": "🇨🇿",
-  "Mexicka": "🇲🇽",
+  "Americka": "🇺🇸",
+  "Francouzska": "🇫🇷",
+  "Spanelska": "🇪🇸",
+  "Grecka": "🇬🇷",
+  "Turecka": "🇹🇷",
+  "Brazilska": "🇧🇷",
+  "Argentina": "🇦🇷",
+  "Peruana": "🇵🇪",
+
+  // Specifické pokrmy
+  "Pizza": "🍕",
+  "Pizzeria": "🍕",
+  "Burger": "🍔",
   "Sushi": "🍣",
-  "Bbq": "🍖",
+  "Ramen": "🍜",
+  "Pasta": "🍝",
+  "Taco": "🌮",
+  "Burrito": "🌯",
+  "Kebab": "🥙",
+  "Curry": "🍛",
+
+  // Kategorie
+  "Asijska": "🥢",
+  "Maso": "🥩",
   "Steak": "🥩",
+  "Bbq": "🍖",
   "Gril": "🔥",
+  "Seafood": "🦞",
+  "Ryby": "🐟",
   "Vegan": "🌱",
   "Vegetarian": "🥗",
+  "Dezerty": "🍰",
+  "Cukrarna": "🧁",
+  "Street": "🍟",
+  "Fast": "🍟",
+  "Fine": "🍷",
+  "Bistro": "☕",
+  "Cafe": "☕",
 };
 
 function getCuisineEmoji(cuisine: string): string {

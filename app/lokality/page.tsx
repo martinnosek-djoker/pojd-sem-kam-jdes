@@ -43,10 +43,7 @@ export default function LocalitiesPage() {
     const grouped: Record<string, Restaurant[]> = {};
 
     restaurants.forEach((restaurant) => {
-      const locations = restaurant.location.split(',').map(loc => {
-        const normalized = loc.trim().charAt(0).toUpperCase() + loc.trim().slice(1).toLowerCase();
-        return normalized;
-      });
+      const locations = restaurant.location.split(',').map(loc => loc.trim());
 
       locations.forEach((loc) => {
         if (!grouped[loc]) {
@@ -109,7 +106,7 @@ export default function LocalitiesPage() {
               {/* Location Header */}
               <div className="mb-6">
                 <h2 className="text-3xl font-bold text-purple-400 mb-2">
-                  📍 {location.name}
+                  {location.name}
                 </h2>
                 <p className="text-gray-400">
                   {location.count} {location.count === 1 ? "restaurace" : location.count < 5 ? "restaurace" : "restaurací"}
