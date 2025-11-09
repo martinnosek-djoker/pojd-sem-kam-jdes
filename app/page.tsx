@@ -254,13 +254,18 @@ export default function Home() {
               <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative -mx-8">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8">
+            <div className="md:hidden relative">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin" style={{ scrollSnapType: 'x proximity' }}>
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%]">
+                  <div
+                    key={trending.id}
+                    className={`flex-shrink-0 w-[85%] ${index === 0 ? 'pl-8' : ''}`}
+                    style={{ scrollSnapAlign: index === 0 ? 'start' : 'none' }}
+                  >
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
+                <div className="flex-shrink-0 w-8" aria-hidden="true"></div>
               </div>
             </div>
             {/* Desktop: Grid */}

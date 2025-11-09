@@ -114,13 +114,18 @@ export default function LocalitiesPage() {
               </div>
 
               {/* Horizontal Scrolling Cards */}
-              <div className="relative -mx-8 sm:mx-0">
-                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin px-8 sm:px-0">
-                  {restaurantsByLocation[location.name]?.map((restaurant) => (
-                    <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80">
+              <div className="relative">
+                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin" style={{ scrollSnapType: 'x proximity' }}>
+                  {restaurantsByLocation[location.name]?.map((restaurant, idx) => (
+                    <div
+                      key={restaurant.id}
+                      className={`flex-shrink-0 w-[85%] sm:w-80 ${idx === 0 ? 'pl-8 sm:pl-0' : ''}`}
+                      style={{ scrollSnapAlign: idx === 0 ? 'start' : 'none' }}
+                    >
                       <RestaurantCard restaurant={restaurant} />
                     </div>
                   ))}
+                  <div className="flex-shrink-0 w-8 sm:hidden" aria-hidden="true"></div>
                 </div>
               </div>
             </div>
