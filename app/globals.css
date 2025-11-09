@@ -72,4 +72,14 @@ body {
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: rgb(168, 85, 247);
   }
+
+  /* Hide scrollbar but keep scrolling functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }

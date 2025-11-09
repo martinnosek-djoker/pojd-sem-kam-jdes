@@ -114,8 +114,8 @@ export default function LocalitiesPage() {
               </div>
 
               {/* Horizontal Scrolling Cards */}
-              <div className="relative -mx-8 sm:mx-0">
-                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin px-8 sm:px-0 snap-x snap-mandatory">
+              <div className="relative sm:mx-0">
+                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide sm:scrollbar-thin snap-x snap-mandatory">
                   {restaurantsByLocation[location.name]?.map((restaurant) => (
                     <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80 snap-start">
                       <RestaurantCard restaurant={restaurant} />

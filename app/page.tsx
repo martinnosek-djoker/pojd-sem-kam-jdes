@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
@@ -18,6 +18,8 @@ export default function Home() {
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
+  const [trendingScrollIndex, setTrendingScrollIndex] = useState(0);
+  const trendingScrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch restaurants, trendings, and filters
   useEffect(() => {
@@ -201,6 +203,14 @@ export default function Home() {
     setSelectedCuisineType("");
   };
 
+  const handleTrendingScroll = () => {
+    if (!trendingScrollRef.current) return;
+    const scrollLeft = trendingScrollRef.current.scrollLeft;
+    const cardWidth = trendingScrollRef.current.offsetWidth * 0.85 + 16; // 85% width + gap
+    const index = Math.round(scrollLeft / cardWidth);
+    setTrendingScrollIndex(index);
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen p-8 bg-black">
@@ -254,8 +264,12 @@ export default function Home() {
               <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative -mx-8">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8 snap-x snap-mandatory">
+            <div className="md:hidden relative">
+              <div
+                ref={trendingScrollRef}
+                onScroll={handleTrendingScroll}
+                className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+              >
                 {trendings.map((trending, index) => (
                   <div key={trending.id} className="flex-shrink-0 w-[85%] snap-start">
                     <TrendingCard trending={trending} rank={index + 1} />
@@ -265,7 +279,12 @@ export default function Home() {
               {/* Progress dots */}
               <div className="flex justify-center gap-1.5 mt-2">
                 {trendings.map((_, index) => (
-                  <div key={index} className="w-1.5 h-1.5 rounded-full bg-purple-500/30" />
+                  <div
+                    key={index}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                      index === trendingScrollIndex ? 'bg-purple-400' : 'bg-purple-500/30'
+                    }`}
+                  />
                 ))}
               </div>
             </div>
