@@ -257,11 +257,13 @@ export default function Home() {
             <div className="md:hidden relative -mx-8">
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8">
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%]">
+                  <div key={trending.id} className="flex-shrink-0 w-[78%]">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
               </div>
+              {/* Subtle gradient hint on the right */}
+              <div className="absolute top-0 right-0 bottom-4 w-16 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none" />
             </div>
             {/* Desktop: Grid */}
             <div className="hidden md:grid md:grid-cols-2 gap-4">
