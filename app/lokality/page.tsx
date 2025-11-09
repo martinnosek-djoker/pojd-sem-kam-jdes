@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant } from "@/lib/types";
@@ -9,6 +9,7 @@ export default function LocalitiesPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scrollIndices, setScrollIndices] = useState<Record<string, number>>({});
 
   useEffect(() => {
     async function fetchData() {
@@ -72,6 +73,14 @@ export default function LocalitiesPage() {
       .sort((a, b) => a.name.localeCompare(b.name, 'cs'));
   }, [allLocations, restaurantsByLocation]);
 
+  const handleScroll = (locationName: string, event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget;
+    const scrollLeft = target.scrollLeft;
+    const cardWidth = target.offsetWidth * 0.85 + 24; // 85% width + gap (6 * 4px = 24px)
+    const index = Math.round(scrollLeft / cardWidth);
+    setScrollIndices(prev => ({ ...prev, [locationName]: index }));
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen p-8 bg-black">
@@ -115,7 +124,10 @@ export default function LocalitiesPage() {
 
               {/* Horizontal Scrolling Cards */}
               <div className="relative sm:mx-0">
-                <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide sm:scrollbar-thin snap-x snap-mandatory">
+                <div
+                  onScroll={(e) => handleScroll(location.name, e)}
+                  className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide sm:scrollbar-thin snap-x snap-mandatory"
+                >
                   {restaurantsByLocation[location.name]?.map((restaurant) => (
                     <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80 snap-start">
                       <RestaurantCard restaurant={restaurant} />
@@ -125,7 +137,12 @@ export default function LocalitiesPage() {
                 {/* Progress indicator - mobile only */}
                 <div className="sm:hidden flex justify-center gap-1.5 mt-2">
                   {restaurantsByLocation[location.name]?.slice(0, Math.min(10, restaurantsByLocation[location.name].length)).map((_, index) => (
-                    <div key={index} className="w-1.5 h-1.5 rounded-full bg-purple-500/30" />
+                    <div
+                      key={index}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                        index === (scrollIndices[location.name] || 0) ? 'bg-purple-400' : 'bg-purple-500/30'
+                      }`}
+                    />
                   ))}
                   {restaurantsByLocation[location.name]?.length > 10 && (
                     <span className="text-xs text-purple-400 ml-1">+{restaurantsByLocation[location.name].length - 10}</span>
