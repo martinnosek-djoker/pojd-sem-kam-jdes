@@ -255,15 +255,19 @@ export default function Home() {
             </div>
             {/* Mobile: Horizontal Carousel */}
             <div className="md:hidden relative -mx-8">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8 snap-x snap-mandatory">
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[78%]">
+                  <div key={trending.id} className="flex-shrink-0 w-[85%] snap-start">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
               </div>
-              {/* Subtle gradient hint on the right */}
-              <div className="absolute top-0 right-0 bottom-4 w-16 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none" />
+              {/* Progress dots */}
+              <div className="flex justify-center gap-1.5 mt-2">
+                {trendings.map((_, index) => (
+                  <div key={index} className="w-1.5 h-1.5 rounded-full bg-purple-500/30" />
+                ))}
+              </div>
             </div>
             {/* Desktop: Grid */}
             <div className="hidden md:grid md:grid-cols-2 gap-4">
