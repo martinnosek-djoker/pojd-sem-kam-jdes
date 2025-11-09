@@ -104,7 +104,7 @@ export default function HamburgerMenu() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-purple-400 transition-colors"
             >
-              <span className="text-xl">📸</span>
+              <span className="text-xl">🍽️</span>
               <span>@Peču si život</span>
             </a>
           </div>

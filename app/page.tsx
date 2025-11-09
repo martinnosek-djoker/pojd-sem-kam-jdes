@@ -254,17 +254,13 @@ export default function Home() {
               <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
-                {/* Invisible spacer for left padding */}
-                <div className="flex-shrink-0 w-0" aria-hidden="true"></div>
+            <div className="md:hidden relative -mx-8">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin px-8">
                 {trendings.map((trending, index) => (
                   <div key={trending.id} className="flex-shrink-0 w-[85%]">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
-                {/* Invisible spacer for right padding */}
-                <div className="flex-shrink-0 w-0" aria-hidden="true"></div>
               </div>
             </div>
             {/* Desktop: Grid */}
@@ -337,15 +333,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Footer link to admin */}
-        <div className="mt-16 pt-8 border-t border-purple-900/30 text-center">
-          <a
-            href="/admin"
-            className="text-sm text-purple-400 hover:text-purple-300 transition-colors duration-300 tracking-wide"
-          >
-            Přihlásit se do administrace
-          </a>
-        </div>
       </div>
     </main>
   );
