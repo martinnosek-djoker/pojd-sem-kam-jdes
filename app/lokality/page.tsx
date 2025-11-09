@@ -117,14 +117,14 @@ export default function LocalitiesPage() {
               <div className="relative">
                 <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
                   {/* Invisible spacer for left padding on mobile */}
-                  <div className="flex-shrink-0 w-0 sm:hidden" aria-hidden="true"></div>
+                  <div className="flex-shrink-0 w-4 sm:hidden" aria-hidden="true"></div>
                   {restaurantsByLocation[location.name]?.map((restaurant) => (
                     <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80">
                       <RestaurantCard restaurant={restaurant} />
                     </div>
                   ))}
                   {/* Invisible spacer for right padding on mobile */}
-                  <div className="flex-shrink-0 w-0 sm:hidden" aria-hidden="true"></div>
+                  <div className="flex-shrink-0 w-4 sm:hidden" aria-hidden="true"></div>
                 </div>
               </div>
             </div>

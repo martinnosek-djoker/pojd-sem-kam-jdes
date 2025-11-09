@@ -257,14 +257,14 @@ export default function Home() {
             <div className="md:hidden relative">
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
                 {/* Invisible spacer for left padding */}
-                <div className="flex-shrink-0 w-0" aria-hidden="true"></div>
+                <div className="flex-shrink-0 w-4" aria-hidden="true"></div>
                 {trendings.map((trending, index) => (
                   <div key={trending.id} className="flex-shrink-0 w-[85%]">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
                 {/* Invisible spacer for right padding */}
-                <div className="flex-shrink-0 w-0" aria-hidden="true"></div>
+                <div className="flex-shrink-0 w-4" aria-hidden="true"></div>
               </div>
             </div>
             {/* Desktop: Grid */}
