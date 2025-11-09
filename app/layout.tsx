@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 export const metadata: Metadata = {
   title: "Pojď sem! Kam jdeš?",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="cs">
       <body className="antialiased">
+        <HamburgerMenu />
         {children}
       </body>
     </html>
