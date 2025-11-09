@@ -5,65 +5,81 @@ import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
 
+// Helper function to normalize strings for comparison (removes diacritics)
+function normalizeString(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 // Emoji mapping for different cuisine types
 const CUISINE_EMOJIS: Record<string, string> = {
-  // Vlajky národností
-  "Italska": "🇮🇹",
-  "Ceska": "🇨🇿",
-  "Mexicka": "🇲🇽",
-  "Vietnamska": "🇻🇳",
-  "Indicka": "🇮🇳",
-  "Thajska": "🇹🇭",
-  "Cinska": "🇨🇳",
-  "Japonska": "🇯🇵",
-  "Korejska": "🇰🇷",
-  "Americka": "🇺🇸",
-  "Francouzska": "🇫🇷",
-  "Spanelska": "🇪🇸",
-  "Grecka": "🇬🇷",
-  "Turecka": "🇹🇷",
-  "Brazilska": "🇧🇷",
-  "Argentina": "🇦🇷",
-  "Peruana": "🇵🇪",
+  // Vlajky národností (bez diakritiky pro matching)
+  "italska": "🇮🇹",
+  "ceska": "🇨🇿",
+  "mexicka": "🇲🇽",
+  "vietnamska": "🇻🇳",
+  "indicka": "🇮🇳",
+  "thajska": "🇹🇭",
+  "cinska": "🇨🇳",
+  "japonska": "🇯🇵",
+  "korejska": "🇰🇷",
+  "americka": "🇺🇸",
+  "francouzska": "🇫🇷",
+  "spanelska": "🇪🇸",
+  "grecka": "🇬🇷",
+  "turecka": "🇹🇷",
+  "brazilska": "🇧🇷",
+  "argentina": "🇦🇷",
+  "peruana": "🇵🇪",
 
   // Specifické pokrmy
-  "Pizza": "🍕",
-  "Pizzeria": "🍕",
-  "Burger": "🍔",
-  "Sushi": "🍣",
-  "Ramen": "🍜",
-  "Pasta": "🍝",
-  "Taco": "🌮",
-  "Burrito": "🌯",
-  "Kebab": "🥙",
-  "Curry": "🍛",
+  "pizza": "🍕",
+  "pizzeria": "🍕",
+  "burger": "🍔",
+  "sushi": "🍣",
+  "ramen": "🍜",
+  "pasta": "🍝",
+  "taco": "🌮",
+  "burrito": "🌯",
+  "kebab": "🥙",
+  "curry": "🍛",
 
   // Kategorie
-  "Asijska": "🥢",
-  "Maso": "🥩",
-  "Steak": "🥩",
-  "Bbq": "🍖",
-  "Gril": "🔥",
-  "Seafood": "🦞",
-  "Ryby": "🐟",
-  "Vegan": "🌱",
-  "Vegetarian": "🥗",
-  "Dezerty": "🍰",
-  "Cukrarna": "🧁",
-  "Street": "🍟",
-  "Fast": "🍟",
-  "Fine": "🍷",
-  "Bistro": "☕",
-  "Cafe": "☕",
+  "asijska": "🥢",
+  "maso": "🥩",
+  "steak": "🥩",
+  "bbq": "🍖",
+  "gril": "🔥",
+  "seafood": "🦞",
+  "ryby": "🐟",
+  "vegan": "🌱",
+  "vegetarian": "🥗",
+  "dezerty": "🍰",
+  "cukrarna": "🧁",
+  "street": "🍟",
+  "fast": "🍟",
+  "fine": "🍷",
+  "bistro": "☕",
+  "cafe": "☕",
 };
 
 function getCuisineEmoji(cuisine: string): string {
-  const normalized = cuisine.toLowerCase();
+  const normalized = normalizeString(cuisine);
+
+  // Try exact match first
+  if (CUISINE_EMOJIS[normalized]) {
+    return CUISINE_EMOJIS[normalized];
+  }
+
+  // Try substring match
   for (const [key, emoji] of Object.entries(CUISINE_EMOJIS)) {
-    if (normalized.includes(key.toLowerCase())) {
+    if (normalized.includes(key)) {
       return emoji;
     }
   }
+
   return "🍽️"; // Default emoji
 }
 
