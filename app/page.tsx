@@ -255,12 +255,14 @@ export default function Home() {
             </div>
             {/* Mobile: Horizontal Carousel */}
             <div className="md:hidden relative">
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin pl-8 -ml-8">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%]">
+                  <div key={trending.id} className={`flex-shrink-0 w-[85%] ${index === 0 ? 'ml-0' : ''}`}>
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
+                {/* Invisible spacer for right padding */}
+                <div className="flex-shrink-0 w-8" aria-hidden="true"></div>
               </div>
               {/* Subtle gradient fade to indicate more content */}
               <div className="absolute top-0 right-0 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none"></div>
