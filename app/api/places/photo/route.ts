@@ -65,6 +65,7 @@ export async function GET(request: NextRequest) {
 
         // Collect all photos from first found place
         if (photoUrls.length === 0 && place.photos && place.photos.length > 0) {
+          console.log(`Found ${place.photos.length} photos for ${name} in ${location}`);
           // Get up to 10 photos
           const photosToGet = Math.min(place.photos.length, 10);
           for (let i = 0; i < photosToGet; i++) {
@@ -73,6 +74,7 @@ export async function GET(request: NextRequest) {
               `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`
             );
           }
+          console.log(`Returning ${photoUrls.length} photo URLs`);
         }
       }
 
