@@ -253,7 +253,18 @@ export default function Home() {
               <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 TOP 10 Trendy</h2>
               <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Mobile: Horizontal Carousel */}
+            <div className="md:hidden">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
+                {trendings.map((trending, index) => (
+                  <div key={trending.id} className="flex-shrink-0 w-80">
+                    <TrendingCard trending={trending} rank={index + 1} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Desktop: Grid */}
+            <div className="hidden md:grid md:grid-cols-2 gap-4">
               {trendings.map((trending, index) => (
                 <TrendingCard key={trending.id} trending={trending} rank={index + 1} />
               ))}
