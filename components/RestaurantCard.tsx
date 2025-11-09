@@ -170,13 +170,10 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           <div className="flex-shrink-0">{renderStars(restaurant.rating)}</div>
         </div>
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
           <span className={`px-3 py-1 rounded text-xs font-semibold border flex-shrink-0 ${getPriceInfo(restaurant.price).color}`}>
             {getPriceInfo(restaurant.price).label}
           </span>
-          {restaurant.price > 0 && (
-            <span className="text-sm text-purple-400 font-bold flex-shrink-0">{restaurant.price} Kč</span>
-          )}
         </div>
       </div>
     </>
