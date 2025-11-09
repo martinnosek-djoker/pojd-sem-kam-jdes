@@ -114,7 +114,7 @@ export default function LocalitiesPage() {
               </div>
 
               {/* Horizontal Scrolling Cards */}
-              <div className="relative">
+              <div className="relative -mx-8 px-8">
                 <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
                   {restaurantsByLocation[location.name]?.map((restaurant) => (
                     <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80">
@@ -123,7 +123,7 @@ export default function LocalitiesPage() {
                   ))}
                 </div>
                 {/* Subtle gradient fade on mobile to indicate more content */}
-                <div className="absolute top-0 right-0 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none sm:hidden"></div>
+                <div className="absolute top-0 right-8 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none sm:hidden"></div>
               </div>
             </div>
           ))}

@@ -254,16 +254,16 @@ export default function Home() {
               <p className="text-sm md:text-base text-gray-400">Nejaktuálnější a nejžhavější podniky</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative">
+            <div className="md:hidden relative -mx-8 px-8">
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%] first:ml-0">
+                  <div key={trending.id} className="flex-shrink-0 w-[85%]">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
               </div>
               {/* Subtle gradient fade to indicate more content */}
-              <div className="absolute top-0 right-0 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none"></div>
+              <div className="absolute top-0 right-8 bottom-4 w-8 bg-gradient-to-l from-black/40 to-transparent pointer-events-none"></div>
             </div>
             {/* Desktop: Grid */}
             <div className="hidden md:grid md:grid-cols-2 gap-4">
