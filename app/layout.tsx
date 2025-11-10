@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Pojď sem! Kam jdeš?",
@@ -17,6 +19,8 @@ export default function RootLayout({
       <body className="antialiased">
         <HamburgerMenu />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
