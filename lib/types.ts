@@ -25,12 +25,19 @@ export function cuisineMatchesFilter(cuisineType: string, selectedFilter: string
   return false;
 }
 
+// GPS coordinate type
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
 // Database types
 export interface Restaurant {
   id: number;
   name: string;
   location: string;
   addresses: Record<string, string> | null; // { "Anděl": "adresa1", "Letná": "adresa2" }
+  coordinates: Record<string, Coordinates> | null; // { "Anděl": {"lat": 50.07, "lng": 14.40} }
   cuisine_type: string;
   specialty: string | null;
   price: number;
@@ -46,6 +53,10 @@ export const restaurantSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
   location: z.string().min(1, "Lokalita je povinná"),
   addresses: z.record(z.string(), z.string()).optional().nullable(),
+  coordinates: z.record(z.string(), z.object({
+    lat: z.number(),
+    lng: z.number()
+  })).optional().nullable(),
   cuisine_type: z.string().min(1, "Typ kuchyně je povinný"),
   specialty: z.string().optional().nullable(),
   price: z.number().min(0, "Cena musí být kladné číslo"),

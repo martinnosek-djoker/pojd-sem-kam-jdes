@@ -118,3 +118,7 @@ ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS addresses JSONB;
 
 -- Migration: Add address column to trendings table
 ALTER TABLE trendings ADD COLUMN IF NOT EXISTS address TEXT;
+
+-- Migration: Add coordinates column to restaurants table for geolocation
+-- Format: JSONB with location names as keys, e.g. {"Anděl": {"lat": 50.07, "lng": 14.40}}
+ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS coordinates JSONB;

@@ -14,6 +14,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
   const [showForm, setShowForm] = useState(false);
   const [fetchingPhotos, setFetchingPhotos] = useState(false);
   const [fetchingAddresses, setFetchingAddresses] = useState(false);
+  const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
 
   const handleDelete = async (id: number) => {
@@ -109,6 +110,38 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     }
   };
 
+  const handleFetchAllCoordinates = async () => {
+    if (!confirm("Chceš automaticky geocodovat adresy všech restaurací? Může to trvat několik minut.")) {
+      return;
+    }
+
+    setFetchingCoordinates(true);
+    setFetchResults(null);
+
+    try {
+      const response = await fetch("/api/admin/fetch-all-coordinates", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setFetchResults(data);
+        // Reload restaurants to show new coordinates
+        const reloadResponse = await fetch("/api/restaurants");
+        const updatedRestaurants = await reloadResponse.json();
+        setRestaurants(updatedRestaurants);
+      } else {
+        alert(data.error || "Chyba při načítání souřadnic");
+      }
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      alert("Chyba při načítání souřadnic");
+    } finally {
+      setFetchingCoordinates(false);
+    }
+  };
+
   return (
     <div className="mb-8">
       {/* Section Header */}
@@ -117,27 +150,34 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
           <h2 className="text-2xl font-bold text-gray-900">🍴 Restaurace</h2>
           <p className="text-gray-600 mt-1">Celkem {restaurants.length} restaurací</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleFetchAllPhotos}
-            disabled={fetchingPhotos || fetchingAddresses}
-            className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-green-300 transition-colors font-medium"
+            disabled={fetchingPhotos || fetchingAddresses || fetchingCoordinates}
+            className="px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-green-300 transition-colors font-medium text-sm"
           >
-            {fetchingPhotos ? "🔄 Načítám fotky..." : "📷 Načíst všechny fotky"}
+            {fetchingPhotos ? "🔄 Načítám fotky..." : "📷 Načíst fotky"}
           </button>
           <button
             onClick={handleFetchAllAddresses}
-            disabled={fetchingPhotos || fetchingAddresses}
-            className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 transition-colors font-medium"
+            disabled={fetchingPhotos || fetchingAddresses || fetchingCoordinates}
+            className="px-4 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 transition-colors font-medium text-sm"
           >
-            {fetchingAddresses ? "🔄 Načítám adresy..." : "📍 Doplnit všechny adresy"}
+            {fetchingAddresses ? "🔄 Načítám adresy..." : "📍 Doplnit adresy"}
+          </button>
+          <button
+            onClick={handleFetchAllCoordinates}
+            disabled={fetchingPhotos || fetchingAddresses || fetchingCoordinates}
+            className="px-4 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 disabled:bg-orange-300 transition-colors font-medium text-sm"
+          >
+            {fetchingCoordinates ? "🔄 Geocoduji..." : "🗺️ Geocodovat adresy"}
           </button>
           <button
             onClick={() => {
               setShowForm(true);
               setEditingId(null);
             }}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm"
           >
             + Přidat restauraci
           </button>

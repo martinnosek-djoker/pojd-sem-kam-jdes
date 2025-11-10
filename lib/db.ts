@@ -40,6 +40,7 @@ export async function createRestaurant(input: RestaurantInput): Promise<Restaura
       name: input.name,
       location: input.location,
       addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -68,6 +69,7 @@ export async function updateRestaurant(
       name: input.name,
       location: input.location,
       addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
       cuisine_type: input.cuisine_type,
       specialty: input.specialty || null,
       price: input.price,
@@ -217,13 +219,18 @@ export async function getUniqueCuisineTypes(): Promise<string[]> {
 export async function bulkInsertRestaurants(
   restaurants: RestaurantInput[]
 ): Promise<number> {
-  // Get existing restaurants to preserve their URLs, images and addresses
+  // Get existing restaurants to preserve their URLs, images, addresses and coordinates
   const { data: existingRestaurants } = await supabase
     .from("restaurants")
-    .select("name, website_url, image_url, addresses");
+    .select("name, website_url, image_url, addresses, coordinates");
 
   const existingDataMap = new Map(
-    (existingRestaurants || []).map(r => [r.name, { website_url: r.website_url, image_url: r.image_url, addresses: r.addresses }])
+    (existingRestaurants || []).map(r => [r.name, {
+      website_url: r.website_url,
+      image_url: r.image_url,
+      addresses: r.addresses,
+      coordinates: r.coordinates
+    }])
   );
 
   const insertData = restaurants.map((restaurant) => {
@@ -232,6 +239,7 @@ export async function bulkInsertRestaurants(
       name: restaurant.name,
       location: restaurant.location,
       addresses: restaurant.addresses || existing?.addresses || null,
+      coordinates: restaurant.coordinates || existing?.coordinates || null,
       cuisine_type: restaurant.cuisine_type,
       specialty: restaurant.specialty || null,
       price: restaurant.price,

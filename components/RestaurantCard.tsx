@@ -2,9 +2,10 @@ import { Restaurant } from "@/lib/types";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
+  forceLocation?: string; // If provided, only show this location instead of all
 }
 
-export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
+export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -87,7 +88,10 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           <span className="text-sm text-gray-400">📍</span>
           <div className="text-sm text-gray-300">
             {(() => {
-              const locations = restaurant.location.split(',').map(l => l.trim());
+              // If forceLocation is provided, only show that location
+              const locations = forceLocation
+                ? [forceLocation]
+                : restaurant.location.split(',').map(l => l.trim());
 
               // Helper function to find address - case insensitive and flexible
               const findAddress = (location: string): string | null => {

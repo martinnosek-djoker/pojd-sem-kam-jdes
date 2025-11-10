@@ -30,11 +30,13 @@ export default function HamburgerMenu() {
   }, [isOpen]);
 
   const menuItems = [
-    { href: "/", label: "Domů", icon: "🏠" },
-    { href: "/lokality", label: "Restaurace v okolí", icon: "📍" },
-    { href: "/kuchyne", label: "Světové kuchyně", icon: "🌍" },
-    { href: "/kavarny", label: "Kavárny", icon: "☕", badge: "Brzy" },
-    { href: "/akce", label: "Gastro akce", icon: "🎉", badge: "Brzy" },
+    { href: "/", label: "Domů" },
+    { href: "/pobliz", label: "Restaurace poblíž" },
+    { href: "/lokality", label: "Podle lokalit" },
+    { href: "/kuchyne", label: "Světové kuchyně" },
+    { href: "/kavarny", label: "Kavárny", badge: "Brzy" },
+    { href: "/cukrarny", label: "Cukrárny", badge: "Brzy" },
+    { href: "/akce", label: "Gastro akce", badge: "Brzy" },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -97,7 +99,6 @@ export default function HamburgerMenu() {
                       : "text-gray-300 hover:bg-purple-600/10 hover:text-purple-400 border border-transparent"
                   }`}
                 >
-                  <span className="text-2xl">{item.icon}</span>
                   <span className="flex-1 font-medium">{item.label}</span>
                   {item.badge && (
                     <span className="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/30">
