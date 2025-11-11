@@ -5,10 +5,11 @@ import { bakerySchema } from "@/lib/types";
 // GET /api/bakeries/[id] - Get single bakery
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: idString } = await params;
+    const id = parseInt(idString);
     const bakery = await getBakeryById(id);
 
     if (!bakery) {
@@ -31,10 +32,11 @@ export async function GET(
 // PUT /api/bakeries/[id] - Update bakery
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: idString } = await params;
+    const id = parseInt(idString);
     const body = await request.json();
     const validated = bakerySchema.parse(body);
 
@@ -68,10 +70,11 @@ export async function PUT(
 // DELETE /api/bakeries/[id] - Delete bakery
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: idString } = await params;
+    const id = parseInt(idString);
     const success = await deleteBakery(id);
 
     if (!success) {
