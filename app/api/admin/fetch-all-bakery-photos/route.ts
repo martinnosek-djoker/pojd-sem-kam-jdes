@@ -28,17 +28,17 @@ export async function POST(request: NextRequest) {
         const response = await fetch(`${request.nextUrl.origin}/api/places/photo?${params.toString()}`);
         const data = await response.json();
 
-        if (response.ok && data.photos && data.photos.length > 0) {
+        if (response.ok && data.photoUrl) {
           // Update bakery with first photo
           await updateBakery(bakery.id, {
             ...bakery,
-            image_url: data.photos[0],
+            image_url: data.photoUrl,
           });
           success++;
           console.log(`✓ Photo found for ${bakery.name}`);
         } else {
           skipped++;
-          console.log(`✗ No photo found for ${bakery.name}`);
+          console.log(`✗ No photo found for ${bakery.name}`, data);
         }
 
         // Add small delay to avoid rate limiting

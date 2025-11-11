@@ -97,9 +97,9 @@ export default function BakeryForm({
       const data = await response.json();
 
       if (response.ok) {
-        if (data.photos && data.photos.length > 0) {
-          setAvailablePhotos(data.photos);
-          setValue("image_url", data.photos[0]);
+        if (data.photoUrls && data.photoUrls.length > 0) {
+          setAvailablePhotos(data.photoUrls);
+          setValue("image_url", data.photoUrls[0]);
         } else {
           setError("Fotka nenalezena");
         }
