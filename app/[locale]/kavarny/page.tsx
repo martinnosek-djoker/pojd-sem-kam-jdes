@@ -1,10 +1,10 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import Logo from "@/components/Logo";
 
-export default function CafesPage() {
-  const t = useTranslations("cafes");
+export default async function CafesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "cafes" });
   return (
     <main className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
