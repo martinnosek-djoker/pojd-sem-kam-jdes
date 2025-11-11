@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
@@ -84,6 +85,7 @@ function getCuisineEmoji(cuisine: string): string {
 }
 
 export default function CuisinesPage() {
+  const t = useTranslations("cuisines");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -162,7 +164,7 @@ export default function CuisinesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítám kuchyně...</p>
+          <p className="text-lg text-gray-400 text-center">{t("loading")}</p>
         </div>
       </main>
     );
@@ -176,9 +178,9 @@ export default function CuisinesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">🌍 Světové kuchyně</h1>
+          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">{t("pageTitle")}</h1>
           <p className="text-lg text-gray-300">
-            Objevte restaurace podle typu kuchyně
+            {t("pageSubtitle")}
           </p>
         </div>
 
@@ -192,7 +194,7 @@ export default function CuisinesPage() {
                   {cuisine.emoji} {cuisine.name}
                 </h2>
                 <p className="text-gray-400">
-                  {cuisine.count} {cuisine.count === 1 ? "restaurace" : cuisine.count < 5 ? "restaurace" : "restaurací"}
+                  {cuisine.count} {cuisine.count === 1 ? t("restaurant") : cuisine.count < 5 ? t("restaurantCount") : t("restaurantsMany")}
                 </p>
               </div>
 
@@ -231,7 +233,7 @@ export default function CuisinesPage() {
         {sortedCuisines.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-gray-400">
-              Zatím nejsou k dispozici žádné typy kuchyní
+              {t("noCuisines")}
             </p>
           </div>
         )}

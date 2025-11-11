@@ -3,13 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from 'next-intl';
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations('nav');
+  const locale = useLocale();
 
   // Hide menu on admin pages
-  if (pathname.startsWith('/admin')) {
+  if (pathname.includes('/admin')) {
     return null;
   }
 
@@ -30,13 +34,13 @@ export default function HamburgerMenu() {
   }, [isOpen]);
 
   const menuItems = [
-    { href: "/", label: "Domů" },
-    { href: "/pobliz", label: "Ve tvém okolí" },
-    { href: "/lokality", label: "Podle lokalit" },
-    { href: "/kuchyne", label: "Světové kuchyně" },
-    { href: "/cukrarny", label: "Cukrárny", badge: "Nové" },
-    { href: "/kavarny", label: "Kavárny", badge: "Brzy" },
-    { href: "/akce", label: "Gastro akce", badge: "Brzy" },
+    { href: `/${locale}`, label: t('home') },
+    { href: `/${locale}/pobliz`, label: t('nearby') },
+    { href: `/${locale}/lokality`, label: t('locations') },
+    { href: `/${locale}/kuchyne`, label: t('cuisines') },
+    { href: `/${locale}/cukrarny`, label: t('bakeries'), badge: t('newBadge') },
+    { href: `/${locale}/kavarny`, label: t('cafes'), badge: t('soonBadge') },
+    { href: `/${locale}/akce`, label: t('events'), badge: t('soonBadge') },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -103,6 +107,11 @@ export default function HamburgerMenu() {
               </li>
             ))}
           </ul>
+
+          {/* Language Switcher */}
+          <div className="pt-4 mt-4 border-t border-purple-500/30">
+            <LanguageSwitcher />
+          </div>
         </div>
       </nav>
     </>

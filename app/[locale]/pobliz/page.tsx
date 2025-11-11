@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import RestaurantCard from "@/components/RestaurantCard";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
@@ -22,6 +23,7 @@ interface BakeryWithDistance extends Bakery {
 type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance;
 
 export default function NearbyRestaurants() {
+  const t = useTranslations("nearby");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [bakeries, setBakeries] = useState<Bakery[]>([]);
   const [nearbyPlaces, setNearbyPlaces] = useState<PlaceWithDistance[]>([]);
@@ -155,7 +157,7 @@ export default function NearbyRestaurants() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítám data...</p>
+          <p className="text-lg text-gray-400 text-center">{t("loading")}</p>
         </div>
       </main>
     );
@@ -170,10 +172,10 @@ export default function NearbyRestaurants() {
             <Logo />
           </div>
           <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6">
-            📍 Místa poblíž
+            {t("pageTitle")}
           </h1>
           <p className="text-sm md:text-lg text-gray-300 mt-2">
-            Najdi nejlepší restaurace a cukrárny ve svém okolí
+            {t("pageSubtitle")}
           </p>
         </div>
 
@@ -190,12 +192,12 @@ export default function NearbyRestaurants() {
                 {gettingLocation ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    Získávám polohu...
+                    {t("gettingLocation")}
                   </span>
                 ) : userLocation ? (
-                  "🎯 Aktualizovat polohu"
+                  t("updateLocation")
                 ) : (
-                  "📍 Získat moji polohu"
+                  t("getLocation")
                 )}
               </button>
             </div>
@@ -203,7 +205,7 @@ export default function NearbyRestaurants() {
             {/* Radius Selector */}
             {userLocation && (
               <div className="w-full flex justify-center items-center gap-4">
-                <label className="text-gray-300 font-medium">Poloměr:</label>
+                <label className="text-gray-300 font-medium">{t("radiusLabel")}</label>
                 <select
                   value={radiusKm}
                   onChange={(e) => setRadiusKm(Number(e.target.value))}
@@ -227,7 +229,7 @@ export default function NearbyRestaurants() {
           {/* User Location Display */}
           {userLocation && (
             <div className="mt-4 text-sm text-gray-400 text-center">
-              ✓ Poloha získána: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              {t("locationObtained")} {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
             </div>
           )}
 
@@ -244,27 +246,27 @@ export default function NearbyRestaurants() {
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📍</div>
             <p className="text-xl text-gray-400 mb-4">
-              Klikni na tlačítko výše pro získání tvé polohy
+              {t("clickToGetLocation")}
             </p>
             <p className="text-sm text-gray-500">
-              Potřebuješ povolit přístup k poloze ve svém prohlížeči
+              {t("locationPermissionNeeded")}
             </p>
           </div>
         ) : nearbyPlaces.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
             <p className="text-xl text-gray-400 mb-4">
-              Žádná místa v okruhu {radiusKm} km
+              {t("noPlacesInRadius").replace("{radius}", radiusKm.toString())}
             </p>
             <p className="text-sm text-gray-500 mb-6">
-              Zkus zvětšit poloměr vyhledávání
+              {t("tryIncreaseRadius")}
             </p>
             <button
               onClick={() => setRadiusKm(getNextRadius(radiusKm))}
               disabled={radiusKm >= 10}
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Zvětšit poloměr na {getNextRadius(radiusKm)} km
+              {t("increaseRadiusTo").replace("{radius}", getNextRadius(radiusKm).toString())}
             </button>
           </div>
         ) : (
@@ -272,12 +274,12 @@ export default function NearbyRestaurants() {
             {/* Results Count */}
             <div className="mb-6 text-center">
               <p className="text-gray-400">
-                Nalezeno{" "}
+                {t("foundCount")}{" "}
                 <span className="font-semibold text-purple-400">
                   {nearbyPlaces.length}
                 </span>{" "}
-                {nearbyPlaces.length === 1 ? "místo" : nearbyPlaces.length < 5 ? "místa" : "míst"}{" "}
-                v okruhu <span className="font-semibold text-purple-400">{radiusKm} km</span>
+                {nearbyPlaces.length === 1 ? t("place") : nearbyPlaces.length < 5 ? t("places") : t("placesMany")}{" "}
+                {t("inRadius")} <span className="font-semibold text-purple-400">{radiusKm} km</span>
               </p>
             </div>
 

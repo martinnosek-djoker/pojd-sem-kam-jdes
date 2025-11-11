@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
 
 export default function BakeriesPage() {
+  const t = useTranslations("bakeries");
+  const tCommon = useTranslations("common");
   const [bakeries, setBakeries] = useState<Bakery[]>([]);
   const [filteredBakeries, setFilteredBakeries] = useState<Bakery[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
@@ -83,7 +86,7 @@ export default function BakeriesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítám cukrárny...</p>
+          <p className="text-lg text-gray-400 text-center">{t("loading")}</p>
         </div>
       </main>
     );
@@ -97,9 +100,9 @@ export default function BakeriesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">🍰 Cukrárny</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">{t("title")}</h1>
           <p className="text-sm md:text-lg text-gray-300 mt-2">
-            Objevte nejlepší cukrárny a pekárny v Praze dle{" "}
+            {t("subtitle")}{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -117,7 +120,7 @@ export default function BakeriesPage() {
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-end justify-between">
               <div className="flex-1 w-full">
                 <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
-                  Lokalita:
+                  {t("locationFilterLabel")}
                 </label>
                 <select
                   id="location"
@@ -130,7 +133,7 @@ export default function BakeriesPage() {
                     backgroundSize: "1.5em 1.5em"
                   }}
                 >
-                  <option value="">Všechny lokality</option>
+                  <option value="">{t("locationFilterAll")}</option>
                   {availableLocations.map((location) => (
                     <option key={location} value={location}>
                       {location}
@@ -144,7 +147,7 @@ export default function BakeriesPage() {
                   onClick={handleReset}
                   className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 whitespace-nowrap"
                 >
-                  Vymazat filtr
+                  {tCommon("reset")}
                 </button>
               )}
             </div>
@@ -154,19 +157,19 @@ export default function BakeriesPage() {
         {/* Count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-gray-400 text-sm">
-            Nalezeno <span className="font-semibold text-purple-400">{filteredBakeries.length}</span> cukráren
+            {t("found")} <span className="font-semibold text-purple-400">{filteredBakeries.length}</span> {t("foundBakeries")}
           </p>
         </div>
 
         {/* Bakery grid */}
         {filteredBakeries.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400 mb-8">Žádné cukrárny nenalezeny</p>
+            <p className="text-xl text-gray-400 mb-8">{t("noBakeriesFound")}</p>
             <button
               onClick={handleReset}
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50"
             >
-              Vymazat filtry
+              {tCommon("resetFilters")}
             </button>
           </div>
         ) : (

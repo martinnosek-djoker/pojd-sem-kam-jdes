@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState, useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant } from "@/lib/types";
 
 export default function LocalitiesPage() {
+  const t = useTranslations("locations");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,7 +90,7 @@ export default function LocalitiesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítám lokality...</p>
+          <p className="text-lg text-gray-400 text-center">{t("loading")}</p>
         </div>
       </main>
     );
@@ -102,9 +104,9 @@ export default function LocalitiesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">📍 Restaurace v okolí</h1>
+          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">{t("pageTitle")}</h1>
           <p className="text-lg text-gray-300">
-            Objevte nejlepší restaurace podle lokalit v Praze
+            {t("pageSubtitle")}
           </p>
         </div>
 
@@ -118,7 +120,7 @@ export default function LocalitiesPage() {
                   {location.name}
                 </h2>
                 <p className="text-gray-400">
-                  {location.count} {location.count === 1 ? "restaurace" : location.count < 5 ? "restaurace" : "restaurací"}
+                  {location.count} {location.count === 1 ? t("restaurant") : location.count < 5 ? t("restaurantCount") : t("restaurantsMany")}
                 </p>
               </div>
 
@@ -157,7 +159,7 @@ export default function LocalitiesPage() {
         {sortedLocations.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-gray-400">
-              Zatím nejsou k dispozici žádné lokality
+              {t("noLocations")}
             </p>
           </div>
         )}
