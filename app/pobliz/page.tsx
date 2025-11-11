@@ -2,18 +2,29 @@
 
 import { useEffect, useState } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
+import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
-import { Restaurant, Coordinates } from "@/lib/types";
+import { Restaurant, Bakery, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition } from "@/lib/geolocation";
 
 interface RestaurantWithDistance extends Restaurant {
   distance: number;
   displayLocation?: string;
+  type: 'restaurant';
 }
+
+interface BakeryWithDistance extends Bakery {
+  distance: number;
+  displayLocation?: string;
+  type: 'bakery';
+}
+
+type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance;
 
 export default function NearbyRestaurants() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [nearbyRestaurants, setNearbyRestaurants] = useState<RestaurantWithDistance[]>([]);
+  const [bakeries, setBakeries] = useState<Bakery[]>([]);
+  const [nearbyPlaces, setNearbyPlaces] = useState<PlaceWithDistance[]>([]);
   const [loading, setLoading] = useState(true);
   const [gettingLocation, setGettingLocation] = useState(false);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
@@ -30,34 +41,45 @@ export default function NearbyRestaurants() {
     return options[currentIndex + 1];
   };
 
-  // Fetch all restaurants
+  // Fetch all restaurants and bakeries
   useEffect(() => {
-    async function fetchRestaurants() {
+    async function fetchData() {
       try {
-        const response = await fetch("/api/restaurants");
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setRestaurants(data);
+        const [restaurantsRes, bakeriesRes] = await Promise.all([
+          fetch("/api/restaurants"),
+          fetch("/api/bakeries"),
+        ]);
+
+        const restaurantsData = await restaurantsRes.json();
+        const bakeriesData = await bakeriesRes.json();
+
+        if (Array.isArray(restaurantsData)) {
+          setRestaurants(restaurantsData);
+        }
+
+        if (Array.isArray(bakeriesData)) {
+          setBakeries(bakeriesData);
         }
       } catch (error) {
-        console.error("Error fetching restaurants:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchRestaurants();
+    fetchData();
   }, []);
 
-  // Calculate nearby restaurants when user location or radius changes
+  // Calculate nearby places (restaurants and bakeries) when user location or radius changes
   useEffect(() => {
-    if (!userLocation || !restaurants.length) {
-      setNearbyRestaurants([]);
+    if (!userLocation || (!restaurants.length && !bakeries.length)) {
+      setNearbyPlaces([]);
       return;
     }
 
     // Flatten restaurants by location and calculate distance
-    const restaurantsWithDistance: RestaurantWithDistance[] = [];
+    const placesWithDistance: PlaceWithDistance[] = [];
 
+    // Process restaurants
     restaurants.forEach((restaurant) => {
       if (!restaurant.coordinates) return;
 
@@ -71,20 +93,45 @@ export default function NearbyRestaurants() {
         const distance = calculateDistance(userLocation, coords);
 
         if (distance <= radiusKm) {
-          restaurantsWithDistance.push({
+          placesWithDistance.push({
             ...restaurant,
             distance,
             displayLocation: location,
+            type: 'restaurant',
+          });
+        }
+      });
+    });
+
+    // Process bakeries
+    bakeries.forEach((bakery) => {
+      if (!bakery.coordinates) return;
+
+      // Split locations and process each branch
+      const locations = bakery.location.split(',').map(l => l.trim());
+
+      locations.forEach((location) => {
+        const coords = bakery.coordinates![location];
+        if (!coords) return;
+
+        const distance = calculateDistance(userLocation, coords);
+
+        if (distance <= radiusKm) {
+          placesWithDistance.push({
+            ...bakery,
+            distance,
+            displayLocation: location,
+            type: 'bakery',
           });
         }
       });
     });
 
     // Sort by distance
-    restaurantsWithDistance.sort((a, b) => a.distance - b.distance);
+    placesWithDistance.sort((a, b) => a.distance - b.distance);
 
-    setNearbyRestaurants(restaurantsWithDistance);
-  }, [userLocation, radiusKm, restaurants]);
+    setNearbyPlaces(placesWithDistance);
+  }, [userLocation, radiusKm, restaurants, bakeries]);
 
   const handleGetLocation = async () => {
     setGettingLocation(true);
@@ -123,10 +170,10 @@ export default function NearbyRestaurants() {
             <Logo />
           </div>
           <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6">
-            📍 Restaurace poblíž
+            📍 Místa poblíž
           </h1>
           <p className="text-sm md:text-lg text-gray-300 mt-2">
-            Najdi nejlepší restaurace ve svém okolí
+            Najdi nejlepší restaurace a cukrárny ve svém okolí
           </p>
         </div>
 
@@ -203,11 +250,11 @@ export default function NearbyRestaurants() {
               Potřebuješ povolit přístup k poloze ve svém prohlížeči
             </p>
           </div>
-        ) : nearbyRestaurants.length === 0 ? (
+        ) : nearbyPlaces.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
             <p className="text-xl text-gray-400 mb-4">
-              Žádné restaurace v okruhu {radiusKm} km
+              Žádná místa v okruhu {radiusKm} km
             </p>
             <p className="text-sm text-gray-500 mb-6">
               Zkus zvětšit poloměr vyhledávání
@@ -227,25 +274,32 @@ export default function NearbyRestaurants() {
               <p className="text-gray-400">
                 Nalezeno{" "}
                 <span className="font-semibold text-purple-400">
-                  {nearbyRestaurants.length}
+                  {nearbyPlaces.length}
                 </span>{" "}
-                {nearbyRestaurants.length === 1 ? "restaurace" : nearbyRestaurants.length < 5 ? "restaurace" : "restaurací"}{" "}
+                {nearbyPlaces.length === 1 ? "místo" : nearbyPlaces.length < 5 ? "místa" : "míst"}{" "}
                 v okruhu <span className="font-semibold text-purple-400">{radiusKm} km</span>
               </p>
             </div>
 
-            {/* Restaurant Grid */}
+            {/* Places Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {nearbyRestaurants.map((restaurant, index) => (
-                <div key={`${restaurant.id}-${restaurant.displayLocation}-${index}`} className="relative">
+              {nearbyPlaces.map((place, index) => (
+                <div key={`${place.type}-${place.id}-${place.displayLocation}-${index}`} className="relative">
                   {/* Distance Badge */}
                   <div className="absolute top-4 right-4 z-10 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                    📍 {formatDistance(restaurant.distance)}
+                    📍 {formatDistance(place.distance)}
                   </div>
-                  <RestaurantCard
-                    restaurant={restaurant}
-                    forceLocation={restaurant.displayLocation}
-                  />
+                  {place.type === 'restaurant' ? (
+                    <RestaurantCard
+                      restaurant={place}
+                      forceLocation={place.displayLocation}
+                    />
+                  ) : (
+                    <BakeryCard
+                      bakery={place}
+                      forceLocation={place.displayLocation}
+                    />
+                  )}
                 </div>
               ))}
             </div>

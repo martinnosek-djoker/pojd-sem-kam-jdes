@@ -7,8 +7,10 @@ interface ImportResult {
   success: boolean;
   importedRestaurants: number;
   importedTrendings: number;
+  importedBakeries: number;
   totalRestaurants: number;
   totalTrendings: number;
+  totalBakeries: number;
   errors?: Array<{ row: number; error: string }>;
 }
 
@@ -120,6 +122,9 @@ export default function ImportForm() {
             <h3 className="font-semibold mb-2">✓ Import byl úspěšný!</h3>
             <p className="text-sm mb-1">
               Restaurace: <strong>{String(result.importedRestaurants || 0)}</strong> z {String(result.totalRestaurants || 0)}
+            </p>
+            <p className="text-sm mb-1">
+              Cukrárny: <strong>{String(result.importedBakeries || 0)}</strong> z {String(result.totalBakeries || 0)}
             </p>
             <p className="text-sm mb-2">
               Trendingy: <strong>{String(result.importedTrendings || 0)}</strong> z {String(result.totalTrendings || 0)}

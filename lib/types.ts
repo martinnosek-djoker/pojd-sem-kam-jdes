@@ -98,3 +98,37 @@ export const trendingSchema = z.object({
 });
 
 export type TrendingInput = z.infer<typeof trendingSchema>;
+
+// Bakery types
+export interface Bakery {
+  id: number;
+  name: string;
+  location: string;
+  addresses: Record<string, string> | null; // { "Náměstí Republiky": "adresa1", "Florenc": "adresa2" }
+  coordinates: Record<string, Coordinates> | null; // { "Náměstí Republiky": {"lat": 50.07, "lng": 14.40} }
+  website_url: string | null;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Zod validation schemas for bakery
+export const bakerySchema = z.object({
+  name: z.string().min(1, "Název je povinný"),
+  location: z.string().min(1, "Lokalita je povinná"),
+  addresses: z.record(z.string(), z.string()).optional().nullable(),
+  coordinates: z.record(z.string(), z.object({
+    lat: z.number(),
+    lng: z.number()
+  })).optional().nullable(),
+  website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+});
+
+export type BakeryInput = z.infer<typeof bakerySchema>;
+
+// For CSV import
+export interface CSVBakery {
+  name: string;
+  location: string;
+}

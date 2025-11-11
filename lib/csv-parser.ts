@@ -1,8 +1,9 @@
-import { RestaurantInput, TrendingInput } from "./types";
+import { RestaurantInput, TrendingInput, BakeryInput } from "./types";
 
 export interface CSVParseResult {
   restaurants: Restaurant[];
   trendings: Trending[];
+  bakeries: Bakery[];
   errors: { row: number; error: string }[];
 }
 
@@ -15,11 +16,17 @@ interface Trending extends Omit<TrendingInput, 'website_url' | 'display_order'> 
   display_order: number;
 }
 
+interface Bakery extends Omit<BakeryInput, 'website_url'> {
+  website_url?: string | null;
+}
+
 export function parseRestaurantCSV(csvContent: string): CSVParseResult {
   const lines = csvContent.split("\n");
   const restaurants: Restaurant[] = [];
   const trendings: Trending[] = [];
+  const bakeries: Bakery[] = [];
   const trendingNames = new Set<string>();
+  const bakeryNames = new Set<string>();
   const errors: { row: number; error: string }[] = [];
 
   // Parse TOP 10 trendings from rows 2-11 (Excel D2:D11, array indices 1-10)
@@ -41,6 +48,33 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
       }
     } catch (error) {
       // Ignore errors in trending parsing
+    }
+  }
+
+  // Parse bakeries from columns P and Q (indices 15 and 16)
+  // Start from row 4 (index 3) same as restaurants
+  for (let i = 3; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    try {
+      const columns = parseCSVLine(line);
+
+      // Column P (index 15): bakery name
+      // Column Q (index 16): bakery location
+      const bakeryName = columns[15]?.trim();
+      const bakeryLocation = columns[16]?.trim();
+
+      if (bakeryName && bakeryLocation && !bakeryNames.has(bakeryName)) {
+        bakeryNames.add(bakeryName);
+        bakeries.push({
+          name: bakeryName,
+          location: bakeryLocation,
+          website_url: null,
+        });
+      }
+    } catch (error) {
+      // Don't add errors for bakery parsing failures - they're optional
     }
   }
 
@@ -126,7 +160,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
     }
   }
 
-  return { restaurants, trendings, errors };
+  return { restaurants, trendings, bakeries, errors };
 }
 
 // Helper function to parse CSV line (handles commas in quotes)
