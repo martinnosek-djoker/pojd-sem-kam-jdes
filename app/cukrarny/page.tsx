@@ -114,7 +114,7 @@ export default function BakeriesPage() {
         {/* Location Filter */}
         {availableLocations.length > 0 && (
           <div className="mb-8 p-6 bg-gray-900/50 border border-purple-500/30 rounded-lg">
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-end justify-between">
               <div className="flex-1 w-full">
                 <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
                   Lokalita:
