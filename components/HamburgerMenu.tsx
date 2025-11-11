@@ -31,11 +31,11 @@ export default function HamburgerMenu() {
 
   const menuItems = [
     { href: "/", label: "Domů" },
-    { href: "/pobliz", label: "Restaurace poblíž" },
+    { href: "/pobliz", label: "Ve tvém okolí" },
     { href: "/lokality", label: "Podle lokalit" },
     { href: "/kuchyne", label: "Světové kuchyně" },
+    { href: "/cukrarny", label: "Cukrárny", badge: "Nové" },
     { href: "/kavarny", label: "Kavárny", badge: "Brzy" },
-    { href: "/cukrarny", label: "Cukrárny", badge: "Brzy" },
     { href: "/akce", label: "Gastro akce", badge: "Brzy" },
   ];
 
@@ -57,7 +57,7 @@ export default function HamburgerMenu() {
           </div>
         ) : (
           // Hamburger
-          <div className="w-6 h-5 flex flex-col justify-between">
+          <div className="w-6 h-6 flex flex-col justify-between">
             <span className="block h-0.5 bg-white" />
             <span className="block h-0.5 bg-white" />
             <span className="block h-0.5 bg-white" />
@@ -80,12 +80,6 @@ export default function HamburgerMenu() {
         }`}
       >
         <div className="flex flex-col h-full pt-24 pb-8 px-6">
-          {/* Menu Header */}
-          <div className="mb-8 pb-6 border-b border-purple-500/30">
-            <h2 className="text-2xl font-bold text-purple-400">Menu</h2>
-            <p className="text-sm text-gray-400 mt-1">Objevuj gastro svět</p>
-          </div>
-
           {/* Menu Items */}
           <ul className="flex-1 space-y-2">
             {menuItems.map((item) => (
