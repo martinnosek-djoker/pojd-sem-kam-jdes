@@ -8,6 +8,7 @@ import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
 import Logo from "@/components/Logo";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import { mapLocationToGroup } from "@/lib/location-groups";
 
 export default function Home() {
   const t = useTranslations("home");
@@ -81,10 +82,10 @@ export default function Home() {
     const cuisineSet = new Set<string>();
 
     restaurantList.forEach((r) => {
-      // Split and normalize locations
+      // Split and group locations
       r.location.split(',').forEach((loc: string) => {
-        const normalized = loc.trim().charAt(0).toUpperCase() + loc.trim().slice(1).toLowerCase();
-        if (normalized) locationSet.add(normalized);
+        const grouped = mapLocationToGroup(loc);
+        if (grouped) locationSet.add(grouped);
       });
 
       // Split and normalize cuisine types
@@ -176,9 +177,11 @@ export default function Home() {
 
     if (selectedLocation) {
       filtered = filtered.filter((r) => {
-        // Split by comma and check if any part matches (case-insensitive)
-        const locations = r.location.split(',').map(loc => loc.trim().toLowerCase());
-        return locations.some(loc => loc === selectedLocation.toLowerCase());
+        // Split by comma, map to groups and check match (case-insensitive)
+        const groups = r.location
+          .split(',')
+          .map(loc => mapLocationToGroup(loc).toLowerCase());
+        return groups.some(g => g === selectedLocation.toLowerCase());
       });
     }
 

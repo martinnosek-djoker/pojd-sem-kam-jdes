@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
+import { mapLocationToGroup } from "@/lib/location-groups";
 
 export default function BakeriesPage() {
   const t = useTranslations("bakeries");
@@ -64,8 +65,10 @@ export default function BakeriesPage() {
 
     if (selectedLocation) {
       filtered = filtered.filter((b) => {
-        const locations = b.location.split(',').map(loc => loc.trim().toLowerCase());
-        return locations.some(loc => loc === selectedLocation.toLowerCase());
+        const groups = b.location
+          .split(',')
+          .map(loc => mapLocationToGroup(loc).toLowerCase());
+        return groups.some(g => g === selectedLocation.toLowerCase());
       });
     }
 
