@@ -8,15 +8,6 @@ const nextConfig = {
     // Umožní build i při ESLint chybách (deployment nezablokuje lint)
     ignoreDuringBuilds: true,
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/cs',
-        permanent: false,
-      },
-    ];
-  },
 };
 
 export default withNextIntl(nextConfig);

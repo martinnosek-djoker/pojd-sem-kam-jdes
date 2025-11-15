@@ -1,1 +1,5 @@
-export { default } from '../[locale]/page';
+import HomePage from '@/components/HomePage';
+
+export default function EnPage() {
+  return <HomePage />;
+}
