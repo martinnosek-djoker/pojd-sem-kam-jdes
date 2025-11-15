@@ -5,7 +5,10 @@
     "reset": "Vymazat filtr",
     "resetFilters": "Vymazat filtry",
     "found": "Nalezeno",
-    "noResults": "Žádné výsledky nenalezeny"
+    "noResults": "Žádné výsledky nenalezeny",
+    "pageNotFound": "Stránka nenalezena",
+    "pageNotFoundDescription": "Omlouváme se, ale hledaná stránka neexistuje.",
+    "backToHome": "Zpět na domovskou stránku"
   },
   "nav": {
     "home": "Domů",

@@ -5,7 +5,10 @@
     "reset": "Clear filter",
     "resetFilters": "Clear filters",
     "found": "Found",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDescription": "Sorry, the page you're looking for doesn't exist.",
+    "backToHome": "Back to Home"
   },
   "nav": {
     "home": "Home",
