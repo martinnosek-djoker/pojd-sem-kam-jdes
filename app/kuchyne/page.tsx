@@ -177,9 +177,9 @@ export default function CuisinesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">Načítání...</h1>
+          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">Světové kuchyně</h1>
           <p className="text-lg text-gray-300">
-            Načítání...
+            Najdi nejlepší restaurace podle typu kuchyně
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export default function CuisinesPage() {
         {sortedCuisines.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-gray-400">
-              Načítání...
+              Nebyly nalezeny žádné kuchyně
             </p>
           </div>
         )}

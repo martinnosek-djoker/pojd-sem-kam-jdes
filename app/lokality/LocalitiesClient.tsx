@@ -54,13 +54,13 @@ export default function LocalitiesClient({ restaurants, allLocations }: Localiti
           <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">""</h1>
-          <p className="text-sm md:text-lg text-gray-300 mt-2">""</p>
+          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">Podle lokality</h1>
+          <p className="text-sm md:text-lg text-gray-300 mt-2">Nejlepší restaurace v Praze roztříděné podle lokality</p>
         </div>
 
         {allLocations.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400">""</p>
+            <p className="text-xl text-gray-400">Nebyly nalezeny žádné lokality</p>
           </div>
         ) : (
           <div className="space-y-8 md:space-y-12">
