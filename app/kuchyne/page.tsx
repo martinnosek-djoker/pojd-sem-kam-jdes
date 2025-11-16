@@ -163,7 +163,7 @@ export default function CuisinesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">"Načítání..."</p>
+          <p className="text-lg text-gray-400 text-center">Načítání...</p>
         </div>
       </main>
     );
@@ -177,9 +177,9 @@ export default function CuisinesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">"Načítání..."</h1>
+          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">Načítání...</h1>
           <p className="text-lg text-gray-300">
-            "Načítání..."
+            Načítání...
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export default function CuisinesPage() {
         {sortedCuisines.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-gray-400">
-              "Načítání..."
+              Načítání...
             </p>
           </div>
         )}

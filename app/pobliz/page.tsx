@@ -156,7 +156,7 @@ export default function NearbyRestaurants() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">"Načítání..."</p>
+          <p className="text-lg text-gray-400 text-center">Načítání...</p>
         </div>
       </main>
     );
@@ -171,10 +171,10 @@ export default function NearbyRestaurants() {
             <Logo />
           </div>
           <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6">
-            "Načítání..."
+            V okolí
           </h1>
           <p className="text-sm md:text-lg text-gray-300 mt-2">
-            "Načítání..."
+            Najdi skvělá místa poblíž tvé polohy
           </p>
         </div>
 
@@ -191,12 +191,12 @@ export default function NearbyRestaurants() {
                 {gettingLocation ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    "Načítání..."
+                    Zjišťuji polohu...
                   </span>
                 ) : userLocation ? (
-                  ""
+                  "Aktualizovat polohu"
                 ) : (
-                  ""
+                  "Najít restaurace v okolí"
                 )}
               </button>
             </div>
@@ -204,7 +204,7 @@ export default function NearbyRestaurants() {
             {/* Radius Selector */}
             {userLocation && (
               <div className="w-full flex justify-center items-center gap-4">
-                <label className="text-gray-300 font-medium">"Načítání..."</label>
+                <label className="text-gray-300 font-medium">Poloměr hledání:</label>
                 <select
                   value={radiusKm}
                   onChange={(e) => setRadiusKm(Number(e.target.value))}
@@ -228,7 +228,7 @@ export default function NearbyRestaurants() {
           {/* User Location Display */}
           {userLocation && (
             <div className="mt-4 text-sm text-gray-400 text-center">
-              "Načítání..." {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              Tvá poloha: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
             </div>
           )}
 
@@ -245,27 +245,27 @@ export default function NearbyRestaurants() {
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📍</div>
             <p className="text-xl text-gray-400 mb-4">
-              "Načítání..."
+              Klikni na tlačítko výše
             </p>
             <p className="text-sm text-gray-500">
-              "Načítání..."
+              Najdeme ti nejbližší restaurace a cukrárny
             </p>
           </div>
         ) : nearbyPlaces.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
             <p className="text-xl text-gray-400 mb-4">
-              {"".replace("{radius}", radiusKm.toString())}
+              {`V okruhu ${radiusKm} km nenalezena žádná místa`}
             </p>
             <p className="text-sm text-gray-500 mb-6">
-              "Načítání..."
+              Zkus zvětšit poloměr hledání
             </p>
             <button
               onClick={() => setRadiusKm(getNextRadius(radiusKm))}
               disabled={radiusKm >= 10}
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {"".replace("{radius}", getNextRadius(radiusKm).toString())}
+              {`Zvětšit na ${getNextRadius(radiusKm)} km`}
             </button>
           </div>
         ) : (
@@ -273,12 +273,12 @@ export default function NearbyRestaurants() {
             {/* Results Count */}
             <div className="mb-6 text-center">
               <p className="text-gray-400">
-                "Načítání..."{" "}
+                Nalezeno{" "}
                 <span className="font-semibold text-purple-400">
                   {nearbyPlaces.length}
                 </span>{" "}
-                {nearbyPlaces.length === 1 ? "" : nearbyPlaces.length < 5 ? "" : ""}{" "}
-                "Načítání..." <span className="font-semibold text-purple-400">{radiusKm} km</span>
+                {nearbyPlaces.length === 1 ? "místo" : nearbyPlaces.length < 5 ? "místa" : "míst"}{" "}
+                v okruhu <span className="font-semibold text-purple-400">{radiusKm} km</span>
               </p>
             </div>
 
