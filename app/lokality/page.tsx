@@ -1,8 +1,6 @@
 import LocalitiesClient from "./LocalitiesClient";
 
-export default async function LocalitiesPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-
+export default async function LocalitiesPage() {
   // Fetch data server-side
   const [restaurantsRes, filtersRes] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/restaurants`, { cache: 'no-store' }),
