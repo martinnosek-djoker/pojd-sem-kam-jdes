@@ -1,9 +1,7 @@
-import { setRequestLocale } from "next-intl/server";
 import LocalitiesClient from "./LocalitiesClient";
 
 export default async function LocalitiesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   // Fetch data server-side
   const [restaurantsRes, filtersRes] = await Promise.all([

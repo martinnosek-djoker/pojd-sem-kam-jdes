@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
 import { mapLocationToGroup } from "@/lib/location-groups";
 
 export default function BakeriesPage() {
-  const t = useTranslations("bakeries");
-  const tCommon = useTranslations("common");
+  
+  
   const [bakeries, setBakeries] = useState<Bakery[]>([]);
   const [filteredBakeries, setFilteredBakeries] = useState<Bakery[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
@@ -89,7 +88,7 @@ export default function BakeriesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">{t("loading")}</p>
+          <p className="text-lg text-gray-400 text-center">"Načítání..."</p>
         </div>
       </main>
     );
@@ -103,9 +102,9 @@ export default function BakeriesPage() {
           <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">{t("title")}</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">"Načítání..."</h1>
           <p className="text-sm md:text-lg text-gray-300 mt-2">
-            {t("subtitle")}{" "}
+            "Načítání..."{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -123,7 +122,7 @@ export default function BakeriesPage() {
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-end justify-between">
               <div className="flex-1 w-full">
                 <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
-                  {t("locationFilterLabel")}
+                  "Načítání..."
                 </label>
                 <select
                   id="location"
@@ -136,7 +135,7 @@ export default function BakeriesPage() {
                     backgroundSize: "1.5em 1.5em"
                   }}
                 >
-                  <option value="">{t("locationFilterAll")}</option>
+                  <option value="">"Načítání..."</option>
                   {availableLocations.map((location) => (
                     <option key={location} value={location}>
                       {location}
@@ -150,7 +149,7 @@ export default function BakeriesPage() {
                   onClick={handleReset}
                   className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 whitespace-nowrap"
                 >
-                  {tCommon("reset")}
+                  ""
                 </button>
               )}
             </div>
@@ -160,19 +159,19 @@ export default function BakeriesPage() {
         {/* Count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-gray-400 text-sm">
-            {t("found")} <span className="font-semibold text-purple-400">{filteredBakeries.length}</span> {t("foundBakeries")}
+            "Načítání..." <span className="font-semibold text-purple-400">{filteredBakeries.length}</span> "Načítání..."
           </p>
         </div>
 
         {/* Bakery grid */}
         {filteredBakeries.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400 mb-8">{t("noBakeriesFound")}</p>
+            <p className="text-xl text-gray-400 mb-8">"Načítání..."</p>
             <button
               onClick={handleReset}
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50"
             >
-              {tCommon("resetFilters")}
+              ""
             </button>
           </div>
         ) : (

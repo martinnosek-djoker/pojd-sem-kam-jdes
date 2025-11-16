@@ -11,7 +11,7 @@ export default async function AdminPage() {
     const isAuthenticated = await checkAuth();
 
     if (!isAuthenticated) {
-      redirect("/admin/login");
+      redirect;
     }
 
     const [restaurants, trendings, bakeries] = await Promise.all([

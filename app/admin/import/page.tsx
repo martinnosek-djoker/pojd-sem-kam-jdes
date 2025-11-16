@@ -6,7 +6,7 @@ export default async function ImportPage() {
   const isAuthenticated = await checkAuth();
 
   if (!isAuthenticated) {
-    redirect("/admin/login");
+    redirect;
   }
 
   return (

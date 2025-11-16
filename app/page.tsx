@@ -1,7 +1,5 @@
-import { redirect } from 'next/navigation';
+import HomePage from '@/components/HomePage';
 
-// Redirect root path to default locale
-// This ensures users are always directed to a locale-prefixed URL
-export default function RootRedirect() {
-  redirect('/cs');
+export default function Home() {
+  return <HomePage />;
 }

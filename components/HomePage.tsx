@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { useTranslations } from "next-intl";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
@@ -11,8 +10,6 @@ import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@
 import { mapLocationToGroup } from "@/lib/location-groups";
 
 export default function Home() {
-  const t = useTranslations("home");
-  const tCommon = useTranslations("common");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [trendings, setTrendings] = useState<Trending[]>([]);
@@ -225,7 +222,7 @@ export default function Home() {
             <Logo />
           </div>
           <p className="text-lg text-gray-400 text-center">
-            {t("loadingDescription")}{" "}
+            Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -235,7 +232,7 @@ export default function Home() {
               @Peču si život
             </a>
           </p>
-          <p className="text-lg text-gray-400 mt-2 text-center">{t("loading")}</p>
+          <p className="text-lg text-gray-400 mt-2 text-center">Načítání...</p>
         </div>
       </main>
     );
@@ -250,7 +247,7 @@ export default function Home() {
             <Logo />
           </div>
           <p className="text-sm md:text-lg text-gray-300 mt-2 md:mt-6 hidden sm:block">
-            {t("subtitle")}{" "}
+            Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -266,8 +263,8 @@ export default function Home() {
         {trendings.length > 0 && (
           <div className="mb-8 md:mb-12">
             <div className="mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">{t("trendingTitle")}</h2>
-              <p className="text-sm md:text-base text-gray-400">{t("trendingSubtitle")}</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 Trending</h2>
+              <p className="text-sm md:text-base text-gray-400">Aktuálně nejoblíbenější místa</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
             <div className="md:hidden relative">
@@ -324,12 +321,12 @@ export default function Home() {
         {/* Sort and count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-gray-400 text-sm">
-            {tCommon("found")} <span className="font-semibold text-purple-400">{filteredRestaurants.length}</span> {t("foundRestaurants")}
+            Nalezeno <span className="font-semibold text-purple-400">{filteredRestaurants.length}</span> restaurací
           </p>
 
           <div className="flex items-center gap-3">
             <label htmlFor="sort" className="text-sm text-gray-400">
-              {t("sortBy")}
+              Seřadit:
             </label>
             <select
               id="sort"
@@ -338,9 +335,9 @@ export default function Home() {
               className="pl-4 pr-12 py-2 border border-purple-600 rounded-md text-sm bg-black text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-no-repeat bg-right"
               style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a78bfa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
             >
-              <option value="rating">{t("sortByRating")}</option>
-              <option value="price">{t("sortByPrice")}</option>
-              <option value="name">{t("sortByName")}</option>
+              <option value="rating">Podle hodnocení</option>
+              <option value="price">Podle ceny</option>
+              <option value="name">Podle názvu</option>
             </select>
           </div>
         </div>
@@ -348,12 +345,12 @@ export default function Home() {
         {/* Restaurant grid */}
         {filteredRestaurants.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400 mb-8">{t("noRestaurantsFound")}</p>
+            <p className="text-xl text-gray-400 mb-8">Nebyly nalezeny žádné restaurace</p>
             <button
               onClick={handleReset}
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50"
             >
-              {tCommon("resetFilters")}
+              Resetovat filtry
             </button>
           </div>
         ) : (
