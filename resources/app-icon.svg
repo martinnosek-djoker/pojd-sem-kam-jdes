@@ -1,0 +1,65 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background -->
+  <rect width="1024" height="1024" fill="#000000"/>
+
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#c084fc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="490" fill="url(#gradient)" opacity="0.2"/>
+
+  <!-- Left arrow - "Pojď sem!" (Come here) -->
+  <g>
+    <path
+      d="M 256 358 L 410 512 L 256 666"
+      stroke="url(#arrowGradient)"
+      stroke-width="61"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+    <line
+      x1="410"
+      y1="512"
+      x2="154"
+      y2="512"
+      stroke="url(#arrowGradient)"
+      stroke-width="51"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- Right arrow - "Kam jdeš?" (Where are you going?) -->
+  <g>
+    <path
+      d="M 768 358 L 614 512 L 768 666"
+      stroke="url(#arrowGradient)"
+      stroke-width="61"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+    <line
+      x1="614"
+      y1="512"
+      x2="870"
+      y2="512"
+      stroke="url(#arrowGradient)"
+      stroke-width="51"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- Central dot - meeting point -->
+  <circle cx="512" cy="512" r="61" fill="#c084fc"/>
+</svg>

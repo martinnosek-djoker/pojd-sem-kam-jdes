@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Restaurant } from "@/lib/types";
 import RestaurantForm from "./RestaurantForm";
+import { getApiUrl } from "@/lib/api-config";
 
 interface AdminDashboardProps {
   initialRestaurants: Restaurant[];
@@ -21,7 +22,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     if (!confirm("Opravdu chcete smazat tuto restauraci?")) return;
 
     try {
-      const response = await fetch(`/api/restaurants/${id}`, {
+      const response = await fetch(getApiUrl(`/api/restaurants/${id}`), {
         method: "DELETE",
       });
 
@@ -55,7 +56,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     setFetchResults(null);
 
     try {
-      const response = await fetch("/api/admin/fetch-all-photos", {
+      const response = await fetch(getApiUrl("/api/admin/fetch-all-photos"), {
         method: "POST",
       });
 
@@ -64,7 +65,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
       if (response.ok) {
         setFetchResults(data);
         // Reload restaurants to show new images
-        const reloadResponse = await fetch("/api/restaurants");
+        const reloadResponse = await fetch(getApiUrl("/api/restaurants"));
         const updatedRestaurants = await reloadResponse.json();
         setRestaurants(updatedRestaurants);
       } else {
@@ -87,7 +88,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     setFetchResults(null);
 
     try {
-      const response = await fetch("/api/admin/fetch-all-addresses", {
+      const response = await fetch(getApiUrl("/api/admin/fetch-all-addresses"), {
         method: "POST",
       });
 
@@ -96,7 +97,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
       if (response.ok) {
         setFetchResults(data);
         // Reload restaurants to show new addresses
-        const reloadResponse = await fetch("/api/restaurants");
+        const reloadResponse = await fetch(getApiUrl("/api/restaurants"));
         const updatedRestaurants = await reloadResponse.json();
         setRestaurants(updatedRestaurants);
       } else {
@@ -119,7 +120,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     setFetchResults(null);
 
     try {
-      const response = await fetch("/api/admin/fetch-all-coordinates", {
+      const response = await fetch(getApiUrl("/api/admin/fetch-all-coordinates"), {
         method: "POST",
       });
 
@@ -128,7 +129,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
       if (response.ok) {
         setFetchResults(data);
         // Reload restaurants to show new coordinates
-        const reloadResponse = await fetch("/api/restaurants");
+        const reloadResponse = await fetch(getApiUrl("/api/restaurants"));
         const updatedRestaurants = await reloadResponse.json();
         setRestaurants(updatedRestaurants);
       } else {

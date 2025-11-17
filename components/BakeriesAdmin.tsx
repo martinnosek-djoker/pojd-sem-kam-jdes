@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Bakery } from "@/lib/types";
 import BakeryForm from "./BakeryForm";
+import { getApiUrl } from "@/lib/api-config";
 
 interface BakeriesAdminProps {
   initialBakeries: Bakery[];
@@ -19,7 +20,7 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
     if (!confirm("Opravdu chcete smazat tuto cukrárnu?")) return;
 
     try {
-      const response = await fetch(`/api/bakeries/${id}`, {
+      const response = await fetch(getApiUrl(`/api/bakeries/${id}`), {
         method: "DELETE",
       });
 
@@ -53,7 +54,7 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
     setFetchResults(null);
 
     try {
-      const response = await fetch("/api/admin/fetch-all-bakery-photos", {
+      const response = await fetch(getApiUrl("/api/admin/fetch-all-bakery-photos"), {
         method: "POST",
       });
 
@@ -62,7 +63,7 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
       if (response.ok) {
         setFetchResults(data);
         // Reload bakeries to show new images
-        const reloadResponse = await fetch("/api/bakeries");
+        const reloadResponse = await fetch(getApiUrl("/api/bakeries"));
         const updatedBakeries = await reloadResponse.json();
         setBakeries(updatedBakeries);
       } else {

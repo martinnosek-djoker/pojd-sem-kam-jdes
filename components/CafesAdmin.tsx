@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Cafe } from "@/lib/types";
 import CafeForm from "./CafeForm";
+import { getApiUrl } from "@/lib/api-config";
 
 interface CafesAdminProps {
   initialCafes: Cafe[];
@@ -19,7 +20,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
     if (!confirm("Opravdu chcete smazat tuto kavárnu?")) return;
 
     try {
-      const response = await fetch(`/api/cafes/${id}`, {
+      const response = await fetch(getApiUrl(`/api/cafes/${id}`), {
         method: "DELETE",
       });
 
@@ -53,7 +54,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
     setFetchResults(null);
 
     try {
-      const response = await fetch("/api/admin/fetch-all-cafe-photos", {
+      const response = await fetch(getApiUrl("/api/admin/fetch-all-cafe-photos"), {
         method: "POST",
       });
 
@@ -62,7 +63,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
       if (response.ok) {
         setFetchResults(data);
         // Reload cafes to show new images
-        const reloadResponse = await fetch("/api/cafes");
+        const reloadResponse = await fetch(getApiUrl("/api/cafes"));
         const updatedCafes = await reloadResponse.json();
         setCafes(updatedCafes);
       } else {

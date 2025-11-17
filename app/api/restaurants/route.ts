@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllRestaurants, createRestaurant, filterRestaurants } from "@/lib/db";
 import { restaurantSchema } from "@/lib/types";
+import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
+
+// OPTIONS /api/restaurants - Handle CORS preflight
+export async function OPTIONS() {
+  return handleOptionsRequest();
+}
 
 // GET /api/restaurants - Get all restaurants or filter by location/cuisine
 export async function GET(request: NextRequest) {
@@ -21,10 +27,10 @@ export async function GET(request: NextRequest) {
     console.log("Found restaurants:", restaurants.length);
     console.log("First restaurant:", restaurants[0]);
 
-    return NextResponse.json(restaurants);
+    return jsonWithCors(restaurants);
   } catch (error) {
     console.error("Error fetching restaurants:", error);
-    return NextResponse.json(
+    return jsonWithCors(
       { error: "Nepodařilo se načíst restaurace" },
       { status: 500 }
     );

@@ -8,6 +8,7 @@ import TrendingCard from "@/components/TrendingCard";
 import Logo from "@/components/Logo";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -26,22 +27,42 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
+        const restaurantsUrl = getApiUrl("/api/restaurants");
+        const trendingsUrl = getApiUrl("/api/trendings");
+        const filtersUrl = getApiUrl("/api/restaurants/filters");
+
+        console.log("[HomePage] 🔍 Fetching restaurants from:", restaurantsUrl);
+        console.log("[HomePage] 🔍 Fetching trendings from:", trendingsUrl);
+        console.log("[HomePage] 🔍 Fetching filters from:", filtersUrl);
+
         const [restaurantsRes, trendingsRes, filtersRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/trendings"),
-          fetch("/api/restaurants/filters"),
+          fetch(restaurantsUrl),
+          fetch(trendingsUrl),
+          fetch(filtersUrl),
         ]);
+
+        console.log("[HomePage] ✅ Response status - restaurants:", restaurantsRes.status);
+        console.log("[HomePage] ✅ Response status - trendings:", trendingsRes.status);
+        console.log("[HomePage] ✅ Response status - filters:", filtersRes.status);
 
         const restaurantsData = await restaurantsRes.json();
         const trendingsData = await trendingsRes.json();
         const filtersData = await filtersRes.json();
 
+        console.log("[HomePage] Received data:", {
+          restaurantsCount: Array.isArray(restaurantsData) ? restaurantsData.length : 'not an array',
+          trendingsCount: Array.isArray(trendingsData) ? trendingsData.length : 'not an array',
+          filtersLocations: Array.isArray(filtersData?.locations) ? filtersData.locations.length : 'not an array',
+          filtersCuisineTypes: Array.isArray(filtersData?.cuisineTypes) ? filtersData.cuisineTypes.length : 'not an array'
+        });
+
         // Validate that restaurantsData is an array
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
           setFilteredRestaurants(restaurantsData);
+          console.log("[HomePage] ✅ Set restaurants:", restaurantsData.length);
         } else {
-          console.error("Restaurants data is not an array:", restaurantsData);
+          console.error("[HomePage] ❌ Restaurants data is not an array:", restaurantsData);
           setRestaurants([]);
           setFilteredRestaurants([]);
         }
@@ -49,24 +70,31 @@ export default function Home() {
         // Validate that trendingsData is an array
         if (Array.isArray(trendingsData)) {
           setTrendings(trendingsData);
+          console.log("[HomePage] ✅ Set trendings:", trendingsData.length);
         } else {
-          console.error("Trendings data is not an array:", trendingsData);
+          console.error("[HomePage] ❌ Trendings data is not an array:", trendingsData);
           setTrendings([]);
         }
 
         // Validate filters data
         if (filtersData && Array.isArray(filtersData.locations)) {
           setAllLocations(filtersData.locations);
+          console.log("[HomePage] ✅ Set locations:", filtersData.locations.length);
         }
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
+          console.log("[HomePage] ✅ Set cuisineTypes:", filtersData.cuisineTypes.length);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("[HomePage] ❌ Error fetching data:", error);
+        console.error("[HomePage] ❌ Error name:", error instanceof Error ? error.name : 'Unknown');
+        console.error("[HomePage] ❌ Error message:", error instanceof Error ? error.message : 'Unknown');
+        console.error("[HomePage] ❌ Error stack:", error instanceof Error ? error.stack : 'Unknown');
         setRestaurants([]);
         setFilteredRestaurants([]);
       } finally {
         setLoading(false);
+        console.log("[HomePage] Loading complete");
       }
     }
 

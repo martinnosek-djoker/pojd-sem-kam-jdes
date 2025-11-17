@@ -5,6 +5,7 @@ import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
 import { mapLocationToGroup } from "@/lib/location-groups";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function BakeriesPage() {
   
@@ -20,8 +21,8 @@ export default function BakeriesPage() {
     async function fetchData() {
       try {
         const [bakeriesRes, filtersRes] = await Promise.all([
-          fetch("/api/bakeries"),
-          fetch("/api/bakeries/filters"),
+          fetch(getApiUrl("/api/bakeries")),
+          fetch(getApiUrl("/api/bakeries/filters")),
         ]);
 
         const bakeriesData = await bakeriesRes.json();

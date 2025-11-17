@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 // Helper function to normalize strings for comparison (removes diacritics)
 function normalizeString(str: string): string {
@@ -94,8 +95,8 @@ export default function CuisinesPage() {
     async function fetchData() {
       try {
         const [restaurantsRes, filtersRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/filters"),
+          fetch(getApiUrl("/api/restaurants")),
+          fetch(getApiUrl("/api/restaurants/filters")),
         ]);
 
         const restaurantsData = await restaurantsRes.json();

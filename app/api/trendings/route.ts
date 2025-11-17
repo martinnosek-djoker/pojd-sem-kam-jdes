@@ -1,15 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllTrendings, createTrending } from "@/lib/db";
 import { trendingSchema } from "@/lib/types";
+import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
+
+// OPTIONS /api/trendings - Handle CORS preflight
+export async function OPTIONS() {
+  return handleOptionsRequest();
+}
 
 // GET /api/trendings - Get all trendings
 export async function GET() {
   try {
     const trendings = await getAllTrendings();
-    return NextResponse.json(trendings);
+    return jsonWithCors(trendings);
   } catch (error) {
     console.error("Error fetching trendings:", error);
-    return NextResponse.json(
+    return jsonWithCors(
       { error: "Nepodařilo se načíst trending podniky" },
       { status: 500 }
     );

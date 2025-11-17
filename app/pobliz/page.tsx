@@ -7,6 +7,7 @@ import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition } from "@/lib/geolocation";
+import { getApiUrl } from "@/lib/api-config";
 
 interface RestaurantWithDistance extends Restaurant {
   distance: number;
@@ -55,9 +56,9 @@ export default function NearbyRestaurants() {
     async function fetchData() {
       try {
         const [restaurantsRes, bakeriesRes, cafesRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/bakeries"),
-          fetch("/api/cafes"),
+          fetch(getApiUrl("/api/restaurants")),
+          fetch(getApiUrl("/api/bakeries")),
+          fetch(getApiUrl("/api/cafes")),
         ]);
 
         const restaurantsData = await restaurantsRes.json();

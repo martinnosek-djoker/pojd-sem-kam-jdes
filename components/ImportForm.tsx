@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getApiUrl } from "@/lib/api-config";
 
 interface ImportResult {
   success: boolean;
@@ -53,7 +54,7 @@ export default function ImportForm() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/import", {
+      const response = await fetch(getApiUrl("/api/import"), {
         method: "POST",
         body: formData,
       });

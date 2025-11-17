@@ -5,6 +5,7 @@ import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import { Cafe } from "@/lib/types";
 import { mapLocationToGroup } from "@/lib/location-groups";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function CafesPage() {
 
@@ -20,8 +21,8 @@ export default function CafesPage() {
     async function fetchData() {
       try {
         const [cafesRes, filtersRes] = await Promise.all([
-          fetch("/api/cafes"),
-          fetch("/api/cafes/filters"),
+          fetch(getApiUrl("/api/cafes")),
+          fetch(getApiUrl("/api/cafes/filters")),
         ]);
 
         const cafesData = await cafesRes.json();

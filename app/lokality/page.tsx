@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function LocalitiesPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -15,8 +16,8 @@ export default function LocalitiesPage() {
     async function fetchData() {
       try {
         const [restaurantsRes, filtersRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/filters"),
+          fetch(getApiUrl("/api/restaurants")),
+          fetch(getApiUrl("/api/restaurants/filters")),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
