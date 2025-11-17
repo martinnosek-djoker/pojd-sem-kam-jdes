@@ -96,10 +96,12 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
                 const locationText = locs.join(', ');
 
                 if (address) {
+                  // Include bakery name with address for better Google Maps results
+                  const searchQuery = `${bakery.name}, ${address}`;
                   return (
                     <span key={groupIdx}>
                       <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline text-purple-300 hover:text-purple-200 transition-colors"
