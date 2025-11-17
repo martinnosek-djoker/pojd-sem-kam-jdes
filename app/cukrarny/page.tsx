@@ -115,7 +115,7 @@ export default function BakeriesPage() {
             </a>
           </p>
           <p className="text-sm md:text-base text-gray-400 mt-4 max-w-3xl mx-auto italic">
-            Jelikož sám hodně peču a mám vysoké nároky na dezerty, není jednoduché najít cukrárnu, kde jsem spokojený. Za těchto pár ale mohu strčit ruku do ohně, že budete spokojeni.
+            Jelikož sám hodně peču a mám vysoké nároky na dezerty, není jednoduché najít cukrárnu, kde jsem spokojený. Za těchto pár ale mohu strčit ruku do ohně, že se vám tu bude líbit.
           </p>
         </div>
 
