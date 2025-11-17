@@ -1,6 +1,5 @@
 import { supabase } from "./supabase";
 import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput } from "./types";
-import { mapLocationToGroup } from "./location-groups";
 
 // CRUD operations
 
@@ -152,12 +151,12 @@ export async function getUniqueLocations(): Promise<string[]> {
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma a namapovat na skupiny
+      // Split by comma and normalize
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const grouped = mapLocationToGroup(part);
-          allLocations.push(grouped);
+          const normalized = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+          allLocations.push(normalized);
         }
       });
     }
@@ -511,12 +510,12 @@ export async function getUniqueBakeryLocations(): Promise<string[]> {
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma a namapovat na skupiny
+      // Split by comma and normalize
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const grouped = mapLocationToGroup(part);
-          allLocations.push(grouped);
+          const normalized = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+          allLocations.push(normalized);
         }
       });
     }
