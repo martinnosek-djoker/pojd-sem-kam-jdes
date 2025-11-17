@@ -69,6 +69,9 @@ export default function ImportForm() {
       } else {
         // Show detailed error information
         let errorMsg = data.error || "Chyba při importu";
+        if (data.details) {
+          errorMsg += "\n\nDetail: " + data.details;
+        }
         if (data.errors && data.errors.length > 0) {
           errorMsg += "\n\nPrvních 5 chyb:\n";
           errorMsg += data.errors.slice(0, 5).map((e: any) => `- Řádek ${e.row}: ${e.error}`).join("\n");

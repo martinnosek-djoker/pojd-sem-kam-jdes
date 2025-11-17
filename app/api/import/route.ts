@@ -70,7 +70,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error importing CSV:", error);
     return NextResponse.json(
-      { error: "Nepodařilo se importovat CSV soubor" },
+      {
+        error: "Nepodařilo se importovat CSV soubor",
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }
