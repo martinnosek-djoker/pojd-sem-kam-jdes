@@ -8,9 +8,11 @@ interface ImportResult {
   importedRestaurants: number;
   importedTrendings: number;
   importedBakeries: number;
+  importedCafes: number;
   totalRestaurants: number;
   totalTrendings: number;
   totalBakeries: number;
+  totalCafes: number;
   errors?: Array<{ row: number; error: string }>;
 }
 
@@ -125,6 +127,9 @@ export default function ImportForm() {
             </p>
             <p className="text-sm mb-1">
               Cukrárny: <strong>{String(result.importedBakeries || 0)}</strong> z {String(result.totalBakeries || 0)}
+            </p>
+            <p className="text-sm mb-1">
+              Kavárny: <strong>{String(result.importedCafes || 0)}</strong> z {String(result.totalCafes || 0)}
             </p>
             <p className="text-sm mb-2">
               Trendingy: <strong>{String(result.importedTrendings || 0)}</strong> z {String(result.totalTrendings || 0)}

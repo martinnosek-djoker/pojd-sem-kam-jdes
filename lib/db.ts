@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
 // CRUD operations
@@ -575,6 +575,188 @@ export async function bulkInsertBakeries(
 
   if (error) {
     console.error("Error bulk inserting bakeries:", error);
+    throw error;
+  }
+
+  return data?.length || 0;
+}
+
+// ============================================
+// CAFE OPERATIONS
+// ============================================
+
+export async function getAllCafes(): Promise<Cafe[]> {
+  const { data, error } = await supabase
+    .from("cafes")
+    .select("*")
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching cafes:", error);
+    throw error;
+  }
+
+  return data || [];
+}
+
+export async function getCafeById(id: number): Promise<Cafe | null> {
+  const { data, error } = await supabase
+    .from("cafes")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching cafe:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function createCafe(input: CafeInput): Promise<Cafe> {
+  const { data, error } = await supabase
+    .from("cafes")
+    .insert({
+      name: input.name,
+      location: input.location,
+      addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
+      website_url: input.website_url || null,
+      image_url: input.image_url || null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating cafe:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateCafe(
+  id: number,
+  input: CafeInput
+): Promise<Cafe | null> {
+  const { data, error } = await supabase
+    .from("cafes")
+    .update({
+      name: input.name,
+      location: input.location,
+      addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
+      website_url: input.website_url || null,
+      image_url: input.image_url || null,
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating cafe:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function deleteCafe(id: number): Promise<boolean> {
+  const { error } = await supabase
+    .from("cafes")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting cafe:", error);
+    return false;
+  }
+
+  return true;
+}
+
+// Get unique locations for cafes
+export async function getUniqueCafeLocations(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("cafes")
+    .select("location")
+    .order("location", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching cafe locations:", error);
+    return [];
+  }
+
+  // Split locations by comma, normalize, and deduplicate
+  const allLocations: string[] = [];
+
+  data.forEach((row) => {
+    if (row.location) {
+      // Split by comma and normalize with proper Czech capitalization
+      const parts = row.location.split(',').map((part: string) => part.trim());
+      parts.forEach((part: string) => {
+        if (part) {
+          const normalized = normalizeLocationName(part);
+          allLocations.push(normalized);
+        }
+      });
+    }
+  });
+
+  // Get unique locations (case-insensitive)
+  const uniqueMap = new Map<string, string>();
+  allLocations.forEach((loc: string) => {
+    const key = loc.toLowerCase();
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, loc);
+    }
+  });
+
+  return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
+}
+
+// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs, images and addresses)
+export async function bulkInsertCafes(
+  cafes: CafeInput[]
+): Promise<number> {
+  // Get existing cafes to preserve their URLs, images, addresses and coordinates
+  const { data: existingCafes } = await supabase
+    .from("cafes")
+    .select("name, website_url, image_url, addresses, coordinates");
+
+  const existingDataMap = new Map(
+    (existingCafes || []).map(c => [c.name, {
+      website_url: c.website_url,
+      image_url: c.image_url,
+      addresses: c.addresses,
+      coordinates: c.coordinates
+    }])
+  );
+
+  const insertData = cafes.map((cafe) => {
+    const existing = existingDataMap.get(cafe.name);
+    return {
+      name: cafe.name,
+      location: cafe.location,
+      addresses: cafe.addresses || existing?.addresses || null,
+      coordinates: cafe.coordinates || existing?.coordinates || null,
+      // Preserve existing URLs if CSV doesn't have them
+      website_url: cafe.website_url || existing?.website_url || null,
+      image_url: cafe.image_url || existing?.image_url || null,
+    };
+  });
+
+  const { data, error } = await supabase
+    .from("cafes")
+    .upsert(insertData, {
+      onConflict: 'name',
+      ignoreDuplicates: false
+    })
+    .select();
+
+  if (error) {
+    console.error("Error bulk inserting cafes:", error);
     throw error;
   }
 

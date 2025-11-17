@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import BakeryCard from "@/components/BakeryCard";
+import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
-import { Restaurant, Bakery, Coordinates } from "@/lib/types";
+import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition } from "@/lib/geolocation";
 
 interface RestaurantWithDistance extends Restaurant {
@@ -19,12 +20,19 @@ interface BakeryWithDistance extends Bakery {
   type: 'bakery';
 }
 
-type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance;
+interface CafeWithDistance extends Cafe {
+  distance: number;
+  displayLocation?: string;
+  type: 'cafe';
+}
+
+type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance | CafeWithDistance;
 
 export default function NearbyRestaurants() {
   
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [bakeries, setBakeries] = useState<Bakery[]>([]);
+  const [cafes, setCafes] = useState<Cafe[]>([]);
   const [nearbyPlaces, setNearbyPlaces] = useState<PlaceWithDistance[]>([]);
   const [loading, setLoading] = useState(true);
   const [gettingLocation, setGettingLocation] = useState(false);
@@ -42,17 +50,19 @@ export default function NearbyRestaurants() {
     return options[currentIndex + 1];
   };
 
-  // Fetch all restaurants and bakeries
+  // Fetch all restaurants, bakeries and cafes
   useEffect(() => {
     async function fetchData() {
       try {
-        const [restaurantsRes, bakeriesRes] = await Promise.all([
+        const [restaurantsRes, bakeriesRes, cafesRes] = await Promise.all([
           fetch("/api/restaurants"),
           fetch("/api/bakeries"),
+          fetch("/api/cafes"),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const bakeriesData = await bakeriesRes.json();
+        const cafesData = await cafesRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -60,6 +70,10 @@ export default function NearbyRestaurants() {
 
         if (Array.isArray(bakeriesData)) {
           setBakeries(bakeriesData);
+        }
+
+        if (Array.isArray(cafesData)) {
+          setCafes(cafesData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -70,9 +84,9 @@ export default function NearbyRestaurants() {
     fetchData();
   }, []);
 
-  // Calculate nearby places (restaurants and bakeries) when user location or radius changes
+  // Calculate nearby places (restaurants, bakeries and cafes) when user location or radius changes
   useEffect(() => {
-    if (!userLocation || (!restaurants.length && !bakeries.length)) {
+    if (!userLocation || (!restaurants.length && !bakeries.length && !cafes.length)) {
       setNearbyPlaces([]);
       return;
     }
@@ -128,11 +142,35 @@ export default function NearbyRestaurants() {
       });
     });
 
+    // Process cafes
+    cafes.forEach((cafe) => {
+      if (!cafe.coordinates) return;
+
+      // Split locations and process each branch
+      const locations = cafe.location.split(',').map(l => l.trim());
+
+      locations.forEach((location) => {
+        const coords = cafe.coordinates![location];
+        if (!coords) return;
+
+        const distance = calculateDistance(userLocation, coords);
+
+        if (distance <= radiusKm) {
+          placesWithDistance.push({
+            ...cafe,
+            distance,
+            displayLocation: location,
+            type: 'cafe',
+          });
+        }
+      });
+    });
+
     // Sort by distance
     placesWithDistance.sort((a, b) => a.distance - b.distance);
 
     setNearbyPlaces(placesWithDistance);
-  }, [userLocation, radiusKm, restaurants, bakeries]);
+  }, [userLocation, radiusKm, restaurants, bakeries, cafes]);
 
   const handleGetLocation = async () => {
     setGettingLocation(true);
@@ -248,7 +286,7 @@ export default function NearbyRestaurants() {
               Klikni na tlačítko výše
             </p>
             <p className="text-sm text-gray-500">
-              Najdeme ti nejbližší restaurace a cukrárny
+              Najdeme ti nejbližší restaurace, kavárny a cukrárny
             </p>
           </div>
         ) : nearbyPlaces.length === 0 ? (
@@ -295,9 +333,14 @@ export default function NearbyRestaurants() {
                       restaurant={place}
                       forceLocation={place.displayLocation}
                     />
-                  ) : (
+                  ) : place.type === 'bakery' ? (
                     <BakeryCard
                       bakery={place}
+                      forceLocation={place.displayLocation}
+                    />
+                  ) : (
+                    <CafeCard
+                      cafe={place}
                       forceLocation={place.displayLocation}
                     />
                   )}

@@ -1,75 +1,186 @@
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
+import { Cafe } from "@/lib/types";
+import { mapLocationToGroup } from "@/lib/location-groups";
 
 export default function CafesPage() {
+
+
+  const [cafes, setCafes] = useState<Cafe[]>([]);
+  const [filteredCafes, setFilteredCafes] = useState<Cafe[]>([]);
+  const [allLocations, setAllLocations] = useState<string[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // Fetch cafes and filters
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [cafesRes, filtersRes] = await Promise.all([
+          fetch("/api/cafes"),
+          fetch("/api/cafes/filters"),
+        ]);
+
+        const cafesData = await cafesRes.json();
+        const filtersData = await filtersRes.json();
+
+        // Validate that cafesData is an array
+        if (Array.isArray(cafesData)) {
+          setCafes(cafesData);
+          setFilteredCafes(cafesData);
+        } else {
+          console.error("Cafes data is not an array:", cafesData);
+          setCafes([]);
+          setFilteredCafes([]);
+        }
+
+        // Validate filters data
+        if (filtersData && Array.isArray(filtersData.locations)) {
+          setAllLocations(filtersData.locations);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setCafes([]);
+        setFilteredCafes([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // Calculate available filter options based on current selection
+  const availableLocations = useMemo(() => {
+    return allLocations;
+  }, [allLocations]);
+
+  // Apply filters
+  useEffect(() => {
+    let filtered = cafes;
+
+    if (selectedLocation) {
+      filtered = filtered.filter((c) => {
+        const groups = c.location
+          .split(',')
+          .map(loc => mapLocationToGroup(loc).toLowerCase());
+        return groups.some(g => g === selectedLocation.toLowerCase());
+      });
+    }
+
+    // Sort by name
+    filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+
+    setFilteredCafes(filtered);
+  }, [selectedLocation, cafes]);
+
+  const handleReset = () => {
+    setSelectedLocation("");
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen p-8 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <Logo />
+          </div>
+          <p className="text-lg text-gray-400 text-center">Načítání...</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
+        <div className="mb-6 md:mb-12 text-center">
+          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">Kavárny</h1>
-          <p className="text-lg text-gray-300">
-            Nejlepší kavárny v Praze
+          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">Kavárny</h1>
+          <p className="text-sm md:text-lg text-gray-300 mt-2">
+            Nejlepší kavárny v Praze od{" "}
+            <a
+              href="https://www.instagram.com/pecu_si_zivot/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
+            >
+              @Peču si život
+            </a>
           </p>
         </div>
 
-        {/* Coming Soon Content */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 rounded-xl border-2 border-purple-500/30 p-12 text-center shadow-2xl">
-            <div className="text-6xl mb-6">☕</div>
-            <h2 className="text-3xl font-bold text-purple-400 mb-4">Brzy...</h2>
-            <p className="text-lg text-gray-300 mb-6">
-              Připravujeme pro vás přehled těch nejlepších kaváren v Praze
-            </p>
-            <div className="space-y-4 text-left bg-black/30 rounded-lg p-6 border border-purple-500/20">
-              <h3 className="text-xl font-semibold text-purple-300 text-center mb-4">Co můžete očekávat</h3>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">☕</span>
-                <div>
-                  <p className="text-purple-300 font-medium">Specialitní kávy</p>
-                  <p className="text-sm text-gray-400">Kavárny s nejlepší kávou ve městě</p>
-                </div>
+        {/* Location Filter */}
+        {availableLocations.length > 0 && (
+          <div className="mb-8 p-6 bg-gray-900/50 border border-purple-500/30 rounded-lg">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-end justify-between">
+              <div className="flex-1 w-full">
+                <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
+                  Lokalita
+                </label>
+                <select
+                  id="location"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="w-full px-4 py-2 border border-purple-600 rounded-md bg-black text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-no-repeat bg-right"
+                  style={{
+                    backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a78bfa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundSize: "1.5em 1.5em"
+                  }}
+                >
+                  <option value="">Všechny lokality</option>
+                  {availableLocations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">🍰</span>
-                <div>
-                  <p className="text-purple-300 font-medium">Domácí dezerty</p>
-                  <p className="text-sm text-gray-400">Místa s vlastní cukrárnou a čerstvými zákusky</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">📚</span>
-                <div>
-                  <p className="text-purple-300 font-medium">Knihovny a coworking</p>
-                  <p className="text-sm text-gray-400">Kavárny, kde můžete pracovat nebo si číst</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">🌿</span>
-                <div>
-                  <p className="text-purple-300 font-medium">Příjemná atmosféra</p>
-                  <p className="text-sm text-gray-400">Nejhezčí a nejútulnější kavárny</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-purple-500/30">
-              <p className="text-sm text-gray-400">
-                Sledujte náš Instagram pro novinky
-              </p>
-              <a
-                href="https://www.instagram.com/pecu_si_zivot/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-3 px-6 py-3 bg-purple-600/20 text-purple-300 rounded-lg hover:bg-purple-600/30 transition-all duration-300 border border-purple-500/50"
-              >
-                <span className="text-xl">📸</span>
-                <span className="font-medium">@Peču si život</span>
-              </a>
+
+              {selectedLocation && (
+                <button
+                  onClick={handleReset}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 whitespace-nowrap"
+                >
+                  Resetovat filtr
+                </button>
+              )}
             </div>
           </div>
+        )}
+
+        {/* Count */}
+        <div className="flex justify-between items-center mb-8">
+          <p className="text-gray-400 text-sm">
+            Nalezeno <span className="font-semibold text-purple-400">{filteredCafes.length}</span> {filteredCafes.length === 1 ? "kavárnu" : filteredCafes.length < 5 ? "kavárny" : "kaváren"}
+          </p>
         </div>
+
+        {/* Cafe grid */}
+        {filteredCafes.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-xl text-gray-400 mb-8">Nebyly nalezeny žádné kavárny</p>
+            <button
+              onClick={handleReset}
+              className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50"
+            >
+              Resetovat filtry
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredCafes.map((cafe) => (
+              <CafeCard key={cafe.id} cafe={cafe} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

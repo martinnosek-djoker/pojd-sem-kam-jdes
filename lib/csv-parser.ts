@@ -1,9 +1,10 @@
-import { RestaurantInput, TrendingInput, BakeryInput } from "./types";
+import { RestaurantInput, TrendingInput, BakeryInput, CafeInput } from "./types";
 
 export interface CSVParseResult {
   restaurants: Restaurant[];
   trendings: Trending[];
   bakeries: Bakery[];
+  cafes: Cafe[];
   errors: { row: number; error: string }[];
 }
 
@@ -20,13 +21,19 @@ interface Bakery extends Omit<BakeryInput, 'website_url'> {
   website_url?: string | null;
 }
 
+interface Cafe extends Omit<CafeInput, 'website_url'> {
+  website_url?: string | null;
+}
+
 export function parseRestaurantCSV(csvContent: string): CSVParseResult {
   const lines = csvContent.split("\n");
   const restaurants: Restaurant[] = [];
   const trendings: Trending[] = [];
   const bakeries: Bakery[] = [];
+  const cafes: Cafe[] = [];
   const trendingNames = new Set<string>();
   const bakeryNames = new Set<string>();
+  const cafeNames = new Set<string>();
   const errors: { row: number; error: string }[] = [];
 
   // Parse TOP 10 trendings from rows 2-11 (Excel D2:D11, array indices 1-10)
@@ -48,6 +55,33 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
       }
     } catch (error) {
       // Ignore errors in trending parsing
+    }
+  }
+
+  // Parse cafes from columns L and M (indices 11 and 12)
+  // Start from row 4 (index 3) same as restaurants
+  for (let i = 3; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    try {
+      const columns = parseCSVLine(line);
+
+      // Column L (index 11): cafe name
+      // Column M (index 12): cafe location
+      const cafeName = columns[11]?.trim();
+      const cafeLocation = columns[12]?.trim();
+
+      if (cafeName && cafeLocation && !cafeNames.has(cafeName)) {
+        cafeNames.add(cafeName);
+        cafes.push({
+          name: cafeName,
+          location: cafeLocation,
+          website_url: null,
+        });
+      }
+    } catch (error) {
+      // Don't add errors for cafe parsing failures - they're optional
     }
   }
 
@@ -160,7 +194,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
     }
   }
 
-  return { restaurants, trendings, bakeries, errors };
+  return { restaurants, trendings, bakeries, cafes, errors };
 }
 
 // Helper function to parse CSV line (handles commas in quotes)
