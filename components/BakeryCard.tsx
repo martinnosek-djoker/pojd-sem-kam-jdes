@@ -1,4 +1,5 @@
 import { Bakery } from "@/lib/types";
+import { getProxiedImageUrl } from "@/lib/api-config";
 
 interface BakeryCardProps {
   bakery: Bakery;
@@ -6,13 +7,15 @@ interface BakeryCardProps {
 }
 
 export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
+  const proxiedImageUrl = getProxiedImageUrl(bakery.image_url);
+
   const CardContent = () => (
     <>
       {/* Image Header */}
-      {bakery.image_url ? (
+      {proxiedImageUrl ? (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
-            src={bakery.image_url}
+            src={proxiedImageUrl}
             alt={bakery.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />

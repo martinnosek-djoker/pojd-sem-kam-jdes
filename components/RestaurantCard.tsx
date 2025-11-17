@@ -1,4 +1,5 @@
 import { Restaurant } from "@/lib/types";
+import { getProxiedImageUrl } from "@/lib/api-config";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -6,6 +7,7 @@ interface RestaurantCardProps {
 }
 
 export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
+  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -43,10 +45,10 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
   const CardContent = () => (
     <>
       {/* Image Header */}
-      {restaurant.image_url ? (
+      {proxiedImageUrl ? (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
-            src={restaurant.image_url}
+            src={proxiedImageUrl}
             alt={restaurant.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />

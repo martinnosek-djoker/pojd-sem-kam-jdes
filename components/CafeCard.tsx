@@ -1,4 +1,5 @@
 import { Cafe } from "@/lib/types";
+import { getProxiedImageUrl } from "@/lib/api-config";
 
 interface CafeCardProps {
   cafe: Cafe;
@@ -6,13 +7,15 @@ interface CafeCardProps {
 }
 
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
+  const proxiedImageUrl = getProxiedImageUrl(cafe.image_url);
+
   const CardContent = () => (
     <>
       {/* Image Header */}
-      {cafe.image_url ? (
+      {proxiedImageUrl ? (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
-            src={cafe.image_url}
+            src={proxiedImageUrl}
             alt={cafe.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />

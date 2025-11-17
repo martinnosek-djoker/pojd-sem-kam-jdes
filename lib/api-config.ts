@@ -17,6 +17,20 @@ export function getApiUrl(endpoint: string): string {
   return `${API_BASE_URL}${normalizedEndpoint}`;
 }
 
+// Helper pro proxy obrázků (Google Maps API)
+export function getProxiedImageUrl(imageUrl: string | null | undefined): string | null {
+  if (!imageUrl) return null;
+
+  // V mobilní appce používáme proxy endpoint pro obrázky z Google Maps
+  if (IS_MOBILE && imageUrl.includes('maps.googleapis.com')) {
+    const encodedUrl = encodeURIComponent(imageUrl);
+    return `${API_BASE_URL}/api/proxy/image?url=${encodedUrl}`;
+  }
+
+  // Na webu vrátíme původní URL
+  return imageUrl;
+}
+
 // Log environment info (useful for debugging)
 if (typeof window !== 'undefined') {
   console.log('[API Config]', {

@@ -39,7 +39,15 @@ export default function HamburgerMenu() {
     { href: `/akce`, label: 'Gastro akce', badge: 'Brzy' },
   ];
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => {
+    // Normalizace pathname - odstranění trailing slash a získání jen path část
+    const normalizedPathname = pathname.replace(/\/$/, '') || '/';
+    const normalizedHref = href.replace(/\/$/, '') || '/';
+
+    // Přesná shoda nebo zkontroluj, zda pathname začíná href (pro vnořené routes)
+    return normalizedPathname === normalizedHref ||
+           (normalizedHref !== '/' && normalizedPathname.startsWith(normalizedHref + '/'));
+  };
 
   return (
     <>

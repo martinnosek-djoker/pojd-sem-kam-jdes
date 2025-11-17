@@ -1,15 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllCafes, createCafe } from "@/lib/db";
 import { cafeSchema } from "@/lib/types";
+import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
+
+// OPTIONS /api/cafes - Handle CORS preflight
+export async function OPTIONS() {
+  return handleOptionsRequest();
+}
 
 // GET /api/cafes - Get all cafes
 export async function GET() {
   try {
     const cafes = await getAllCafes();
-    return NextResponse.json(cafes);
+    return jsonWithCors(cafes);
   } catch (error: any) {
     console.error("Error in /api/cafes:", error);
-    return NextResponse.json(
+    return jsonWithCors(
       { error: "Nepodařilo se načíst kavárny", details: error.message },
       { status: 500 }
     );
