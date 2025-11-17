@@ -5,14 +5,19 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: {
-    default: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš? | Nejlepší restaurace v Praze",
+    default: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš? | Nejlepší restaurace, kavárny a cukrárny v Praze",
     template: "%s | Pojď sem! Kam jdeš?",
   },
   description:
-    "TOP 10 podniků, o kterých se dnes mluví v Praze! Objevte trendy restaurace, kavárny a cukrárny. Osobní doporučení nejlepších míst podle lokality, typu kuchyně nebo ve vašem okolí.",
+    "TOP 10 podniků, o kterých se dnes mluví v Praze! Objevte trendy restaurace, nejlepší kavárny a cukrárny v Praze. Osobní doporučení podle lokality, typu kuchyně nebo ve vašem okolí.",
   keywords: [
     "top 10 podniků o kterých se dnes mluví",
     "top 10 podniků praha",
+    "cukrárny v Praze",
+    "nejlepší cukrárny Praha",
+    "kam na dort Praha",
+    "kavárny v Praze",
+    "nejlepší kavárny Praha",
     "trendy restaurace Praha",
     "nejlepší restaurace Praha",
     "kam na jídlo Praha",
@@ -25,8 +30,6 @@ export const metadata = {
     "světové kuchyně Praha",
     "italská restaurace Praha",
     "asijská restaurace Praha",
-    "kavárny Praha",
-    "cukrárny Praha",
   ],
   authors: [{ name: "Peču si život", url: "https://www.instagram.com/pecu_si_zivot/" }],
   creator: "Peču si život",
