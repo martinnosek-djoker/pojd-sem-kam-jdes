@@ -69,10 +69,20 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error importing CSV:", error);
+
+    let errorDetails = "Unknown error";
+    if (error instanceof Error) {
+      errorDetails = error.message;
+    } else if (typeof error === 'object' && error !== null) {
+      errorDetails = JSON.stringify(error);
+    } else {
+      errorDetails = String(error);
+    }
+
     return NextResponse.json(
       {
         error: "Nepodařilo se importovat CSV soubor",
-        details: error instanceof Error ? error.message : String(error)
+        details: errorDetails
       },
       { status: 500 }
     );
