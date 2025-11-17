@@ -262,7 +262,7 @@ export default function Home() {
             </a>
           </p>
           <p className="text-sm md:text-base text-gray-400 mt-4 max-w-3xl mx-auto italic hidden sm:block">
-            Cílem této stránky není obsáhnout všechny možné podniky, kterých jsou v Praze stovky, ale ukázat vám ty, kde jsem osobně byl a kam se rád vracím.
+            Vítejte na stránce s mými oblíbenými podniky, které jsem navštívil a kam se moc rád vracím. Budu moc rád, když si některý z nich vyberete a strávíte tam příjemný čas.
           </p>
         </div>
 
