@@ -35,7 +35,7 @@ export default function HamburgerMenu() {
     { href: `/lokality`, label: 'Podle lokality' },
     { href: `/kuchyne`, label: 'Světové kuchyně' },
     { href: `/cukrarny`, label: 'Cukrárny', badge: 'Nové' },
-    { href: `/kavarny`, label: 'Kavárny', badge: 'Brzy' },
+    { href: `/kavarny`, label: 'Kavárny', badge: 'Nové' },
     { href: `/akce`, label: 'Gastro akce', badge: 'Brzy' },
   ];
 
@@ -95,7 +95,7 @@ export default function HamburgerMenu() {
                 >
                   <span className="flex-1 font-medium">{item.label}</span>
                   {item.badge && (
-                    <span className="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/30">
+                    <span className="px-2.5 py-1 text-xs font-semibold bg-purple-500 text-white rounded-full border border-purple-400 shadow-lg shadow-purple-500/50 animate-pulse">
                       {item.badge}
                     </span>
                   )}

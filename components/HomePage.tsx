@@ -267,8 +267,8 @@ export default function Home() {
         {trendings.length > 0 && (
           <div className="mb-8 md:mb-12">
             <div className="mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 Trending</h2>
-              <p className="text-sm md:text-base text-gray-400">Aktuálně nejoblíbenější místa</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 TOP 10 podniků, o kterých se dnes mluví</h2>
+              <p className="text-sm md:text-base text-gray-400">Nejžhavější tipy a trendy v pražské gastronomii</p>
             </div>
             {/* Mobile: Horizontal Carousel */}
             <div className="md:hidden relative">

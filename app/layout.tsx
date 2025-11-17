@@ -5,15 +5,20 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: {
-    default: "Pojď sem! Kam jdeš? | Nejlepší restaurace v Praze",
+    default: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš? | Nejlepší restaurace v Praze",
     template: "%s | Pojď sem! Kam jdeš?",
   },
   description:
-    "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze. Objevte skvělá místa na jídlo podle lokality, typu kuchyně nebo ve vašem okolí.",
+    "TOP 10 podniků, o kterých se dnes mluví v Praze! Objevte trendy restaurace, kavárny a cukrárny. Osobní doporučení nejlepších míst podle lokality, typu kuchyně nebo ve vašem okolí.",
   keywords: [
-    "restaurace Praha",
+    "top 10 podniků o kterých se dnes mluví",
+    "top 10 podniků praha",
+    "trendy restaurace Praha",
     "nejlepší restaurace Praha",
     "kam na jídlo Praha",
+    "trending restaurace",
+    "oblíbené restaurace Praha",
+    "nejžhavější restaurace",
     "restaurace v okolí",
     "doporučení restaurace",
     "české restaurace",
@@ -32,22 +37,22 @@ export const metadata = {
     locale: "cs_CZ",
     url: "https://www.pojdsemkamjdes.cz/",
     siteName: "Pojď sem! Kam jdeš?",
-    title: "Pojď sem! Kam jdeš? | Nejlepší restaurace v Praze",
+    title: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš?",
     description:
-      "Objevte nejlepší restaurace, kavárny a cukrárny v Praze. Osobní doporučení a tipy na skvělá místa.",
+      "Objevte TOP 10 podniků, o kterých se dnes mluví v Praze! Trendy restaurace, kavárny a cukrárny. Osobní doporučení nejlepších míst.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Pojď sem! Kam jdeš? - Restaurace v Praze",
+        alt: "TOP 10 podniků Praha - Pojď sem! Kam jdeš?",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pojď sem! Kam jdeš? | Nejlepší restaurace v Praze",
-    description: "Objevte nejlepší restaurace, kavárny a cukrárny v Praze",
+    title: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš?",
+    description: "Objevte trendy restaurace, kavárny a cukrárny v Praze. Nejžhavější tipy z pražské gastronomie.",
     images: ["/og-image.jpg"],
   },
   robots: {

@@ -12,17 +12,22 @@ export default function Icon() {
     (
       <div
         style={{
-          fontSize: 24,
-          background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
           width: '100%',
           height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: '20%',
         }}
       >
-        🍽️
+        <div
+          style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #a855f7 0%, #9333ea 100%)',
+            boxShadow: '0 4px 8px rgba(168, 85, 247, 0.3)',
+          }}
+        />
       </div>
     ),
     {
