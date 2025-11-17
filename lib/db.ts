@@ -147,28 +147,31 @@ export async function getUniqueLocations(): Promise<string[]> {
     return [];
   }
 
-  // Split locations by comma, normalize, and deduplicate
-  const allLocations: string[] = [];
+  // Import mapLocationToGroup dynamically to avoid circular dependencies
+  const { mapLocationToGroup } = await import('./location-groups');
+
+  // Split locations by comma, map to groups, and deduplicate
+  const allGroups: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and normalize with proper Czech capitalization
+      // Split by comma and map each part to its group
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const normalized = normalizeLocationName(part);
-          allLocations.push(normalized);
+          const group = mapLocationToGroup(part);
+          allGroups.push(group);
         }
       });
     }
   });
 
-  // Get unique locations (case-insensitive)
+  // Get unique groups (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allLocations.forEach((loc: string) => {
-    const key = loc.toLowerCase();
+  allGroups.forEach((group: string) => {
+    const key = group.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, loc);
+      uniqueMap.set(key, group);
     }
   });
 
@@ -499,35 +502,38 @@ export async function getUniqueBakeryLocations(): Promise<string[]> {
   const { data, error } = await supabase
     .from("bakeries")
     .select("location")
-    .order("location", { ascending: true });
+    .order("location", { ascending: true});
 
   if (error) {
     console.error("Error fetching bakery locations:", error);
     return [];
   }
 
-  // Split locations by comma, normalize, and deduplicate
-  const allLocations: string[] = [];
+  // Import mapLocationToGroup dynamically to avoid circular dependencies
+  const { mapLocationToGroup } = await import('./location-groups');
+
+  // Split locations by comma, map to groups, and deduplicate
+  const allGroups: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and normalize with proper Czech capitalization
+      // Split by comma and map each part to its group
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const normalized = normalizeLocationName(part);
-          allLocations.push(normalized);
+          const group = mapLocationToGroup(part);
+          allGroups.push(group);
         }
       });
     }
   });
 
-  // Get unique locations (case-insensitive)
+  // Get unique groups (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allLocations.forEach((loc: string) => {
-    const key = loc.toLowerCase();
+  allGroups.forEach((group: string) => {
+    const key = group.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, loc);
+      uniqueMap.set(key, group);
     }
   });
 
@@ -681,35 +687,38 @@ export async function getUniqueCafeLocations(): Promise<string[]> {
   const { data, error } = await supabase
     .from("cafes")
     .select("location")
-    .order("location", { ascending: true });
+    .order("location", { ascending: true});
 
   if (error) {
     console.error("Error fetching cafe locations:", error);
     return [];
   }
 
-  // Split locations by comma, normalize, and deduplicate
-  const allLocations: string[] = [];
+  // Import mapLocationToGroup dynamically to avoid circular dependencies
+  const { mapLocationToGroup } = await import('./location-groups');
+
+  // Split locations by comma, map to groups, and deduplicate
+  const allGroups: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and normalize with proper Czech capitalization
+      // Split by comma and map each part to its group
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const normalized = normalizeLocationName(part);
-          allLocations.push(normalized);
+          const group = mapLocationToGroup(part);
+          allGroups.push(group);
         }
       });
     }
   });
 
-  // Get unique locations (case-insensitive)
+  // Get unique groups (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allLocations.forEach((loc: string) => {
-    const key = loc.toLowerCase();
+  allGroups.forEach((group: string) => {
+    const key = group.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, loc);
+      uniqueMap.set(key, group);
     }
   });
 
