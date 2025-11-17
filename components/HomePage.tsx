@@ -7,7 +7,7 @@ import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
 import Logo from "@/components/Logo";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
-import { mapLocationToGroup } from "@/lib/location-groups";
+import { normalizeLocationName } from "@/lib/location-utils";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -79,10 +79,13 @@ export default function Home() {
     const cuisineSet = new Set<string>();
 
     restaurantList.forEach((r) => {
-      // Split and group locations
+      // Split and normalize locations with proper Czech capitalization
       r.location.split(',').forEach((loc: string) => {
-        const grouped = mapLocationToGroup(loc);
-        if (grouped) locationSet.add(grouped);
+        const trimmed = loc.trim();
+        if (trimmed) {
+          const normalized = normalizeLocationName(trimmed);
+          locationSet.add(normalized);
+        }
       });
 
       // Split and normalize cuisine types
@@ -126,9 +129,10 @@ export default function Home() {
       const options = getOptionsFromRestaurants(filtered);
       return options.locations;
     }
-    // Otherwise show all locations
-    return allLocations;
-  }, [selectedCuisineType, restaurants, allLocations, getOptionsFromRestaurants]);
+    // Otherwise show locations from all restaurants (not from API)
+    const options = getOptionsFromRestaurants(restaurants);
+    return options.locations;
+  }, [selectedCuisineType, restaurants, getOptionsFromRestaurants]);
 
   const availableCuisineTypes = useMemo(() => {
     // If location is selected, show only cuisine types available in that location
@@ -174,11 +178,11 @@ export default function Home() {
 
     if (selectedLocation) {
       filtered = filtered.filter((r) => {
-        // Split by comma, map to groups and check match (case-insensitive)
-        const groups = r.location
+        // Split by comma, normalize with proper Czech capitalization and check match (case-insensitive)
+        const locations = r.location
           .split(',')
-          .map(loc => mapLocationToGroup(loc).toLowerCase());
-        return groups.some(g => g === selectedLocation.toLowerCase());
+          .map(loc => normalizeLocationName(loc.trim()));
+        return locations.some(loc => loc.toLowerCase() === selectedLocation.toLowerCase());
       });
     }
 
