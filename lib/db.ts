@@ -147,31 +147,28 @@ export async function getUniqueLocations(): Promise<string[]> {
     return [];
   }
 
-  // Import mapLocationToGroup dynamically to avoid circular dependencies
-  const { mapLocationToGroup } = await import('./location-groups');
-
-  // Split locations by comma, map to groups, and deduplicate
-  const allGroups: string[] = [];
+  // Split locations by comma, normalize, and deduplicate
+  const allLocations: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and map each part to its group
+      // Split by comma and normalize with proper Czech capitalization
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const group = mapLocationToGroup(part);
-          allGroups.push(group);
+          const normalized = normalizeLocationName(part);
+          allLocations.push(normalized);
         }
       });
     }
   });
 
-  // Get unique groups (case-insensitive)
+  // Get unique locations (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allGroups.forEach((group: string) => {
-    const key = group.toLowerCase();
+  allLocations.forEach((loc: string) => {
+    const key = loc.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, group);
+      uniqueMap.set(key, loc);
     }
   });
 
@@ -509,31 +506,28 @@ export async function getUniqueBakeryLocations(): Promise<string[]> {
     return [];
   }
 
-  // Import mapLocationToGroup dynamically to avoid circular dependencies
-  const { mapLocationToGroup } = await import('./location-groups');
-
-  // Split locations by comma, map to groups, and deduplicate
-  const allGroups: string[] = [];
+  // Split locations by comma, normalize, and deduplicate
+  const allLocations: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and map each part to its group
+      // Split by comma and normalize with proper Czech capitalization
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const group = mapLocationToGroup(part);
-          allGroups.push(group);
+          const normalized = normalizeLocationName(part);
+          allLocations.push(normalized);
         }
       });
     }
   });
 
-  // Get unique groups (case-insensitive)
+  // Get unique locations (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allGroups.forEach((group: string) => {
-    const key = group.toLowerCase();
+  allLocations.forEach((loc: string) => {
+    const key = loc.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, group);
+      uniqueMap.set(key, loc);
     }
   });
 
@@ -694,31 +688,28 @@ export async function getUniqueCafeLocations(): Promise<string[]> {
     return [];
   }
 
-  // Import mapLocationToGroup dynamically to avoid circular dependencies
-  const { mapLocationToGroup } = await import('./location-groups');
-
-  // Split locations by comma, map to groups, and deduplicate
-  const allGroups: string[] = [];
+  // Split locations by comma, normalize, and deduplicate
+  const allLocations: string[] = [];
 
   data.forEach((row) => {
     if (row.location) {
-      // Split by comma and map each part to its group
+      // Split by comma and normalize with proper Czech capitalization
       const parts = row.location.split(',').map((part: string) => part.trim());
       parts.forEach((part: string) => {
         if (part) {
-          const group = mapLocationToGroup(part);
-          allGroups.push(group);
+          const normalized = normalizeLocationName(part);
+          allLocations.push(normalized);
         }
       });
     }
   });
 
-  // Get unique groups (case-insensitive)
+  // Get unique locations (case-insensitive)
   const uniqueMap = new Map<string, string>();
-  allGroups.forEach((group: string) => {
-    const key = group.toLowerCase();
+  allLocations.forEach((loc: string) => {
+    const key = loc.toLowerCase();
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, group);
+      uniqueMap.set(key, loc);
     }
   });
 

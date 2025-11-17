@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo } from "react";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
-import { mapLocationToGroup } from "@/lib/location-groups";
 import { getApiUrl } from "@/lib/api-config";
 
 export default function BakeriesPage() {
@@ -65,10 +64,10 @@ export default function BakeriesPage() {
 
     if (selectedLocation) {
       filtered = filtered.filter((b) => {
-        const groups = b.location
+        const locations = b.location
           .split(',')
-          .map(loc => mapLocationToGroup(loc).toLowerCase());
-        return groups.some(g => g === selectedLocation.toLowerCase());
+          .map(loc => loc.trim().toLowerCase());
+        return locations.some(loc => loc === selectedLocation.toLowerCase());
       });
     }
 
