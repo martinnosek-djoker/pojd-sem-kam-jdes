@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Event, EventInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
 // CRUD operations
@@ -761,4 +761,107 @@ export async function bulkInsertCafes(
   }
 
   return data?.length || 0;
+}
+
+// ====================
+// EVENT CRUD OPERATIONS
+// ====================
+
+export async function getAllEvents(): Promise<Event[]> {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching events:", error);
+    throw error;
+  }
+
+  return data || [];
+}
+
+export async function getEventById(id: number): Promise<Event | null> {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching event:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function createEvent(input: EventInput): Promise<Event> {
+  const { data, error } = await supabase
+    .from("events")
+    .insert({
+      name: input.name,
+      location: input.location || null,
+      date: input.date || null,
+      link: input.link || null,
+      display_order: input.display_order,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating event:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateEvent(id: number, input: EventInput): Promise<Event> {
+  const { data, error } = await supabase
+    .from("events")
+    .update({
+      name: input.name,
+      location: input.location || null,
+      date: input.date || null,
+      link: input.link || null,
+      display_order: input.display_order,
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating event:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function deleteEvent(id: number): Promise<void> {
+  const { error } = await supabase
+    .from("events")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting event:", error);
+    throw error;
+  }
+}
+
+export async function updateEventOrder(updates: { id: number; display_order: number }[]): Promise<void> {
+  // Update one by one
+  for (const update of updates) {
+    const { error: updateError } = await supabase
+      .from("events")
+      .update({ display_order: update.display_order })
+      .eq("id", update.id);
+
+    if (updateError) {
+      console.error("Error updating event order:", updateError);
+      throw updateError;
+    }
+  }
 }

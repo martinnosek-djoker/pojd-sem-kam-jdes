@@ -166,3 +166,25 @@ export interface CSVCafe {
   name: string;
   location: string;
 }
+
+// Event types
+export interface Event {
+  id: number;
+  name: string;
+  location: string | null;
+  date: string | null;
+  link: string | null;
+  display_order: number;
+  created_at: string;
+}
+
+// Zod validation schemas for event
+export const eventSchema = z.object({
+  name: z.string().min(1, "Název akce je povinný"),
+  location: z.string().optional().nullable().or(z.literal("")),
+  date: z.string().optional().nullable().or(z.literal("")),
+  link: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
+});
+
+export type EventInput = z.infer<typeof eventSchema>;

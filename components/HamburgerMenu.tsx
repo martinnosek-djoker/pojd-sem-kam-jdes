@@ -36,7 +36,7 @@ export default function HamburgerMenu() {
     { href: `/kuchyne`, label: 'Světové kuchyně' },
     { href: `/cukrarny`, label: 'Cukrárny', badge: 'Nové' },
     { href: `/kavarny`, label: 'Kavárny', badge: 'Nové' },
-    { href: `/akce`, label: 'Gastro akce', badge: 'Brzy' },
+    { href: `/akce`, label: 'Gastro akce', badge: 'Nové' },
   ];
 
   const isActive = (href: string) => {
