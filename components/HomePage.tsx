@@ -261,6 +261,9 @@ export default function Home() {
               @Peču si život
             </a>
           </p>
+          <p className="text-sm md:text-base text-gray-400 mt-4 max-w-3xl mx-auto italic hidden sm:block">
+            Cílem této stránky není obsáhnout všechny možné podniky, kterých jsou v Praze stovky, ale ukázat vám ty, kde jsem osobně byl a kam se rád vracím.
+          </p>
         </div>
 
         {/* Trendings Section */}
