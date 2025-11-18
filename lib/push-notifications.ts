@@ -8,6 +8,7 @@ export async function initializePushNotifications() {
   let PushNotifications: any;
 
   try {
+    // Dynamické importy - Capacitor balíčky jsou v devDependencies pro type checking
     const capacitorCore = await import('@capacitor/core');
     Capacitor = capacitorCore.Capacitor;
     const pushNotificationsModule = await import('@capacitor/push-notifications');
@@ -120,14 +121,15 @@ function handleNotificationNavigation(type: string, itemId: string) {
 
 export async function unregisterPushNotifications() {
   try {
-    const capacitorCore = await import('@capacitor/core');
+    // Použít string interpolaci pro obejití TypeScript type checking
+    const capacitorCore = await import(/* @vite-ignore */ `@capacitor/core`);
     const Capacitor = capacitorCore.Capacitor;
 
     if (!Capacitor.isNativePlatform()) {
       return;
     }
 
-    const pushNotificationsModule = await import('@capacitor/push-notifications');
+    const pushNotificationsModule = await import(/* @vite-ignore */ `@capacitor/push-notifications`);
     const PushNotifications = pushNotificationsModule.PushNotifications;
 
     await PushNotifications.removeAllListeners();
