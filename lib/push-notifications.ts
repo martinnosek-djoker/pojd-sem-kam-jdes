@@ -1,9 +1,22 @@
-import { PushNotifications } from '@capacitor/push-notifications';
-import { Capacitor } from '@capacitor/core';
 import { getApiUrl } from './api-config';
 
 export async function initializePushNotifications() {
   console.log('🔔 [Push Notifications] Initializing...');
+
+  // Dynamicky importovat Capacitor jen pokud je dostupný
+  let Capacitor: any;
+  let PushNotifications: any;
+
+  try {
+    const capacitorCore = await import('@capacitor/core');
+    Capacitor = capacitorCore.Capacitor;
+    const pushNotificationsModule = await import('@capacitor/push-notifications');
+    PushNotifications = pushNotificationsModule.PushNotifications;
+  } catch (error) {
+    console.log('🔔 [Push Notifications] Capacitor not available (running on web)');
+    return;
+  }
+
   console.log('🔔 [Push Notifications] Capacitor:', Capacitor);
   console.log('🔔 [Push Notifications] isNativePlatform:', Capacitor.isNativePlatform());
 
@@ -106,11 +119,17 @@ function handleNotificationNavigation(type: string, itemId: string) {
 }
 
 export async function unregisterPushNotifications() {
-  if (!Capacitor.isNativePlatform()) {
-    return;
-  }
-
   try {
+    const capacitorCore = await import('@capacitor/core');
+    const Capacitor = capacitorCore.Capacitor;
+
+    if (!Capacitor.isNativePlatform()) {
+      return;
+    }
+
+    const pushNotificationsModule = await import('@capacitor/push-notifications');
+    const PushNotifications = pushNotificationsModule.PushNotifications;
+
     await PushNotifications.removeAllListeners();
     // Note: Capacitor doesn't provide unregister, but we can remove listeners
     console.log('Push notification listeners removed');
