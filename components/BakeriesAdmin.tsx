@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Bakery } from "@/lib/types";
 import BakeryForm from "./BakeryForm";
+import NotificationDialog from "./NotificationDialog";
 import { getApiUrl } from "@/lib/api-config";
 
 interface BakeriesAdminProps {
@@ -15,6 +16,8 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
   const [showForm, setShowForm] = useState(false);
   const [fetchingPhotos, setFetchingPhotos] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedBakery, setSavedBakery] = useState<Bakery | null>(null);
 
   const handleDelete = async (id: number) => {
     if (!confirm("Opravdu chcete smazat tuto cukrárnu?")) return;
@@ -40,6 +43,9 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
       setBakeries(bakeries.map((b) => (b.id === bakery.id ? bakery : b)));
     } else {
       setBakeries([bakery, ...bakeries]);
+      // Zobrazit notifikační dialog pro nově přidanou cukrárnu
+      setSavedBakery(bakery);
+      setShowNotificationDialog(true);
     }
     setEditingId(null);
     setShowForm(false);
@@ -242,6 +248,17 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
           </div>
         )}
       </div>
+
+      {/* Notification Dialog */}
+      {savedBakery && (
+        <NotificationDialog
+          isOpen={showNotificationDialog}
+          onClose={() => setShowNotificationDialog(false)}
+          itemName={savedBakery.name}
+          itemType="bakery"
+          itemId={savedBakery.id}
+        />
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Trending } from "@/lib/types";
 import TrendingForm from "./TrendingForm";
+import NotificationDialog from "./NotificationDialog";
 import {
   DndContext,
   closestCenter,
@@ -115,6 +116,8 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
   const [trendings, setTrendings] = useState(initialTrendings);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedTrending, setSavedTrending] = useState<Trending | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -147,6 +150,9 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
       setTrendings(trendings.map((t) => (t.id === trending.id ? trending : t)));
     } else {
       setTrendings([...trendings, trending]);
+      // Zobrazit notifikační dialog pro nově přidaný trending podnik
+      setSavedTrending(trending);
+      setShowNotificationDialog(true);
     }
     setEditingId(null);
     setShowForm(false);
@@ -293,6 +299,17 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
           </div>
         )}
       </div>
+
+      {/* Notification Dialog */}
+      {savedTrending && (
+        <NotificationDialog
+          isOpen={showNotificationDialog}
+          onClose={() => setShowNotificationDialog(false)}
+          itemName={savedTrending.name}
+          itemType="trending"
+          itemId={savedTrending.id}
+        />
+      )}
     </div>
   );
 }

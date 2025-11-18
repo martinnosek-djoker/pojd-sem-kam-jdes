@@ -1,5 +1,6 @@
 import "./globals.css";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import PushNotificationHandler from "@/components/PushNotificationHandler";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -84,6 +85,7 @@ export default function RootLayout({
     <html lang="cs">
       <body className="antialiased">
         <HamburgerMenu />
+        <PushNotificationHandler />
         {children}
         <Analytics />
         <SpeedInsights />

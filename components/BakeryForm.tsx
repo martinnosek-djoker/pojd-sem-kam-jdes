@@ -149,8 +149,8 @@ export default function BakeryForm({
       });
 
       if (response.ok) {
-        const savedBakery = await response.json();
-        onSave(savedBakery);
+        const savedBakeryData = await response.json();
+        onSave(savedBakeryData);
         reset();
         setAddressesText("");
       } else {

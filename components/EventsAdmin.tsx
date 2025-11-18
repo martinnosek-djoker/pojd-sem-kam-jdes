@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Event } from "@/lib/types";
 import EventForm from "./EventForm";
+import NotificationDialog from "./NotificationDialog";
 import {
   DndContext,
   closestCenter,
@@ -123,6 +124,8 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedEvent, setSavedEvent] = useState<Event | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -185,6 +188,10 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
       const newEvent = await response.json();
       setEvents([...events, newEvent]);
       setShowForm(false);
+
+      // Zobrazit notifikační dialog pro nově přidanou akci
+      setSavedEvent(newEvent);
+      setShowNotificationDialog(true);
     } catch (error) {
       console.error("Error adding event:", error);
       alert("Chyba při přidávání akce");
@@ -321,6 +328,17 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
           </div>
         )}
       </div>
+
+      {/* Notification Dialog */}
+      {savedEvent && (
+        <NotificationDialog
+          isOpen={showNotificationDialog}
+          onClose={() => setShowNotificationDialog(false)}
+          itemName={savedEvent.name}
+          itemType="event"
+          itemId={savedEvent.id}
+        />
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Cafe } from "@/lib/types";
 import CafeForm from "./CafeForm";
+import NotificationDialog from "./NotificationDialog";
 import { getApiUrl } from "@/lib/api-config";
 
 interface CafesAdminProps {
@@ -15,6 +16,8 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
   const [showForm, setShowForm] = useState(false);
   const [fetchingPhotos, setFetchingPhotos] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedCafe, setSavedCafe] = useState<Cafe | null>(null);
 
   const handleDelete = async (id: number) => {
     if (!confirm("Opravdu chcete smazat tuto kavárnu?")) return;
@@ -40,6 +43,9 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
       setCafes(cafes.map((c) => (c.id === cafe.id ? cafe : c)));
     } else {
       setCafes([cafe, ...cafes]);
+      // Zobrazit notifikační dialog pro nově přidanou kavárnu
+      setSavedCafe(cafe);
+      setShowNotificationDialog(true);
     }
     setEditingId(null);
     setShowForm(false);
@@ -242,6 +248,17 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
           </div>
         )}
       </div>
+
+      {/* Notification Dialog */}
+      {savedCafe && (
+        <NotificationDialog
+          isOpen={showNotificationDialog}
+          onClose={() => setShowNotificationDialog(false)}
+          itemName={savedCafe.name}
+          itemType="cafe"
+          itemId={savedCafe.id}
+        />
+      )}
     </div>
   );
 }

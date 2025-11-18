@@ -149,8 +149,8 @@ export default function CafeForm({
       });
 
       if (response.ok) {
-        const savedCafe = await response.json();
-        onSave(savedCafe);
+        const savedCafeData = await response.json();
+        onSave(savedCafeData);
         reset();
         setAddressesText("");
       } else {

@@ -126,10 +126,10 @@ export default function TrendingForm({
       });
 
       if (response.ok) {
-        const savedTrending = await response.json();
-        onSave(savedTrending);
+        const savedTrendingData = await response.json();
+        onSave(savedTrendingData);
         reset();
-      } else {
+      } else{
         const errorData = await response.json();
         setError(errorData.error || "Chyba při ukládání");
       }
