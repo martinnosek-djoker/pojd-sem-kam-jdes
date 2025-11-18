@@ -42,7 +42,7 @@ export async function initializePushNotifications() {
       console.log('🔔 [Push Notifications] Register called');
 
       // Listener pro úspěšnou registraci
-      await PushNotifications.addListener('registration', async (token) => {
+      await PushNotifications.addListener('registration', async (token: any) => {
         console.log('Push registration success, token:', token.value);
 
         // Uložit token na server
@@ -69,14 +69,14 @@ export async function initializePushNotifications() {
       });
 
       // Listener pro chybu při registraci
-      await PushNotifications.addListener('registrationError', (error) => {
+      await PushNotifications.addListener('registrationError', (error: any) => {
         console.error('Error on registration:', error);
       });
 
       // Listener pro příchozí notifikaci (když je app aktivní)
       await PushNotifications.addListener(
         'pushNotificationReceived',
-        (notification) => {
+        (notification: any) => {
           console.log('Push notification received:', notification);
           // Můžeš zde zobrazit vlastní UI pro notifikaci
         }
@@ -85,7 +85,7 @@ export async function initializePushNotifications() {
       // Listener pro kliknutí na notifikaci
       await PushNotifications.addListener(
         'pushNotificationActionPerformed',
-        (notification) => {
+        (notification: any) => {
           console.log('Push notification action performed:', notification);
 
           // Zpracovat kliknutí podle typu notifikace
