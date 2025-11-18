@@ -19,13 +19,11 @@ async function getAccessToken(): Promise<string> {
   try {
     const serviceAccount = JSON.parse(firebaseServiceAccount);
 
-    const jwtClient = new google.auth.JWT(
-      serviceAccount.client_email,
-      undefined,
-      serviceAccount.private_key,
-      ["https://www.googleapis.com/auth/firebase.messaging"],
-      undefined
-    );
+    const jwtClient = new google.auth.JWT({
+      email: serviceAccount.client_email,
+      key: serviceAccount.private_key,
+      scopes: ["https://www.googleapis.com/auth/firebase.messaging"],
+    });
 
     const tokens = await jwtClient.authorize();
     return tokens.access_token || "";
