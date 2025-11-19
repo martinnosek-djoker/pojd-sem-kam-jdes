@@ -18,7 +18,9 @@ interface NotificationPayload {
 async function getAccessToken(): Promise<string> {
   try {
     // Dekódovat base64 a parsovat JSON
-    const decodedServiceAccount = Buffer.from(firebaseServiceAccount, 'base64').toString('utf-8');
+    // Odstranit všechny whitespace znaky před dekódováním
+    const cleanedBase64 = firebaseServiceAccount.replace(/\s/g, '');
+    const decodedServiceAccount = Buffer.from(cleanedBase64, 'base64').toString('utf-8');
     const serviceAccount = JSON.parse(decodedServiceAccount);
 
     const jwtClient = new google.auth.JWT({
