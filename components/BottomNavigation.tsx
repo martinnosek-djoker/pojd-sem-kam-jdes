@@ -26,7 +26,17 @@ const CoffeeIcon = () => (
 
 const CakeIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.696 2.696 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h6l-1 9H9L9 3z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+  </svg>
+);
+
+// Better bakery icon - Croissant
+const BakeryIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 8c-1.5-2-4-3-7-3S7.5 6 6 8c-1 1.5-1 3-.5 4.5.5 1.5 1.5 2.5 3 3.5 1.5 1 3.5 1.5 5.5 1.5s4-.5 5.5-1.5c1.5-1 2.5-2 3-3.5.5-1.5.5-3-.5-4.5z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10c1-1 2.5-1.5 4-1.5s3 .5 4 1.5M9 13c.5-.5 1.5-1 3-1s2.5.5 3 1" />
   </svg>
 );
 
@@ -49,7 +59,7 @@ export default function BottomNavigation() {
     { href: '/', label: 'Domů', icon: HomeIcon },
     { href: '/pobliz', label: 'Okolí', icon: MapPinIcon },
     { href: '/kavarny', label: 'Kavárny', icon: CoffeeIcon },
-    { href: '/cukrarny', label: 'Cukrárny', icon: CakeIcon },
+    { href: '/cukrarny', label: 'Cukrárny', icon: BakeryIcon },
   ];
 
   const moreItems = [
@@ -91,7 +101,7 @@ export default function BottomNavigation() {
                 >
                   <span className="font-medium">{item.label}</span>
                   {item.badge && (
-                    <span className="px-2 py-1 text-xs font-semibold bg-white text-purple-600 rounded-full shadow-sm">
+                    <span className="px-2 py-1 text-xs font-semibold bg-purple-600 text-white rounded-full border-2 border-purple-400 shadow-sm">
                       {item.badge}
                     </span>
                   )}
@@ -102,8 +112,8 @@ export default function BottomNavigation() {
         </>
       )}
 
-      {/* Bottom Navigation - PURPLE GRADIENT */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 shadow-lg shadow-purple-500/30 z-30 safe-area-inset-bottom">
+      {/* Bottom Navigation - SUBTLE PURPLE */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-purple-200 shadow-lg z-30 safe-area-inset-bottom">
         <div className="flex items-center justify-around px-2 py-2 max-w-lg mx-auto">
           {mainItems.map((item) => {
             const active = isActive(item.href);
@@ -114,8 +124,8 @@ export default function BottomNavigation() {
                 href={item.href}
                 className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all min-w-[68px] ${
                   active
-                    ? 'bg-white/20 backdrop-blur-sm text-white scale-105'
-                    : 'text-purple-100 hover:text-white hover:bg-white/10'
+                    ? 'bg-purple-600 text-white scale-105 shadow-md'
+                    : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'
                 }`}
               >
                 <IconComponent />
@@ -123,7 +133,7 @@ export default function BottomNavigation() {
                   {item.label}
                 </span>
                 {active && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-0.5 shadow-sm" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-0.5" />
                 )}
               </Link>
             );
@@ -134,8 +144,8 @@ export default function BottomNavigation() {
             onClick={() => setShowMoreMenu(!showMoreMenu)}
             className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all min-w-[68px] ${
               showMoreMenu || isMoreMenuActive
-                ? 'bg-white/20 backdrop-blur-sm text-white scale-105'
-                : 'text-purple-100 hover:text-white hover:bg-white/10'
+                ? 'bg-purple-600 text-white scale-105 shadow-md'
+                : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'
             }`}
           >
             <MenuIcon />
@@ -143,7 +153,7 @@ export default function BottomNavigation() {
               Více
             </span>
             {(showMoreMenu || isMoreMenuActive) && (
-              <div className="w-1.5 h-1.5 rounded-full bg-white mt-0.5 shadow-sm" />
+              <div className="w-1.5 h-1.5 rounded-full bg-white mt-0.5" />
             )}
           </button>
         </div>

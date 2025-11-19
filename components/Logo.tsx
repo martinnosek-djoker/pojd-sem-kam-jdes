@@ -1,8 +1,8 @@
 export default function Logo() {
   return (
-    <div className="flex flex-col items-center gap-1 md:gap-2">
-      {/* Logo icon - two arrows meeting, representing "Come here!" and "Where are you going?" */}
-      <div className="relative w-12 h-12 md:w-16 md:h-16">
+    <div className="flex items-center gap-2 md:gap-3 justify-center">
+      {/* Logo icon - Fork & Knife (food-themed) */}
+      <div className="relative w-10 h-10 md:w-12 md:h-12">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full drop-shadow-lg"
@@ -23,77 +23,33 @@ export default function Logo() {
               <stop offset="0%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
               <stop offset="100%" style={{ stopColor: '#a78bfa', stopOpacity: 1 }} />
             </linearGradient>
-
-            <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: '#a78bfa', stopOpacity: 1 }} />
-            </linearGradient>
           </defs>
 
-          {/* Left arrow - "Pojď sem!" (Come here) */}
+          {/* Fork */}
           <g className="animate-pulse-slow">
-            <path
-              d="M 25 35 L 40 50 L 25 65"
-              stroke="url(#arrowGradient)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-            <line
-              x1="40"
-              y1="50"
-              x2="15"
-              y2="50"
-              stroke="url(#arrowGradient)"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
+            {/* Fork prongs */}
+            <line x1="35" y1="20" x2="35" y2="45" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round" />
+            <line x1="40" y1="20" x2="40" y2="45" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round" />
+            <line x1="45" y1="20" x2="45" y2="45" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round" />
+            {/* Fork handle */}
+            <line x1="40" y1="45" x2="40" y2="75" stroke="#a78bfa" strokeWidth="4" strokeLinecap="round" />
+            <circle cx="40" cy="78" r="3" fill="#c084fc" />
           </g>
 
-          {/* Right arrow - "Kam jdeš?" (Where are you going?) */}
+          {/* Knife */}
           <g className="animate-pulse-slow" style={{ animationDelay: '0.5s' }}>
-            <path
-              d="M 75 35 L 60 50 L 75 65"
-              stroke="url(#arrowGradient)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-            <line
-              x1="60"
-              y1="50"
-              x2="85"
-              y2="50"
-              stroke="url(#arrowGradient)"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
+            {/* Knife blade */}
+            <path d="M 60 20 L 65 45 L 55 45 Z" fill="#c084fc" />
+            {/* Knife handle */}
+            <line x1="60" y1="45" x2="60" y2="75" stroke="#c084fc" strokeWidth="5" strokeLinecap="round" />
+            <circle cx="60" cy="78" r="3" fill="#a78bfa" />
           </g>
-
-          {/* Central dot - meeting point */}
-          <circle
-            cx="50"
-            cy="50"
-            r="6"
-            fill="#a78bfa"
-            className="animate-ping-slow"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r="6"
-            fill="#c084fc"
-          />
         </svg>
       </div>
 
-      {/* Logo text - COMPACT */}
-      <h1 className="text-lg sm:text-xl md:text-3xl font-bold text-purple-400 tracking-wide text-center leading-tight">
-        <span className="block sm:inline">Pojď sem!</span>
-        <span className="hidden sm:inline mx-1">•</span>
-        <span className="block sm:inline">Kam jdeš?</span>
+      {/* Logo text - HORIZONTAL */}
+      <h1 className="text-base sm:text-lg md:text-2xl font-bold text-purple-400 tracking-wide leading-tight">
+        Pojď sem! Kam jdeš?
       </h1>
     </div>
   );
