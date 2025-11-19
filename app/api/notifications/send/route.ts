@@ -17,7 +17,9 @@ interface NotificationPayload {
 // Získat OAuth2 access token pro FCM V1 API
 async function getAccessToken(): Promise<string> {
   try {
-    const serviceAccount = JSON.parse(firebaseServiceAccount);
+    // Escapovat newline znaky před parsováním
+    const cleanedServiceAccount = firebaseServiceAccount.replace(/\\n/g, '\n');
+    const serviceAccount = JSON.parse(cleanedServiceAccount);
 
     const jwtClient = new google.auth.JWT({
       email: serviceAccount.client_email,
