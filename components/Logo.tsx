@@ -1,8 +1,8 @@
 export default function Logo() {
   return (
-    <div className="flex flex-col items-center gap-2 md:gap-3">
+    <div className="flex flex-col items-center gap-1 md:gap-2">
       {/* Logo icon - two arrows meeting, representing "Come here!" and "Where are you going?" */}
-      <div className="relative w-16 h-16 md:w-24 md:h-24">
+      <div className="relative w-12 h-12 md:w-16 md:h-16">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full drop-shadow-lg"
@@ -89,10 +89,10 @@ export default function Logo() {
         </svg>
       </div>
 
-      {/* Logo text */}
-      <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-purple-400 tracking-widest text-center leading-tight">
+      {/* Logo text - COMPACT */}
+      <h1 className="text-lg sm:text-xl md:text-3xl font-bold text-purple-400 tracking-wide text-center leading-tight">
         <span className="block sm:inline">Pojď sem!</span>
-        <span className="hidden sm:inline mx-2">•</span>
+        <span className="hidden sm:inline mx-1">•</span>
         <span className="block sm:inline">Kam jdeš?</span>
       </h1>
     </div>
