@@ -14,10 +14,39 @@
   }
 }
 
+html {
+  /* Smooth scrolling for better UX */
+  scroll-behavior: smooth;
+  /* Better text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  /* Prevent pull-to-refresh on mobile browsers */
+  overscroll-behavior-y: contain;
+  /* Better tap highlighting for mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* Safe area support for iOS notch/home indicator */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* App-like button styling */
+button, a {
+  /* Remove tap highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* Better touch response */
+  touch-action: manipulation;
+}
+
+/* Better scrolling on iOS */
+* {
+  -webkit-overflow-scrolling: touch;
 }
 
 @layer utilities {

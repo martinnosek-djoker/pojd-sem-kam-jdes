@@ -1,5 +1,5 @@
 import "./globals.css";
-import HamburgerMenu from "@/components/HamburgerMenu";
+import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -9,6 +9,19 @@ export const metadata = {
     default: "TOP 10 podniků, o kterých se dnes mluví | Pojď sem! Kam jdeš? | Nejlepší restaurace, kavárny a cukrárny v Praze",
     template: "%s | Pojď sem! Kam jdeš?",
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+    viewportFit: 'cover', // For iOS notch support
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Pojď sem! Kam jdeš?',
+  },
+  themeColor: '#9333EA', // Purple color to match your brand
   description:
     "TOP 10 podniků, o kterých se dnes mluví v Praze! Objevte trendy restaurace, nejlepší kavárny a cukrárny v Praze. Osobní doporučení podle lokality, typu kuchyně nebo ve vašem okolí.",
   keywords: [
@@ -83,10 +96,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="cs">
-      <body className="antialiased">
-        <HamburgerMenu />
+      <body className="antialiased pb-20">
         <PushNotificationHandler />
-        {children}
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <BottomNavigation />
         <Analytics />
         <SpeedInsights />
       </body>
