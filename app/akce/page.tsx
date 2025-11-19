@@ -27,19 +27,19 @@ export default function EventsPage() {
   }, []);
 
   return (
-    <main className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen p-4 sm:p-6 md:p-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
+        <div className="mb-6 sm:mb-8 md:mb-12 text-center">
+          <div className="inline-block border-b-2 border-purple-500 pb-3 sm:pb-4 md:pb-6 mb-3 sm:mb-4">
             <Logo />
           </div>
         </div>
 
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-purple-400 mb-4">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-400 mb-2 sm:mb-3 md:mb-4">
             Gastro akce
           </h1>
-          <p className="text-xl text-gray-300">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300">
             Nejlepší gastro akce v Praze a okolí
           </p>
         </div>

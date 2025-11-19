@@ -112,8 +112,8 @@ export default function BottomNavigation() {
         </>
       )}
 
-      {/* Bottom Navigation - SUBTLE PURPLE */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-purple-200 shadow-lg z-30 safe-area-inset-bottom">
+      {/* Bottom Navigation - BLACK WITH PURPLE ACCENTS */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-purple-600/30 shadow-lg shadow-purple-900/20 z-30 safe-area-inset-bottom">
         <div className="flex items-center justify-around px-2 py-2 max-w-lg mx-auto">
           {mainItems.map((item) => {
             const active = isActive(item.href);
@@ -124,8 +124,8 @@ export default function BottomNavigation() {
                 href={item.href}
                 className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all min-w-[68px] ${
                   active
-                    ? 'bg-purple-600 text-white scale-105 shadow-md'
-                    : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'
+                    ? 'bg-purple-600 text-white scale-105 shadow-md shadow-purple-600/50'
+                    : 'text-gray-400 hover:text-purple-400 hover:bg-purple-600/10'
                 }`}
               >
                 <IconComponent />
@@ -144,8 +144,8 @@ export default function BottomNavigation() {
             onClick={() => setShowMoreMenu(!showMoreMenu)}
             className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all min-w-[68px] ${
               showMoreMenu || isMoreMenuActive
-                ? 'bg-purple-600 text-white scale-105 shadow-md'
-                : 'text-gray-500 hover:text-purple-600 hover:bg-purple-50'
+                ? 'bg-purple-600 text-white scale-105 shadow-md shadow-purple-600/50'
+                : 'text-gray-400 hover:text-purple-400 hover:bg-purple-600/10'
             }`}
           >
             <MenuIcon />

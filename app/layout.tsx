@@ -96,6 +96,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="cs">
+      <head>
+        <meta name="theme-color" content="#000000" />
+      </head>
       <body className="antialiased pb-20">
         <PushNotificationHandler />
         <main className="min-h-screen">
