@@ -32,11 +32,20 @@ const CakeIcon = () => (
   </svg>
 );
 
-// Better bakery icon - Croissant
+// Cake icon for bakeries
 const BakeryIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 8c-1.5-2-4-3-7-3S7.5 6 6 8c-1 1.5-1 3-.5 4.5.5 1.5 1.5 2.5 3 3.5 1.5 1 3.5 1.5 5.5 1.5s4-.5 5.5-1.5c1.5-1 2.5-2 3-3.5.5-1.5.5-3-.5-4.5z" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10c1-1 2.5-1.5 4-1.5s3 .5 4 1.5M9 13c.5-.5 1.5-1 3-1s2.5.5 3 1" />
+    {/* Cake layers */}
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 17h12M6 17v2a1 1 0 001 1h10a1 1 0 001-1v-2M6 17l1-4h10l1 4" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 13h10v-2a1 1 0 00-1-1H8a1 1 0 00-1 1v2z" />
+    {/* Candles */}
+    <line x1="9" y1="10" x2="9" y2="7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+    <line x1="12" y1="10" x2="12" y2="6" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+    <line x1="15" y1="10" x2="15" y2="7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+    {/* Candle flames */}
+    <circle cx="9" cy="6.5" r="0.8" fill="currentColor" />
+    <circle cx="12" cy="5.5" r="0.8" fill="currentColor" />
+    <circle cx="15" cy="6.5" r="0.8" fill="currentColor" />
   </svg>
 );
 
