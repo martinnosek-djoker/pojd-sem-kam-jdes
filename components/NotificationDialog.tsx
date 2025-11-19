@@ -17,6 +17,13 @@ const itemTypeLabels = {
   event: 'gastro akce',
 };
 
+const itemTypeAccusative = {
+  cafe: 'kavárnu',
+  bakery: 'cukrárnu',
+  trending: 'trending podnik',
+  event: 'gastro akci',
+};
+
 const itemTypeEmojis = {
   cafe: '☕',
   bakery: '🍰',
@@ -42,6 +49,7 @@ export default function NotificationDialog({
 
     const emoji = itemTypeEmojis[itemType];
     const label = itemTypeLabels[itemType];
+    const accusative = itemTypeAccusative[itemType];
 
     console.log('Sending notification:', {
       itemName,
@@ -57,7 +65,7 @@ export default function NotificationDialog({
         },
         body: JSON.stringify({
           title: `${emoji} Nová ${label}!`,
-          body: `Přidali jsme novou ${label}: ${itemName}`,
+          body: `Přidali jsme novou ${accusative}: ${itemName}`,
           type: itemType,
           itemId,
         }),
