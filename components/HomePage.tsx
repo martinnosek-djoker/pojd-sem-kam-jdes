@@ -289,9 +289,6 @@ export default function Home() {
               @Peču si život
             </a>
           </p>
-          <p className="text-sm md:text-base text-gray-400 mt-4 max-w-3xl mx-auto italic hidden sm:block">
-            Vítejte na stránce s mými oblíbenými podniky, které jsem navštívil a kam se moc rád vracím. Bude mi potěšením, když si některý z nich vyberete a strávíte tam příjemný čas.
-          </p>
         </div>
 
         {/* Trendings Section */}

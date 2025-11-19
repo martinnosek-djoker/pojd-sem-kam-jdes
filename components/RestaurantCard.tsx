@@ -165,12 +165,6 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
             {restaurant.cuisine_type}
           </span>
         </div>
-
-        {restaurant.specialty && (
-          <p className="text-sm text-gray-400 italic border-l-2 border-purple-800/50 pl-3">
-            {restaurant.specialty}
-          </p>
-        )}
       </div>
 
       <div className="pt-4 border-t border-purple-900/30 space-y-3">
