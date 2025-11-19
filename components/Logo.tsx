@@ -1,7 +1,7 @@
 export default function Logo() {
   return (
     <div className="flex items-center gap-2 md:gap-3 justify-center">
-      {/* Logo icon - Pinched fingers gesture (Italian hand) */}
+      {/* Logo icon - Simple pinched fingers gesture */}
       <div className="relative w-10 h-10 md:w-12 md:h-12">
         <svg
           viewBox="0 0 100 100"
@@ -16,59 +16,22 @@ export default function Logo() {
             </linearGradient>
           </defs>
 
-          {/* Pinched fingers - Italian gesture */}
           <g className="animate-pulse-slow">
-            {/* Palm/Wrist */}
-            <ellipse cx="50" cy="75" rx="12" ry="18" fill="url(#gradient)" stroke="#a78bfa" strokeWidth="2" />
+            {/* Simple hand silhouette - palm */}
+            <ellipse cx="50" cy="70" rx="18" ry="25" fill="url(#gradient)" />
 
-            {/* Thumb */}
-            <path
-              d="M 38 70 Q 35 60 35 50 Q 35 40 38 35 Q 40 32 42 30"
-              fill="none"
-              stroke="#c084fc"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
+            {/* Thumb - curved outward */}
+            <ellipse cx="30" cy="60" rx="7" ry="18" fill="#c084fc" transform="rotate(-25 30 60)" />
 
-            {/* Index finger */}
-            <path
-              d="M 45 60 Q 44 45 45 30 Q 46 20 48 15"
-              fill="none"
-              stroke="#c084fc"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
+            {/* Four fingers pointing up and slightly inward */}
+            <ellipse cx="42" cy="35" rx="5" ry="22" fill="#a78bfa" transform="rotate(-8 42 35)" />
+            <ellipse cx="50" cy="30" rx="5" ry="25" fill="#c084fc" />
+            <ellipse cx="58" cy="35" rx="5" ry="22" fill="#a78bfa" transform="rotate(8 58 35)" />
+            <ellipse cx="66" cy="42" rx="4.5" ry="18" fill="#9333ea" transform="rotate(12 66 42)" />
 
-            {/* Middle finger */}
-            <path
-              d="M 50 58 Q 50 40 50 25 Q 50 15 50 10"
-              fill="none"
-              stroke="#a78bfa"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
-
-            {/* Ring finger */}
-            <path
-              d="M 55 60 Q 56 45 55 30 Q 54 20 52 15"
-              fill="none"
-              stroke="#c084fc"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
-
-            {/* Pinky */}
-            <path
-              d="M 62 70 Q 65 60 65 50 Q 65 40 62 35 Q 60 32 58 30"
-              fill="none"
-              stroke="#c084fc"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
-
-            {/* Fingertips meeting point - emphasized */}
-            <circle cx="50" cy="12" r="5" fill="#9333ea" opacity="0.3" />
-            <circle cx="50" cy="12" r="2.5" fill="#c084fc" />
+            {/* Fingertips glow - pinched together at top */}
+            <circle cx="50" cy="15" r="8" fill="#9333ea" opacity="0.4" />
+            <circle cx="50" cy="15" r="4" fill="#e9d5ff" opacity="0.8" />
           </g>
         </svg>
       </div>

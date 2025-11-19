@@ -32,20 +32,18 @@ const CakeIcon = () => (
   </svg>
 );
 
-// Cake icon for bakeries
+// Cupcake icon for bakeries
 const BakeryIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    {/* Cake layers */}
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 17h12M6 17v2a1 1 0 001 1h10a1 1 0 001-1v-2M6 17l1-4h10l1 4" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 13h10v-2a1 1 0 00-1-1H8a1 1 0 00-1 1v2z" />
-    {/* Candles */}
-    <line x1="9" y1="10" x2="9" y2="7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-    <line x1="12" y1="10" x2="12" y2="6" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-    <line x1="15" y1="10" x2="15" y2="7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-    {/* Candle flames */}
-    <circle cx="9" cy="6.5" r="0.8" fill="currentColor" />
-    <circle cx="12" cy="5.5" r="0.8" fill="currentColor" />
-    <circle cx="15" cy="6.5" r="0.8" fill="currentColor" />
+    {/* Cupcake wrapper */}
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14l1 6h6l1-6" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 14h10l-1-2H8l-1 2z" />
+    {/* Frosting/top */}
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12c0-2 1.5-4 4-4s4 2 4 4c0 1-1 2-2 2h-4c-1 0-2-1-2-2z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 8c.5-1 1.5-2 2-2s1.5 1 2 2" />
+    {/* Cherry on top */}
+    <circle cx="12" cy="6" r="1.2" fill="currentColor" />
+    <line x1="12" y1="6" x2="12" y2="8" strokeWidth={1.5} strokeLinecap="round" />
   </svg>
 );
 
