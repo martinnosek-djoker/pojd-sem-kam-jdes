@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
+import LoadingPot from "@/components/LoadingPot";
 import EventCard from "@/components/EventCard";
 import { Event } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
@@ -45,9 +46,7 @@ export default function EventsPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20">
-            <p className="text-xl text-gray-400">Načítám akce...</p>
-          </div>
+          <LoadingPot />
         ) : events && events.length > 0 ? (
           <div className="max-w-4xl mx-auto space-y-4">
             {events.map((event: Event) => (

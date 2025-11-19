@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
+import LoadingPot from "@/components/LoadingPot";
 import { Bakery } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -88,7 +89,7 @@ export default function BakeriesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítání...</p>
+          <LoadingPot />
         </div>
       </main>
     );

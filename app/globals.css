@@ -111,21 +111,4 @@ button, a {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
-
-  /* Custom select dropdown styling */
-  select {
-    color-scheme: dark;
-  }
-
-  select option {
-    background-color: rgb(17, 24, 39);
-    color: rgb(216, 180, 254);
-    padding: 8px;
-  }
-
-  select option:checked,
-  select option:hover {
-    background-color: rgb(147, 51, 234);
-    color: white;
-  }
 }
