@@ -17,6 +17,20 @@ const itemTypeLabels = {
   event: 'gastro akce',
 };
 
+const itemTypeTitlePrefix = {
+  cafe: 'Nová',
+  bakery: 'Nová',
+  trending: 'Nový',
+  event: 'Nová',
+};
+
+const itemTypeBodyPrefix = {
+  cafe: 'novou',
+  bakery: 'novou',
+  trending: 'nový',
+  event: 'novou',
+};
+
 const itemTypeAccusative = {
   cafe: 'kavárnu',
   bakery: 'cukrárnu',
@@ -49,6 +63,8 @@ export default function NotificationDialog({
 
     const emoji = itemTypeEmojis[itemType];
     const label = itemTypeLabels[itemType];
+    const titlePrefix = itemTypeTitlePrefix[itemType];
+    const bodyPrefix = itemTypeBodyPrefix[itemType];
     const accusative = itemTypeAccusative[itemType];
 
     console.log('Sending notification:', {
@@ -64,8 +80,8 @@ export default function NotificationDialog({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: `${emoji} Nová ${label}!`,
-          body: `Přidali jsme novou ${accusative}: ${itemName}`,
+          title: `${emoji} ${titlePrefix} ${label}!`,
+          body: `Přidali jsme ${bodyPrefix} ${accusative}: ${itemName}`,
           type: itemType,
           itemId,
         }),
