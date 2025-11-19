@@ -2,18 +2,33 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllCafes, updateCafe } from "@/lib/db";
 
 // Helper function to fetch place data for a single location
+// OPTIMIZED: Using Find Place + Details ($17/1000 each) instead of Text Search ($32/1000)
 async function fetchPlaceData(name: string, location: string, apiKey: string) {
   const query = `${name}, ${location}`;
-  const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${apiKey}`;
 
-  const searchResponse = await fetch(searchUrl);
-  const searchData = await searchResponse.json();
+  // Step 1: Find Place - gets place_id
+  const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
 
-  if (searchData.status !== "OK" || !searchData.results || searchData.results.length === 0) {
+  const findResponse = await fetch(findPlaceUrl);
+  const findData = await findResponse.json();
+
+  if (findData.status !== "OK" || !findData.candidates || findData.candidates.length === 0) {
     return null;
   }
 
-  return searchData.results[0];
+  const placeId = findData.candidates[0].place_id;
+
+  // Step 2: Place Details - get only formatted_address (pay per field!)
+  const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=formatted_address&key=${apiKey}`;
+
+  const detailsResponse = await fetch(detailsUrl);
+  const detailsData = await detailsResponse.json();
+
+  if (detailsData.status !== "OK" || !detailsData.result) {
+    return null;
+  }
+
+  return detailsData.result;
 }
 
 // Helper function to fetch addresses for all locations of a cafe

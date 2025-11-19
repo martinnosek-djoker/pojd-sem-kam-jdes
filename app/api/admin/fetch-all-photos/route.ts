@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllRestaurants, updateRestaurant } from "@/lib/db";
 
 // Helper function to fetch photo for a single restaurant
+// OPTIMIZED: Using Find Place + Details ($17/1000 each) instead of Text Search ($32/1000)
 async function fetchPhotoForRestaurant(name: string, location: string): Promise<string | null> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
 
@@ -12,24 +13,32 @@ async function fetchPhotoForRestaurant(name: string, location: string): Promise<
 
   try {
     const query = `${name}, ${location}`;
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${apiKey}`;
 
-    const searchResponse = await fetch(searchUrl);
-    const searchData = await searchResponse.json();
+    // Step 1: Find Place - gets place_id
+    const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
 
-    if (searchData.status !== "OK" || !searchData.results || searchData.results.length === 0) {
+    const findResponse = await fetch(findPlaceUrl);
+    const findData = await findResponse.json();
+
+    if (findData.status !== "OK" || !findData.candidates || findData.candidates.length === 0) {
       console.log(`No place found for: ${name}`);
       return null;
     }
 
-    const place = searchData.results[0];
+    const placeId = findData.candidates[0].place_id;
 
-    if (!place.photos || place.photos.length === 0) {
+    // Step 2: Place Details - get only photos (pay per field!)
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=photos&key=${apiKey}`;
+
+    const detailsResponse = await fetch(detailsUrl);
+    const detailsData = await detailsResponse.json();
+
+    if (detailsData.status !== "OK" || !detailsData.result || !detailsData.result.photos || detailsData.result.photos.length === 0) {
       console.log(`No photos available for: ${name}`);
       return null;
     }
 
-    const photoReference = place.photos[0].photo_reference;
+    const photoReference = detailsData.result.photos[0].photo_reference;
     const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
 
     return photoUrl;

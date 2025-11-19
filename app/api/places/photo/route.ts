@@ -1,18 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // Helper function to fetch place data for a single location
+// OPTIMIZED: Using Find Place ($17/1000) instead of Text Search ($32/1000)
 async function fetchPlaceData(name: string, location: string, apiKey: string) {
   const query = `${name}, ${location}`;
-  const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${apiKey}`;
 
-  const searchResponse = await fetch(searchUrl);
-  const searchData = await searchResponse.json();
+  // Step 1: Find Place - gets place_id (cheaper than Text Search!)
+  const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
 
-  if (searchData.status !== "OK" || !searchData.results || searchData.results.length === 0) {
+  const findResponse = await fetch(findPlaceUrl);
+  const findData = await findResponse.json();
+
+  if (findData.status !== "OK" || !findData.candidates || findData.candidates.length === 0) {
     return null;
   }
 
-  return searchData.results[0];
+  const placeId = findData.candidates[0].place_id;
+
+  // Step 2: Place Details - get only the fields we need (pay per field!)
+  // Only request: formatted_address, photos (just 1!)
+  const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=formatted_address,photos&key=${apiKey}`;
+
+  const detailsResponse = await fetch(detailsUrl);
+  const detailsData = await detailsResponse.json();
+
+  if (detailsData.status !== "OK" || !detailsData.result) {
+    return null;
+  }
+
+  return detailsData.result;
 }
 
 // GET /api/places/photo?name=Restaurant&location=Anděl,Letná,Vinohrady
@@ -63,18 +79,15 @@ export async function GET(request: NextRequest) {
           addresses[location] = place.formatted_address;
         }
 
-        // Collect all photos from first found place
+        // OPTIMIZED: Get only 1 photo instead of 10 (saves bandwidth and processing)
         if (photoUrls.length === 0 && place.photos && place.photos.length > 0) {
           console.log(`Found ${place.photos.length} photos for ${name} in ${location}`);
-          // Get up to 10 photos
-          const photosToGet = Math.min(place.photos.length, 10);
-          for (let i = 0; i < photosToGet; i++) {
-            const photoReference = place.photos[i].photo_reference;
-            photoUrls.push(
-              `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`
-            );
-          }
-          console.log(`Returning ${photoUrls.length} photo URLs`);
+          // Get only the first photo
+          const photoReference = place.photos[0].photo_reference;
+          photoUrls.push(
+            `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`
+          );
+          console.log(`Returning 1 photo URL`);
         }
       }
 
@@ -91,8 +104,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      photoUrl: photoUrls[0] || undefined, // First photo as default
-      photoUrls: photoUrls.length > 0 ? photoUrls : undefined, // All photos for selection
+      photoUrl: photoUrls[0] || undefined, // Single photo
       addresses: Object.keys(addresses).length > 0 ? addresses : undefined,
       placeName: name,
     });
