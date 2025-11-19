@@ -29,13 +29,20 @@ export async function POST(request: NextRequest) {
         const data = await response.json();
 
         if (response.ok && data.photoUrl) {
-          // Update bakery with first photo
+          // OPTIMIZED: Update bakery with photo AND cache place_ids for future use!
+          // Merge new place_ids with existing ones (if any)
+          const updatedPlaceIds = {
+            ...(bakery.place_ids || {}),
+            ...(data.placeIds || {}),
+          };
+
           await updateBakery(bakery.id, {
             ...bakery,
             image_url: data.photoUrl,
+            place_ids: Object.keys(updatedPlaceIds).length > 0 ? updatedPlaceIds : null,
           });
           success++;
-          console.log(`✓ Photo found for ${bakery.name}`);
+          console.log(`✓ Photo found for ${bakery.name}${data.placeIds ? ' (cached place_id)' : ''}`);
         } else {
           skipped++;
           console.log(`✗ No photo found for ${bakery.name}`, data);

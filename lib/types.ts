@@ -106,6 +106,7 @@ export interface Bakery {
   location: string;
   addresses: Record<string, string> | null; // { "Náměstí Republiky": "adresa1", "Florenc": "adresa2" }
   coordinates: Record<string, Coordinates> | null; // { "Náměstí Republiky": {"lat": 50.07, "lng": 14.40} }
+  place_ids: Record<string, string> | null; // { "Náměstí Republiky": "ChIJ...", "Florenc": "ChIJ..." } - cache pro Google Places API
   website_url: string | null;
   image_url: string | null;
   created_at: string;
@@ -121,6 +122,7 @@ export const bakerySchema = z.object({
     lat: z.number(),
     lng: z.number()
   })).optional().nullable(),
+  place_ids: z.record(z.string(), z.string()).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
   image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
 });
@@ -140,6 +142,7 @@ export interface Cafe {
   location: string;
   addresses: Record<string, string> | null; // { "Náměstí Republiky": "adresa1", "Florenc": "adresa2" }
   coordinates: Record<string, Coordinates> | null; // { "Náměstí Republiky": {"lat": 50.07, "lng": 14.40} }
+  place_ids: Record<string, string> | null; // { "Náměstí Republiky": "ChIJ...", "Florenc": "ChIJ..." } - cache pro Google Places API
   website_url: string | null;
   image_url: string | null;
   created_at: string;
@@ -155,6 +158,7 @@ export const cafeSchema = z.object({
     lat: z.number(),
     lng: z.number()
   })).optional().nullable(),
+  place_ids: z.record(z.string(), z.string()).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
   image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
 });

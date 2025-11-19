@@ -2,20 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Helper function to fetch place data for a single location
 // OPTIMIZED: Using Find Place ($17/1000) instead of Text Search ($32/1000)
-async function fetchPlaceData(name: string, location: string, apiKey: string) {
-  const query = `${name}, ${location}`;
+// Returns place data + place_id for caching
+async function fetchPlaceData(name: string, location: string, apiKey: string, cachedPlaceId?: string) {
+  let placeId = cachedPlaceId;
 
-  // Step 1: Find Place - gets place_id (cheaper than Text Search!)
-  const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+  // Step 1: Find Place - only if we don't have cached place_id (SAVES API CALLS!)
+  if (!placeId) {
+    const query = `${name}, ${location}`;
+    const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
 
-  const findResponse = await fetch(findPlaceUrl);
-  const findData = await findResponse.json();
+    const findResponse = await fetch(findPlaceUrl);
+    const findData = await findResponse.json();
 
-  if (findData.status !== "OK" || !findData.candidates || findData.candidates.length === 0) {
-    return null;
+    if (findData.status !== "OK" || !findData.candidates || findData.candidates.length === 0) {
+      return null;
+    }
+
+    placeId = findData.candidates[0].place_id;
   }
-
-  const placeId = findData.candidates[0].place_id;
 
   // Step 2: Place Details - get only the fields we need (pay per field!)
   // Only request: formatted_address, photos (just 1!)
@@ -28,7 +32,11 @@ async function fetchPlaceData(name: string, location: string, apiKey: string) {
     return null;
   }
 
-  return detailsData.result;
+  // Return result with place_id for caching
+  return {
+    ...detailsData.result,
+    place_id: placeId,
+  };
 }
 
 // GET /api/places/photo?name=Restaurant&location=Anděl,Letná,Vinohrady
@@ -68,12 +76,18 @@ export async function GET(request: NextRequest) {
 
     // Fetch data for all locations
     const addresses: Record<string, string> = {};
+    const placeIds: Record<string, string> = {};
     const photoUrls: string[] = [];
 
     for (const location of locations) {
       const place = await fetchPlaceData(name, location, apiKey);
 
       if (place) {
+        // Save place_id for this location (for caching!)
+        if (place.place_id) {
+          placeIds[location] = place.place_id;
+        }
+
         // Save address for this location
         if (place.formatted_address) {
           addresses[location] = place.formatted_address;
@@ -106,6 +120,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       photoUrl: photoUrls[0] || undefined, // Single photo
       addresses: Object.keys(addresses).length > 0 ? addresses : undefined,
+      placeIds: Object.keys(placeIds).length > 0 ? placeIds : undefined, // For caching!
       placeName: name,
     });
 

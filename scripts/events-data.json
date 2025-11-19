@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Nova Festival Chutí",
+    "location": "O2 Univerzum",
+    "date": "17. - 18.1.2026",
+    "link": "https://tv.nova.cz/festivalchuti"
+  },
+  {
+    "name": "Prague Ice Cream Festival",
+    "location": "Výstaviště",
+    "date": "20. - 21.6.2026",
+    "link": "https://pragueicecreamfestival.cz/"
+  },
+  {
+    "name": "Makro Czech Gastro Fest",
+    "location": "O2 Univerzum",
+    "date": "10. - 11.4.2026",
+    "link": "https://makroczechgastrofest.cz/"
+  },
+  {
+    "name": "Makro Chefs Dinner",
+    "location": "Makro Akademie Stodůlky",
+    "date": "12.3.2026",
+    "link": "https://akademie.makro.cz/jake-kurzy-u-nas-v-makro-akademii-nabizime/13-rocnik-chefs-dinner-1"
+  },
+  {
+    "name": "Zimní Apetit Piknik",
+    "location": "Národní zemědělské muzeum",
+    "date": "22.11.2025",
+    "link": "https://piknik.apetitonline.cz/"
+  },
+  {
+    "name": "Gastro Sweet Fest",
+    "location": "PVA Expo Praha",
+    "date": "20. - 22.11.2025",
+    "link": "https://gastrosweetfest.cz/"
+  },
+  {
+    "name": "Den řezníků",
+    "location": "Holešovická tržnice",
+    "date": "30.11.2025",
+    "link": "https://kalendarakci.ambi.cz/cs/den-rezniku-v-holesovicke-trznici-november-2025"
+  },
+  {
+    "name": "Adventní brunch Myšák",
+    "location": "Vodičkova",
+    "date": "29.-30.11.2025",
+    "link": "https://www.mysakdomu.cz/adventni-brunch-2025/"
+  }
+]
