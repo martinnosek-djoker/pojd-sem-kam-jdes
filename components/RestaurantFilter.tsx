@@ -54,12 +54,14 @@ export default function RestaurantFilter({
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
               <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {/* Fork and Knife */}
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m0 0v10m0-10h.01M9 15a2 2 0 104 0m-4 0v6m4-6v6m0-12V5m0 0h.01M13 5v10" />
-                <line x1="7" y1="3" x2="7" y2="8" strokeWidth={1.5} strokeLinecap="round" />
-                <line x1="11" y1="3" x2="11" y2="8" strokeWidth={1.5} strokeLinecap="round" />
-                <line x1="9" y1="3" x2="9" y2="13" strokeWidth={2} strokeLinecap="round" />
-                <path d="M15 3 L17 8 L15 8 Z" fill="currentColor" />
+                {/* Fork (left side) */}
+                <line x1="6" y1="3" x2="6" y2="8" strokeWidth={1.5} strokeLinecap="round" />
+                <line x1="8" y1="3" x2="8" y2="8" strokeWidth={1.5} strokeLinecap="round" />
+                <line x1="10" y1="3" x2="10" y2="8" strokeWidth={1.5} strokeLinecap="round" />
+                <line x1="8" y1="8" x2="8" y2="21" strokeWidth={2} strokeLinecap="round" />
+
+                {/* Knife (right side) */}
+                <path d="M16 3 L18 8 L14 8 Z" fill="currentColor" />
                 <line x1="16" y1="8" x2="16" y2="21" strokeWidth={2} strokeLinecap="round" />
               </svg>
             </div>
