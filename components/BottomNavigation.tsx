@@ -97,7 +97,7 @@ export default function BottomNavigation() {
             className="fixed inset-0 bg-black/50 z-40 animate-fadeIn"
             onClick={() => setShowMoreMenu(false)}
           />
-          <div className="fixed bottom-20 left-0 right-0 z-50 mx-4 bg-gradient-to-br from-purple-50 to-white rounded-2xl shadow-2xl overflow-hidden animate-slideUp border border-purple-200">
+          <div className="fixed bottom-20 left-0 right-0 z-50 mx-4 bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-2xl overflow-hidden animate-slideUp border border-purple-600/30">
             <div className="p-2">
               {moreItems.map((item) => (
                 <Link
@@ -107,7 +107,7 @@ export default function BottomNavigation() {
                   className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
                     isActive(item.href)
                       ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/50'
-                      : 'text-gray-700 hover:bg-purple-100'
+                      : 'text-purple-200 hover:bg-purple-600/20'
                   }`}
                 >
                   <span className="font-medium">{item.label}</span>
