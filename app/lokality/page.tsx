@@ -132,7 +132,7 @@ export default function LocalitiesPage() {
                   className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide sm:scrollbar-thin snap-x snap-mandatory"
                 >
                   {restaurantsByLocation[location.name]?.map((restaurant) => (
-                    <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80 snap-start">
+                    <div key={restaurant.id} className="flex-shrink-0 w-[85%] sm:w-80 snap-start snap-always">
                       <RestaurantCard restaurant={restaurant} />
                     </div>
                   ))}

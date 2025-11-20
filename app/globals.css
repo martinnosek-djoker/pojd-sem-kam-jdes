@@ -111,4 +111,14 @@ button, a {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
+
+  /* Better snap scrolling - forces stop at each item */
+  .snap-always {
+    scroll-snap-stop: always;
+  }
+
+  /* Smooth snap scrolling with better physics */
+  .snap-x.snap-mandatory {
+    scroll-padding: 0 1rem;
+  }
 }

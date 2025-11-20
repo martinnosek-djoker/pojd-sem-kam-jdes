@@ -296,7 +296,7 @@ export default function Home() {
                 className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
               >
                 {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%] snap-start">
+                  <div key={trending.id} className="flex-shrink-0 w-[85%] snap-start snap-always">
                     <TrendingCard trending={trending} rank={index + 1} />
                   </div>
                 ))}
