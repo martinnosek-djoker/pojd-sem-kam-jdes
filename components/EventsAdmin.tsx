@@ -175,6 +175,7 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
 
   const handleAdd = async (data: any) => {
     try {
+      console.log("Sending event data:", data);
       const response = await fetch("/api/admin/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -182,7 +183,9 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add event");
+        const errorData = await response.json();
+        console.error("API error response:", errorData);
+        throw new Error(errorData.error || "Failed to add event");
       }
 
       const newEvent = await response.json();
@@ -192,9 +195,9 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
       // Zobrazit notifikační dialog pro nově přidanou akci
       setSavedEvent(newEvent);
       setShowNotificationDialog(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding event:", error);
-      alert("Chyba při přidávání akce");
+      alert(`Chyba při přidávání akce: ${error.message}`);
     }
   };
 

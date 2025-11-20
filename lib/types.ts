@@ -195,7 +195,7 @@ export const eventSchema = z.object({
       (val) => !val || val === "" || z.string().url().safeParse(val).success,
       { message: "Neplatná URL" }
     ),
-  display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
+  display_order: z.number().int().min(1, "Pořadí musí být kladné číslo").default(1),
 });
 
 export type EventInput = z.infer<typeof eventSchema>;
