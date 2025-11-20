@@ -322,6 +322,12 @@ export default function Home() {
           </div>
         )}
 
+        {/* Restaurants Section Header */}
+        <div className="mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🍽️ Nejlepší restaurace v Praze</h2>
+          <p className="text-sm md:text-base text-gray-400">Filtruj podle lokality, typu kuchyně nebo najdi restauraci ve svém okolí</p>
+        </div>
+
         {/* Filters */}
         <RestaurantFilter
           locations={availableLocations}
