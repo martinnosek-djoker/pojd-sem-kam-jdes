@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Restaurant } from "@/lib/types";
 import RestaurantForm from "./RestaurantForm";
+import NotificationDialog from "./NotificationDialog";
 import { getApiUrl } from "@/lib/api-config";
 
 interface AdminDashboardProps {
@@ -17,6 +18,8 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
   const [fetchingAddresses, setFetchingAddresses] = useState(false);
   const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedRestaurant, setSavedRestaurant] = useState<Restaurant | null>(null);
 
   const handleDelete = async (id: number) => {
     if (!confirm("Opravdu chcete smazat tuto restauraci?")) return;
@@ -42,6 +45,9 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
       setRestaurants(restaurants.map((r) => (r.id === restaurant.id ? restaurant : r)));
     } else {
       setRestaurants([restaurant, ...restaurants]);
+      // Zobrazit notifikační dialog pro nově přidanou restauraci
+      setSavedRestaurant(restaurant);
+      setShowNotificationDialog(true);
     }
     setEditingId(null);
     setShowForm(false);
@@ -318,6 +324,17 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
             </div>
           )}
         </div>
+
+        {/* Notification Dialog */}
+        {savedRestaurant && (
+          <NotificationDialog
+            isOpen={showNotificationDialog}
+            onClose={() => setShowNotificationDialog(false)}
+            itemName={savedRestaurant.name}
+            itemType="restaurant"
+            itemId={savedRestaurant.id}
+          />
+        )}
       </div>
   );
 }

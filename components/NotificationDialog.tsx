@@ -6,11 +6,12 @@ interface NotificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   itemName: string;
-  itemType: 'cafe' | 'bakery' | 'trending' | 'event';
+  itemType: 'restaurant' | 'cafe' | 'bakery' | 'trending' | 'event';
   itemId?: number;
 }
 
 const itemTypeLabels = {
+  restaurant: 'restaurace',
   cafe: 'kavárna',
   bakery: 'cukrárna',
   trending: 'trending podnik',
@@ -18,6 +19,7 @@ const itemTypeLabels = {
 };
 
 const itemTypeTitlePrefix = {
+  restaurant: 'Nová',
   cafe: 'Nová',
   bakery: 'Nová',
   trending: 'Nový',
@@ -25,6 +27,7 @@ const itemTypeTitlePrefix = {
 };
 
 const itemTypeBodyPrefix = {
+  restaurant: 'novou',
   cafe: 'novou',
   bakery: 'novou',
   trending: 'nový',
@@ -32,6 +35,7 @@ const itemTypeBodyPrefix = {
 };
 
 const itemTypeAccusative = {
+  restaurant: 'restauraci',
   cafe: 'kavárnu',
   bakery: 'cukrárnu',
   trending: 'trending podnik',
@@ -39,6 +43,7 @@ const itemTypeAccusative = {
 };
 
 const itemTypeEmojis = {
+  restaurant: '🍽️',
   cafe: '☕',
   bakery: '🍰',
   trending: '🔥',
