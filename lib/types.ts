@@ -187,7 +187,14 @@ export const eventSchema = z.object({
   name: z.string().min(1, "Název akce je povinný"),
   location: z.string().optional().nullable().or(z.literal("")),
   date: z.string().optional().nullable().or(z.literal("")),
-  link: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  link: z.string()
+    .optional()
+    .nullable()
+    .or(z.literal(""))
+    .refine(
+      (val) => !val || val === "" || z.string().url().safeParse(val).success,
+      { message: "Neplatná URL" }
+    ),
   display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
 });
 
