@@ -188,7 +188,9 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               name: trending.name,
+              address: trending.address,
               website_url: trending.website_url,
+              image_url: trending.image_url,
               display_order: trending.display_order,
             }),
           })
