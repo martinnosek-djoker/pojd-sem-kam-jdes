@@ -797,23 +797,35 @@ export async function getEventById(id: number): Promise<Event | null> {
 }
 
 export async function createEvent(input: EventInput): Promise<Event> {
+  console.log("[createEvent] Input data:", JSON.stringify(input, null, 2));
+
+  const insertData = {
+    name: input.name,
+    location: input.location || null,
+    date: input.date || null,
+    link: input.link || null,
+    display_order: input.display_order,
+  };
+
+  console.log("[createEvent] Inserting into database:", JSON.stringify(insertData, null, 2));
+
   const { data, error } = await supabase
     .from("events")
-    .insert({
-      name: input.name,
-      location: input.location || null,
-      date: input.date || null,
-      link: input.link || null,
-      display_order: input.display_order,
-    })
+    .insert(insertData)
     .select()
     .single();
 
   if (error) {
-    console.error("Error creating event:", error);
+    console.error("[createEvent] Supabase error:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+    });
     throw error;
   }
 
+  console.log("[createEvent] Success:", data);
   return data;
 }
 

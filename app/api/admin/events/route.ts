@@ -20,18 +20,34 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("[POST /api/admin/events] Request body:", body);
+
     const validated = eventSchema.parse(body);
+    console.log("[POST /api/admin/events] Validated data:", validated);
 
     const event = await createEvent(validated);
 
     return NextResponse.json(event, { status: 201 });
   } catch (error: any) {
-    console.error("Error creating event:", error);
+    console.error("[POST /api/admin/events] Error:", error);
 
     if (error.name === "ZodError") {
       return NextResponse.json(
         { error: "Neplatná data", details: error.errors },
         { status: 400 }
+      );
+    }
+
+    // Supabase error
+    if (error.message || error.details || error.code) {
+      return NextResponse.json(
+        {
+          error: error.message || "Nepodařilo se vytvořit akci",
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        },
+        { status: 500 }
       );
     }
 
