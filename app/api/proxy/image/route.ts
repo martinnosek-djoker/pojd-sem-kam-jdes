@@ -30,6 +30,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // 🚨 COST OPTIMIZATION: During build (static export), return placeholder instead of calling Google API
+    // This prevents hundreds of expensive Google Places Photo API calls ($7/1000) during mobile builds
+    if (process.env.MOBILE_BUILD === 'true' || process.env.NEXT_PHASE === 'phase-production-build') {
+      // Return a 1x1 transparent PNG placeholder
+      const transparentPng = Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        'base64'
+      );
+
+      return new NextResponse(transparentPng, {
+        status: 200,
+        headers: {
+          ...corsHeaders(),
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=31536000', // Cache for 1 year
+        },
+      });
+    }
+
     // Fetch the image
     const imageResponse = await fetch(imageUrl);
 

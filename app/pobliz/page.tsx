@@ -5,6 +5,7 @@ import RestaurantCard from "@/components/RestaurantCard";
 import BakeryCard from "@/components/BakeryCard";
 import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
+import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition } from "@/lib/geolocation";
 import { getApiUrl } from "@/lib/api-config";
@@ -195,7 +196,7 @@ export default function NearbyRestaurants() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítání...</p>
+          <LoadingPot />
         </div>
       </main>
     );

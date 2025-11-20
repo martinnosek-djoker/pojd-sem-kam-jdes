@@ -6,6 +6,7 @@ import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
 import Logo from "@/components/Logo";
+import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
@@ -253,18 +254,7 @@ export default function Home() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">
-            Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od{" "}
-            <a
-              href="https://www.instagram.com/pecu_si_zivot/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-purple-400 hover:text-purple-300 transition-colors"
-            >
-              @Peču si život
-            </a>
-          </p>
-          <p className="text-lg text-gray-400 mt-2 text-center">Načítání...</p>
+          <LoadingPot />
         </div>
       </main>
     );

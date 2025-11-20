@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
+import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -164,7 +165,7 @@ export default function CuisinesPage() {
           <div className="mb-8">
             <Logo />
           </div>
-          <p className="text-lg text-gray-400 text-center">Načítání...</p>
+          <LoadingPot />
         </div>
       </main>
     );
