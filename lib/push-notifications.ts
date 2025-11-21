@@ -107,10 +107,11 @@ export async function initializePushNotifications() {
 function handleNotificationNavigation(type: string, itemId: string) {
   // Navigace podle typu notifikace
   const routes: Record<string, string> = {
-    cafe: '/kavarna',
-    bakery: '/cukrarna',
-    trending: '/',
-    event: '/gastro-akce',
+    restaurant: '/',      // Restaurace → homepage
+    cafe: '/kavarny',     // Kavárny → sekce kavárny
+    bakery: '/cukrarny',  // Cukrárny → sekce cukrárny
+    trending: '/',        // Trendings → homepage
+    event: '/akce',       // Gastro akce → sekce gastro akce
   };
 
   const route = routes[type];
