@@ -31,8 +31,8 @@ export default function FloatingNearbyButton() {
         text-white font-semibold
         shadow-lg hover:shadow-xl
         transition-all duration-300 ease-in-out
-        flex items-center gap-2
-        ${isScrolled ? "rounded-full p-4" : "rounded-full px-5 py-3"}
+        flex items-center
+        ${isScrolled ? "rounded-full p-4 justify-center" : "rounded-full px-5 py-3 gap-2"}
       `}
       aria-label="V mém okolí"
     >
