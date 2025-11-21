@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateEventOrder } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 // POST /api/admin/events/reorder - Update event order
 export async function POST(request: NextRequest) {
@@ -14,7 +14,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await updateEventOrder(updates);
+    // Update one by one
+    for (const update of updates) {
+      const { error } = await supabaseAdmin
+        .from("events")
+        .update({ display_order: update.display_order })
+        .eq("id", update.id);
+
+      if (error) {
+        console.error("Error updating event order:", error);
+        throw error;
+      }
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

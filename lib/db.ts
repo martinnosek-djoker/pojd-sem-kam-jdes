@@ -781,6 +781,35 @@ export async function getAllEvents(): Promise<Event[]> {
   return data || [];
 }
 
+export async function getHappeningNowEvents(): Promise<Event[]> {
+  // Create "naive" ISO string (without timezone conversion)
+  // to match how we store event datetimes
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const naiveNow = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .lte("start_date", naiveNow)
+    .gte("end_date", naiveNow)
+    .not("start_date", "is", null)
+    .not("end_date", "is", null)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching happening now events:", error);
+    throw error;
+  }
+
+  return data || [];
+}
+
 export async function getEventById(id: number): Promise<Event | null> {
   const { data, error } = await supabase
     .from("events")
@@ -803,6 +832,8 @@ export async function createEvent(input: EventInput): Promise<Event> {
     name: input.name,
     location: input.location || null,
     date: input.date || null,
+    start_date: input.start_date || null,
+    end_date: input.end_date || null,
     link: input.link || null,
     display_order: input.display_order,
   };
@@ -836,6 +867,8 @@ export async function updateEvent(id: number, input: EventInput): Promise<Event>
       name: input.name,
       location: input.location || null,
       date: input.date || null,
+      start_date: input.start_date || null,
+      end_date: input.end_date || null,
       link: input.link || null,
       display_order: input.display_order,
     })

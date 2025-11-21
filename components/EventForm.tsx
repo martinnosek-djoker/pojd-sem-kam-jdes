@@ -10,10 +10,20 @@ interface EventFormProps {
 }
 
 export default function EventForm({ onSubmit, initialData, onCancel }: EventFormProps) {
+  // Helper to extract datetime-local format from ISO string
+  const toLocalDatetimeString = (isoString: string | null) => {
+    if (!isoString) return "";
+    // ISO format is YYYY-MM-DDTHH:mm:ss.sssZ
+    // datetime-local needs YYYY-MM-DDTHH:mm
+    return isoString.slice(0, 16);
+  };
+
   const [formData, setFormData] = useState<EventInput>({
     name: initialData?.name || "",
     location: initialData?.location || "",
     date: initialData?.date || "",
+    start_date: initialData?.start_date || "",
+    end_date: initialData?.end_date || "",
     link: initialData?.link || "",
     display_order: initialData?.display_order || 1,
   });
@@ -75,7 +85,7 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
 
       <div>
         <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-          Termín
+          Termín (textový popis)
         </label>
         <input
           type="text"
@@ -86,6 +96,66 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
         />
         {errors.date && <p className="mt-1 text-sm text-red-600">{errors.date}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
+            Začátek akce
+          </label>
+          <input
+            type="datetime-local"
+            id="start_date"
+            value={formData.start_date ? toLocalDatetimeString(formData.start_date) : ""}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value) {
+                // Keep the datetime as entered, append timezone info for storage
+                // This way "14:30" stays "14:30" in Czech timezone
+                setFormData({
+                  ...formData,
+                  start_date: value + ":00.000Z"
+                });
+              } else {
+                setFormData({
+                  ...formData,
+                  start_date: ""
+                });
+              }
+            }}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+          />
+          {errors.start_date && <p className="mt-1 text-sm text-red-600">{errors.start_date}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="end_date" className="block text-sm font-medium text-gray-700">
+            Konec akce
+          </label>
+          <input
+            type="datetime-local"
+            id="end_date"
+            value={formData.end_date ? toLocalDatetimeString(formData.end_date) : ""}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value) {
+                // Keep the datetime as entered, append timezone info for storage
+                // This way "14:30" stays "14:30" in Czech timezone
+                setFormData({
+                  ...formData,
+                  end_date: value + ":00.000Z"
+                });
+              } else {
+                setFormData({
+                  ...formData,
+                  end_date: ""
+                });
+              }
+            }}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+          />
+          {errors.end_date && <p className="mt-1 text-sm text-red-600">{errors.end_date}</p>}
+        </div>
       </div>
 
       <div>
@@ -112,7 +182,19 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
           id="display_order"
           min="1"
           value={formData.display_order}
-          onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 1 })}
+          onFocus={(e) => e.target.select()}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === '') {
+              // Allow empty temporarily for editing
+              setFormData({ ...formData, display_order: 1 });
+            } else {
+              const numVal = parseInt(val);
+              if (!isNaN(numVal) && numVal >= 1) {
+                setFormData({ ...formData, display_order: numVal });
+              }
+            }
+          }}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
         />
         {errors.display_order && <p className="mt-1 text-sm text-red-600">{errors.display_order}</p>}

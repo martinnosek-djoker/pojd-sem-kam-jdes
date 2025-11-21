@@ -80,6 +80,24 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
           {event.date || <span className="text-gray-400">—</span>}
         </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {event.start_date ? (
+            <span className="text-green-600">
+              {event.start_date.slice(0, 16).replace('T', ' ')}
+            </span>
+          ) : (
+            <span className="text-gray-400">—</span>
+          )}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {event.end_date ? (
+            <span className="text-red-600">
+              {event.end_date.slice(0, 16).replace('T', ' ')}
+            </span>
+          ) : (
+            <span className="text-gray-400">—</span>
+          )}
+        </td>
         <td className="px-6 py-4 text-sm text-gray-900">
           {event.link ? (
             <a
@@ -111,7 +129,7 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
       </tr>
       {isEditing && editForm && (
         <tr>
-          <td colSpan={6} className="px-6 py-4 bg-gray-50">
+          <td colSpan={8} className="px-6 py-4 bg-gray-50">
             {editForm}
           </td>
         </tr>
@@ -281,7 +299,13 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
                 Místo
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Termín
+                Termín (text)
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Začátek
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Konec
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Odkaz

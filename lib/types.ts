@@ -176,7 +176,9 @@ export interface Event {
   id: number;
   name: string;
   location: string | null;
-  date: string | null;
+  date: string | null; // Legacy text field for display
+  start_date: string | null; // ISO 8601 timestamp for event start
+  end_date: string | null; // ISO 8601 timestamp for event end
   link: string | null;
   display_order: number;
   created_at: string;
@@ -186,7 +188,9 @@ export interface Event {
 export const eventSchema = z.object({
   name: z.string().min(1, "Název akce je povinný"),
   location: z.string().optional().nullable().or(z.literal("")),
-  date: z.string().optional().nullable().or(z.literal("")),
+  date: z.string().optional().nullable().or(z.literal("")), // Legacy text field
+  start_date: z.string().optional().nullable().or(z.literal("")),
+  end_date: z.string().optional().nullable().or(z.literal("")),
   link: z.string()
     .optional()
     .nullable()

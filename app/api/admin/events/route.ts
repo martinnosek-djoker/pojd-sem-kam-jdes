@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllEvents, createEvent } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { eventSchema } from "@/lib/types";
 
 // GET /api/admin/events - Get all events
 export async function GET() {
   try {
-    const events = await getAllEvents();
-    return NextResponse.json(events);
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .order("display_order", { ascending: true });
+
+    if (error) throw error;
+
+    return NextResponse.json(data || []);
   } catch (error) {
     console.error("Error fetching events:", error);
     return NextResponse.json(
@@ -25,9 +31,25 @@ export async function POST(request: NextRequest) {
     const validated = eventSchema.parse(body);
     console.log("[POST /api/admin/events] Validated data:", validated);
 
-    const event = await createEvent(validated);
+    const insertData = {
+      name: validated.name,
+      location: validated.location || null,
+      date: validated.date || null,
+      start_date: validated.start_date || null,
+      end_date: validated.end_date || null,
+      link: validated.link || null,
+      display_order: validated.display_order,
+    };
 
-    return NextResponse.json(event, { status: 201 });
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .insert(insertData)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json(data, { status: 201 });
   } catch (error: any) {
     console.error("[POST /api/admin/events] Error:", error);
 

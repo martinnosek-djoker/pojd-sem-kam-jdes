@@ -5,6 +5,7 @@ import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
+import HappeningNow from "@/components/HappeningNow";
 import Logo from "@/components/Logo";
 import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
@@ -280,6 +281,9 @@ export default function Home() {
             </a>
           </p>
         </div>
+
+        {/* Happening Now Section */}
+        <HappeningNow />
 
         {/* Trendings Section */}
         {trendings.length > 0 && (
