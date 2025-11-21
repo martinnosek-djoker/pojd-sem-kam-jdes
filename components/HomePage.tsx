@@ -376,7 +376,7 @@ export default function Home() {
           </a>
 
           <a
-            href="/typy-kuchyne"
+            href="/kuchyne"
             className="group flex items-center gap-4 p-4 bg-gradient-to-r from-pink-600/20 to-purple-600/20 hover:from-pink-600/30 hover:to-purple-600/30 border border-pink-500/30 hover:border-pink-400/50 rounded-lg transition-all duration-300 hover:scale-[1.02]"
           >
             <div className="flex-shrink-0 w-12 h-12 bg-pink-600/50 rounded-lg flex items-center justify-center group-hover:bg-pink-600/70 transition-colors">
