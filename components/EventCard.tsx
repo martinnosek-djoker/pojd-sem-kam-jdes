@@ -13,16 +13,17 @@ export default function EventCard({ event }: EventCardProps) {
       const startDate = start.toLocaleDateString("cs-CZ", {
         day: "numeric",
         month: "numeric"
-      });
+      }).replace(/\s/g, ''); // Remove spaces: "20. 11." -> "20.11."
+
       const endDate = end.toLocaleDateString("cs-CZ", {
         day: "numeric",
         month: "numeric"
-      });
+      }).replace(/\s/g, '');
 
       if (startDate === endDate) {
         return startDate;
       }
-      return `${startDate} - ${endDate}`;
+      return `${startDate}-${endDate}`; // No spaces around dash
     }
 
     // Fallback to legacy date field
@@ -35,11 +36,11 @@ export default function EventCard({ event }: EventCardProps) {
     <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
       {/* Date section */}
       {dateDisplay && (
-        <div className="flex-shrink-0 flex flex-col items-center justify-center bg-purple-600/20 border border-purple-500/30 rounded-lg p-2 sm:p-3 md:p-4 w-[90px] sm:w-[110px] md:w-[130px]">
+        <div className="flex-shrink-0 flex flex-col items-center justify-center bg-purple-600/20 border border-purple-500/30 rounded-lg p-2 sm:p-3 md:p-4 min-w-[100px] sm:min-w-[120px] md:min-w-[140px]">
           <svg className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span className="text-xs sm:text-sm text-purple-300 font-semibold text-center leading-tight">
+          <span className="text-xs sm:text-sm text-purple-300 font-semibold text-center leading-tight whitespace-nowrap px-1">
             {dateDisplay}
           </span>
         </div>
