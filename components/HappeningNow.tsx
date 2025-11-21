@@ -30,12 +30,12 @@ export default function HappeningNow() {
     return (
       <section className="mb-8 md:mb-12">
         <div className="mb-4 md:mb-6">
-          <div className="flex items-center justify-between mb-1 md:mb-2">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2 md:mb-2">
             <div className="flex items-center gap-3">
               <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-purple-400" />
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
+              <h2 className="text-xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
             </div>
-            <div className="h-8 w-24 bg-gray-800 rounded-md animate-pulse"></div>
+            <div className="h-10 w-28 bg-gray-800 rounded-md animate-pulse"></div>
           </div>
           <p className="text-sm md:text-base text-gray-400">Události začínající v nejbližších 3 dnech</p>
         </div>
@@ -115,17 +115,17 @@ export default function HappeningNow() {
   return (
     <section className="mb-8 md:mb-12">
       <div className="mb-4 md:mb-6">
-        <div className="flex items-center justify-between mb-1 md:mb-2">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2 md:mb-2">
           <div className="flex items-center gap-3">
             <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-purple-400" />
-            <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
+            <h2 className="text-xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
           </div>
           <a
             href="/akce"
-            className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-xs md:text-sm font-medium"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm font-medium self-start md:self-auto"
           >
             Více akcí
-            <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
+            <ExternalLink className="w-4 h-4" />
           </a>
         </div>
         <p className="text-sm md:text-base text-gray-400">Události začínající v nejbližších 3 dnech</p>
