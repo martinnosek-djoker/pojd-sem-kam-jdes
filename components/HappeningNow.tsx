@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Event } from "@/lib/types";
-import { Calendar, MapPin, ExternalLink, Clock } from "lucide-react";
+import { Calendar, MapPin, ExternalLink, Sparkles } from "lucide-react";
 
 export default function HappeningNow() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchHappeningNowEvents() {
+    async function fetchUpcomingEvents() {
       try {
         const response = await fetch("/api/events/happening-now");
         if (response.ok) {
@@ -23,19 +23,53 @@ export default function HappeningNow() {
       }
     }
 
-    fetchHappeningNowEvents();
+    fetchUpcomingEvents();
   }, []);
 
   if (loading) {
     return (
       <section className="mb-8 md:mb-12">
-        <div className="flex items-center gap-3 mb-4">
-          <Clock className="w-6 h-6 text-purple-600" />
-          <h2 className="text-2xl font-bold text-gray-900">Právě probíhá</h2>
+        <div className="mb-4 md:mb-6">
+          <div className="flex items-center justify-between mb-1 md:mb-2">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-purple-400" />
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
+            </div>
+            <div className="h-8 w-24 bg-gray-800 rounded-md animate-pulse"></div>
+          </div>
+          <p className="text-sm md:text-base text-gray-400">Události začínající v nejbližších 3 dnech</p>
         </div>
-        <div className="animate-pulse space-y-3">
-          <div className="h-20 bg-gray-200 rounded-lg"></div>
-          <div className="h-20 bg-gray-200 rounded-lg"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-purple-500/30 animate-pulse"
+            >
+              {/* Skeleton badge */}
+              <div className="absolute -top-2 -right-2 h-6 w-12 bg-purple-600/50 rounded-full"></div>
+
+              {/* Skeleton content */}
+              <div className="space-y-3">
+                {/* Title skeleton */}
+                <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+
+                {/* Date skeleton */}
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-purple-400/50 rounded"></div>
+                  <div className="h-4 bg-gray-700 rounded w-32"></div>
+                </div>
+
+                {/* Location skeleton */}
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-purple-400/50 rounded"></div>
+                  <div className="h-4 bg-gray-700 rounded w-40"></div>
+                </div>
+
+                {/* Link skeleton */}
+                <div className="h-4 bg-gray-700 rounded w-28 mt-2"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     );
@@ -44,6 +78,16 @@ export default function HappeningNow() {
   if (events.length === 0) {
     return null; // Don't show section if no events are happening
   }
+
+  const isEventLive = (event: Event) => {
+    if (!event.start_date || !event.end_date) return false;
+
+    const now = new Date();
+    const start = new Date(event.start_date);
+    const end = new Date(event.end_date);
+
+    return start <= now && end >= now;
+  };
 
   const formatEventDate = (event: Event) => {
     if (event.start_date && event.end_date) {
@@ -70,50 +114,55 @@ export default function HappeningNow() {
 
   return (
     <section className="mb-8 md:mb-12">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <Clock className="w-6 h-6 text-purple-600 animate-pulse" />
-          <h2 className="text-2xl font-bold text-gray-900">Právě probíhá</h2>
+      <div className="mb-4 md:mb-6">
+        <div className="flex items-center justify-between mb-1 md:mb-2">
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-purple-400" />
+            <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide">Aktuální gastro akce</h2>
+          </div>
+          <a
+            href="/akce"
+            className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-xs md:text-sm font-medium"
+          >
+            Více akcí
+            <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
+          </a>
         </div>
-        <a
-          href="/akce"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm font-medium"
-        >
-          Více akcí
-          <ExternalLink className="w-4 h-4" />
-        </a>
+        <p className="text-sm md:text-base text-gray-400">Události začínající v nejbližších 3 dnech</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {events.map((event) => (
           <div
             key={event.id}
-            className="relative group bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 border border-purple-100"
+            className="relative group bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-200 border border-purple-500/30"
           >
-            {/* Highlight badge */}
-            <div className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-              LIVE
-            </div>
+            {/* Highlight badge - only show LIVE for currently happening events */}
+            {isEventLive(event) && (
+              <div className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md animate-pulse">
+                LIVE
+              </div>
+            )}
 
             {/* Event content */}
             <div className="space-y-2">
               {/* Event name */}
-              <h3 className="font-bold text-lg text-gray-900 pr-8">
+              <h3 className="font-bold text-lg text-white pr-8">
                 {event.name}
               </h3>
 
               {/* Date */}
               {(event.start_date || event.date) && (
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Calendar className="w-4 h-4 text-purple-600 flex-shrink-0" />
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <Calendar className="w-4 h-4 text-purple-400 flex-shrink-0" />
                   <span>{formatEventDate(event)}</span>
                 </div>
               )}
 
               {/* Location */}
               {event.location && (
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <MapPin className="w-4 h-4 text-pink-600 flex-shrink-0" />
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <MapPin className="w-4 h-4 text-purple-400 flex-shrink-0" />
                   <span className="truncate">{event.location}</span>
                 </div>
               )}
@@ -124,7 +173,7 @@ export default function HappeningNow() {
                   href={event.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 font-medium mt-2"
+                  className="inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 font-medium mt-2 transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Více informací</span>

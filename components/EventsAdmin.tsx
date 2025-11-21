@@ -78,9 +78,6 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
           {event.location || <span className="text-gray-400">—</span>}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {event.date || <span className="text-gray-400">—</span>}
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
           {event.start_date ? (
             <span className="text-green-600">
               {event.start_date.slice(0, 16).replace('T', ' ')}
@@ -129,7 +126,7 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
       </tr>
       {isEditing && editForm && (
         <tr>
-          <td colSpan={8} className="px-6 py-4 bg-gray-50">
+          <td colSpan={7} className="px-6 py-4 bg-gray-50">
             {editForm}
           </td>
         </tr>
@@ -297,9 +294,6 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Místo
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Termín (text)
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Začátek

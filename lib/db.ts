@@ -782,28 +782,40 @@ export async function getAllEvents(): Promise<Event[]> {
 }
 
 export async function getHappeningNowEvents(): Promise<Event[]> {
-  // Create "naive" ISO string (without timezone conversion)
-  // to match how we store event datetimes
+  // Get current and upcoming events:
+  // 1. Events currently happening (start_date <= now AND end_date >= now)
+  // 2. Events starting within the next 3 days
   const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const naiveNow = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+  const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
 
+  // Create "naive" ISO strings (without timezone conversion)
+  const formatNaiveISO = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+  };
+
+  const naiveNow = formatNaiveISO(now);
+  const naiveThreeDays = formatNaiveISO(threeDaysFromNow);
+
+  // Get events that:
+  // - Haven't ended yet (end_date >= now OR end_date is null)
+  // - Start within next 3 days (start_date <= now + 3 days)
   const { data, error } = await supabase
     .from("events")
     .select("*")
-    .lte("start_date", naiveNow)
-    .gte("end_date", naiveNow)
+    .lte("start_date", naiveThreeDays)
+    .or(`end_date.gte.${naiveNow},end_date.is.null`)
     .not("start_date", "is", null)
-    .not("end_date", "is", null)
+    .order("start_date", { ascending: true })
     .order("display_order", { ascending: true });
 
   if (error) {
-    console.error("Error fetching happening now events:", error);
+    console.error("Error fetching upcoming events:", error);
     throw error;
   }
 

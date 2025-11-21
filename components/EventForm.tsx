@@ -21,7 +21,7 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
   const [formData, setFormData] = useState<EventInput>({
     name: initialData?.name || "",
     location: initialData?.location || "",
-    date: initialData?.date || "",
+    date: "",  // Keep empty for compatibility
     start_date: initialData?.start_date || "",
     end_date: initialData?.end_date || "",
     link: initialData?.link || "",
@@ -83,29 +83,15 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
         {errors.location && <p className="mt-1 text-sm text-red-600">{errors.location}</p>}
       </div>
 
-      <div>
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-          Termín (textový popis)
-        </label>
-        <input
-          type="text"
-          id="date"
-          placeholder="např. 17. - 18.1.2026"
-          value={formData.date || ""}
-          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-        />
-        {errors.date && <p className="mt-1 text-sm text-red-600">{errors.date}</p>}
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
-            Začátek akce
+            Začátek akce *
           </label>
           <input
             type="datetime-local"
             id="start_date"
+            required
             value={formData.start_date ? toLocalDatetimeString(formData.start_date) : ""}
             onChange={(e) => {
               const value = e.target.value;
@@ -130,11 +116,12 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
 
         <div>
           <label htmlFor="end_date" className="block text-sm font-medium text-gray-700">
-            Konec akce
+            Konec akce *
           </label>
           <input
             type="datetime-local"
             id="end_date"
+            required
             value={formData.end_date ? toLocalDatetimeString(formData.end_date) : ""}
             onChange={(e) => {
               const value = e.target.value;
