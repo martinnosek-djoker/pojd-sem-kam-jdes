@@ -6,6 +6,7 @@ import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
 import HappeningNow from "@/components/HappeningNow";
+import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import Logo from "@/components/Logo";
 import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
@@ -442,6 +443,9 @@ export default function Home() {
         )}
 
       </div>
+
+      {/* Floating Nearby Button */}
+      <FloatingNearbyButton />
     </main>
   );
 }
