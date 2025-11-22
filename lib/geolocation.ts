@@ -30,34 +30,6 @@ function toRadians(degrees: number): number {
   return degrees * (Math.PI / 180);
 }
 
-// Geocode an address using Google Maps Geocoding API
-export async function geocodeAddress(
-  address: string,
-  apiKey: string
-): Promise<Coordinates | null> {
-  try {
-    const encodedAddress = encodeURIComponent(address);
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.status === "OK" && data.results.length > 0) {
-      const location = data.results[0].geometry.location;
-      return {
-        lat: location.lat,
-        lng: location.lng,
-      };
-    }
-
-    console.error(`Geocoding failed for address "${address}":`, data.status);
-    return null;
-  } catch (error) {
-    console.error(`Error geocoding address "${address}":`, error);
-    return null;
-  }
-}
-
 // Format distance for display
 export function formatDistance(distanceKm: number): string {
   if (distanceKm < 1) {

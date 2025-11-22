@@ -14,8 +14,6 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
   const [bakeries, setBakeries] = useState(initialBakeries);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [fetchingPhotos, setFetchingPhotos] = useState(false);
-  const [fetchResults, setFetchResults] = useState<any>(null);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [savedBakery, setSavedBakery] = useState<Bakery | null>(null);
 
@@ -51,38 +49,6 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
     setShowForm(false);
   };
 
-  const handleFetchAllPhotos = async () => {
-    if (!confirm("Chceš automaticky načíst fotky pro všechny cukrárny bez obrázku? Může to trvat několik minut.")) {
-      return;
-    }
-
-    setFetchingPhotos(true);
-    setFetchResults(null);
-
-    try {
-      const response = await fetch(getApiUrl("/api/admin/fetch-all-bakery-photos"), {
-        method: "POST",
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setFetchResults(data);
-        // Reload bakeries to show new images
-        const reloadResponse = await fetch(getApiUrl("/api/bakeries"));
-        const updatedBakeries = await reloadResponse.json();
-        setBakeries(updatedBakeries);
-      } else {
-        alert(data.error || "Chyba při načítání fotek");
-      }
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-      alert("Chyba při načítání fotek");
-    } finally {
-      setFetchingPhotos(false);
-    }
-  };
-
   return (
     <div className="mb-8">
       {/* Section Header */}
@@ -91,52 +57,16 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
           <h2 className="text-2xl font-bold text-gray-900">🍰 Cukrárny</h2>
           <p className="text-gray-600 mt-1">Celkem {bakeries.length} cukráren</p>
         </div>
-        <div className="flex gap-3">
-          <button
-            onClick={handleFetchAllPhotos}
-            disabled={fetchingPhotos}
-            className="px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-green-300 transition-colors font-medium text-sm"
-          >
-            {fetchingPhotos ? "🔄 Načítám fotky..." : "📷 Načíst fotky"}
-          </button>
-          <button
-            onClick={() => {
-              setShowForm(true);
-              setEditingId(null);
-            }}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm"
-          >
-            + Přidat cukrárnu
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            setShowForm(true);
+            setEditingId(null);
+          }}
+          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm"
+        >
+          + Přidat cukrárnu
+        </button>
       </div>
-
-      {/* Fetch Results */}
-      {fetchResults && (
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-          <h3 className="font-bold text-blue-900 mb-2">📊 Výsledky načítání fotek:</h3>
-          <div className="grid grid-cols-3 gap-4 mb-3">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{fetchResults.success}</div>
-              <div className="text-sm text-gray-600">Úspěšně načteno</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-600">{fetchResults.skipped}</div>
-              <div className="text-sm text-gray-600">Nenalezeno</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{fetchResults.failed}</div>
-              <div className="text-sm text-gray-600">Chyby</div>
-            </div>
-          </div>
-          <button
-            onClick={() => setFetchResults(null)}
-            className="text-sm text-blue-600 hover:text-blue-800"
-          >
-            Zavřít
-          </button>
-        </div>
-      )}
 
       {/* Form for adding new bakery (only when not editing existing) */}
       {showForm && !editingId && (
