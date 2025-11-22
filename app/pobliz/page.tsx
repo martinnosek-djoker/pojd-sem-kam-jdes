@@ -282,7 +282,7 @@ export default function NearbyRestaurants() {
 
         {/* Results */}
         {!userLocation ? (
-          <div className="text-center py-20">
+          <div className="text-center py-8">
             <div className="text-6xl mb-4">📍</div>
             <p className="text-xl text-gray-400 mb-4">
               Klikni na tlačítko výše
