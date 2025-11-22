@@ -42,7 +42,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
             </h3>
             {trending.address && (
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trending.address)}`}
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${trending.name}, ${trending.address}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs sm:text-sm text-gray-400 hover:text-purple-300 underline transition-colors mt-1 block truncate"
