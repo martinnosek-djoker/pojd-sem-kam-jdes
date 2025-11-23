@@ -44,13 +44,13 @@ export default function ChristmasPage() {
     }
   });
 
-  // Category order and icons
-  const categories: { key: ChristmasCategory; icon: string }[] = [
-    { key: 'cukrovi', icon: '🥨' },
-    { key: 'vanocka', icon: '🍞' },
-    { key: 'jedle-darky', icon: '🎁' },
-    { key: 'zazitky', icon: '✨' },
-    { key: 'veci-do-kuchyne', icon: '🔪' },
+  // Category order
+  const categories: { key: ChristmasCategory }[] = [
+    { key: 'cukrovi' },
+    { key: 'vanocka' },
+    { key: 'jedle-darky' },
+    { key: 'zazitky' },
+    { key: 'veci-do-kuchyne' },
   ];
 
   if (loading) {
@@ -84,7 +84,7 @@ export default function ChristmasPage() {
 
         {/* Categories */}
         <div className="space-y-12">
-          {categories.map(({ key, icon }) => {
+          {categories.map(({ key }) => {
             const categoryTips = tipsByCategory[key];
 
             if (categoryTips.length === 0) {
@@ -95,8 +95,7 @@ export default function ChristmasPage() {
               <div key={key} className="mb-8">
                 {/* Category Header */}
                 <div className="mb-6">
-                  <h2 className="text-xl md:text-2xl font-bold text-purple-300 tracking-wide flex items-center gap-2">
-                    <span className="text-3xl">{icon}</span>
+                  <h2 className="text-xl md:text-2xl font-bold text-purple-300 tracking-wide">
                     {CHRISTMAS_CATEGORY_LABELS[key]}
                   </h2>
                   <div className="h-1 w-20 bg-gradient-to-r from-purple-500 to-transparent mt-2 rounded-full"></div>
