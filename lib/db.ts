@@ -955,7 +955,7 @@ export async function getChristmasTipById(id: number) {
 }
 
 export async function createChristmasTip(tip: any) {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabase
     .from("christmas_tips")
     .insert([tip])
     .select()
@@ -970,7 +970,7 @@ export async function createChristmasTip(tip: any) {
 }
 
 export async function updateChristmasTip(id: number, tip: any) {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabase
     .from("christmas_tips")
     .update(tip)
     .eq("id", id)
@@ -986,7 +986,7 @@ export async function updateChristmasTip(id: number, tip: any) {
 }
 
 export async function deleteChristmasTip(id: number) {
-  const { error } = await supabaseAdmin
+  const { error } = await supabase
     .from("christmas_tips")
     .delete()
     .eq("id", id);
