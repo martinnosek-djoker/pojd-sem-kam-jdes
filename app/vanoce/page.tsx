@@ -46,8 +46,8 @@ export default function ChristmasPage() {
 
   // Category order and icons
   const categories: { key: ChristmasCategory; icon: string }[] = [
-    { key: 'cukrovi', icon: '⭐' },
-    { key: 'vanocka', icon: '🥐' },
+    { key: 'cukrovi', icon: '🥨' },
+    { key: 'vanocka', icon: '🍞' },
     { key: 'jedle-darky', icon: '🎁' },
     { key: 'zazitky', icon: '✨' },
     { key: 'veci-do-kuchyne', icon: '🔪' },
