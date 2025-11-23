@@ -84,9 +84,9 @@ export default function BakeriesPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen p-8 bg-black">
+      <main className="min-h-screen px-8 pb-8 bg-black">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
+          <div className="pt-6 md:pt-8 mb-8">
             <Logo />
           </div>
           <LoadingPot />
@@ -96,10 +96,10 @@ export default function BakeriesPage() {
   }
 
   return (
-    <main className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6 md:mb-12 text-center">
+        <div className="pt-6 md:pt-8 mb-6 md:mb-12 text-center">
           <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>

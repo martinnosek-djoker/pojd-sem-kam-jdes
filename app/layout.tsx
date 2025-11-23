@@ -2,6 +2,7 @@ import "./globals.css";
 import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import ScrollToTop from "@/components/ScrollToTop";
+import BetaTesterBanner from "@/components/BetaTesterBanner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -100,7 +101,8 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className="antialiased pb-20">
+      <body className="antialiased pb-20 pt-14 bg-black">
+        <BetaTesterBanner />
         <ScrollToTop />
         <PushNotificationHandler />
         <main className="min-h-screen">
