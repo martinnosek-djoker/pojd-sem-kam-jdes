@@ -957,7 +957,7 @@ export async function getChristmasTipById(id: number) {
 export async function createChristmasTip(tip: any) {
   const { data, error } = await supabase
     .from("christmas_tips")
-    .insert([tip])
+    .insert(tip)
     .select()
     .single();
 

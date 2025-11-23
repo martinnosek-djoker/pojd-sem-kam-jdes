@@ -108,7 +108,7 @@ export default function ChristmasTipForm({
         <input
           type="text"
           {...register("name")}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="např. Cukrárna U Anděla"
         />
         {errors.name && (
@@ -123,7 +123,7 @@ export default function ChristmasTipForm({
         </label>
         <select
           {...register("category")}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
         >
           {Object.entries(CHRISTMAS_CATEGORY_LABELS).map(([key, label]) => (
             <option key={key} value={key}>
@@ -144,7 +144,7 @@ export default function ChristmasTipForm({
         <input
           type="url"
           {...register("shop_url")}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="https://example.com"
         />
         {errors.shop_url && (
@@ -160,7 +160,7 @@ export default function ChristmasTipForm({
         <input
           type="url"
           {...register("image_url")}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="https://example.com/image.jpg"
         />
         {errors.image_url && (
@@ -185,7 +185,7 @@ export default function ChristmasTipForm({
         <textarea
           {...register("description")}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Krátký popis podniku..."
         />
         {errors.description && (
@@ -201,7 +201,7 @@ export default function ChristmasTipForm({
         <input
           type="number"
           {...register("display_order", { valueAsNumber: true })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="0"
         />
         {errors.display_order && (
@@ -214,7 +214,7 @@ export default function ChristmasTipForm({
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {loading ? "Ukládám..." : tipId ? "Uložit změny" : "Přidat tip"}
         </button>

@@ -46,11 +46,11 @@ export default function ChristmasPage() {
 
   // Category order and icons
   const categories: { key: ChristmasCategory; icon: string }[] = [
-    { key: 'cukrovi', icon: '🍪' },
-    { key: 'vanocka', icon: '🥖' },
+    { key: 'cukrovi', icon: '⭐' },
+    { key: 'vanocka', icon: '🥐' },
     { key: 'jedle-darky', icon: '🎁' },
     { key: 'zazitky', icon: '✨' },
-    { key: 'veci-do-kuchyne', icon: '🍳' },
+    { key: 'veci-do-kuchyne', icon: '🔪' },
   ];
 
   if (loading) {
@@ -71,10 +71,10 @@ export default function ChristmasPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
-          <div className="inline-block border-b-2 border-red-500 pb-3 md:pb-6 mb-2 md:mb-4">
+          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-red-400 mt-4 md:mt-6 mb-2">
+          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">
             🎄 Vánoce 2025
           </h1>
           <p className="text-sm md:text-lg text-gray-300">
@@ -95,11 +95,11 @@ export default function ChristmasPage() {
               <div key={key} className="mb-8">
                 {/* Category Header */}
                 <div className="mb-6">
-                  <h2 className="text-xl md:text-2xl font-bold text-red-300 tracking-wide flex items-center gap-2">
+                  <h2 className="text-xl md:text-2xl font-bold text-purple-300 tracking-wide flex items-center gap-2">
                     <span className="text-3xl">{icon}</span>
                     {CHRISTMAS_CATEGORY_LABELS[key]}
                   </h2>
-                  <div className="h-1 w-20 bg-gradient-to-r from-red-500 to-transparent mt-2 rounded-full"></div>
+                  <div className="h-1 w-20 bg-gradient-to-r from-purple-500 to-transparent mt-2 rounded-full"></div>
                 </div>
 
                 {/* Cards Grid */}
