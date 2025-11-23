@@ -235,7 +235,7 @@ export const christmasTipSchema = z.object({
   image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
   shop_url: z.string().url("Neplatná URL eshopu").min(1, "URL eshopu je povinná"),
   description: z.string().optional().nullable().or(z.literal("")),
-  display_order: z.number().int().min(0).default(0),
+  display_order: z.number().int().min(0),
 });
 
 export type ChristmasTipInput = z.infer<typeof christmasTipSchema>;
