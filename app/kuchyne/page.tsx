@@ -162,7 +162,7 @@ export default function CuisinesPage() {
     return (
       <main className="min-h-screen px-8 pb-8 bg-black">
         <div className="max-w-7xl mx-auto">
-          <div className="pt-6 md:pt-8 mb-8">
+          <div className="pt-10 md:pt-8 mb-8">
             <Logo />
           </div>
           <LoadingPot />
@@ -175,7 +175,7 @@ export default function CuisinesPage() {
     <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="pt-6 md:pt-8 mb-12 text-center">
+        <div className="pt-10 md:pt-8 mb-12 text-center">
           <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
             <Logo />
           </div>

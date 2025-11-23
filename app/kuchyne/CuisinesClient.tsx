@@ -47,7 +47,7 @@ export default function CuisinesClient({ restaurants, allCuisineTypes }: Cuisine
   return (
     <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto">
-        <div className="pt-6 md:pt-8 mb-6 md:mb-12 text-center">
+        <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
           <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
