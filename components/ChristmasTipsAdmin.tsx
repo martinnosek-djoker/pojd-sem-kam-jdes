@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ChristmasTip, CHRISTMAS_CATEGORY_LABELS } from "@/lib/types";
 import ChristmasTipForm from "./ChristmasTipForm";
-import NotificationDialog from "./NotificationDialog";
 
 interface ChristmasTipsAdminProps {
   initialTips: ChristmasTip[];
@@ -13,26 +12,16 @@ export default function ChristmasTipsAdmin({ initialTips }: ChristmasTipsAdminPr
   const [tips, setTips] = useState<ChristmasTip[]>(initialTips);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
 
   const handleSave = (tip: ChristmasTip) => {
     if (editingId) {
       // Update existing
       setTips(tips.map((t) => (t.id === tip.id ? tip : t)));
-      setNotification({
-        message: "Vánoční tip byl úspěšně upraven",
-        type: "success",
-      });
+      alert("Vánoční tip byl úspěšně upraven");
     } else {
       // Add new
       setTips([...tips, tip]);
-      setNotification({
-        message: "Vánoční tip byl úspěšně přidán",
-        type: "success",
-      });
+      alert("Vánoční tip byl úspěšně přidán");
     }
     setEditingId(null);
     setShowAddForm(false);
@@ -53,15 +42,9 @@ export default function ChristmasTipsAdmin({ initialTips }: ChristmasTipsAdminPr
       }
 
       setTips(tips.filter((t) => t.id !== id));
-      setNotification({
-        message: "Vánoční tip byl úspěšně smazán",
-        type: "success",
-      });
+      alert("Vánoční tip byl úspěšně smazán");
     } catch (error: any) {
-      setNotification({
-        message: error.message || "Nepodařilo se smazat tip",
-        type: "error",
-      });
+      alert(error.message || "Nepodařilo se smazat tip");
     }
   };
 
@@ -213,15 +196,6 @@ export default function ChristmasTipsAdmin({ initialTips }: ChristmasTipsAdminPr
           <p className="text-lg mb-2">Zatím nemáte žádné vánoční tipy</p>
           <p className="text-sm">Klikněte na "Přidat tip" pro vytvoření prvního tipu</p>
         </div>
-      )}
-
-      {/* Notification */}
-      {notification && (
-        <NotificationDialog
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
       )}
     </div>
   );
