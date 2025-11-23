@@ -199,3 +199,43 @@ export const eventSchema = z.object({
 });
 
 export type EventInput = z.infer<typeof eventSchema>;
+
+// Christmas tips types
+export type ChristmasCategory =
+  | 'cukrovi'           // Kde koupit cukroví
+  | 'vanocka'           // Vánočka
+  | 'jedle-darky'       // Jedlé dárky
+  | 'zazitky'           // Zážitky
+  | 'veci-do-kuchyne';  // Věci do kuchyně
+
+export const CHRISTMAS_CATEGORY_LABELS: Record<ChristmasCategory, string> = {
+  'cukrovi': 'Kde koupit cukroví',
+  'vanocka': 'Vánočka',
+  'jedle-darky': 'Jedlé dárky',
+  'zazitky': 'Zážitky',
+  'veci-do-kuchyne': 'Věci do kuchyně',
+};
+
+export interface ChristmasTip {
+  id: number;
+  name: string;
+  category: ChristmasCategory;
+  image_url: string | null;
+  shop_url: string;
+  description: string | null;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+// Zod validation schema for christmas tips
+export const christmasTipSchema = z.object({
+  name: z.string().min(1, "Název je povinný"),
+  category: z.enum(['cukrovi', 'vanocka', 'jedle-darky', 'zazitky', 'veci-do-kuchyne']),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  shop_url: z.string().url("Neplatná URL eshopu").min(1, "URL eshopu je povinná"),
+  description: z.string().optional().nullable().or(z.literal("")),
+  display_order: z.number().int().min(0).default(0),
+});
+
+export type ChristmasTipInput = z.infer<typeof christmasTipSchema>;

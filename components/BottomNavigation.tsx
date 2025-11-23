@@ -74,9 +74,10 @@ export default function BottomNavigation() {
   ];
 
   const moreItems = [
+    { href: '/vanoce', label: 'Vánoce 2025', badge: 'Nové' },
     { href: '/lokality', label: 'Podle lokality' },
     { href: '/kuchyne', label: 'Světové kuchyně' },
-    { href: '/akce', label: 'Gastro akce', badge: 'Nové' },
+    { href: '/akce', label: 'Gastro akce' },
   ];
 
   const isActive = (href: string) => {

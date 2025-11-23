@@ -922,3 +922,77 @@ export async function updateEventOrder(updates: { id: number; display_order: num
     }
   }
 }
+
+// Christmas tips functions
+export async function getAllChristmasTips() {
+  const { data, error } = await supabase
+    .from("christmas_tips")
+    .select("*")
+    .order("category")
+    .order("display_order");
+
+  if (error) {
+    console.error("Error fetching Christmas tips:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getChristmasTipById(id: number) {
+  const { data, error } = await supabase
+    .from("christmas_tips")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching Christmas tip:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function createChristmasTip(tip: any) {
+  const { data, error } = await supabaseAdmin
+    .from("christmas_tips")
+    .insert([tip])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating Christmas tip:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateChristmasTip(id: number, tip: any) {
+  const { data, error } = await supabaseAdmin
+    .from("christmas_tips")
+    .update(tip)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating Christmas tip:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function deleteChristmasTip(id: number) {
+  const { error } = await supabaseAdmin
+    .from("christmas_tips")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting Christmas tip:", error);
+    throw error;
+  }
+}

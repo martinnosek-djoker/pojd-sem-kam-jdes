@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllEvents } from "@/lib/db";
+import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllEvents, getAllChristmasTips } from "@/lib/db";
 import AdminDashboard from "@/components/AdminDashboard";
 import TrendingsAdmin from "@/components/TrendingsAdmin";
 import BakeriesAdmin from "@/components/BakeriesAdmin";
 import CafesAdmin from "@/components/CafesAdmin";
 import EventsAdmin from "@/components/EventsAdmin";
+import ChristmasTipsAdmin from "@/components/ChristmasTipsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
 export default async function AdminPage() {
@@ -16,12 +17,13 @@ export default async function AdminPage() {
       redirect;
     }
 
-    const [restaurants, trendings, bakeries, cafes, events] = await Promise.all([
+    const [restaurants, trendings, bakeries, cafes, events, christmasTips] = await Promise.all([
       getAllRestaurants(),
       getAllTrendings(),
       getAllBakeries(),
       getAllCafes(),
       getAllEvents(),
+      getAllChristmasTips(),
     ]);
 
     return (
@@ -32,7 +34,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
-                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {trendings.length} trending podniků • {events.length} akcí
+                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {trendings.length} trending podniků • {events.length} akcí • {christmasTips.length} vánočních tipů
               </p>
             </div>
             <div className="flex gap-3">
@@ -66,6 +68,12 @@ export default async function AdminPage() {
 
           {/* Cafes Section */}
           <CafesAdmin initialCafes={cafes} />
+
+          {/* Separator */}
+          <div className="my-8 border-t border-gray-300"></div>
+
+          {/* Christmas Tips Section */}
+          <ChristmasTipsAdmin initialTips={christmasTips} />
 
           {/* Separator */}
           <div className="my-8 border-t border-gray-300"></div>
