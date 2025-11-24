@@ -3,6 +3,7 @@ import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import ScrollToTop from "@/components/ScrollToTop";
 import BetaTesterBanner from "@/components/BetaTesterBanner";
+import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -25,31 +26,55 @@ export const metadata = {
   },
   themeColor: '#9333EA', // Purple color to match your brand
   description:
-    "TOP 10 trendů v Praze! Objevte trendy restaurace, nejlepší kavárny a cukrárny v Praze. Osobní doporučení podle lokality, typu kuchyně nebo ve vašem okolí.",
+    "TOP 10 trendů v Praze! Objevte nejlepší restaurace, kavárny a cukrárny v Praze. Databáze podniků podle lokalit, typů kuchyně. Tipy na vánoční nákupy, gastro akce a food festivaly v Praze.",
   keywords: [
-    "top 10 podniků o kterých se dnes mluví",
+    // Core Prague restaurant keywords
     "top 10 podniků praha",
-    "cukrárny v Praze",
-    "nejlepší cukrárny Praha",
-    "kam na dort Praha",
-    "kavárny v Praze",
-    "nejlepší kavárny Praha",
-    "trendy restaurace Praha",
     "nejlepší restaurace Praha",
+    "trendy restaurace Praha",
     "kam na jídlo Praha",
-    "trending restaurace",
+    "restaurace Praha",
+    "doporučení restaurace Praha",
     "oblíbené restaurace Praha",
-    "nejžhavější restaurace",
-    "restaurace v okolí",
-    "doporučení restaurace",
-    "české restaurace",
+    "top restaurace Praha",
+
+    // Location-based Prague keywords
+    "restaurace podle lokality Praha",
+    "restaurace Vinohrady",
+    "restaurace Holešovice",
+    "restaurace centrum Praha",
+    "restaurace v okolí Praha",
+
+    // Cuisine types in Prague
     "světové kuchyně Praha",
     "italská restaurace Praha",
     "asijská restaurace Praha",
+    "vietnamská restaurace Praha",
+    "indická restaurace Praha",
+    "české restaurace Praha",
+
+    // Prague cafes & bakeries - unique offering!
+    "nejlepší kavárny Praha",
+    "kavárny v Praze",
+    "káva Praha",
+    "specialty coffee Praha",
+    "nejlepší cukrárny Praha",
+    "cukrárny v Praze",
+    "kam na dort Praha",
+    "kde koupit cukroví Praha",
+
+    // Christmas & seasonal in Prague
+    "kde koupit vánočku Praha",
+    "vánoční cukroví Praha",
+    "vánoční dárky Praha",
+    "adventní trhy Praha",
+    "vánoční akce Praha",
+
+    // Events & festivals in Prague
     "gastro akce Praha",
     "food festival Praha",
-    "kalendář gastro akcí",
-    "kulinarní události Praha",
+    "kulináře události Praha",
+    "kalendář gastro akcí Praha",
   ],
   authors: [{ name: "Peču si život", url: "https://www.instagram.com/pecu_si_zivot/" }],
   creator: "Peču si život",
@@ -60,22 +85,22 @@ export const metadata = {
     locale: "cs_CZ",
     url: "https://www.pojdsemkamjdes.cz/",
     siteName: "Pojď sem! Kam jdeš?",
-    title: "TOP 10 trendů | Pojď sem! Kam jdeš?",
+    title: "TOP 10 trendů v Praze | Nejlepší restaurace, kavárny a cukrárny Praha",
     description:
-      "Objevte TOP 10 trendů v Praze! Trendy restaurace, kavárny a cukrárny. Osobní doporučení nejlepších míst.",
+      "TOP 10 trendů v Praze! Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně. Vánoční tipy a gastro akce.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "TOP 10 trendů Praha - Pojď sem! Kam jdeš?",
+        alt: "TOP 10 trendů Praha - Nejlepší restaurace, kavárny a cukrárny",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOP 10 trendů | Pojď sem! Kam jdeš?",
-    description: "Objevte trendy restaurace, kavárny a cukrárny v Praze. Nejžhavější tipy z pražské gastronomie.",
+    title: "TOP 10 trendů v Praze | Restaurace, kavárny a cukrárny",
+    description: "Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -100,6 +125,7 @@ export default function RootLayout({
     <html lang="cs">
       <head>
         <meta name="theme-color" content="#000000" />
+        <StructuredData />
       </head>
       <body className="antialiased pb-20 pt-14 bg-black">
         <BetaTesterBanner />

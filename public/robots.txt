@@ -1,0 +1,17 @@
+# robots.txt for pojdsemkamjdes.cz
+User-agent: *
+Allow: /
+Allow: /vanoce
+Allow: /akce
+Allow: /kavarny
+Allow: /cukrarny
+Allow: /lokality
+Allow: /kuchyne
+Allow: /pobliz
+
+# Disallow admin areas
+Disallow: /admin
+Disallow: /api
+
+# Sitemap
+Sitemap: https://www.pojdsemkamjdes.cz/sitemap.xml
