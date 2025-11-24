@@ -10,9 +10,9 @@ export default function ChristmasCard({ tip }: ChristmasCardProps) {
       href={tip.shop_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-lg shadow-purple-900/10 hover:shadow-purple-600/30 transition-all duration-300 p-4 border border-purple-600/30 hover:border-purple-500/50 group cursor-pointer hover:scale-105"
+      className="flex flex-col bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-lg shadow-purple-900/10 hover:shadow-purple-600/30 transition-all duration-300 p-4 border border-purple-600/30 hover:border-purple-500/50 group cursor-pointer hover:scale-105 h-full"
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 flex-1">
         {/* Image */}
         {tip.image_url ? (
           <div className="relative w-full h-40 overflow-hidden rounded-lg">
@@ -40,16 +40,17 @@ export default function ChristmasCard({ tip }: ChristmasCardProps) {
           )}
         </div>
 
-        {/* Arrow indicator */}
-        <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-purple-400 font-semibold uppercase tracking-wide">
-            Navštívit eshop
-          </span>
-          <div className="text-purple-400 group-hover:text-purple-300 group-hover:translate-x-1 transition-all">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
+      </div>
+
+      {/* Arrow indicator - anchored at bottom */}
+      <div className="flex items-center justify-between mt-auto pt-3">
+        <span className="text-xs text-purple-400 font-semibold uppercase tracking-wide">
+          Navštívit eshop
+        </span>
+        <div className="text-purple-400 group-hover:text-purple-300 group-hover:translate-x-1 transition-all">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </a>
