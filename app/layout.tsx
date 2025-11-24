@@ -125,9 +125,9 @@ export default function RootLayout({
     <html lang="cs">
       <head>
         <meta name="theme-color" content="#000000" />
-        <StructuredData />
       </head>
       <body className="antialiased pb-20 pt-14 bg-black">
+        <StructuredData />
         <BetaTesterBanner />
         <ScrollToTop />
         <PushNotificationHandler />
