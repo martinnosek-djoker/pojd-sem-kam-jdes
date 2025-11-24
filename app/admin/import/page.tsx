@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
 import ImportForm from "@/components/ImportForm";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ImportPage() {
   const isAuthenticated = await checkAuth();
 

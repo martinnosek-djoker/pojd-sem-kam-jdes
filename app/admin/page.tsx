@@ -9,6 +9,8 @@ import EventsAdmin from "@/components/EventsAdmin";
 import ChristmasTipsAdmin from "@/components/ChristmasTipsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPage() {
   try {
     const isAuthenticated = await checkAuth();
