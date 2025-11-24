@@ -213,7 +213,7 @@ export const CHRISTMAS_CATEGORY_LABELS: Record<ChristmasCategory, string> = {
   'vanocka': 'Vánočka',
   'jedle-darky': 'Jedlé dárky',
   'zazitky': 'Zážitky',
-  'veci-do-kuchyne': 'Věci do kuchyně',
+  'veci-do-kuchyne': 'Kuchařky a věci do kuchyně',
 };
 
 export interface ChristmasTip {
