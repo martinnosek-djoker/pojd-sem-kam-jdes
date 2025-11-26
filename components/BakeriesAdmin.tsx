@@ -109,7 +109,14 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
               <React.Fragment key={bakery.id}>
                 <tr className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{bakery.name}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm font-medium text-gray-900">{bakery.name}</div>
+                      {(!bakery.coordinates || Object.keys(bakery.coordinates).length === 0) && (
+                        <span className="px-2 py-0.5 text-xs font-semibold rounded bg-yellow-100 text-yellow-800" title="Chybí GPS souřadnice pro sekci 'V okolí'">
+                          ⚠️ Bez GPS
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {bakery.location}

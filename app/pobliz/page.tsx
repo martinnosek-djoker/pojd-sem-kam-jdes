@@ -41,6 +41,7 @@ export default function NearbyRestaurants() {
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [radiusKm, setRadiusKm] = useState(2);
   const [error, setError] = useState<string | null>(null);
+  const [isPermissionDenied, setIsPermissionDenied] = useState(false);
 
   // Get next radius option for "enlarge" button
   const getNextRadius = (current: number) => {
@@ -177,12 +178,21 @@ export default function NearbyRestaurants() {
   const handleGetLocation = async () => {
     setGettingLocation(true);
     setError(null);
+    setIsPermissionDenied(false);
 
     try {
       const position = await getCurrentPosition();
       setUserLocation(position);
+      setIsPermissionDenied(false);
     } catch (error: any) {
-      setError(error.message || "Nepodařilo se získat polohu");
+      const errorMsg = error.message || "Nepodařilo se získat polohu";
+      setError(errorMsg);
+
+      // Detekovat jestli byl přístup zamítnut
+      if (errorMsg.includes("zamítnut") || errorMsg.includes("denied")) {
+        setIsPermissionDenied(true);
+      }
+
       console.error("Error getting location:", error);
     } finally {
       setGettingLocation(false);
@@ -274,8 +284,64 @@ export default function NearbyRestaurants() {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 p-3 bg-red-900/30 border border-red-500/50 rounded-md text-red-300 text-sm">
-              {error}
+            <div className="mt-4 p-4 bg-red-900/30 border border-red-500/50 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">⚠️</div>
+                <div className="flex-1">
+                  <h3 className="text-red-300 font-semibold mb-1">
+                    {isPermissionDenied ? "Přístup k poloze není povolen" : "Nepodařilo se získat tvou polohu"}
+                  </h3>
+                  <p className="text-red-200 text-sm mb-3">{error}</p>
+
+                  {isPermissionDenied && (
+                    <div className="bg-red-900/20 p-3 rounded mb-3">
+                      <p className="text-red-200/90 text-xs font-semibold mb-2">💡 Jak povolit přístup k poloze:</p>
+
+                      {/* Instrukce pro WEB */}
+                      <div className="bg-red-800/30 p-2 rounded mb-2">
+                        <p className="text-red-200 text-xs font-semibold mb-1">🌐 Na webu (Chrome, Safari, Firefox):</p>
+                        <ol className="text-red-200/70 text-xs space-y-1 list-decimal list-inside ml-2">
+                          <li>Klikni na <strong>🔒 zámek</strong> nebo <strong>ⓘ info ikonu</strong> vlevo od URL v horní liště</li>
+                          <li>Najdi nastavení <strong>"Poloha"</strong> nebo <strong>"Location"</strong></li>
+                          <li>Vyber <strong>"Povolit"</strong> nebo <strong>"Allow"</strong></li>
+                          <li>Stránka se může obnovit - klikni znovu na tlačítko níže</li>
+                        </ol>
+                      </div>
+
+                      {/* Instrukce pro MOBIL */}
+                      <div className="bg-red-800/30 p-2 rounded">
+                        <p className="text-red-200 text-xs font-semibold mb-1">📱 V mobilní aplikaci:</p>
+                        <ul className="text-red-200/70 text-xs space-y-1 list-disc list-inside ml-2">
+                          <li><strong>iPhone:</strong> Nastavení → Soukromí → Polohové služby → Gastro Tips → Povolit</li>
+                          <li><strong>Android:</strong> Nastavení → Aplikace → Gastro Tips → Oprávnění → Poloha → Povolit</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {!isPermissionDenied && (
+                    <div className="bg-red-900/20 p-3 rounded mb-3">
+                      <p className="text-red-200/90 text-xs font-semibold mb-2">💡 Co zkusit:</p>
+                      <ul className="text-red-200/70 text-xs space-y-1 list-disc list-inside">
+                        <li>Zkontroluj, že máš zapnutou GPS na zařízení</li>
+                        <li>Zkus se přesunout blíž k oknu (lepší GPS signál)</li>
+                        <li>Zkus to za chvíli znovu</li>
+                      </ul>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      setError(null);
+                      setIsPermissionDenied(false);
+                      handleGetLocation();
+                    }}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors text-sm font-medium"
+                  >
+                    {isPermissionDenied ? "🔓 Zkusit povolit znovu" : "🔄 Zkusit znovu"}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

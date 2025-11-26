@@ -70,7 +70,15 @@ export async function getCurrentPosition(): Promise<Coordinates> {
       };
     } catch (error: any) {
       console.error('[Geolocation] Capacitor error:', error);
-      throw new Error(error.message || "Nepodařilo se získat polohu z GPS");
+
+      // Přeložit technické hlášky do češtiny
+      let message = error.message || "Nepodařilo se získat polohu z GPS";
+
+      if (message.includes("not implemented") || message.includes("Not implemented")) {
+        message = "Přístup k poloze není v této verzi podporován. Používáš webovou verzi? Zkus mobilní aplikaci.";
+      }
+
+      throw new Error(message);
     }
   } else {
     // Používáme browser's Geolocation API na webu

@@ -20,6 +20,7 @@ export default function BakeryForm({
   const [error, setError] = useState("");
   const [fetchingPhoto, setFetchingPhoto] = useState(false);
   const [addressesText, setAddressesText] = useState("");
+  const [coordinatesText, setCoordinatesText] = useState("");
   const [availablePhotos, setAvailablePhotos] = useState<string[]>([]);
 
   const {
@@ -58,6 +59,8 @@ export default function BakeryForm({
           });
           // Set addresses text for textarea
           setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
+          // Set coordinates text for textarea
+          setCoordinatesText(data.coordinates ? JSON.stringify(data.coordinates, null, 2) : "");
           // Clear photo gallery when loading existing bakery
           setAvailablePhotos([]);
         })
@@ -130,9 +133,22 @@ export default function BakeryForm({
       }
     }
 
+    // Parse coordinates from textarea
+    let parsedCoordinates = null;
+    if (coordinatesText.trim()) {
+      try {
+        parsedCoordinates = JSON.parse(coordinatesText);
+      } catch (e) {
+        setError("Neplatný formát GPS souřadnic (JSON)");
+        setLoading(false);
+        return;
+      }
+    }
+
     const payload = {
       ...data,
       addresses: parsedAddresses,
+      coordinates: parsedCoordinates,
     };
 
     try {
@@ -238,6 +254,27 @@ export default function BakeryForm({
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
             rows={3}
           />
+        </div>
+
+        {/* Coordinates JSON */}
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            GPS souřadnice (JSON) <span className="text-xs text-gray-500">pro sekci "V okolí"</span>
+          </label>
+          <textarea
+            value={coordinatesText}
+            onChange={(e) => setCoordinatesText(e.target.value)}
+            placeholder='{"Anděl": {"lat": 50.0711, "lng": 14.4039}, "Letná": {"lat": 50.1011, "lng": 14.4282}}'
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
+            rows={3}
+          />
+          <p className="text-xs text-gray-400 mt-1">
+            📍 Tip: Souřadnice najdeš na{" "}
+            <a href="https://mapy.cz" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              mapy.cz
+            </a>
+            {" "}(klikni pravým → "Co je zde?")
+          </p>
         </div>
 
         {/* Image URL + Fetch Button */}

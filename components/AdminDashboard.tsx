@@ -112,7 +112,14 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
                 <React.Fragment key={restaurant.id}>
                   <tr className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{restaurant.name}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-sm font-medium text-gray-900">{restaurant.name}</div>
+                        {(!restaurant.coordinates || Object.keys(restaurant.coordinates).length === 0) && (
+                          <span className="px-2 py-0.5 text-xs font-semibold rounded bg-yellow-100 text-yellow-800" title="Chybí GPS souřadnice pro sekci 'V okolí'">
+                            ⚠️ Bez GPS
+                          </span>
+                        )}
+                      </div>
                       {restaurant.specialty && (
                         <div className="text-xs text-gray-500">{restaurant.specialty}</div>
                       )}

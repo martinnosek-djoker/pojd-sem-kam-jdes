@@ -20,6 +20,7 @@ export default function RestaurantForm({
   const [error, setError] = useState("");
   const [fetchingPhoto, setFetchingPhoto] = useState(false);
   const [addressesText, setAddressesText] = useState("");
+  const [coordinatesText, setCoordinatesText] = useState("");
   const [availablePhotos, setAvailablePhotos] = useState<string[]>([]);
 
   const {
@@ -63,6 +64,8 @@ export default function RestaurantForm({
           });
           // Set addresses text for textarea
           setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
+          // Set coordinates text for textarea
+          setCoordinatesText(data.coordinates ? JSON.stringify(data.coordinates, null, 2) : "");
           // Clear photo gallery when loading existing restaurant
           setAvailablePhotos([]);
         })
@@ -129,11 +132,24 @@ export default function RestaurantForm({
     setError("");
 
     try {
+      // Parse coordinates from JSON text
+      let coordinates = null;
+      if (coordinatesText.trim()) {
+        try {
+          coordinates = JSON.parse(coordinatesText.trim());
+        } catch (e) {
+          setError("Neplatný JSON formát v GPS souřadnicích");
+          setLoading(false);
+          return;
+        }
+      }
+
       // Clean up empty strings
       const cleanData = {
         ...data,
         specialty: data.specialty || null,
         addresses: data.addresses || null,
+        coordinates: coordinates,
         website_url: data.website_url || null,
         image_url: data.image_url || null,
       };
@@ -240,6 +256,38 @@ export default function RestaurantForm({
             {errors.addresses?.message && (
               <p className="text-red-600 text-sm mt-1">{String(errors.addresses.message)}</p>
             )}
+          </div>
+
+          {/* Coordinates - GPS for "V okolí" section */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              GPS souřadnice (JSON formát - nepovinné)
+            </label>
+            <textarea
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+              rows={4}
+              placeholder='{"Anděl": {"lat": 50.0711, "lng": 14.4039}, "Vinohrady": {"lat": 50.0763, "lng": 14.4371}}'
+              value={coordinatesText}
+              onChange={(e) => {
+                const value = e.target.value;
+                setCoordinatesText(value);
+              }}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              📍 Pro sekci "V okolí". Formát: {`{"lokalita": {"lat": 50.0711, "lng": 14.4039}}`}. Klíče musí odpovídat lokalitám.
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              Tip: Souřadnice najdeš na{" "}
+              <a
+                href="https://mapy.cz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                mapy.cz
+              </a>
+              {" "}(klikni pravým tlačítkem → "Co je zde?" → zkopíruj souřadnice)
+            </p>
           </div>
 
           {/* Cuisine Type */}
