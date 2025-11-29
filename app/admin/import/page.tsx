@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
 import ImportForm from "@/components/ImportForm";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Only force dynamic on server builds, not on static export for mobile
+export const dynamic = process.env.MOBILE_BUILD ? undefined : 'force-dynamic';
+export const revalidate = process.env.MOBILE_BUILD ? undefined : 0;
 
 export default async function ImportPage() {
   const isAuthenticated = await checkAuth();

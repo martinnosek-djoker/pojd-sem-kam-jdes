@@ -18,7 +18,6 @@ export default function TrendingForm({
 }: TrendingFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [fetchingPhoto, setFetchingPhoto] = useState(false);
 
   const {
     register,
@@ -39,8 +38,6 @@ export default function TrendingForm({
   });
 
   const imageUrl = watch("image_url");
-  const trendingName = watch("name");
-  const trendingAddress = watch("address");
 
   useEffect(() => {
     if (trendingId) {
@@ -63,42 +60,6 @@ export default function TrendingForm({
     }
   }, [trendingId, reset]);
 
-  const handleFetchPhoto = async () => {
-    if (!trendingName) {
-      setError("Vyplň nejdřív název podniku");
-      return;
-    }
-
-    setFetchingPhoto(true);
-    setError("");
-
-    try {
-      const params = new URLSearchParams({
-        name: trendingName,
-        location: "Praha", // Default to Prague for trendings
-      });
-
-      const response = await fetch(`/api/places/photo?${params}`);
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.photoUrl) {
-          setValue("image_url", data.photoUrl);
-        }
-        // Also set address if available (from addresses object for Praha)
-        if (data.addresses && data.addresses["Praha"]) {
-          setValue("address", data.addresses["Praha"]);
-        }
-      } else {
-        setError(data.error || "Nepodařilo se načíst data");
-      }
-    } catch (err) {
-      console.error("Error fetching photo:", err);
-      setError("Nepodařilo se načíst fotografii");
-    } finally {
-      setFetchingPhoto(false);
-    }
-  };
 
   const onSubmit = async (data: TrendingInput) => {
     setLoading(true);
@@ -179,17 +140,21 @@ export default function TrendingForm({
             )}
           </div>
 
-          {/* Address - Display only, filled by auto-fetch */}
-          {trendingAddress && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Načtená adresa:
-              </label>
-              <div className="text-sm bg-green-50 p-2 rounded border border-green-200">
-                <span className="text-gray-700">{trendingAddress as string}</span>
-              </div>
-            </div>
-          )}
+          {/* Address - Manual input */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Adresa (nepovinné)
+            </label>
+            <input
+              type="text"
+              {...register("address")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="např. Hartigova 2B, 130 00 Praha 3-Žižkov, Czechia"
+            />
+            {errors.address && (
+              <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
+            )}
+          </div>
 
           {/* Website URL */}
           <div className="md:col-span-2">
@@ -207,27 +172,17 @@ export default function TrendingForm({
             )}
           </div>
 
-          {/* Image URL with Auto-fetch */}
+          {/* Image URL */}
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               URL fotky (nepovinné)
             </label>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                {...register("image_url")}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="https://..."
-              />
-              <button
-                type="button"
-                onClick={handleFetchPhoto}
-                disabled={fetchingPhoto || !trendingName}
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-              >
-                {fetchingPhoto ? "Načítám..." : "🔍 Auto-fetch"}
-              </button>
-            </div>
+            <input
+              type="url"
+              {...register("image_url")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://..."
+            />
             {errors.image_url && (
               <p className="text-red-600 text-sm mt-1">{errors.image_url.message}</p>
             )}

@@ -9,8 +9,9 @@ import EventsAdmin from "@/components/EventsAdmin";
 import ChristmasTipsAdmin from "@/components/ChristmasTipsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Only force dynamic on server builds, not on static export for mobile
+export const dynamic = process.env.MOBILE_BUILD ? undefined : 'force-dynamic';
+export const revalidate = process.env.MOBILE_BUILD ? undefined : 0;
 
 export default async function AdminPage() {
   try {
