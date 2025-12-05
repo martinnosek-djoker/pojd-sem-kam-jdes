@@ -21,8 +21,9 @@ export function getApiUrl(endpoint: string): string {
 export function getProxiedImageUrl(imageUrl: string | null | undefined): string | null {
   if (!imageUrl) return null;
 
-  // V mobilní appce používáme proxy endpoint pro obrázky z Google Maps
-  if (IS_MOBILE && imageUrl.includes('maps.googleapis.com')) {
+  // V mobilní appce používáme proxy endpoint pro obrázky z Google
+  // Podporujeme jak maps.googleapis.com tak lh3.googleusercontent.com (Google Photos)
+  if (IS_MOBILE && (imageUrl.includes('maps.googleapis.com') || imageUrl.includes('googleusercontent.com'))) {
     const encodedUrl = encodeURIComponent(imageUrl);
     return `${API_BASE_URL}/api/proxy/image?url=${encodedUrl}`;
   }
