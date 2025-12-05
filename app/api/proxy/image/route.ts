@@ -22,10 +22,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Validate that it's a Google Maps URL
-    if (!imageUrl.startsWith('https://maps.googleapis.com/')) {
+    // Validate that it's a Google URL (Maps API or Google Photos)
+    const isGoogleMapsUrl = imageUrl.startsWith('https://maps.googleapis.com/');
+    const isGooglePhotosUrl = imageUrl.startsWith('https://lh3.googleusercontent.com/') ||
+                              imageUrl.startsWith('https://lh4.googleusercontent.com/') ||
+                              imageUrl.startsWith('https://lh5.googleusercontent.com/');
+
+    if (!isGoogleMapsUrl && !isGooglePhotosUrl) {
       return NextResponse.json(
-        { error: "Only Google Maps URLs are allowed" },
+        { error: "Only Google Maps and Google Photos URLs are allowed" },
         { status: 403, headers: corsHeaders() }
       );
     }
