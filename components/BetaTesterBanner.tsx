@@ -7,7 +7,7 @@ export default function BetaTesterBanner() {
 
   useEffect(() => {
     // Check if banner was dismissed
-    const dismissed = localStorage.getItem("betaTesterBannerDismissed");
+    const dismissed = localStorage.getItem("christmasBanner2025Dismissed");
     if (!dismissed) {
       setIsVisible(true);
     }
@@ -15,7 +15,7 @@ export default function BetaTesterBanner() {
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem("betaTesterBannerDismissed", "true");
+    localStorage.setItem("christmasBanner2025Dismissed", "true");
   };
 
   if (!isVisible) return null;
@@ -25,27 +25,14 @@ export default function BetaTesterBanner() {
       <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <p className="text-sm sm:text-base font-medium">
-              <span className="font-bold">Android aplikace v přípravě!</span>
+            <a
+              href="/vanoce"
+              className="text-sm sm:text-base font-medium hover:text-purple-200 transition-colors"
+            >
+              <span className="font-bold">🎄 Připrav se s námi na Vánoce se vším všudy!</span>
               {" "}
-              <span className="hidden sm:inline">Staň se interním testerem! </span>
-              Pošli svou emailovou adresu na{" "}
-              <a
-                href="mailto:nosekm0@gmail.com?subject=Zájem o beta testování Android aplikace"
-                className="underline hover:text-purple-200 transition-colors font-semibold"
-              >
-                nosekm0@gmail.com
-              </a>
-              {" "}nebo na{" "}
-              <a
-                href="https://www.instagram.com/pecu_si_zivot/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-purple-200 transition-colors font-semibold"
-              >
-                Instagram
-              </a>
-            </p>
+              Cukroví, vánočky a dárky na jednom místě.
+            </a>
           </div>
           <button
             onClick={handleDismiss}
