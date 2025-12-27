@@ -105,7 +105,10 @@ export default function MichelinForm({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save restaurant");
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+        console.error("API Error:", errorMessage, errorData);
+        throw new Error(errorMessage);
       }
 
       const savedRestaurant = await response.json();
@@ -114,7 +117,8 @@ export default function MichelinForm({
       setAddressesText("");
     } catch (err) {
       console.error("Error saving restaurant:", err);
-      setError("Nepodařilo se uložit restauraci");
+      const errorMessage = err instanceof Error ? err.message : "Nepodařilo se uložit restauraci";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
