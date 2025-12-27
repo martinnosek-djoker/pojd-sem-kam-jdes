@@ -923,76 +923,90 @@ export async function updateEventOrder(updates: { id: number; display_order: num
   }
 }
 
-// Christmas tips functions
-export async function getAllChristmasTips() {
+// Michelin restaurants functions
+export async function getAllMichelinRestaurants() {
   const { data, error } = await supabase
-    .from("christmas_tips")
+    .from("michelin_restaurants")
     .select("*")
-    .order("category")
+    .order("award_type")
     .order("display_order");
 
   if (error) {
-    console.error("Error fetching Christmas tips:", error);
+    console.error("Error fetching Michelin restaurants:", error);
     throw error;
   }
 
   return data;
 }
 
-export async function getChristmasTipById(id: number) {
+export async function getMichelinRestaurantById(id: number) {
   const { data, error } = await supabase
-    .from("christmas_tips")
+    .from("michelin_restaurants")
     .select("*")
     .eq("id", id)
     .single();
 
   if (error) {
-    console.error("Error fetching Christmas tip:", error);
+    console.error("Error fetching Michelin restaurant:", error);
     throw error;
   }
 
   return data;
 }
 
-export async function createChristmasTip(tip: any) {
+export async function createMichelinRestaurant(restaurant: any) {
   const { data, error } = await supabase
-    .from("christmas_tips")
-    .insert(tip)
+    .from("michelin_restaurants")
+    .insert(restaurant)
     .select()
     .single();
 
   if (error) {
-    console.error("Error creating Christmas tip:", error);
+    console.error("Error creating Michelin restaurant:", error);
     throw error;
   }
 
   return data;
 }
 
-export async function updateChristmasTip(id: number, tip: any) {
+export async function updateMichelinRestaurant(id: number, restaurant: any) {
   const { data, error } = await supabase
-    .from("christmas_tips")
-    .update(tip)
+    .from("michelin_restaurants")
+    .update(restaurant)
     .eq("id", id)
     .select()
     .single();
 
   if (error) {
-    console.error("Error updating Christmas tip:", error);
+    console.error("Error updating Michelin restaurant:", error);
     throw error;
   }
 
   return data;
 }
 
-export async function deleteChristmasTip(id: number) {
+export async function deleteMichelinRestaurant(id: number) {
   const { error } = await supabase
-    .from("christmas_tips")
+    .from("michelin_restaurants")
     .delete()
     .eq("id", id);
 
   if (error) {
-    console.error("Error deleting Christmas tip:", error);
+    console.error("Error deleting Michelin restaurant:", error);
     throw error;
+  }
+}
+
+export async function updateMichelinRestaurantOrder(updates: { id: number; display_order: number }[]): Promise<void> {
+  for (const update of updates) {
+    const { error: updateError } = await supabase
+      .from("michelin_restaurants")
+      .update({ display_order: update.display_order })
+      .eq("id", update.id);
+
+    if (updateError) {
+      console.error("Error updating Michelin restaurant order:", updateError);
+      throw updateError;
+    }
   }
 }

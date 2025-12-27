@@ -5,11 +5,12 @@ import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import TrendingCard from "@/components/TrendingCard";
+import MichelinCard from "@/components/MichelinCard";
 import HappeningNow from "@/components/HappeningNow";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import Logo from "@/components/Logo";
 import LoadingPot from "@/components/LoadingPot";
-import { Restaurant, Trending, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import { Restaurant, Trending, MichelinRestaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -17,6 +18,7 @@ export default function Home() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [trendings, setTrendings] = useState<Trending[]>([]);
+  const [michelinRestaurants, setMichelinRestaurants] = useState<MichelinRestaurant[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -25,6 +27,8 @@ export default function Home() {
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
   const [trendingScrollIndex, setTrendingScrollIndex] = useState(0);
   const trendingScrollRef = useRef<HTMLDivElement>(null);
+  const [michelinScrollIndex, setMichelinScrollIndex] = useState(0);
+  const michelinScrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch restaurants, trendings, and filters
   useEffect(() => {
@@ -32,29 +36,35 @@ export default function Home() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const trendingsUrl = getApiUrl("/api/trendings");
+        const michelinUrl = getApiUrl("/api/michelin");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
 
         console.log("[HomePage] 🔍 Fetching restaurants from:", restaurantsUrl);
         console.log("[HomePage] 🔍 Fetching trendings from:", trendingsUrl);
+        console.log("[HomePage] 🔍 Fetching michelin from:", michelinUrl);
         console.log("[HomePage] 🔍 Fetching filters from:", filtersUrl);
 
-        const [restaurantsRes, trendingsRes, filtersRes] = await Promise.all([
+        const [restaurantsRes, trendingsRes, michelinRes, filtersRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(trendingsUrl),
+          fetch(michelinUrl),
           fetch(filtersUrl),
         ]);
 
         console.log("[HomePage] ✅ Response status - restaurants:", restaurantsRes.status);
         console.log("[HomePage] ✅ Response status - trendings:", trendingsRes.status);
+        console.log("[HomePage] ✅ Response status - michelin:", michelinRes.status);
         console.log("[HomePage] ✅ Response status - filters:", filtersRes.status);
 
         const restaurantsData = await restaurantsRes.json();
         const trendingsData = await trendingsRes.json();
+        const michelinData = await michelinRes.json();
         const filtersData = await filtersRes.json();
 
         console.log("[HomePage] Received data:", {
           restaurantsCount: Array.isArray(restaurantsData) ? restaurantsData.length : 'not an array',
           trendingsCount: Array.isArray(trendingsData) ? trendingsData.length : 'not an array',
+          michelinCount: Array.isArray(michelinData) ? michelinData.length : 'not an array',
           filtersLocations: Array.isArray(filtersData?.locations) ? filtersData.locations.length : 'not an array',
           filtersCuisineTypes: Array.isArray(filtersData?.cuisineTypes) ? filtersData.cuisineTypes.length : 'not an array'
         });
@@ -77,6 +87,15 @@ export default function Home() {
         } else {
           console.error("[HomePage] ❌ Trendings data is not an array:", trendingsData);
           setTrendings([]);
+        }
+
+        // Validate that michelinData is an array
+        if (Array.isArray(michelinData)) {
+          setMichelinRestaurants(michelinData);
+          console.log("[HomePage] ✅ Set michelin restaurants:", michelinData.length);
+        } else {
+          console.error("[HomePage] ❌ Michelin data is not an array:", michelinData);
+          setMichelinRestaurants([]);
         }
 
         // Validate filters data
@@ -249,6 +268,14 @@ export default function Home() {
     setTrendingScrollIndex(index);
   };
 
+  const handleMichelinScroll = () => {
+    if (!michelinScrollRef.current) return;
+    const scrollLeft = michelinScrollRef.current.scrollLeft;
+    const cardWidth = michelinScrollRef.current.offsetWidth * 0.85 + 16; // 85% width + gap
+    const index = Math.round(scrollLeft / cardWidth);
+    setMichelinScrollIndex(index);
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen px-8 pb-8 bg-black">
@@ -322,6 +349,47 @@ export default function Home() {
             <div className="hidden md:grid md:grid-cols-2 gap-4">
               {trendings.map((trending, index) => (
                 <TrendingCard key={trending.id} trending={trending} rank={index + 1} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Michelin Section */}
+        {michelinRestaurants.length > 0 && (
+          <div className="mb-8 md:mb-12">
+            <div className="mb-4 md:mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">⭐ Michelin 2026</h2>
+              <p className="text-sm md:text-base text-gray-400">Michelinské hvězdy a ocenění Bib Gourmand v Praze</p>
+            </div>
+            {/* Mobile: Horizontal Carousel */}
+            <div className="md:hidden relative">
+              <div
+                ref={michelinScrollRef}
+                onScroll={handleMichelinScroll}
+                className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+              >
+                {michelinRestaurants.map((restaurant) => (
+                  <div key={restaurant.id} className="flex-shrink-0 w-[85%] snap-start snap-always">
+                    <MichelinCard restaurant={restaurant} />
+                  </div>
+                ))}
+              </div>
+              {/* Progress dots */}
+              <div className="flex justify-center gap-1.5 mt-2">
+                {michelinRestaurants.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                      index === michelinScrollIndex ? 'bg-purple-400' : 'bg-purple-500/30'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* Desktop: Grid */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {michelinRestaurants.map((restaurant) => (
+                <MichelinCard key={restaurant.id} restaurant={restaurant} />
               ))}
             </div>
           </div>

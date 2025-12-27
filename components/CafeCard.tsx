@@ -1,5 +1,8 @@
+"use client";
+
 import { Cafe } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
+import { useState } from "react";
 
 interface CafeCardProps {
   cafe: Cafe;
@@ -8,16 +11,18 @@ interface CafeCardProps {
 
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
   const proxiedImageUrl = getProxiedImageUrl(cafe.image_url);
+  const [imageError, setImageError] = useState(false);
 
   const CardContent = () => (
     <>
       {/* Image Header */}
-      {proxiedImageUrl ? (
+      {proxiedImageUrl && !imageError ? (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
             src={proxiedImageUrl}
             alt={cafe.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
           {cafe.website_url && (

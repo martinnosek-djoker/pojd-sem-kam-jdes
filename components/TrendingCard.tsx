@@ -1,4 +1,7 @@
+"use client";
+
 import { Trending } from "@/lib/types";
+import { useState } from "react";
 
 interface TrendingCardProps {
   trending: Trending;
@@ -6,16 +9,18 @@ interface TrendingCardProps {
 }
 
 export default function TrendingCard({ trending, rank }: TrendingCardProps) {
+  const [imageError, setImageError] = useState(false);
   const CardContent = () => (
     <>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-0 relative overflow-hidden">
         {/* Image section - top on mobile, left on desktop */}
-        {trending.image_url ? (
+        {trending.image_url && !imageError ? (
           <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden">
             <img
               src={trending.image_url}
               alt={trending.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              onError={() => setImageError(true)}
             />
             <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-transparent via-transparent to-gray-900/50 sm:to-gray-900"></div>
             {/* Rank badge overlaid on image */}

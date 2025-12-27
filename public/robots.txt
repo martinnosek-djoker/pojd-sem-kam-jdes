@@ -1,7 +1,6 @@
 # robots.txt for pojdsemkamjdes.cz
 User-agent: *
 Allow: /
-Allow: /vanoce
 Allow: /akce
 Allow: /kavarny
 Allow: /cukrarny

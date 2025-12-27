@@ -27,7 +27,7 @@ export default function StructuredData() {
       "name": "Restaurace a kavárny v Praze",
       "description": "Databáze nejlepších restaurací, kaváren a cukráren v Praze s vyhledáváním podle lokality a typu kuchyně"
     },
-    "keywords": "restaurace Praha, kavárny Praha, cukrárny Praha, kde koupit cukroví Praha, vánoční akce Praha, gastro akce Praha"
+    "keywords": "restaurace Praha, kavárny Praha, cukrárny Praha, gastro akce Praha"
   };
 
   return (

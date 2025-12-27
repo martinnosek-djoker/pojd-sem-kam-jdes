@@ -200,42 +200,47 @@ export const eventSchema = z.object({
 
 export type EventInput = z.infer<typeof eventSchema>;
 
-// Christmas tips types
-export type ChristmasCategory =
-  | 'cukrovi'           // Kde koupit cukroví
-  | 'vanocka'           // Vánočka
-  | 'jedle-darky'       // Jedlé dárky
-  | 'zazitky'           // Zážitky
-  | 'veci-do-kuchyne';  // Věci do kuchyně
+// Michelin restaurant types
+export type MichelinAwardType = "2-stars" | "1-star" | "bib-gourmand";
 
-export const CHRISTMAS_CATEGORY_LABELS: Record<ChristmasCategory, string> = {
-  'cukrovi': 'Kde koupit cukroví',
-  'vanocka': 'Vánočka',
-  'jedle-darky': 'Jedlé dárky',
-  'zazitky': 'Zážitky',
-  'veci-do-kuchyne': 'Kuchařky a věci do kuchyně',
+export const MICHELIN_AWARD_LABELS: Record<MichelinAwardType, string> = {
+  "2-stars": "⭐⭐ 2 Michelin hvězdy",
+  "1-star": "⭐ 1 Michelin hvězda",
+  "bib-gourmand": "🍽️ Bib Gourmand",
 };
 
-export interface ChristmasTip {
+export interface MichelinRestaurant {
   id: number;
   name: string;
-  category: ChristmasCategory;
-  image_url: string | null;
-  shop_url: string;
+  award_type: MichelinAwardType;
+  location: string;
+  addresses: Record<string, string> | null;
+  coordinates: Record<string, Coordinates> | null;
+  cuisine_type: string | null;
   description: string | null;
+  website_url: string | null;
+  image_url: string | null;
   display_order: number;
   created_at: string;
   updated_at: string;
 }
 
-// Zod validation schema for christmas tips
-export const christmasTipSchema = z.object({
+export const michelinRestaurantSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
-  category: z.enum(['cukrovi', 'vanocka', 'jedle-darky', 'zazitky', 'veci-do-kuchyne']),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
-  shop_url: z.string().url("Neplatná URL eshopu").min(1, "URL eshopu je povinná"),
+  award_type: z.enum(["2-stars", "1-star", "bib-gourmand"], {
+    errorMap: () => ({ message: "Vyberte typ ocenění" })
+  }),
+  location: z.string().min(1, "Lokalita je povinná"),
+  addresses: z.record(z.string(), z.string()).optional().nullable(),
+  coordinates: z.record(z.string(), z.object({
+    lat: z.number(),
+    lng: z.number()
+  })).optional().nullable(),
+  cuisine_type: z.string().optional().nullable().or(z.literal("")),
   description: z.string().optional().nullable().or(z.literal("")),
-  display_order: z.number().int().min(0),
+  website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
 });
 
-export type ChristmasTipInput = z.infer<typeof christmasTipSchema>;
+export type MichelinRestaurantInput = z.infer<typeof michelinRestaurantSchema>;

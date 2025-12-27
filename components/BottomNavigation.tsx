@@ -74,7 +74,7 @@ export default function BottomNavigation() {
   ];
 
   const moreItems = [
-    { href: '/vanoce', label: 'Vánoce 2025', badge: 'Nové' },
+    { href: '/michelin', label: 'Michelin 2026', badge: 'Nové' },
     { href: '/lokality', label: 'Podle lokality' },
     { href: '/kuchyne', label: 'Světové kuchyně' },
     { href: '/akce', label: 'Gastro akce' },

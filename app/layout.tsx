@@ -2,7 +2,6 @@ import "./globals.css";
 import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import ScrollToTop from "@/components/ScrollToTop";
-import BetaTesterBanner from "@/components/BetaTesterBanner";
 import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -26,7 +25,7 @@ export const metadata = {
   },
   themeColor: '#9333EA', // Purple color to match your brand
   description:
-    "TOP 10 trendů v Praze! Objevte nejlepší restaurace, kavárny a cukrárny v Praze. Databáze podniků podle lokalit, typů kuchyně. Tipy na vánoční nákupy, gastro akce a food festivaly v Praze.",
+    "TOP 10 trendů v Praze! Objevte nejlepší restaurace, kavárny a cukrárny v Praze. Databáze podniků podle lokalit, typů kuchyně. Gastro akce a food festivaly v Praze.",
   keywords: [
     // Core Prague restaurant keywords
     "top 10 podniků praha",
@@ -61,14 +60,6 @@ export const metadata = {
     "nejlepší cukrárny Praha",
     "cukrárny v Praze",
     "kam na dort Praha",
-    "kde koupit cukroví Praha",
-
-    // Christmas & seasonal in Prague
-    "kde koupit vánočku Praha",
-    "vánoční cukroví Praha",
-    "vánoční dárky Praha",
-    "adventní trhy Praha",
-    "vánoční akce Praha",
 
     // Events & festivals in Prague
     "gastro akce Praha",
@@ -87,7 +78,7 @@ export const metadata = {
     siteName: "Pojď sem! Kam jdeš?",
     title: "TOP 10 trendů v Praze | Nejlepší restaurace, kavárny a cukrárny Praha",
     description:
-      "TOP 10 trendů v Praze! Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně. Vánoční tipy a gastro akce.",
+      "TOP 10 trendů v Praze! Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně. Gastro akce a food festivaly.",
     images: [
       {
         url: "/og-image.jpg",
@@ -128,7 +119,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased pb-20 pt-14 bg-black">
         <StructuredData />
-        <BetaTesterBanner />
         <ScrollToTop />
         <PushNotificationHandler />
         <main className="min-h-screen">

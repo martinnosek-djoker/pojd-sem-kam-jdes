@@ -1,5 +1,8 @@
+"use client";
+
 import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
+import { useState } from "react";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -8,6 +11,7 @@ interface RestaurantCardProps {
 
 export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
+  const [imageError, setImageError] = useState(false);
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -45,12 +49,13 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
   const CardContent = () => (
     <>
       {/* Image Header */}
-      {proxiedImageUrl ? (
+      {proxiedImageUrl && !imageError ? (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
             src={proxiedImageUrl}
             alt={restaurant.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
           {restaurant.website_url && (

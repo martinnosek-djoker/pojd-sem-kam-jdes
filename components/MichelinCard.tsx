@@ -1,17 +1,30 @@
 "use client";
 
-import { Bakery } from "@/lib/types";
+import { MichelinRestaurant, MICHELIN_AWARD_LABELS } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
 
-interface BakeryCardProps {
-  bakery: Bakery;
-  forceLocation?: string; // If provided, only show this location instead of all
+interface MichelinCardProps {
+  restaurant: MichelinRestaurant;
+  forceLocation?: string;
 }
 
-export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
-  const proxiedImageUrl = getProxiedImageUrl(bakery.image_url);
+export default function MichelinCard({ restaurant, forceLocation }: MichelinCardProps) {
+  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
   const [imageError, setImageError] = useState(false);
+
+  const getAwardColor = (awardType: string) => {
+    switch (awardType) {
+      case "2-stars":
+        return "bg-gradient-to-r from-yellow-600 to-yellow-500";
+      case "1-star":
+        return "bg-gradient-to-r from-yellow-500 to-yellow-400";
+      case "bib-gourmand":
+        return "bg-gradient-to-r from-red-600 to-red-500";
+      default:
+        return "bg-purple-600";
+    }
+  };
 
   const CardContent = () => (
     <>
@@ -20,29 +33,41 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg">
           <img
             src={proxiedImageUrl}
-            alt={bakery.name}
+            alt={restaurant.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
-          {bakery.website_url && (
+          {restaurant.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </div>
           )}
+          {/* Award badge on image */}
+          <div className={`absolute top-3 left-3 ${getAwardColor(restaurant.award_type)} px-3 py-1.5 rounded-lg shadow-lg`}>
+            <span className="text-xs font-bold text-white whitespace-nowrap">
+              {MICHELIN_AWARD_LABELS[restaurant.award_type]}
+            </span>
+          </div>
         </div>
       ) : (
         <div className="relative -m-6 mb-4 h-32 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
-          <span className="text-6xl opacity-20">🍰</span>
-          {bakery.website_url && (
+          <span className="text-6xl opacity-20">⭐</span>
+          {restaurant.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </div>
           )}
+          {/* Award badge on placeholder */}
+          <div className={`absolute top-3 left-3 ${getAwardColor(restaurant.award_type)} px-3 py-1.5 rounded-lg shadow-lg`}>
+            <span className="text-xs font-bold text-white whitespace-nowrap">
+              {MICHELIN_AWARD_LABELS[restaurant.award_type]}
+            </span>
+          </div>
         </div>
       )}
 
@@ -52,7 +77,7 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
 
       <div className="mb-4 relative">
         <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">
-          {bakery.name}
+          {restaurant.name}
         </h3>
       </div>
 
@@ -65,25 +90,25 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
               // If forceLocation is provided, only show that location
               const locations = forceLocation
                 ? [forceLocation]
-                : bakery.location.split(',').map(l => l.trim());
+                : restaurant.location.split(',').map(l => l.trim());
 
               // Helper function to find address - case insensitive and flexible
               const findAddress = (location: string): string | null => {
-                if (!bakery.addresses) return null;
+                if (!restaurant.addresses) return null;
 
                 // Try exact match first
-                if (bakery.addresses[location]) {
-                  return bakery.addresses[location];
+                if (restaurant.addresses[location]) {
+                  return restaurant.addresses[location];
                 }
 
                 // Try case-insensitive match
                 const lowerLocation = location.toLowerCase();
-                const matchingKey = Object.keys(bakery.addresses).find(
+                const matchingKey = Object.keys(restaurant.addresses).find(
                   key => key.toLowerCase() === lowerLocation
                 );
 
                 if (matchingKey) {
-                  return bakery.addresses[matchingKey];
+                  return restaurant.addresses[matchingKey];
                 }
 
                 return null;
@@ -104,8 +129,8 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
                 const locationText = locs.join(', ');
 
                 if (address) {
-                  // Include bakery name with address for better Google Maps results
-                  const searchQuery = `${bakery.name}, ${address}`;
+                  // Include restaurant name with address for better Google Maps results
+                  const searchQuery = `${restaurant.name}, ${address}`;
                   return (
                     <span key={groupIdx}>
                       <a
@@ -131,14 +156,30 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
             })()}
           </div>
         </div>
+
+        {/* Cuisine type */}
+        {restaurant.cuisine_type && (
+          <div className="flex items-center gap-2">
+            <span className="inline-block px-3 py-1 bg-purple-900/30 text-purple-300 text-sm rounded border border-purple-700/30">
+              {restaurant.cuisine_type}
+            </span>
+          </div>
+        )}
+
+        {/* Description */}
+        {restaurant.description && (
+          <div className="text-sm text-gray-400 italic">
+            {restaurant.description}
+          </div>
+        )}
       </div>
     </>
   );
 
-  if (bakery.website_url) {
+  if (restaurant.website_url) {
     return (
       <a
-        href={bakery.website_url}
+        href={restaurant.website_url}
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-xl shadow-purple-900/10 hover:shadow-purple-600/20 transition-all duration-500 p-6 border border-purple-600/20 hover:border-purple-500/40 group relative overflow-hidden cursor-pointer hover:scale-105"
