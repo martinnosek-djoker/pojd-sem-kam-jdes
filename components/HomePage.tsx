@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import HappeningNow from "@/components/HappeningNow";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
-import TrendingCard from "@/components/TrendingCard";
-import MichelinCard from "@/components/MichelinCard";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import LoadingPot from "@/components/LoadingPot";
-import { Restaurant, Trending, MichelinRestaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -44,8 +42,8 @@ const StarIcon = () => (
 
 const RestaurantIcon = () => (
   <div className="w-20 h-20 sm:w-24 sm:h-24 bg-purple-500/30 rounded-full flex items-center justify-center group-hover:bg-purple-500/40 transition-colors">
-    <svg className="w-10 h-10 sm:w-12 sm:h-12 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    <svg className="w-10 h-10 sm:w-12 sm:h-12 text-purple-300" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z" />
     </svg>
   </div>
 );
@@ -82,7 +80,8 @@ const MapPinIcon = () => (
 const CompassIcon = () => (
   <div className="w-20 h-20 sm:w-24 sm:h-24 bg-green-500/30 rounded-full flex items-center justify-center group-hover:bg-green-500/40 transition-colors">
     <svg className="w-10 h-10 sm:w-12 sm:h-12 text-green-300" fill="currentColor" viewBox="0 0 24 24">
-      <path fillRule="evenodd" d="M8.161 2.58a1.875 1.875 0 011.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0121.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 01-1.676 0l-4.994-2.497a.375.375 0 00-.336 0l-3.868 1.935A1.875 1.875 0 012.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437zM9 6a.75.75 0 01.75.75V15a.75.75 0 01-1.5 0V6.75A.75.75 0 019 6zm6.75 3a.75.75 0 00-1.5 0v8.25a.75.75 0 001.5 0V9z" clipRule="evenodd" />
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z" />
+      <circle cx="12" cy="9" r="2.5" />
     </svg>
   </div>
 );
@@ -99,18 +98,12 @@ const CalendarIcon = () => (
 export default function HomePage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
-  const [trendings, setTrendings] = useState<Trending[]>([]);
-  const [michelinRestaurants, setMichelinRestaurants] = useState<MichelinRestaurant[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
-  const [trendingScrollIndex, setTrendingScrollIndex] = useState(0);
-  const trendingScrollRef = useRef<HTMLDivElement>(null);
-  const [michelinScrollIndex, setMichelinScrollIndex] = useState(0);
-  const michelinScrollRef = useRef<HTMLDivElement>(null);
 
   const sections: SectionCard[] = [
     {
@@ -172,36 +165,24 @@ export default function HomePage() {
     },
   ];
 
-  // Fetch restaurants, trendings, and filters
+  // Fetch restaurants and filters
   useEffect(() => {
     async function fetchData() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
-        const trendingsUrl = getApiUrl("/api/trendings");
-        const michelinUrl = getApiUrl("/api/michelin");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
 
-        const [restaurantsRes, trendingsRes, michelinRes, filtersRes] = await Promise.all([
+        const [restaurantsRes, filtersRes] = await Promise.all([
           fetch(restaurantsUrl),
-          fetch(trendingsUrl),
-          fetch(michelinUrl),
           fetch(filtersUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
-        const trendingsData = await trendingsRes.json();
-        const michelinData = await michelinRes.json();
         const filtersData = await filtersRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
           setFilteredRestaurants(restaurantsData);
-        }
-        if (Array.isArray(trendingsData)) {
-          setTrendings(trendingsData);
-        }
-        if (Array.isArray(michelinData)) {
-          setMichelinRestaurants(michelinData);
         }
         if (filtersData && Array.isArray(filtersData.locations)) {
           setAllLocations(filtersData.locations);
@@ -332,22 +313,6 @@ export default function HomePage() {
     setSelectedCuisineType("");
   };
 
-  const handleTrendingScroll = () => {
-    if (!trendingScrollRef.current) return;
-    const scrollLeft = trendingScrollRef.current.scrollLeft;
-    const cardWidth = trendingScrollRef.current.offsetWidth * 0.85 + 16;
-    const index = Math.round(scrollLeft / cardWidth);
-    setTrendingScrollIndex(index);
-  };
-
-  const handleMichelinScroll = () => {
-    if (!michelinScrollRef.current) return;
-    const scrollLeft = michelinScrollRef.current.scrollLeft;
-    const cardWidth = michelinScrollRef.current.offsetWidth * 0.85 + 16;
-    const index = Math.round(scrollLeft / cardWidth);
-    setMichelinScrollIndex(index);
-  };
-
   if (loading) {
     return (
       <main className="min-h-screen px-8 pb-8 bg-black">
@@ -455,88 +420,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Trendings Section */}
-        {trendings.length > 0 && (
-          <div className="mb-8 md:mb-12">
-            <div className="mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🔥 TOP 10 trendů</h2>
-              <p className="text-sm md:text-base text-gray-400">Nejžhavější tipy a trendy v pražské gastronomii</p>
-            </div>
-            {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative">
-              <div
-                ref={trendingScrollRef}
-                onScroll={handleTrendingScroll}
-                className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
-              >
-                {trendings.map((trending, index) => (
-                  <div key={trending.id} className="flex-shrink-0 w-[85%] snap-start snap-always">
-                    <TrendingCard trending={trending} rank={index + 1} />
-                  </div>
-                ))}
-              </div>
-              {/* Progress dots */}
-              <div className="flex justify-center gap-1.5 mt-2">
-                {trendings.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                      index === trendingScrollIndex ? 'bg-purple-400' : 'bg-purple-500/30'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            {/* Desktop: Grid */}
-            <div className="hidden md:grid md:grid-cols-2 gap-4">
-              {trendings.map((trending, index) => (
-                <TrendingCard key={trending.id} trending={trending} rank={index + 1} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Michelin Section */}
-        {michelinRestaurants.length > 0 && (
-          <div className="mb-8 md:mb-12">
-            <div className="mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">⭐ Michelin 2026</h2>
-              <p className="text-sm md:text-base text-gray-400">Michelinské hvězdy a ocenění Bib Gourmand v Praze</p>
-            </div>
-            {/* Mobile: Horizontal Carousel */}
-            <div className="md:hidden relative">
-              <div
-                ref={michelinScrollRef}
-                onScroll={handleMichelinScroll}
-                className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
-              >
-                {michelinRestaurants.map((restaurant) => (
-                  <div key={restaurant.id} className="flex-shrink-0 w-[85%] snap-start snap-always">
-                    <MichelinCard restaurant={restaurant} />
-                  </div>
-                ))}
-              </div>
-              {/* Progress dots */}
-              <div className="flex justify-center gap-1.5 mt-2">
-                {michelinRestaurants.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                      index === michelinScrollIndex ? 'bg-purple-400' : 'bg-purple-500/30'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            {/* Desktop: Grid */}
-            <div className="hidden md:grid md:grid-cols-3 gap-6">
-              {michelinRestaurants.map((restaurant) => (
-                <MichelinCard key={restaurant.id} restaurant={restaurant} />
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🍽️ Nejlepší restaurace v Praze</h2>
@@ -560,54 +443,6 @@ export default function HomePage() {
           onCuisineTypeChange={setSelectedCuisineType}
           restaurants={restaurants}
         />
-
-        {/* Explore Pages CTAs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <a
-            href="/lokality"
-            className="group flex items-center gap-4 p-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30 border border-purple-500/30 hover:border-purple-400/50 rounded-lg transition-all duration-300 hover:scale-[1.02]"
-          >
-            <div className="flex-shrink-0 w-12 h-12 bg-purple-600/50 rounded-lg flex items-center justify-center group-hover:bg-purple-600/70 transition-colors">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-base md:text-lg font-bold text-purple-300 group-hover:text-purple-200 transition-colors mb-1">
-                Ukaž lokality
-              </h3>
-              <p className="text-xs md:text-sm text-gray-400">
-                Prohlédni si všechny pražské čtvrti
-              </p>
-            </div>
-            <svg className="w-5 h-5 text-purple-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-
-          <a
-            href="/kuchyne"
-            className="group flex items-center gap-4 p-4 bg-gradient-to-r from-pink-600/20 to-purple-600/20 hover:from-pink-600/30 hover:to-purple-600/30 border border-pink-500/30 hover:border-pink-400/50 rounded-lg transition-all duration-300 hover:scale-[1.02]"
-          >
-            <div className="flex-shrink-0 w-12 h-12 bg-pink-600/50 rounded-lg flex items-center justify-center group-hover:bg-pink-600/70 transition-colors">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-base md:text-lg font-bold text-pink-300 group-hover:text-pink-200 transition-colors mb-1">
-                Ukaž světové kuchyně
-              </h3>
-              <p className="text-xs md:text-sm text-gray-400">
-                Objevuj různé kulinářské styly
-              </p>
-            </div>
-            <svg className="w-5 h-5 text-pink-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
 
         {/* Sort and count */}
         <div className="flex justify-between items-center mb-8">
