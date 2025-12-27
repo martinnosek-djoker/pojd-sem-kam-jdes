@@ -227,10 +227,7 @@ export interface MichelinRestaurant {
 
 export const michelinRestaurantSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
-  award_type: z.enum(["2-stars", "1-star", "bib-gourmand"], {
-    required_error: "Vyberte typ ocenění",
-    invalid_type_error: "Neplatný typ ocenění"
-  }),
+  award_type: z.enum(["2-stars", "1-star", "bib-gourmand"]),
   location: z.string().min(1, "Lokalita je povinná"),
   addresses: z.record(z.string(), z.string()).optional().nullable(),
   coordinates: z.record(z.string(), z.object({
