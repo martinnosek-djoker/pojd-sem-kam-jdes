@@ -105,7 +105,7 @@ export default function HomePage() {
 
   const sections: SectionCard[] = [
     {
-      href: "/kuchyne",
+      href: "/trendy",
       title: "TOP 10 trendů",
       description: "Nejžhavější tipy v pražské gastronomii",
       icon: <FlameIcon />,
