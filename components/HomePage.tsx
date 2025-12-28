@@ -129,7 +129,7 @@ export default function HomePage() {
     {
       href: "/kavarny",
       title: "Kavárny",
-      description: "Specialitní káva a útulná atmosféra",
+      description: "Prémiová káva a útulná atmosféra",
       icon: <CoffeeIcon />,
       gradient: "from-amber-700/20 to-yellow-700/20 border-amber-600/30 hover:border-amber-500",
     },
