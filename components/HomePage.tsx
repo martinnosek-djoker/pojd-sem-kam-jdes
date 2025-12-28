@@ -150,7 +150,7 @@ export default function HomePage() {
     {
       href: "/pobliz",
       title: "V okolí",
-      description: "Restaurace a kavárny poblíž",
+      description: "Načti svou polohu a najdi nejbližší podniky",
       icon: <CompassIcon />,
       gradient: "from-green-600/20 to-emerald-600/20 border-green-500/30 hover:border-green-400",
     },
