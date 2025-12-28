@@ -450,10 +450,6 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-
-              {/* Decorative corners */}
-              <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-white/10 rounded-tr-2xl pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-white/10 rounded-bl-2xl pointer-events-none" />
             </Link>
           ))}
         </div>
