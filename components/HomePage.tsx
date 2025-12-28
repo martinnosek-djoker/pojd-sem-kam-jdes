@@ -143,7 +143,7 @@ export default function HomePage() {
     {
       href: "/lokality",
       title: "Podle lokality",
-      description: "Najdi podniky ve své čtvrti",
+      description: "Najdi podniky dle pražské čtvrti",
       icon: <MapPinIcon />,
       gradient: "from-blue-600/20 to-cyan-600/20 border-blue-500/30 hover:border-blue-400",
     },
