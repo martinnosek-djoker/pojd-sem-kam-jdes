@@ -3,12 +3,10 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import HappeningNow from "@/components/HappeningNow";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
-import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
@@ -315,12 +313,57 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen px-8 pb-8 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="pt-10 md:pt-8 mb-8">
-            <Logo />
+      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          {/* Hero Section Skeleton */}
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-block mb-6">
+              <Logo />
+            </div>
+            <div className="h-8 sm:h-10 md:h-12 bg-gray-800 rounded-lg max-w-2xl mx-auto mb-4 animate-pulse" />
+            <div className="h-5 sm:h-6 bg-gray-800 rounded-lg max-w-md mx-auto animate-pulse" />
           </div>
-          <LoadingPot />
+
+          {/* Category Tiles Skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16 sm:mb-20">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-2 border-gray-700/30 rounded-2xl p-6 sm:p-8 min-h-[180px] sm:min-h-[200px] flex flex-col items-center justify-center animate-pulse"
+              >
+                {/* Icon skeleton */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-700/50 rounded-full mb-4" />
+                {/* Title skeleton */}
+                <div className="h-6 bg-gray-700/50 rounded w-32 mb-2" />
+                {/* Description skeleton */}
+                <div className="h-4 bg-gray-700/50 rounded w-40" />
+              </div>
+            ))}
+          </div>
+
+          {/* Restaurant Section Skeleton */}
+          <div className="mb-6 md:mb-8">
+            <div className="h-8 bg-gray-800 rounded-lg max-w-md mb-2 animate-pulse" />
+            <div className="h-5 bg-gray-800 rounded-lg max-w-lg animate-pulse" />
+          </div>
+
+          {/* Filters Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="h-12 bg-gray-800 rounded-md animate-pulse" />
+            <div className="h-12 bg-gray-800 rounded-md animate-pulse" />
+          </div>
+
+          {/* Restaurant Cards Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-gray-800/50 rounded-lg p-6 animate-pulse">
+                <div className="h-48 bg-gray-700/50 rounded-lg mb-4" />
+                <div className="h-6 bg-gray-700/50 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-700/50 rounded w-1/2 mb-4" />
+                <div className="h-4 bg-gray-700/50 rounded w-full" />
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     );
@@ -348,11 +391,6 @@ export default function HomePage() {
               @Peču si život
             </a>
           </p>
-        </div>
-
-        {/* Happening Now - Featured Events */}
-        <div className="mb-12 sm:mb-16">
-          <HappeningNow />
         </div>
 
         {/* Sections Grid */}
