@@ -117,7 +117,7 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className="antialiased pb-20 pt-14 bg-black">
+      <body className="antialiased pb-20 bg-black">
         <StructuredData />
         <ScrollToTop />
         <PushNotificationHandler />
