@@ -31,7 +31,7 @@ export default function Logo() {
           </defs>
 
           {/* Left arrow - "Pojď sem!" (Come here) */}
-          <g className="animate-pulse-slow">
+          <g>
             <path
               d="M 25 35 L 40 50 L 25 65"
               stroke="url(#arrowGradient)"
@@ -52,7 +52,7 @@ export default function Logo() {
           </g>
 
           {/* Right arrow - "Kam jdeš?" (Where are you going?) */}
-          <g className="animate-pulse-slow" style={{ animationDelay: '0.5s' }}>
+          <g>
             <path
               d="M 75 35 L 60 50 L 75 65"
               stroke="url(#arrowGradient)"
@@ -73,13 +73,6 @@ export default function Logo() {
           </g>
 
           {/* Central dot - meeting point */}
-          <circle
-            cx="50"
-            cy="50"
-            r="6"
-            fill="#a78bfa"
-            className="animate-ping-slow"
-          />
           <circle
             cx="50"
             cy="50"
