@@ -3,7 +3,7 @@ const fs = require('fs');
 const projectRef = 'kkqrumygyxuefrwbpyiy';
 
 // Read the SQL migration file
-const migrationSQL = fs.readFileSync('./supabase-migration-add-event-dates.sql', 'utf8');
+const migrationSQL = fs.readFileSync('./supabase-migration-enable-michelin-rls.sql', 'utf8');
 
 console.log('\n📋 SQL Migration Instructions\n');
 console.log('Please run this migration in Supabase Dashboard:\n');
