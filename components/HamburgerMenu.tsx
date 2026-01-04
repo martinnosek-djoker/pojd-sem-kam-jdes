@@ -34,6 +34,7 @@ export default function HamburgerMenu() {
     { href: `/pobliz`, label: 'V okolí' },
     { href: `/lokality`, label: 'Podle lokality' },
     { href: `/kuchyne`, label: 'Světové kuchyně' },
+    { href: `/snidane`, label: 'Snídaně', badge: 'Brzy' },
     { href: `/cukrarny`, label: 'Cukrárny', badge: 'Nové' },
     { href: `/kavarny`, label: 'Kavárny', badge: 'Nové' },
     { href: `/akce`, label: 'Gastro akce', badge: 'Nové' },

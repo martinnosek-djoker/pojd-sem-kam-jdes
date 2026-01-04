@@ -93,6 +93,20 @@ const CalendarIcon = () => (
   </div>
 );
 
+const BreakfastIcon = () => (
+  <div className="w-14 h-14 sm:w-24 sm:h-24 bg-orange-400/30 rounded-full flex items-center justify-center group-hover:bg-orange-400/40 transition-colors">
+    <svg className="w-7 h-7 sm:w-12 sm:h-12 text-orange-200" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      {/* Pánev */}
+      <ellipse cx="12" cy="14" rx="7" ry="5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M19 14 L22 14" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Vejce - žloutek */}
+      <circle cx="12" cy="13" r="2" fill="currentColor" opacity="0.8" />
+      {/* Vejce - bílek */}
+      <ellipse cx="12" cy="14" rx="4" ry="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  </div>
+);
+
 export default function HomePage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
@@ -125,6 +139,14 @@ export default function HomePage() {
       description: "Nejlepší restaurace podle typu kuchyně",
       icon: <RestaurantIcon />,
       gradient: "from-purple-600/20 to-pink-600/20 border-purple-500/30 hover:border-purple-400",
+    },
+    {
+      href: "/snidane",
+      title: "Snídaně",
+      description: "Nejlepší místa na snídani v Praze",
+      icon: <BreakfastIcon />,
+      gradient: "from-orange-500/20 to-yellow-500/20 border-orange-400/30 hover:border-orange-300",
+      badge: "Brzy",
     },
     {
       href: "/kavarny",
@@ -326,7 +348,7 @@ export default function HomePage() {
 
           {/* Category Tiles Skeleton */}
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-20">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(9)].map((_, i) => (
               <div
                 key={i}
                 className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-2 border-gray-700/30 rounded-xl sm:rounded-2xl p-3 sm:p-8 min-h-[140px] sm:min-h-[200px] flex flex-col items-center justify-center animate-pulse"
