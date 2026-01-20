@@ -176,13 +176,14 @@ export default function HomePage() {
       icon: <CompassIcon />,
       gradient: "from-green-600/20 to-emerald-600/20 border-green-500/30 hover:border-green-400",
     },
-    {
-      href: "/akce",
-      title: "Gastro akce",
-      description: "Food festivaly a kulinářské události",
-      icon: <CalendarIcon />,
-      gradient: "from-violet-600/20 to-purple-600/20 border-violet-500/30 hover:border-violet-400",
-    },
+    // Dočasně skryto - v zimě se moc akcí nekoná
+    // {
+    //   href: "/akce",
+    //   title: "Gastro akce",
+    //   description: "Food festivaly a kulinářské události",
+    //   icon: <CalendarIcon />,
+    //   gradient: "from-violet-600/20 to-purple-600/20 border-violet-500/30 hover:border-violet-400",
+    // },
   ];
 
   // Fetch restaurants and filters
@@ -348,7 +349,7 @@ export default function HomePage() {
 
           {/* Category Tiles Skeleton */}
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-20">
-            {[...Array(9)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div
                 key={i}
                 className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-2 border-gray-700/30 rounded-xl sm:rounded-2xl p-3 sm:p-8 min-h-[140px] sm:min-h-[200px] flex flex-col items-center justify-center animate-pulse"
