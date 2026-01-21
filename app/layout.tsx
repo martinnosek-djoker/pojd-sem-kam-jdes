@@ -8,7 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: {
-    default: "TOP 10 trendů | Pojď sem! Kam jdeš? | Nejlepší restaurace, kavárny a cukrárny v Praze",
+    default: "Nejlepší restaurace, kavárny a cukrárny v Praze | Pojď sem! Kam jdeš?",
     template: "%s | Pojď sem! Kam jdeš?",
   },
   viewport: {
@@ -25,47 +25,77 @@ export const metadata = {
   },
   themeColor: '#9333EA', // Purple color to match your brand
   description:
-    "TOP 10 trendů v Praze! Objevte nejlepší restaurace, kavárny a cukrárny v Praze. Databáze podniků podle lokalit, typů kuchyně. Gastro akce a food festivaly v Praze.",
+    "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů, Michelin průvodce a prémiová káva.",
   keywords: [
-    // Core Prague restaurant keywords
-    "top 10 podniků praha",
+    // Core - balanced across all categories
     "nejlepší restaurace Praha",
-    "trendy restaurace Praha",
-    "kam na jídlo Praha",
-    "restaurace Praha",
+    "nejlepší kavárny Praha",
+    "nejlepší cukrárny Praha",
     "doporučení restaurace Praha",
-    "oblíbené restaurace Praha",
-    "top restaurace Praha",
+    "doporučení kavárny Praha",
+    "kam v Praze",
+    "kam na jídlo Praha",
+    "kam na kávu Praha",
+    "kam na snídani Praha",
 
-    // Location-based Prague keywords
-    "restaurace podle lokality Praha",
+    // Restaurants - Prague specific
+    "top restaurace Praha",
+    "trendy restaurace Praha",
+    "oblíbené restaurace Praha",
+    "restaurace Praha centrum",
     "restaurace Vinohrady",
     "restaurace Holešovice",
-    "restaurace centrum Praha",
-    "restaurace v okolí Praha",
+    "restaurace Karlín",
+    "restaurace podle lokality Praha",
+    "restaurace v okolí",
 
-    // Cuisine types in Prague
+    // Cuisine types
     "světové kuchyně Praha",
     "italská restaurace Praha",
     "asijská restaurace Praha",
     "vietnamská restaurace Praha",
     "indická restaurace Praha",
     "české restaurace Praha",
+    "japonská restaurace Praha",
+    "mexická restaurace Praha",
 
-    // Prague cafes & bakeries - unique offering!
-    "nejlepší kavárny Praha",
-    "kavárny v Praze",
-    "káva Praha",
+    // Cafes - expanded keywords
+    "kavárny Praha",
     "specialty coffee Praha",
-    "nejlepší cukrárny Praha",
+    "prémiová káva Praha",
+    "nejlepší káva Praha",
+    "kavárny Vinohrady",
+    "kavárny Karlín",
+    "kavárny centrum Praha",
+    "kam na kávu Praha",
+    "coffee shop Praha",
+    "third wave coffee Praha",
+
+    // Bakeries - expanded keywords
+    "cukrárny Praha",
     "cukrárny v Praze",
     "kam na dort Praha",
+    "nejlepší dorty Praha",
+    "cukrárny Vinohrady",
+    "pekárna Praha",
+    "zákusky Praha",
+    "dezerty Praha",
 
-    // Events & festivals in Prague
+    // Breakfast & trends
+    "kam na snídani Praha",
+    "snídaně Praha",
+    "brunch Praha",
+    "top 10 trendů Praha",
+    "top 10 podniků Praha",
+
+    // Michelin & quality
+    "Michelin restaurace Praha",
+    "Bib Gourmand Praha",
+    "hvězdičkové restaurace Praha",
+
+    // Events (less priority but still there)
     "gastro akce Praha",
     "food festival Praha",
-    "kulináře události Praha",
-    "kalendář gastro akcí Praha",
   ],
   authors: [{ name: "Peču si život", url: "https://www.instagram.com/pecu_si_zivot/" }],
   creator: "Peču si život",
@@ -76,22 +106,22 @@ export const metadata = {
     locale: "cs_CZ",
     url: "https://www.pojdsemkamjdes.cz/",
     siteName: "Pojď sem! Kam jdeš?",
-    title: "TOP 10 trendů v Praze | Nejlepší restaurace, kavárny a cukrárny Praha",
+    title: "Nejlepší restaurace, kavárny a cukrárny v Praze | Doporučení od @Peču si život",
     description:
-      "TOP 10 trendů v Praze! Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně. Gastro akce a food festivaly.",
+      "Osobní doporučení nejlepších gastro míst v Praze. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů, Michelin průvodce, prémiová káva a skvělé dezerty.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "TOP 10 trendů Praha - Nejlepší restaurace, kavárny a cukrárny",
+        alt: "Nejlepší restaurace, kavárny a cukrárny v Praze - Doporučení Peču si život",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOP 10 trendů v Praze | Restaurace, kavárny a cukrárny",
-    description: "Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně.",
+    title: "Nejlepší restaurace, kavárny a cukrárny v Praze",
+    description: "Osobní doporučení nejlepších gastro míst v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti.",
     images: ["/og-image.jpg"],
   },
   robots: {

@@ -4,15 +4,18 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "Pojď sem! Kam jdeš?",
     "url": "https://www.pojdsemkamjdes.cz",
-    "description": "TOP 10 trendů v Praze! Kompletní databáze nejlepších restaurací, kaváren a cukráren v Praze. Vyhledávání podle lokality a typu kuchyně.",
+    "description": "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. Objevte TOP 10 trendů, Michelin průvodce a skvělá místa na snídani.",
     "inLanguage": "cs-CZ",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://www.pojdsemkamjdes.cz/kuchyne?search={search_term_string}"
+        "urlTemplate": "https://www.pojdsemkamjdes.cz/?location={location_string}&cuisine={cuisine_string}"
       },
-      "query-input": "required name=search_term_string"
+      "query-input": [
+        "required name=location_string",
+        "required name=cuisine_string"
+      ]
     },
     "publisher": {
       "@type": "Organization",
@@ -20,14 +23,22 @@ export default function StructuredData() {
       "logo": {
         "@type": "ImageObject",
         "url": "https://www.pojdsemkamjdes.cz/logo.png"
-      }
+      },
+      "sameAs": [
+        "https://www.instagram.com/pecu_si_zivot/"
+      ]
+    },
+    "creator": {
+      "@type": "Person",
+      "name": "Peču si život",
+      "url": "https://www.instagram.com/pecu_si_zivot/"
     },
     "about": {
       "@type": "Thing",
-      "name": "Restaurace a kavárny v Praze",
-      "description": "Databáze nejlepších restaurací, kaváren a cukráren v Praze s vyhledáváním podle lokality a typu kuchyně"
+      "name": "Gastronomie v Praze",
+      "description": "Průvodce nejlepšími restauracemi, kavárnami a cukrárnami v Praze s osobními doporučeními, vyhledáváním podle lokality, typu kuchyně a vzdálenosti od vaší polohy"
     },
-    "keywords": "restaurace Praha, kavárny Praha, cukrárny Praha, gastro akce Praha"
+    "keywords": "nejlepší restaurace Praha, nejlepší kavárny Praha, nejlepší cukrárny Praha, doporučení restaurace, kam na kávu, kam na snídani, specialty coffee, Michelin Praha, top 10 trendů"
   };
 
   return (
