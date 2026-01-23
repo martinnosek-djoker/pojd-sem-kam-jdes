@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Event, EventInput, ReviewInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
@@ -1084,7 +1084,7 @@ export async function getReviewsByRestaurant(restaurantId: number) {
 }
 
 export async function createReview(review: ReviewInput) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("reviews")
     .insert([review])
     .select()
@@ -1099,7 +1099,7 @@ export async function createReview(review: ReviewInput) {
 }
 
 export async function updateReview(id: number, review: Partial<ReviewInput>) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("reviews")
     .update(review)
     .eq("id", id)
@@ -1115,7 +1115,7 @@ export async function updateReview(id: number, review: Partial<ReviewInput>) {
 }
 
 export async function deleteReview(id: number) {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("reviews")
     .delete()
     .eq("id", id);
@@ -1128,7 +1128,7 @@ export async function deleteReview(id: number) {
 
 export async function updateReviewOrder(updates: { id: number; display_order: number }[]): Promise<void> {
   for (const update of updates) {
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from("reviews")
       .update({ display_order: update.display_order })
       .eq("id", update.id);
