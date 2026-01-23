@@ -9,8 +9,17 @@ interface ReviewCardProps {
 }
 
 export default function ReviewCard({ review }: ReviewCardProps) {
+  console.log("=== ReviewCard render ===");
+  console.log("Review ID:", review.id);
+  console.log("Review title:", review.title);
+  console.log("Review images:", review.images);
+  console.log("Review images type:", typeof review.images);
+  console.log("Review images is array?", Array.isArray(review.images));
+  console.log("Restaurant image_url:", review.restaurant?.image_url);
+
   // Get first image or fallback
   const mainImage = review.images?.[0] || review.restaurant?.image_url;
+  console.log("Selected mainImage:", mainImage);
 
   // Format date
   const visitDate = new Date(review.visit_date).toLocaleDateString("cs-CZ", {

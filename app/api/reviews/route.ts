@@ -23,6 +23,13 @@ export async function GET(request: NextRequest) {
 
     console.log("Found reviews:", reviews.length);
 
+    // Debug first review's images
+    if (reviews.length > 0) {
+      console.log("First review images:", reviews[0].images);
+      console.log("First review images type:", typeof reviews[0].images);
+      console.log("First review images is array?", Array.isArray(reviews[0].images));
+    }
+
     return jsonWithCors(reviews);
   } catch (error) {
     console.error("Error fetching reviews:", error);
