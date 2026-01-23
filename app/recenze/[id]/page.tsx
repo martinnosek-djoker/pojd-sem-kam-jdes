@@ -189,15 +189,45 @@ export default function ReviewDetailPage() {
           </div>
 
           {/* Ratings and Dishes Header */}
-          {((review.rating_interior || review.rating_service || review.rating_food) ||
+          {((review.overall_rating || review.total_spent || review.rating_interior || review.rating_service || review.rating_food) ||
             (review.dishes && review.dishes.length > 0)) && (
             <div className="mb-8 bg-gradient-to-br from-purple-900/30 to-gray-800/30 border border-purple-500/40 rounded-xl p-6">
-              {/* Ratings */}
+
+              {/* Overall Rating and Total Spent - Highlight */}
+              {(review.overall_rating || review.total_spent) && (
+                <div className="mb-6 pb-6 border-b border-purple-500/30">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {review.overall_rating && (
+                      <div className="bg-purple-600/20 border-2 border-purple-500/50 rounded-xl p-6 text-center">
+                        <div className="text-sm text-purple-300 mb-2 font-semibold uppercase tracking-wide">Celkové hodnocení</div>
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-6xl font-bold text-purple-400">{review.overall_rating}</span>
+                          <div className="text-left">
+                            <div className="text-2xl text-gray-400">/10</div>
+                            <div className="text-yellow-400 text-2xl">⭐</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {review.total_spent && (
+                      <div className="bg-purple-600/20 border-2 border-purple-500/50 rounded-xl p-6 text-center">
+                        <div className="text-sm text-purple-300 mb-2 font-semibold uppercase tracking-wide">Celková útrata</div>
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-6xl font-bold text-purple-400">{review.total_spent.toLocaleString('cs-CZ')}</span>
+                          <div className="text-2xl text-gray-400">Kč</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Detailed Ratings */}
               {(review.rating_interior || review.rating_service || review.rating_food) && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-purple-400 mb-4 flex items-center gap-2">
-                    <span>⭐</span>
-                    <span>Hodnocení</span>
+                    <span>📊</span>
+                    <span>Detailní hodnocení</span>
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {review.rating_interior && (

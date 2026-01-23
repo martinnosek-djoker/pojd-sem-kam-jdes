@@ -6,6 +6,7 @@ const projectRef = 'kkqrumygyxuefrwbpyiy';
 const reviewsSQL = fs.readFileSync('./supabase-migration-reviews.sql', 'utf8');
 const storageSQL = fs.readFileSync('./supabase-storage-setup.sql', 'utf8');
 const ratingsSQL = fs.readFileSync('./supabase-migration-review-ratings.sql', 'utf8');
+const overallSQL = fs.readFileSync('./supabase-migration-review-overall.sql', 'utf8');
 
 console.log('\n📋 SQL Migration Instructions\n');
 console.log('Please run these migrations in Supabase Dashboard:\n');
@@ -36,6 +37,14 @@ console.log('═'.repeat(80));
 console.log('MIGRATION 3: Review Ratings and Dishes');
 console.log('═'.repeat(80));
 console.log(ratingsSQL);
+console.log('═'.repeat(80));
+
+console.log('\n');
+
+console.log('═'.repeat(80));
+console.log('MIGRATION 4: Overall Rating and Total Spent');
+console.log('═'.repeat(80));
+console.log(overallSQL);
 console.log('═'.repeat(80));
 
 console.log('\n✅ After running ALL migrations, restart your dev server!\n');

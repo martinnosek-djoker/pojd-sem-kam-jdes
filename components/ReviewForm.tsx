@@ -39,9 +39,11 @@ export default function ReviewForm({
     images: string[];
     is_featured: boolean;
     display_order: number;
+    overall_rating?: number | null;
     rating_interior?: number | null;
     rating_service?: number | null;
     rating_food?: number | null;
+    total_spent?: number | null;
     dishes?: string[] | null;
   }>({
     resolver: zodResolver(reviewSchema) as any,
@@ -49,9 +51,11 @@ export default function ReviewForm({
       images: [],
       is_featured: false,
       display_order: 0,
+      overall_rating: null,
       rating_interior: null,
       rating_service: null,
       rating_food: null,
+      total_spent: null,
       dishes: [],
     },
   });
@@ -87,9 +91,11 @@ export default function ReviewForm({
             images: data.images || [],
             is_featured: data.is_featured,
             display_order: data.display_order,
+            overall_rating: data.overall_rating,
             rating_interior: data.rating_interior,
             rating_service: data.rating_service,
             rating_food: data.rating_food,
+            total_spent: data.total_spent,
             dishes: data.dishes || [],
           });
           setImages(data.images || []);
@@ -271,7 +277,41 @@ export default function ReviewForm({
 
         {/* Ratings */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">⭐ Hodnocení (1-10)</h3>
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">⭐ Hodnocení a útrata</h3>
+
+          {/* Overall Rating and Total Spent */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pb-4 border-b border-gray-300">
+            <div>
+              <label htmlFor="overall_rating" className="block text-sm font-semibold text-gray-700 mb-1">
+                ⭐ Celkové hodnocení (1-10)
+              </label>
+              <input
+                type="number"
+                id="overall_rating"
+                {...register("overall_rating", { valueAsNumber: true })}
+                min="1"
+                max="10"
+                placeholder="1-10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="total_spent" className="block text-sm font-semibold text-gray-700 mb-1">
+                💰 Celková útrata (Kč)
+              </label>
+              <input
+                type="number"
+                id="total_spent"
+                {...register("total_spent", { valueAsNumber: true })}
+                min="0"
+                placeholder="např. 1900"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Detailed Ratings */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Interior Rating */}
             <div>
