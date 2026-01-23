@@ -1,0 +1,224 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import Logo from "@/components/Logo";
+import { Review } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
+
+export default function ReviewDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [review, setReview] = useState<Review | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  useEffect(() => {
+    async function fetchReview() {
+      try {
+        const res = await fetch(getApiUrl(`/api/reviews/${params.id}`));
+        if (!res.ok) {
+          throw new Error("Review not found");
+        }
+        const data = await res.json();
+        setReview(data);
+      } catch (error) {
+        console.error("Error fetching review:", error);
+        router.push("/");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (params.id) {
+      fetchReview();
+    }
+  }, [params.id, router]);
+
+  // Format content with bold support
+  const formatContent = (content: string) => {
+    // Convert **text** to <strong>text</strong>
+    let formatted = content.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    // Convert line breaks to <br />
+    formatted = formatted.replace(/\n/g, "<br />");
+    return formatted;
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black px-4 sm:px-8 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <Logo />
+          </div>
+          <div className="animate-pulse space-y-6">
+            <div className="h-96 bg-gray-800 rounded-lg" />
+            <div className="h-8 bg-gray-800 rounded w-3/4" />
+            <div className="h-4 bg-gray-800 rounded w-1/2" />
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-800 rounded" />
+              <div className="h-4 bg-gray-800 rounded" />
+              <div className="h-4 bg-gray-800 rounded w-5/6" />
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!review) {
+    return null;
+  }
+
+  const visitDate = new Date(review.visit_date).toLocaleDateString("cs-CZ", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+  const allImages = review.images || [];
+  const currentImage = allImages[selectedImage] || review.restaurant?.image_url || "/placeholder-restaurant.jpg";
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black px-4 sm:px-8 py-8 pb-24">
+      <div className="max-w-4xl mx-auto">
+        {/* Header with Logo */}
+        <div className="mb-8 flex items-center justify-between">
+          <Link href="/" className="hover:opacity-80 transition-opacity">
+            <Logo />
+          </Link>
+          <Link
+            href="/"
+            className="text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Zpět na homepage</span>
+          </Link>
+        </div>
+
+        {/* Main Image Gallery */}
+        {allImages.length > 0 && (
+          <div className="mb-8">
+            <div className="relative h-96 md:h-[500px] rounded-xl overflow-hidden mb-4">
+              <Image
+                src={currentImage}
+                alt={review.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 896px"
+                priority
+              />
+            </div>
+
+            {/* Image thumbnails */}
+            {allImages.length > 1 && (
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+                {allImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`relative h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedImage === index
+                        ? "border-purple-500 scale-95"
+                        : "border-gray-700 hover:border-purple-400"
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${review.title} - foto ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="100px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Review Content */}
+        <article className="bg-gray-900/50 border border-purple-500/30 rounded-xl p-6 sm:p-8">
+          {/* Restaurant info */}
+          {review.restaurant && (
+            <div className="mb-6 pb-6 border-b border-gray-800">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <h3 className="text-lg text-purple-400 font-semibold mb-1">
+                    {review.restaurant.name}
+                  </h3>
+                  <div className="flex items-center gap-3 text-sm text-gray-400">
+                    <span>{review.restaurant.location}</span>
+                    {review.restaurant.cuisine_type && (
+                      <>
+                        <span>•</span>
+                        <span>{review.restaurant.cuisine_type}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {review.restaurant.website_url && (
+                  <a
+                    href={review.restaurant.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    Navštívit web
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Review title */}
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            {review.title}
+          </h1>
+
+          {/* Visit date */}
+          <div className="flex items-center gap-2 mb-6 text-gray-400">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Navštíveno {visitDate}</span>
+          </div>
+
+          {/* Review content */}
+          <div
+            className="prose prose-invert prose-purple max-w-none text-gray-300 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: formatContent(review.content) }}
+            style={{
+              fontSize: "1.1rem",
+              lineHeight: "1.8"
+            }}
+          />
+
+          {/* Author signature */}
+          <div className="mt-8 pt-6 border-t border-gray-800">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-purple-600/30 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👨‍🍳</span>
+              </div>
+              <div>
+                <p className="text-white font-semibold">Peču si život</p>
+                <a
+                  href="https://www.instagram.com/pecu_si_zivot/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-purple-400 hover:text-purple-300 transition-colors text-sm"
+                >
+                  @pecu_si_zivot
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  );
+}

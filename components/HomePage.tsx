@@ -6,7 +6,8 @@ import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
-import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import ReviewCard from "@/components/ReviewCard";
+import { Restaurant, Review, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -19,21 +20,26 @@ export default function HomePage() {
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
+  const [featuredReviews, setFeaturedReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
 
-  // Fetch restaurants and filters
+  // Fetch restaurants, filters, and featured reviews
   useEffect(() => {
     async function fetchData() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
+        const reviewsUrl = getApiUrl("/api/reviews?featured=true");
 
-        const [restaurantsRes, filtersRes] = await Promise.all([
+        const [restaurantsRes, filtersRes, reviewsRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(filtersUrl),
+          fetch(reviewsUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const filtersData = await filtersRes.json();
+        const reviewsData = await reviewsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -45,12 +51,16 @@ export default function HomePage() {
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
         }
+        if (Array.isArray(reviewsData)) {
+          setFeaturedReviews(reviewsData);
+        }
       } catch (error) {
         console.error("[HomePage] Error fetching data:", error);
         setRestaurants([]);
         setFilteredRestaurants([]);
       } finally {
         setLoading(false);
+        setReviewsLoading(false);
       }
     }
 
@@ -232,6 +242,25 @@ export default function HomePage() {
             </a>
           </p>
         </div>
+
+        {/* Featured Reviews Section */}
+        {!reviewsLoading && featuredReviews.length > 0 && (
+          <div className="mb-12 sm:mb-16">
+            <div className="mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">
+                ✨ Čerstvé recenze
+              </h2>
+              <p className="text-sm md:text-base text-gray-400">
+                Moje poslední návštěvy a zážitky z pražských restaurací
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredReviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">
