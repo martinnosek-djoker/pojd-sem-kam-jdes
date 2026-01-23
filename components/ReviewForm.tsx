@@ -22,6 +22,8 @@ export default function ReviewForm({
   const [imageUrl, setImageUrl] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [dishInput, setDishInput] = useState("");
+  const [dishes, setDishes] = useState<string[]>([]);
 
   const {
     register,
@@ -37,12 +39,20 @@ export default function ReviewForm({
     images: string[];
     is_featured: boolean;
     display_order: number;
+    rating_interior?: number | null;
+    rating_service?: number | null;
+    rating_food?: number | null;
+    dishes?: string[] | null;
   }>({
     resolver: zodResolver(reviewSchema) as any,
     defaultValues: {
       images: [],
       is_featured: false,
       display_order: 0,
+      rating_interior: null,
+      rating_service: null,
+      rating_food: null,
+      dishes: [],
     },
   });
 
@@ -77,8 +87,13 @@ export default function ReviewForm({
             images: data.images || [],
             is_featured: data.is_featured,
             display_order: data.display_order,
+            rating_interior: data.rating_interior,
+            rating_service: data.rating_service,
+            rating_food: data.rating_food,
+            dishes: data.dishes || [],
           });
           setImages(data.images || []);
+          setDishes(data.dishes || []);
         })
         .catch((err) => {
           console.error("Error fetching review:", err);
@@ -138,15 +153,31 @@ export default function ReviewForm({
     setValue("images", newImages);
   };
 
+  const handleAddDish = () => {
+    if (dishInput.trim()) {
+      const newDishes = [...dishes, dishInput.trim()];
+      setDishes(newDishes);
+      setValue("dishes", newDishes, { shouldValidate: true, shouldDirty: true });
+      setDishInput("");
+    }
+  };
+
+  const handleRemoveDish = (index: number) => {
+    const newDishes = dishes.filter((_, i) => i !== index);
+    setDishes(newDishes);
+    setValue("dishes", newDishes);
+  };
+
   const onSubmit = async (data: any) => {
     setLoading(true);
     setError("");
 
     try {
-      // Ensure images are included
+      // Ensure images and dishes are included
       const reviewData = {
         ...data,
         images: images,
+        dishes: dishes.length > 0 ? dishes : null,
       };
 
       const url = reviewId ? `/api/reviews/${reviewId}` : "/api/reviews";
@@ -236,6 +267,109 @@ export default function ReviewForm({
           {errors.visit_date && (
             <p className="mt-1 text-sm text-red-600">{errors.visit_date.message}</p>
           )}
+        </div>
+
+        {/* Ratings */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">⭐ Hodnocení (1-10)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Interior Rating */}
+            <div>
+              <label htmlFor="rating_interior" className="block text-sm text-gray-600 mb-1">
+                Interiér
+              </label>
+              <input
+                type="number"
+                id="rating_interior"
+                {...register("rating_interior", { valueAsNumber: true })}
+                min="1"
+                max="10"
+                placeholder="1-10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            {/* Service Rating */}
+            <div>
+              <label htmlFor="rating_service" className="block text-sm text-gray-600 mb-1">
+                Obsluha
+              </label>
+              <input
+                type="number"
+                id="rating_service"
+                {...register("rating_service", { valueAsNumber: true })}
+                min="1"
+                max="10"
+                placeholder="1-10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            {/* Food Rating */}
+            <div>
+              <label htmlFor="rating_food" className="block text-sm text-gray-600 mb-1">
+                Jídlo
+              </label>
+              <input
+                type="number"
+                id="rating_food"
+                {...register("rating_food", { valueAsNumber: true })}
+                min="1"
+                max="10"
+                placeholder="1-10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Dishes */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Jídla, která jsem měl
+          </label>
+          <div className="space-y-3">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={dishInput}
+                onChange={(e) => setDishInput(e.target.value)}
+                placeholder="např. Svíčková na smetaně"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddDish();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleAddDish}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+              >
+                Přidat jídlo
+              </button>
+            </div>
+
+            {/* Dishes list */}
+            {dishes.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {dishes.map((dish, index) => (
+                  <div key={index} className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    <span>{dish}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveDish(index)}
+                      className="text-green-600 hover:text-green-900 font-bold"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content */}

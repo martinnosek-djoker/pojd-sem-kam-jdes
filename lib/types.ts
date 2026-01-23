@@ -254,6 +254,10 @@ export interface Review {
   images: string[]; // Array of image URLs
   is_featured: boolean; // Show on homepage
   display_order: number;
+  rating_interior?: number | null; // Interior rating 1-10
+  rating_service?: number | null; // Service rating 1-10
+  rating_food?: number | null; // Food rating 1-10
+  dishes?: string[] | null; // Dishes/meals had during visit
   created_at: string;
   updated_at: string;
 }
@@ -266,6 +270,10 @@ export const reviewSchema = z.object({
   images: z.array(z.string()).optional().default([]),
   is_featured: z.boolean().optional().default(false),
   display_order: z.number().min(0, "Pořadí musí být kladné číslo").optional().default(0),
+  rating_interior: z.number().min(1).max(10).optional().nullable(),
+  rating_service: z.number().min(1).max(10).optional().nullable(),
+  rating_food: z.number().min(1).max(10).optional().nullable(),
+  dishes: z.array(z.string()).optional().nullable(),
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;

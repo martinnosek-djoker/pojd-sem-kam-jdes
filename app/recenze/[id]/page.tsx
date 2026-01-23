@@ -188,6 +188,71 @@ export default function ReviewDetailPage() {
             <span>Navštíveno {visitDate}</span>
           </div>
 
+          {/* Ratings and Dishes Header */}
+          {((review.rating_interior || review.rating_service || review.rating_food) ||
+            (review.dishes && review.dishes.length > 0)) && (
+            <div className="mb-8 bg-gradient-to-br from-purple-900/30 to-gray-800/30 border border-purple-500/40 rounded-xl p-6">
+              {/* Ratings */}
+              {(review.rating_interior || review.rating_service || review.rating_food) && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-purple-400 mb-4 flex items-center gap-2">
+                    <span>⭐</span>
+                    <span>Hodnocení</span>
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {review.rating_interior && (
+                      <div className="bg-gray-900/50 rounded-lg p-4 border border-purple-500/20">
+                        <div className="text-sm text-gray-400 mb-1">Interiér</div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-bold text-purple-400">{review.rating_interior}</span>
+                          <span className="text-gray-500">/10</span>
+                        </div>
+                      </div>
+                    )}
+                    {review.rating_service && (
+                      <div className="bg-gray-900/50 rounded-lg p-4 border border-purple-500/20">
+                        <div className="text-sm text-gray-400 mb-1">Obsluha</div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-bold text-purple-400">{review.rating_service}</span>
+                          <span className="text-gray-500">/10</span>
+                        </div>
+                      </div>
+                    )}
+                    {review.rating_food && (
+                      <div className="bg-gray-900/50 rounded-lg p-4 border border-purple-500/20">
+                        <div className="text-sm text-gray-400 mb-1">Jídlo</div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-bold text-purple-400">{review.rating_food}</span>
+                          <span className="text-gray-500">/10</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Dishes */}
+              {review.dishes && review.dishes.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-purple-400 mb-3 flex items-center gap-2">
+                    <span>🍽️</span>
+                    <span>Co jsem měl</span>
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {review.dishes.map((dish, index) => (
+                      <div
+                        key={index}
+                        className="inline-flex items-center px-4 py-2 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium"
+                      >
+                        {dish}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Review content */}
           <div
             className="prose prose-invert prose-purple max-w-none text-gray-300 leading-relaxed"
