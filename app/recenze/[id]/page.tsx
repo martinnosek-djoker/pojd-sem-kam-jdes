@@ -268,13 +268,17 @@ export default function ReviewDetailPage() {
                     <span>🍽️</span>
                     <span>Co jsem měl</span>
                   </h3>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="space-y-2">
                     {review.dishes.map((dish, index) => (
                       <div
                         key={index}
-                        className="inline-flex items-center px-4 py-2 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium"
+                        className="flex items-center gap-3 p-3 bg-purple-600/20 border border-purple-500/30 rounded-lg"
                       >
-                        {dish}
+                        <div className="flex items-baseline gap-1 min-w-[60px]">
+                          <span className="text-3xl font-bold text-purple-400">{dish.rating}</span>
+                          <span className="text-gray-500">/10</span>
+                        </div>
+                        <span className="text-purple-300 font-medium text-lg">{dish.name}</span>
                       </div>
                     ))}
                   </div>

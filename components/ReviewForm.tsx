@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { reviewSchema, ReviewInput, Review, Restaurant } from "@/lib/types";
+import { reviewSchema, ReviewInput, Review, Restaurant, Dish } from "@/lib/types";
 
 interface ReviewFormProps {
   reviewId?: number | null;
@@ -23,7 +23,8 @@ export default function ReviewForm({
   const [images, setImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dishInput, setDishInput] = useState("");
-  const [dishes, setDishes] = useState<string[]>([]);
+  const [dishRating, setDishRating] = useState<number>(8);
+  const [dishes, setDishes] = useState<Dish[]>([]);
 
   const {
     register,
@@ -44,7 +45,7 @@ export default function ReviewForm({
     rating_service?: number | null;
     rating_food?: number | null;
     total_spent?: number | null;
-    dishes?: string[] | null;
+    dishes?: Dish[] | null;
   }>({
     resolver: zodResolver(reviewSchema) as any,
     defaultValues: {
@@ -160,11 +161,12 @@ export default function ReviewForm({
   };
 
   const handleAddDish = () => {
-    if (dishInput.trim()) {
-      const newDishes = [...dishes, dishInput.trim()];
+    if (dishInput.trim() && dishRating >= 1 && dishRating <= 10) {
+      const newDishes = [...dishes, { name: dishInput.trim(), rating: dishRating }];
       setDishes(newDishes);
       setValue("dishes", newDishes, { shouldValidate: true, shouldDirty: true });
       setDishInput("");
+      setDishRating(8); // Reset to default
     }
   };
 
@@ -383,25 +385,40 @@ export default function ReviewForm({
                   }
                 }}
               />
+              <input
+                type="number"
+                value={dishRating}
+                onChange={(e) => setDishRating(Number(e.target.value))}
+                min="1"
+                max="10"
+                placeholder="1-10"
+                className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
               <button
                 type="button"
                 onClick={handleAddDish}
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium whitespace-nowrap"
               >
-                Přidat jídlo
+                + Přidat
               </button>
             </div>
 
             {/* Dishes list */}
             {dishes.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="space-y-2">
                 {dishes.map((dish, index) => (
-                  <div key={index} className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                    <span>{dish}</span>
+                  <div key={index} className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-bold text-green-700">{dish.rating}</span>
+                        <span className="text-sm text-gray-500">/10</span>
+                      </div>
+                      <span className="text-gray-800 font-medium">{dish.name}</span>
+                    </div>
                     <button
                       type="button"
                       onClick={() => handleRemoveDish(index)}
-                      className="text-green-600 hover:text-green-900 font-bold"
+                      className="px-3 py-1 text-red-600 hover:text-red-900 hover:bg-red-100 rounded transition-colors text-sm font-bold"
                     >
                       ×
                     </button>

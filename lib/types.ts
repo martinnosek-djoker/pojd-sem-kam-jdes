@@ -243,6 +243,12 @@ export const michelinRestaurantSchema = z.object({
 
 export type MichelinRestaurantInput = z.infer<typeof michelinRestaurantSchema>;
 
+// Dish type for reviews
+export interface Dish {
+  name: string;
+  rating: number; // 1-10
+}
+
 // Review types
 export interface Review {
   id: number;
@@ -259,10 +265,15 @@ export interface Review {
   rating_service?: number | null; // Service rating 1-10
   rating_food?: number | null; // Food rating 1-10
   total_spent?: number | null; // Total amount spent in CZK
-  dishes?: string[] | null; // Dishes/meals had during visit
+  dishes?: Dish[] | null; // Dishes with ratings
   created_at: string;
   updated_at: string;
 }
+
+const dishSchema = z.object({
+  name: z.string().min(1, "Název jídla je povinný"),
+  rating: z.number().min(1).max(10),
+});
 
 export const reviewSchema = z.object({
   restaurant_id: z.number().min(1, "Restaurace je povinná"),
@@ -277,7 +288,7 @@ export const reviewSchema = z.object({
   rating_service: z.number().min(1).max(10).optional().nullable(),
   rating_food: z.number().min(1).max(10).optional().nullable(),
   total_spent: z.number().min(0).optional().nullable(),
-  dishes: z.array(z.string()).optional().nullable(),
+  dishes: z.array(dishSchema).optional().nullable(),
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;
