@@ -37,15 +37,24 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("=== POST /api/reviews ===");
+    console.log("Request body:", JSON.stringify(body, null, 2));
+
     const validated = reviewSchema.parse(body);
+    console.log("Validated data:", JSON.stringify(validated, null, 2));
 
     const review = await createReview(validated);
+    console.log("Created review:", review);
 
     return NextResponse.json(review, { status: 201 });
   } catch (error: any) {
-    console.error("Error creating review:", error);
+    console.error("=== ERROR creating review ===");
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    console.error("Full error:", error);
 
     if (error.name === "ZodError") {
+      console.error("Zod validation errors:", error.errors);
       return NextResponse.json(
         { error: "Neplatná data", details: error.errors },
         { status: 400 }
@@ -53,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: "Nepodařilo se vytvořit recenzi" },
+      { error: "Nepodařilo se vytvořit recenzi", details: error.message },
       { status: 500 }
     );
   }
