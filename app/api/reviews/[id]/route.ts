@@ -26,6 +26,11 @@ export async function GET(
       );
     }
 
+    console.log("=== GET /api/reviews/" + id + " ===");
+    console.log("Review images:", review.images);
+    console.log("Images type:", typeof review.images);
+    console.log("Images is array?", Array.isArray(review.images));
+
     return NextResponse.json(review);
   } catch (error) {
     console.error("Error fetching review:", error);
