@@ -28,8 +28,16 @@ export default function ReviewForm({
     reset,
     setValue,
     formState: { errors },
-  } = useForm<ReviewInput>({
-    resolver: zodResolver(reviewSchema),
+  } = useForm<{
+    restaurant_id: number;
+    title: string;
+    content: string;
+    visit_date: string;
+    images: string[];
+    is_featured: boolean;
+    display_order: number;
+  }>({
+    resolver: zodResolver(reviewSchema) as any,
     defaultValues: {
       images: [],
       is_featured: false,
