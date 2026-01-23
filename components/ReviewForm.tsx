@@ -87,11 +87,16 @@ export default function ReviewForm({
   }, [reviewId, reset]);
 
   const handleAddImage = () => {
+    console.log("handleAddImage called, imageUrl:", imageUrl);
+    console.log("Current images:", images);
     if (imageUrl.trim()) {
       const newImages = [...images, imageUrl.trim()];
+      console.log("New images array:", newImages);
       setImages(newImages);
-      setValue("images", newImages);
+      setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
       setImageUrl("");
+    } else {
+      console.log("imageUrl is empty or whitespace");
     }
   };
 
@@ -101,7 +106,7 @@ export default function ReviewForm({
     setValue("images", newImages);
   };
 
-  const onSubmit = async (data: ReviewInput) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
     setError("");
 
