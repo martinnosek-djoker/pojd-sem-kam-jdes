@@ -21,6 +21,7 @@ export default function ReviewForm({
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   const {
     register,
@@ -85,6 +86,42 @@ export default function ReviewForm({
         });
     }
   }, [reviewId, reset]);
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Nepodařilo se nahrát obrázek");
+      }
+
+      // Add uploaded image URL to list
+      const newImages = [...images, data.url];
+      setImages(newImages);
+      setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
+
+      // Reset file input
+      event.target.value = "";
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleAddImage = () => {
     if (imageUrl.trim()) {
@@ -227,7 +264,37 @@ export default function ReviewForm({
             Fotky z návštěvy
           </label>
           <div className="space-y-3">
-            {/* Add image input */}
+            {/* File upload button */}
+            <div className="flex gap-2">
+              <label className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium cursor-pointer text-center">
+                {uploading ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                    Nahrávám...
+                  </>
+                ) : (
+                  <>📤 Nahrát obrázek z počítače</>
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {/* Or add URL manually */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">nebo zadej URL</span>
+              </div>
+            </div>
+
             <div className="flex gap-2">
               <input
                 type="text"
@@ -245,9 +312,9 @@ export default function ReviewForm({
               <button
                 type="button"
                 onClick={handleAddImage}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm font-medium"
               >
-                Přidat
+                Přidat URL
               </button>
             </div>
 
