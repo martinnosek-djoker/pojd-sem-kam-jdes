@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllEvents, getAllMichelinRestaurants } from "@/lib/db";
+import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllEvents, getAllMichelinRestaurants, getAllReviews } from "@/lib/db";
 import AdminDashboard from "@/components/AdminDashboard";
 import TrendingsAdmin from "@/components/TrendingsAdmin";
 import BakeriesAdmin from "@/components/BakeriesAdmin";
 import CafesAdmin from "@/components/CafesAdmin";
 import MichelinAdmin from "@/components/MichelinAdmin";
 import EventsAdmin from "@/components/EventsAdmin";
+import ReviewsAdmin from "@/components/ReviewsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
 // Only force dynamic on server builds, not on static export for mobile
@@ -21,13 +22,14 @@ export default async function AdminPage() {
       redirect;
     }
 
-    const [restaurants, trendings, bakeries, cafes, michelinRestaurants, events] = await Promise.all([
+    const [restaurants, trendings, bakeries, cafes, michelinRestaurants, events, reviews] = await Promise.all([
       getAllRestaurants(),
       getAllTrendings(),
       getAllBakeries(),
       getAllCafes(),
       getAllMichelinRestaurants(),
       getAllEvents(),
+      getAllReviews(),
     ]);
 
     return (
@@ -38,7 +40,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
-                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {michelinRestaurants.length} Michelin restaurací • {trendings.length} trending podniků • {events.length} akcí
+                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {michelinRestaurants.length} Michelin restaurací • {trendings.length} trending podniků • {events.length} akcí • {reviews.length} recenzí
               </p>
             </div>
             <div className="flex gap-3">
@@ -51,6 +53,12 @@ export default async function AdminPage() {
               <LogoutButton />
             </div>
           </div>
+
+          {/* Reviews Section */}
+          <ReviewsAdmin />
+
+          {/* Separator */}
+          <div className="my-8 border-t border-gray-300"></div>
 
           {/* Trendings Section */}
           <TrendingsAdmin initialTrendings={trendings} />
