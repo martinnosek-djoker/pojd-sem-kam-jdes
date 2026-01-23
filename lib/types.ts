@@ -242,3 +242,30 @@ export const michelinRestaurantSchema = z.object({
 });
 
 export type MichelinRestaurantInput = z.infer<typeof michelinRestaurantSchema>;
+
+// Review types
+export interface Review {
+  id: number;
+  restaurant_id: number;
+  restaurant?: Restaurant; // Optional joined restaurant data
+  title: string;
+  content: string; // Markdown/HTML content with formatting
+  visit_date: string;
+  images: string[]; // Array of image URLs
+  is_featured: boolean; // Show on homepage
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export const reviewSchema = z.object({
+  restaurant_id: z.number().min(1, "Restaurace je povinná"),
+  title: z.string().min(1, "Název recenze je povinný"),
+  content: z.string().min(10, "Obsah recenze musí mít alespoň 10 znaků"),
+  visit_date: z.string().min(1, "Datum návštěvy je povinné"),
+  images: z.array(z.string()).optional().default([]),
+  is_featured: z.boolean().optional().default(false),
+  display_order: z.number().min(0, "Pořadí musí být kladné číslo").optional().default(0),
+});
+
+export type ReviewInput = z.infer<typeof reviewSchema>;

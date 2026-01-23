@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Event, EventInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Event, EventInput, ReviewInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
 // CRUD operations
@@ -1006,6 +1006,135 @@ export async function updateMichelinRestaurantOrder(updates: { id: number; displ
 
     if (updateError) {
       console.error("Error updating Michelin restaurant order:", updateError);
+      throw updateError;
+    }
+  }
+}
+
+// ==================== REVIEWS ====================
+
+export async function getAllReviews() {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select(`
+      *,
+      restaurant:restaurants(*)
+    `)
+    .order("display_order", { ascending: true })
+    .order("visit_date", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching reviews:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getFeaturedReviews() {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select(`
+      *,
+      restaurant:restaurants(*)
+    `)
+    .eq("is_featured", true)
+    .order("display_order", { ascending: true })
+    .order("visit_date", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching featured reviews:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getReviewById(id: number) {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select(`
+      *,
+      restaurant:restaurants(*)
+    `)
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching review:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getReviewsByRestaurant(restaurantId: number) {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("*")
+    .eq("restaurant_id", restaurantId)
+    .order("visit_date", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching reviews by restaurant:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function createReview(review: ReviewInput) {
+  const { data, error } = await supabase
+    .from("reviews")
+    .insert([review])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating review:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateReview(id: number, review: Partial<ReviewInput>) {
+  const { data, error } = await supabase
+    .from("reviews")
+    .update(review)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating review:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function deleteReview(id: number) {
+  const { error } = await supabase
+    .from("reviews")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting review:", error);
+    throw error;
+  }
+}
+
+export async function updateReviewOrder(updates: { id: number; display_order: number }[]): Promise<void> {
+  for (const update of updates) {
+    const { error: updateError } = await supabase
+      .from("reviews")
+      .update({ display_order: update.display_order })
+      .eq("id", update.id);
+
+    if (updateError) {
+      console.error("Error updating review order:", updateError);
       throw updateError;
     }
   }
