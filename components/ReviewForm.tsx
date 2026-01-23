@@ -65,12 +65,9 @@ export default function ReviewForm({
   // Load review data if editing
   useEffect(() => {
     if (reviewId) {
-      console.log("=== Loading review for edit, ID:", reviewId);
       fetch(`/api/reviews/${reviewId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("=== Loaded review data:", data);
-          console.log("=== Review images:", data.images);
           reset({
             restaurant_id: data.restaurant_id,
             title: data.title,
@@ -81,7 +78,6 @@ export default function ReviewForm({
             display_order: data.display_order,
           });
           setImages(data.images || []);
-          console.log("=== Set images state to:", data.images || []);
         })
         .catch((err) => {
           console.error("Error fetching review:", err);
@@ -91,16 +87,11 @@ export default function ReviewForm({
   }, [reviewId, reset]);
 
   const handleAddImage = () => {
-    console.log("handleAddImage called, imageUrl:", imageUrl);
-    console.log("Current images:", images);
     if (imageUrl.trim()) {
       const newImages = [...images, imageUrl.trim()];
-      console.log("New images array:", newImages);
       setImages(newImages);
       setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
       setImageUrl("");
-    } else {
-      console.log("imageUrl is empty or whitespace");
     }
   };
 
