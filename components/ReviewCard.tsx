@@ -10,7 +10,7 @@ interface ReviewCardProps {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   // Get first image or fallback
-  const mainImage = review.images?.[0] || review.restaurant?.image_url || "/placeholder-restaurant.jpg";
+  const mainImage = review.images?.[0] || review.restaurant?.image_url;
 
   // Format date
   const visitDate = new Date(review.visit_date).toLocaleDateString("cs-CZ", {
@@ -41,17 +41,32 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           <span>Nová recenze</span>
         </div>
 
-        {/* Image */}
+        {/* Image or Placeholder */}
         <div className="relative h-64 md:h-80 overflow-hidden">
-          <Image
-            src={mainImage}
-            alt={review.title}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+          {mainImage ? (
+            <>
+              <Image
+                src={mainImage}
+                alt={review.title}
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+            </>
+          ) : (
+            // Gradient placeholder when no image
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-purple-800 to-purple-900 flex items-center justify-center">
+              <div className="text-center text-white/30">
+                <svg className="w-24 h-24 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+              </div>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+            </div>
+          )}
         </div>
 
         {/* Content */}
