@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { Review } from "@/lib/types";
+import { Review, Restaurant } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 
 export default function ReviewDetailPage() {
@@ -14,6 +14,7 @@ export default function ReviewDetailPage() {
   const [review, setReview] = useState<Review | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [similarRestaurants, setSimilarRestaurants] = useState<Restaurant[]>([]);
 
   useEffect(() => {
     async function fetchReview() {
@@ -24,6 +25,16 @@ export default function ReviewDetailPage() {
         }
         const data = await res.json();
         setReview(data);
+
+        // Fetch similar restaurants if they exist
+        if (data.similar_restaurant_ids && data.similar_restaurant_ids.length > 0) {
+          const restaurantsRes = await fetch(getApiUrl("/api/restaurants"));
+          const allRestaurants = await restaurantsRes.json();
+          const similar = allRestaurants.filter((r: Restaurant) =>
+            data.similar_restaurant_ids.includes(r.id)
+          );
+          setSimilarRestaurants(similar);
+        }
       } catch (error) {
         console.error("Error fetching review:", error);
         router.push("/");
@@ -308,6 +319,66 @@ export default function ReviewDetailPage() {
             </div>
           </div>
         </article>
+
+        {/* Similar Restaurants */}
+        {similarRestaurants.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
+              Podobné restaurace
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {similarRestaurants.map((restaurant) => (
+                <Link
+                  key={restaurant.id}
+                  href={`/?restaurant=${restaurant.id}`}
+                  className="group bg-gray-900/50 border border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-500/60 transition-all hover:scale-[1.02]"
+                >
+                  {/* Restaurant Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={restaurant.image_url || "/placeholder-restaurant.jpg"}
+                      alt={restaurant.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+
+                  {/* Restaurant Info */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                      {restaurant.name}
+                    </h3>
+                    <div className="space-y-1 text-sm text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>{restaurant.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        <span>{restaurant.cuisine_type}</span>
+                      </div>
+                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-800">
+                        <div className="flex items-center gap-1">
+                          <span className="text-yellow-400">⭐</span>
+                          <span className="text-white font-semibold">{restaurant.rating}/10</span>
+                        </div>
+                        <div className="text-purple-400 font-semibold">
+                          {restaurant.price} Kč
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

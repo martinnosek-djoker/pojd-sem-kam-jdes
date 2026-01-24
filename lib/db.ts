@@ -1139,3 +1139,74 @@ export async function updateReviewOrder(updates: { id: number; display_order: nu
     }
   }
 }
+
+export async function getSimilarRestaurants(restaurantId: number) {
+  // First get the current restaurant
+  const { data: currentRestaurant, error: currentError } = await supabase
+    .from("restaurants")
+    .select("*")
+    .eq("id", restaurantId)
+    .single();
+
+  if (currentError || !currentRestaurant) {
+    console.error("Error fetching current restaurant:", currentError);
+    return [];
+  }
+
+  // Get all restaurants
+  const { data: allRestaurants, error: allError } = await supabase
+    .from("restaurants")
+    .select("*")
+    .neq("id", restaurantId); // Exclude current restaurant
+
+  if (allError || !allRestaurants) {
+    console.error("Error fetching restaurants:", allError);
+    return [];
+  }
+
+  // Score each restaurant by similarity
+  const scoredRestaurants = allRestaurants.map((restaurant) => {
+    let score = 0;
+
+    // Same cuisine type = +10 points
+    if (restaurant.cuisine_type.toLowerCase() === currentRestaurant.cuisine_type.toLowerCase()) {
+      score += 10;
+    } else {
+      // Check cuisine hierarchy
+      const { cuisineMatchesFilter } = require("./types");
+      if (cuisineMatchesFilter(restaurant.cuisine_type, currentRestaurant.cuisine_type) ||
+          cuisineMatchesFilter(currentRestaurant.cuisine_type, restaurant.cuisine_type)) {
+        score += 5;
+      }
+    }
+
+    // Same location = +8 points
+    if (restaurant.location.toLowerCase() === currentRestaurant.location.toLowerCase()) {
+      score += 8;
+    }
+
+    // Similar price (within 1 level) = +5 points
+    const priceDiff = Math.abs(restaurant.price - currentRestaurant.price);
+    if (priceDiff === 0) {
+      score += 5;
+    } else if (priceDiff === 1) {
+      score += 3;
+    }
+
+    // Similar rating (within 2 points) = +3 points
+    const ratingDiff = Math.abs(restaurant.rating - currentRestaurant.rating);
+    if (ratingDiff <= 2) {
+      score += 3;
+    }
+
+    return { ...restaurant, similarityScore: score };
+  });
+
+  // Sort by score (descending) and return top 4
+  const similarRestaurants = scoredRestaurants
+    .filter((r) => r.similarityScore > 0) // Only include restaurants with some similarity
+    .sort((a, b) => b.similarityScore - a.similarityScore)
+    .slice(0, 4);
+
+  return similarRestaurants;
+}

@@ -27,6 +27,7 @@ export default function ReviewForm({
   const [dishRating, setDishRating] = useState<number>(8);
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [content, setContent] = useState("");
+  const [similarRestaurantIds, setSimilarRestaurantIds] = useState<number[]>([]);
 
   const {
     register,
@@ -48,6 +49,7 @@ export default function ReviewForm({
     rating_food?: number | null;
     total_spent?: number | null;
     dishes?: Dish[] | null;
+    similar_restaurant_ids?: number[] | null;
   }>({
     resolver: zodResolver(reviewSchema) as any,
     defaultValues: {
@@ -60,6 +62,7 @@ export default function ReviewForm({
       rating_food: null,
       total_spent: null,
       dishes: [],
+      similar_restaurant_ids: [],
     },
   });
 
@@ -100,10 +103,12 @@ export default function ReviewForm({
             rating_food: data.rating_food,
             total_spent: data.total_spent,
             dishes: data.dishes || [],
+            similar_restaurant_ids: data.similar_restaurant_ids || [],
           });
           setImages(data.images || []);
           setDishes(data.dishes || []);
           setContent(data.content || "");
+          setSimilarRestaurantIds(data.similar_restaurant_ids || []);
         })
         .catch((err) => {
           console.error("Error fetching review:", err);
@@ -222,6 +227,7 @@ export default function ReviewForm({
         content: content,
         images: images,
         dishes: dishes.length > 0 ? dishes : null,
+        similar_restaurant_ids: similarRestaurantIds.length > 0 ? similarRestaurantIds : null,
       };
 
       const url = reviewId ? `/api/reviews/${reviewId}` : "/api/reviews";
@@ -581,6 +587,54 @@ export default function ReviewForm({
               ✨ Zobrazit na homepage (featured)
             </span>
           </label>
+        </div>
+
+        {/* Similar Restaurants */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Podobné restaurace (doporučení)
+          </label>
+          <p className="text-sm text-gray-500 mb-3">
+            Vyber restaurace, které se zobrazí jako doporučení pod touto recenzí
+          </p>
+          <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
+            {restaurants
+              .filter((r) => r.id !== Number(register("restaurant_id")._f.value))
+              .map((restaurant) => (
+                <label
+                  key={restaurant.id}
+                  className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={similarRestaurantIds.includes(restaurant.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        const newIds = [...similarRestaurantIds, restaurant.id];
+                        setSimilarRestaurantIds(newIds);
+                        setValue("similar_restaurant_ids", newIds, { shouldValidate: true, shouldDirty: true });
+                      } else {
+                        const newIds = similarRestaurantIds.filter((id) => id !== restaurant.id);
+                        setSimilarRestaurantIds(newIds);
+                        setValue("similar_restaurant_ids", newIds, { shouldValidate: true, shouldDirty: true });
+                      }
+                    }}
+                    className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900">{restaurant.name}</div>
+                    <div className="text-sm text-gray-500">
+                      {restaurant.location} • {restaurant.cuisine_type} • {restaurant.price}Kč
+                    </div>
+                  </div>
+                </label>
+              ))}
+          </div>
+          {similarRestaurantIds.length > 0 && (
+            <p className="mt-2 text-sm text-gray-600">
+              Vybráno: {similarRestaurantIds.length} {similarRestaurantIds.length === 1 ? 'restaurace' : similarRestaurantIds.length < 5 ? 'restaurace' : 'restaurací'}
+            </p>
+          )}
         </div>
 
         {/* Display order */}

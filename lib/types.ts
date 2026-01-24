@@ -266,6 +266,7 @@ export interface Review {
   rating_food?: number | null; // Food rating 1-10
   total_spent?: number | null; // Total amount spent in CZK
   dishes?: Dish[] | null; // Dishes with ratings
+  similar_restaurant_ids?: number[] | null; // Manually selected similar restaurants
   created_at: string;
   updated_at: string;
 }
@@ -289,6 +290,7 @@ export const reviewSchema = z.object({
   rating_food: z.number().min(1).max(10).optional().nullable(),
   total_spent: z.number().min(0).optional().nullable(),
   dishes: z.array(dishSchema).optional().nullable(),
+  similar_restaurant_ids: z.array(z.number()).optional().nullable(),
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;
