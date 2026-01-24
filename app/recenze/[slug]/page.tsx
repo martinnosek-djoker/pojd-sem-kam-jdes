@@ -7,6 +7,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import { Review, Restaurant } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
+import { getReviewIdFromSlug } from "@/lib/slug";
 
 export default function ReviewDetailPage() {
   const params = useParams();
@@ -19,7 +20,15 @@ export default function ReviewDetailPage() {
   useEffect(() => {
     async function fetchReview() {
       try {
-        const res = await fetch(getApiUrl(`/api/reviews/${params.id}`));
+        // Extract review ID from slug
+        const slug = params.slug as string;
+        const reviewId = getReviewIdFromSlug(slug);
+
+        if (!reviewId) {
+          throw new Error("Invalid review slug");
+        }
+
+        const res = await fetch(getApiUrl(`/api/reviews/${reviewId}`));
         if (!res.ok) {
           throw new Error("Review not found");
         }
@@ -43,10 +52,10 @@ export default function ReviewDetailPage() {
       }
     }
 
-    if (params.id) {
+    if (params.slug) {
       fetchReview();
     }
-  }, [params.id, router]);
+  }, [params.slug, router]);
 
   if (loading) {
     return (
@@ -105,12 +114,12 @@ export default function ReviewDetailPage() {
         {/* Main Image Gallery */}
         {allImages.length > 0 && (
           <div className="mb-8">
-            <div className="relative h-96 md:h-[500px] rounded-xl overflow-hidden mb-4">
+            <div className="relative h-[500px] md:h-[650px] rounded-xl overflow-hidden mb-4">
               <Image
                 src={currentImage}
                 alt={review.title}
                 fill
-                className="object-cover"
+                className="object-contain bg-gray-900"
                 sizes="(max-width: 768px) 100vw, 896px"
                 priority
               />

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Review } from "@/lib/types";
+import { createReviewSlug } from "@/lib/slug";
 
 interface ReviewCardProps {
   review: Review;
@@ -32,8 +33,13 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     return text;
   };
 
+  // Create slug from review ID and restaurant name
+  const reviewSlug = review.restaurant
+    ? createReviewSlug(review.id, review.restaurant.name)
+    : review.id.toString();
+
   return (
-    <Link href={`/recenze/${review.id}`}>
+    <Link href={`/recenze/${reviewSlug}`}>
       <div className="group relative bg-gradient-to-br from-purple-900/20 via-gray-900/50 to-black border-2 border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/50">
         {/* Badge - Featured Review */}
         <div className="absolute top-4 left-4 z-10 bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-purple-400 flex items-center gap-1.5">
