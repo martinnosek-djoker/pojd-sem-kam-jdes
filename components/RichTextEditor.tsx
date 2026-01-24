@@ -11,17 +11,22 @@ interface RichTextEditorProps {
   content: string;
   onChange: (content: string) => void;
   placeholder?: string;
+  uploadedImages?: string[];
+  onImageUpload?: (file: File) => Promise<string>;
 }
 
 export default function RichTextEditor({
   content,
   onChange,
   placeholder = "Začněte psát...",
+  uploadedImages = [],
+  onImageUpload,
 }: RichTextEditorProps) {
   const [imageUrl, setImageUrl] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -65,12 +70,35 @@ export default function RichTextEditor({
     return null;
   }
 
-  const addImage = () => {
+  const handleImageFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !onImageUpload) return;
+
+    setUploadingImage(true);
+    try {
+      const url = await onImageUpload(file);
+      editor.chain().focus().setImage({ src: url }).run();
+      setShowImageDialog(false);
+      event.target.value = ""; // Reset input
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Nepodařilo se nahrát obrázek");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const insertImageFromUrl = () => {
     if (imageUrl) {
       editor.chain().focus().setImage({ src: imageUrl }).run();
       setImageUrl("");
       setShowImageDialog(false);
     }
+  };
+
+  const insertImageFromList = (url: string) => {
+    editor.chain().focus().setImage({ src: url }).run();
+    setShowImageDialog(false);
   };
 
   const addLink = () => {
@@ -271,28 +299,85 @@ export default function RichTextEditor({
 
       {/* Image Dialog */}
       {showImageDialog && (
-        <div className="bg-green-50 border-b border-green-200 p-3">
-          <div className="flex gap-2 items-center">
-            <input
-              type="url"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  addImage();
-                }
-              }}
-            />
-            <button
-              type="button"
-              onClick={addImage}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-            >
-              Přidat
-            </button>
+        <div className="bg-green-50 border-b border-green-200 p-4 space-y-4">
+          {/* Already uploaded images */}
+          {uploadedImages.length > 0 && (
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                📸 Nahrané fotky recenze (klikni pro vložení do textu)
+              </h4>
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-40 overflow-y-auto">
+                {uploadedImages.map((url, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => insertImageFromList(url)}
+                    className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-300 hover:border-green-500 transition-all hover:scale-105"
+                  >
+                    <img
+                      src={url}
+                      alt={`Obrázek ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Upload new image */}
+          {onImageUpload && (
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                📤 Nebo nahraj nový obrázek
+              </h4>
+              <div className="flex gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageFileUpload}
+                  disabled={uploadingImage}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white"
+                />
+                {uploadingImage && (
+                  <span className="px-4 py-2 text-sm text-gray-600">Nahrávám...</span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* URL input */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              🔗 Nebo vlož URL obrázku
+            </h4>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    insertImageFromUrl();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={insertImageFromUrl}
+                disabled={!imageUrl}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                Vložit
+              </button>
+            </div>
+          </div>
+
+          {/* Close button */}
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={() => {
@@ -301,7 +386,7 @@ export default function RichTextEditor({
               }}
               className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
             >
-              Zrušit
+              Zavřít
             </button>
           </div>
         </div>

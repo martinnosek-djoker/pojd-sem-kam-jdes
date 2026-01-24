@@ -179,6 +179,29 @@ export default function ReviewForm({
     setValue("dishes", newDishes);
   };
 
+  const handleImageUploadForEditor = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("/api/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Nepodařilo se nahrát obrázek");
+    }
+
+    // Also add to images list so it appears in the gallery
+    const newImages = [...images, data.url];
+    setImages(newImages);
+    setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
+
+    return data.url;
+  };
+
   const onSubmit = async (data: any) => {
     setLoading(true);
     setError("");
@@ -448,6 +471,8 @@ export default function ReviewForm({
               setValue("content", newContent, { shouldValidate: true, shouldDirty: true });
             }}
             placeholder="Napište svůj zážitek z návštěvy..."
+            uploadedImages={images}
+            onImageUpload={handleImageUploadForEditor}
           />
           {errors.content && (
             <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>
