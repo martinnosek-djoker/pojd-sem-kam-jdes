@@ -111,6 +111,47 @@ export default function ReviewDetailPage() {
           </Link>
         </div>
 
+        {/* Restaurant Header */}
+        {review.restaurant && (
+          <div className="mb-8">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
+                  {review.restaurant.name}
+                </h1>
+                <div className="flex items-center gap-3 text-lg text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>{review.restaurant.location}</span>
+                  </div>
+                  {review.restaurant.cuisine_type && (
+                    <>
+                      <span className="text-gray-600">•</span>
+                      <span>{review.restaurant.cuisine_type}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              {review.restaurant.website_url && (
+                <a
+                  href={review.restaurant.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium flex items-center gap-2"
+                >
+                  <span>Navštívit web</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Main Image Gallery */}
         {allImages.length > 0 && (
           <div className="mb-8">
@@ -154,42 +195,10 @@ export default function ReviewDetailPage() {
 
         {/* Review Content */}
         <article className="bg-gray-900/50 border border-purple-500/30 rounded-xl p-6 sm:p-8">
-          {/* Restaurant info */}
-          {review.restaurant && (
-            <div className="mb-6 pb-6 border-b border-gray-800">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                  <h3 className="text-lg text-purple-400 font-semibold mb-1">
-                    {review.restaurant.name}
-                  </h3>
-                  <div className="flex items-center gap-3 text-sm text-gray-400">
-                    <span>{review.restaurant.location}</span>
-                    {review.restaurant.cuisine_type && (
-                      <>
-                        <span>•</span>
-                        <span>{review.restaurant.cuisine_type}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                {review.restaurant.website_url && (
-                  <a
-                    href={review.restaurant.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium"
-                  >
-                    Navštívit web
-                  </a>
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Review title */}
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             {review.title}
-          </h1>
+          </h2>
 
           {/* Visit date */}
           <div className="flex items-center gap-2 mb-6 text-gray-400">
