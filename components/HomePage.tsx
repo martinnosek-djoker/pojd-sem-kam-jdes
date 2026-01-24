@@ -22,6 +22,8 @@ export default function HomePage() {
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
   const [featuredReviews, setFeaturedReviews] = useState<Review[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [allReviews, setAllReviews] = useState<Review[]>([]);
+  const [restaurantReviewMap, setRestaurantReviewMap] = useState<Map<number, Review>>(new Map());
 
   // Fetch restaurants, filters, and featured reviews
   useEffect(() => {
@@ -29,17 +31,20 @@ export default function HomePage() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
-        const reviewsUrl = getApiUrl("/api/reviews?featured=true");
+        const featuredReviewsUrl = getApiUrl("/api/reviews?featured=true");
+        const allReviewsUrl = getApiUrl("/api/reviews");
 
-        const [restaurantsRes, filtersRes, reviewsRes] = await Promise.all([
+        const [restaurantsRes, filtersRes, featuredReviewsRes, allReviewsRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(filtersUrl),
-          fetch(reviewsUrl),
+          fetch(featuredReviewsUrl),
+          fetch(allReviewsUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const filtersData = await filtersRes.json();
-        const reviewsData = await reviewsRes.json();
+        const featuredReviewsData = await featuredReviewsRes.json();
+        const allReviewsData = await allReviewsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -51,8 +56,17 @@ export default function HomePage() {
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
         }
-        if (Array.isArray(reviewsData)) {
-          setFeaturedReviews(reviewsData);
+        if (Array.isArray(featuredReviewsData)) {
+          setFeaturedReviews(featuredReviewsData);
+        }
+        if (Array.isArray(allReviewsData)) {
+          setAllReviews(allReviewsData);
+          // Create a map of restaurant_id -> review
+          const reviewMap = new Map<number, Review>();
+          allReviewsData.forEach((review: Review) => {
+            reviewMap.set(review.restaurant_id, review);
+          });
+          setRestaurantReviewMap(reviewMap);
         }
       } catch (error) {
         console.error("[HomePage] Error fetching data:", error);
@@ -324,7 +338,11 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {filteredRestaurants.map((restaurant) => (
-              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+              <RestaurantCard
+                key={restaurant.id}
+                restaurant={restaurant}
+                review={restaurantReviewMap.get(restaurant.id)}
+              />
             ))}
           </div>
         )}

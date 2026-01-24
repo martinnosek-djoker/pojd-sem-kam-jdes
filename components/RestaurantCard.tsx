@@ -1,17 +1,20 @@
 "use client";
 
-import { Restaurant } from "@/lib/types";
+import { Restaurant, Review } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
+import { createReviewSlug } from "@/lib/slug";
 import { useState } from "react";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   forceLocation?: string; // If provided, only show this location instead of all
+  review?: Review; // If restaurant has a review, include it here
 }
 
-export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
+export default function RestaurantCard({ restaurant, forceLocation, review }: RestaurantCardProps) {
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
   const [imageError, setImageError] = useState(false);
+  const reviewSlug = review ? createReviewSlug(review.id, restaurant.name) : null;
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -58,6 +61,19 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
             onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+          {/* Review Badge */}
+          {reviewSlug && (
+            <a
+              href={`/recenze/${reviewSlug}`}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-3 left-3 bg-green-600/90 hover:bg-green-500/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transition-colors z-10"
+            >
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              <span className="text-white text-sm font-semibold">Recenze</span>
+            </a>
+          )}
           {restaurant.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,6 +85,19 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
       ) : (
         <div className="relative -m-6 mb-4 h-32 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
           <span className="text-6xl opacity-20">🍽️</span>
+          {/* Review Badge */}
+          {reviewSlug && (
+            <a
+              href={`/recenze/${reviewSlug}`}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-3 left-3 bg-green-600/90 hover:bg-green-500/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transition-colors z-10"
+            >
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              <span className="text-white text-sm font-semibold">Recenze</span>
+            </a>
+          )}
           {restaurant.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
