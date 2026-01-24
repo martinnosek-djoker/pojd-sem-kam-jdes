@@ -339,9 +339,11 @@ export default function ReviewDetailPage() {
               {similarRestaurants
                 .sort((a, b) => a.name.localeCompare(b.name, 'cs'))
                 .map((restaurant) => (
-                <Link
+                <a
                   key={restaurant.id}
-                  href={`/?restaurant=${restaurant.id}`}
+                  href={restaurant.website_url || `/?restaurant=${restaurant.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group bg-gray-900/50 border border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-500/60 transition-all hover:scale-[1.02]"
                 >
                   {/* Restaurant Image */}
@@ -353,6 +355,7 @@ export default function ReviewDetailPage() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-purple-800 to-purple-900">
@@ -393,7 +396,7 @@ export default function ReviewDetailPage() {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
