@@ -336,21 +336,31 @@ export default function ReviewDetailPage() {
               Podobné restaurace
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {similarRestaurants.map((restaurant) => (
+              {similarRestaurants
+                .sort((a, b) => a.name.localeCompare(b.name, 'cs'))
+                .map((restaurant) => (
                 <Link
                   key={restaurant.id}
                   href={`/?restaurant=${restaurant.id}`}
                   className="group bg-gray-900/50 border border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-500/60 transition-all hover:scale-[1.02]"
                 >
                   {/* Restaurant Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={restaurant.image_url || "/placeholder-restaurant.jpg"}
-                      alt={restaurant.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
+                  <div className="relative h-48 overflow-hidden bg-gray-800">
+                    {restaurant.image_url ? (
+                      <Image
+                        src={restaurant.image_url}
+                        alt={restaurant.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-purple-800 to-purple-900">
+                        <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
 
                   {/* Restaurant Info */}
