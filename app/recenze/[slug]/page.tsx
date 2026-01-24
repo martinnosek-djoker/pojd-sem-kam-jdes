@@ -195,11 +195,6 @@ export default function ReviewDetailPage() {
 
         {/* Review Content */}
         <article className="bg-gray-900/50 border border-purple-500/30 rounded-xl p-6 sm:p-8">
-          {/* Review title */}
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            {review.title}
-          </h2>
-
           {/* Visit date */}
           <div className="flex items-center gap-2 mb-6 text-gray-400">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
