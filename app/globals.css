@@ -228,3 +228,17 @@ button, a {
   background: none;
   padding: 0;
 }
+
+/* Apply same styles to published content with .prose class */
+.prose p {
+  margin-top: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.prose p:first-child {
+  margin-top: 0 !important;
+}
+
+.prose p:last-child {
+  margin-bottom: 0 !important;
+}
