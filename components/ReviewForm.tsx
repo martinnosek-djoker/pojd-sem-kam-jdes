@@ -202,6 +202,15 @@ export default function ReviewForm({
     return data.url;
   };
 
+  const handleImageUrlAdd = (url: string) => {
+    // Add URL to images list if not already there
+    if (!images.includes(url)) {
+      const newImages = [...images, url];
+      setImages(newImages);
+      setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
+    }
+  };
+
   const onSubmit = async (data: any) => {
     setLoading(true);
     setError("");
@@ -473,6 +482,7 @@ export default function ReviewForm({
             placeholder="Napište svůj zážitek z návštěvy..."
             uploadedImages={images}
             onImageUpload={handleImageUploadForEditor}
+            onImageUrlAdd={handleImageUrlAdd}
           />
           {errors.content && (
             <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>

@@ -13,6 +13,7 @@ interface RichTextEditorProps {
   placeholder?: string;
   uploadedImages?: string[];
   onImageUpload?: (file: File) => Promise<string>;
+  onImageUrlAdd?: (url: string) => void;
 }
 
 export default function RichTextEditor({
@@ -21,6 +22,7 @@ export default function RichTextEditor({
   placeholder = "Začněte psát...",
   uploadedImages = [],
   onImageUpload,
+  onImageUrlAdd,
 }: RichTextEditorProps) {
   const [imageUrl, setImageUrl] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
@@ -91,6 +93,10 @@ export default function RichTextEditor({
   const insertImageFromUrl = () => {
     if (imageUrl) {
       editor.chain().focus().setImage({ src: imageUrl }).run();
+      // Also add to gallery if callback provided
+      if (onImageUrlAdd) {
+        onImageUrlAdd(imageUrl);
+      }
       setImageUrl("");
       setShowImageDialog(false);
     }
