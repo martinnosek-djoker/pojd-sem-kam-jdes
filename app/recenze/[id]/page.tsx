@@ -37,15 +37,6 @@ export default function ReviewDetailPage() {
     }
   }, [params.id, router]);
 
-  // Format content with bold support
-  const formatContent = (content: string) => {
-    // Convert **text** to <strong>text</strong>
-    let formatted = content.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-    // Convert line breaks to <br />
-    formatted = formatted.replace(/\n/g, "<br />");
-    return formatted;
-  };
-
   if (loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black px-4 sm:px-8 py-8">
@@ -290,7 +281,7 @@ export default function ReviewDetailPage() {
           {/* Review content */}
           <div
             className="prose prose-invert prose-purple max-w-none text-gray-300 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: formatContent(review.content) }}
+            dangerouslySetInnerHTML={{ __html: review.content }}
             style={{
               fontSize: "1.1rem",
               lineHeight: "1.8"

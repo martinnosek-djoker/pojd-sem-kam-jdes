@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reviewSchema, ReviewInput, Review, Restaurant, Dish } from "@/lib/types";
+import RichTextEditor from "./RichTextEditor";
 
 interface ReviewFormProps {
   reviewId?: number | null;
@@ -25,6 +26,7 @@ export default function ReviewForm({
   const [dishInput, setDishInput] = useState("");
   const [dishRating, setDishRating] = useState<number>(8);
   const [dishes, setDishes] = useState<Dish[]>([]);
+  const [content, setContent] = useState("");
 
   const {
     register,
@@ -101,6 +103,7 @@ export default function ReviewForm({
           });
           setImages(data.images || []);
           setDishes(data.dishes || []);
+          setContent(data.content || "");
         })
         .catch((err) => {
           console.error("Error fetching review:", err);
@@ -181,9 +184,10 @@ export default function ReviewForm({
     setError("");
 
     try {
-      // Ensure images and dishes are included
+      // Ensure images, dishes, and content are included
       const reviewData = {
         ...data,
+        content: content,
         images: images,
         dishes: dishes.length > 0 ? dishes : null,
       };
@@ -435,14 +439,15 @@ export default function ReviewForm({
             Obsah recenze *
           </label>
           <div className="mb-2 text-sm text-gray-500">
-            💡 Pro tučný text použij <code className="bg-gray-100 px-1 rounded">**text**</code>
+            💡 Použij tlačítka nahoře pro formátování textu, vkládání odkazů a obrázků
           </div>
-          <textarea
-            id="content"
-            {...register("content")}
-            rows={12}
-            placeholder="Napište svůj zážitek z návštěvy...&#10;&#10;Použijte **tučný text** pro zvýraznění důležitých informací."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+          <RichTextEditor
+            content={content}
+            onChange={(newContent) => {
+              setContent(newContent);
+              setValue("content", newContent, { shouldValidate: true, shouldDirty: true });
+            }}
+            placeholder="Napište svůj zážitek z návštěvy..."
           />
           {errors.content && (
             <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>
