@@ -34,6 +34,7 @@ export default function ReviewForm({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<{
     restaurant_id: number;
@@ -599,7 +600,7 @@ export default function ReviewForm({
           </p>
           <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
             {restaurants
-              .filter((r) => r.id !== Number(register("restaurant_id")._f.value))
+              .filter((r) => r.id !== watch("restaurant_id"))
               .map((restaurant) => (
                 <label
                   key={restaurant.id}
