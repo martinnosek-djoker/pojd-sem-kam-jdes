@@ -242,3 +242,99 @@ button, a {
 .prose p:last-child {
   margin-bottom: 0 !important;
 }
+
+/* Lists in published content */
+.prose ul,
+.prose ol {
+  padding-left: 2rem !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.prose ul {
+  list-style-type: disc !important;
+}
+
+.prose ol {
+  list-style-type: decimal !important;
+}
+
+.prose li {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 0.5rem !important;
+  line-height: 1.8 !important;
+}
+
+.prose li::marker {
+  color: #a78bfa !important;
+  font-weight: bold !important;
+}
+
+/* Nested lists */
+.prose ul ul,
+.prose ol ol,
+.prose ul ol,
+.prose ol ul {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Headings in published content */
+.prose h2 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  color: #e9ecef !important;
+}
+
+.prose h3 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  color: #e9ecef !important;
+}
+
+/* Blockquotes in published content */
+.prose blockquote {
+  border-left: 3px solid #9333ea !important;
+  padding-left: 1.5rem !important;
+  margin: 1.5rem 0 !important;
+  font-style: italic !important;
+  color: #cbd5e1 !important;
+}
+
+/* Links in published content */
+.prose a {
+  color: #a78bfa !important;
+  text-decoration: underline !important;
+}
+
+.prose a:hover {
+  color: #c4b5fd !important;
+}
+
+/* Code in published content */
+.prose code {
+  background-color: #1f2937 !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.25rem !important;
+  font-family: monospace !important;
+  font-size: 0.875em !important;
+  color: #e9ecef !important;
+}
+
+.prose pre {
+  background-color: #1f2937 !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+  margin: 1.5rem 0 !important;
+}
+
+.prose pre code {
+  background: none !important;
+  padding: 0 !important;
+}
