@@ -16,6 +16,7 @@ export default function ReviewDetailPage() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [similarRestaurants, setSimilarRestaurants] = useState<Restaurant[]>([]);
+  const [showAllDishes, setShowAllDishes] = useState(false);
 
   useEffect(() => {
     async function fetchReview() {
@@ -284,7 +285,7 @@ export default function ReviewDetailPage() {
                     <span>Co jsem měl</span>
                   </h3>
                   <div className="space-y-2">
-                    {review.dishes.map((dish, index) => (
+                    {(showAllDishes ? review.dishes : review.dishes.slice(0, 3)).map((dish, index) => (
                       <div
                         key={index}
                         className="flex items-center gap-3 p-3 bg-purple-600/20 border border-purple-500/30 rounded-lg"
@@ -297,6 +298,28 @@ export default function ReviewDetailPage() {
                       </div>
                     ))}
                   </div>
+                  {review.dishes.length > 3 && (
+                    <button
+                      onClick={() => setShowAllDishes(!showAllDishes)}
+                      className="mt-3 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium flex items-center gap-2"
+                    >
+                      {showAllDishes ? (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                          <span>Zobrazit méně</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                          <span>Zobrazit všechna jídla ({review.dishes.length})</span>
+                        </>
+                      )}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
