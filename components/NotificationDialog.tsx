@@ -6,7 +6,7 @@ interface NotificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   itemName: string;
-  itemType: 'restaurant' | 'cafe' | 'bakery' | 'trending' | 'event';
+  itemType: 'restaurant' | 'cafe' | 'bakery' | 'breakfast' | 'trending' | 'event';
   itemId?: number;
 }
 
@@ -14,6 +14,7 @@ const itemTypeLabels = {
   restaurant: 'restaurace',
   cafe: 'kavárna',
   bakery: 'cukrárna',
+  breakfast: 'snídaně',
   trending: 'trending podnik',
   event: 'gastro akce',
 };
@@ -22,6 +23,7 @@ const itemTypeTitlePrefix = {
   restaurant: 'Nová',
   cafe: 'Nová',
   bakery: 'Nová',
+  breakfast: 'Nová',
   trending: 'Nový',
   event: 'Nová',
 };
@@ -30,6 +32,7 @@ const itemTypeBodyPrefix = {
   restaurant: 'novou',
   cafe: 'novou',
   bakery: 'novou',
+  breakfast: 'novou',
   trending: 'nový',
   event: 'novou',
 };
@@ -38,6 +41,7 @@ const itemTypeAccusative = {
   restaurant: 'restauraci',
   cafe: 'kavárnu',
   bakery: 'cukrárnu',
+  breakfast: 'snídani',
   trending: 'trending podnik',
   event: 'gastro akci',
 };
@@ -46,6 +50,7 @@ const itemTypeEmojis = {
   restaurant: '🍽️',
   cafe: '☕',
   bakery: '🍰',
+  breakfast: '🍳',
   trending: '🔥',
   event: '🎉',
 };
