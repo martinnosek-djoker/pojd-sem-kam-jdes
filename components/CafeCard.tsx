@@ -59,9 +59,9 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
           <div className="flex flex-wrap gap-1.5 mt-2">
             {cafe.tags.map((tag, idx) => {
               const tagColors = {
-                'dezert': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+                'dezert': 'bg-orange-600/20 text-orange-300 border-orange-500/30',
                 'matcha': 'bg-green-500/20 text-green-300 border-green-500/30',
-                'snídaně': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+                'snídaně': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
               };
               const colorClass = tagColors[tag as keyof typeof tagColors] || 'bg-gray-500/20 text-gray-300 border-gray-500/30';
               return (

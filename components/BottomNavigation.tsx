@@ -51,6 +51,18 @@ const BakeryIcon = () => (
   </svg>
 );
 
+const CalendarIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" strokeWidth={2} />
+    <line x1="16" y1="2" x2="16" y2="6" strokeWidth={2} strokeLinecap="round" />
+    <line x1="8" y1="2" x2="8" y2="6" strokeWidth={2} strokeLinecap="round" />
+    <line x1="3" y1="10" x2="21" y2="10" strokeWidth={2} />
+    <circle cx="8" cy="15" r="1.5" fill="currentColor" />
+    <circle cx="12" cy="15" r="1.5" fill="currentColor" />
+    <circle cx="16" cy="15" r="1.5" fill="currentColor" />
+  </svg>
+);
+
 const MenuIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -70,14 +82,14 @@ export default function BottomNavigation() {
     { href: '/', label: 'Domů', icon: HomeIcon },
     { href: '/pobliz', label: 'Okolí', icon: MapPinIcon },
     { href: '/kavarny', label: 'Kavárny', icon: CoffeeIcon },
-    { href: '/cukrarny', label: 'Cukrárny', icon: BakeryIcon },
+    { href: '/akce', label: 'Akce', icon: CalendarIcon },
   ];
 
   const moreItems = [
     { href: '/michelin', label: 'Michelin 2026', badge: 'Nové' },
+    { href: '/cukrarny', label: 'Cukrárny' },
     { href: '/lokality', label: 'Podle lokality' },
     { href: '/kuchyne', label: 'Světové kuchyně' },
-    { href: '/akce', label: 'Gastro akce' },
   ];
 
   const isActive = (href: string) => {

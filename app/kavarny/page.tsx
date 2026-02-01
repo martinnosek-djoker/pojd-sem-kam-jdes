@@ -177,9 +177,9 @@ export default function CafesPage() {
             <div className="flex flex-wrap gap-2">
               {[
                 { value: '', label: 'Všechny', color: 'bg-purple-600/30 text-purple-200 border-purple-500/30 hover:bg-purple-600/50' },
-                { value: 'dezert', label: 'Dezert', color: 'bg-amber-600/30 text-amber-200 border-amber-500/30 hover:bg-amber-600/50' },
+                { value: 'dezert', label: 'Dezert', color: 'bg-orange-600/30 text-orange-200 border-orange-500/30 hover:bg-orange-600/50' },
                 { value: 'matcha', label: 'Matcha', color: 'bg-green-600/30 text-green-200 border-green-500/30 hover:bg-green-600/50' },
-                { value: 'snídaně', label: 'Snídaně', color: 'bg-yellow-600/30 text-yellow-200 border-yellow-500/30 hover:bg-yellow-600/50' },
+                { value: 'snídaně', label: 'Snídaně', color: 'bg-sky-600/30 text-sky-200 border-sky-500/30 hover:bg-sky-600/50' },
               ].map((tag) => (
                 <button
                   key={tag.value}
@@ -189,10 +189,10 @@ export default function CafesPage() {
                       ? tag.value === ''
                         ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-900/50'
                         : tag.value === 'dezert'
-                        ? 'bg-amber-600 text-white border-amber-500 shadow-lg shadow-amber-900/50'
+                        ? 'bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-900/50'
                         : tag.value === 'matcha'
                         ? 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50'
-                        : 'bg-yellow-600 text-white border-yellow-500 shadow-lg shadow-yellow-900/50'
+                        : 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-900/50'
                       : tag.color
                   }`}
                 >

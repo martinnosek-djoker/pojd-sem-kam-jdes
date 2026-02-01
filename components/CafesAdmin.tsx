@@ -52,11 +52,11 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
   const getTagBadgeColor = (tag: string): string => {
     switch (tag) {
       case 'dezert':
-        return 'bg-amber-100 text-amber-800';
+        return 'bg-orange-100 text-orange-800';
       case 'matcha':
         return 'bg-green-100 text-green-800';
       case 'snídaně':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-sky-100 text-sky-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
