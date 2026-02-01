@@ -14,6 +14,7 @@ export default function CafesPage() {
   const [filteredCafes, setFilteredCafes] = useState<Cafe[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Fetch cafes and filters
@@ -72,14 +73,21 @@ export default function CafesPage() {
       });
     }
 
+    if (selectedTag) {
+      filtered = filtered.filter((c) => {
+        return c.tags && c.tags.includes(selectedTag);
+      });
+    }
+
     // Sort by name
     filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
 
     setFilteredCafes(filtered);
-  }, [selectedLocation, cafes]);
+  }, [selectedLocation, selectedTag, cafes]);
 
   const handleReset = () => {
     setSelectedLocation("");
+    setSelectedTag("");
   };
 
   if (loading) {
@@ -117,9 +125,10 @@ export default function CafesPage() {
           </p>
         </div>
 
-        {/* Location Filter */}
-        {availableLocations.length > 0 && (
-          <div className="mb-6 sm:mb-8 bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm border border-purple-600/20 rounded-2xl p-4 sm:p-6 shadow-lg">
+        {/* Filters Container */}
+        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm border border-purple-600/20 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
+          {/* Location Filter */}
+          {availableLocations.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -148,7 +157,7 @@ export default function CafesPage() {
                 </select>
               </div>
 
-              {selectedLocation && (
+              {(selectedLocation || selectedTag) && (
                 <button
                   onClick={handleReset}
                   className="px-4 py-3 sm:py-3.5 bg-purple-600 text-white rounded-xl hover:bg-purple-700 active:scale-95 transition-all duration-200 font-medium shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 whitespace-nowrap"
@@ -160,8 +169,39 @@ export default function CafesPage() {
                 </button>
               )}
             </div>
+          )}
+
+          {/* Tag Filter Buttons */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-purple-300">Kategorie:</label>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { value: '', label: 'Všechny', color: 'bg-purple-600/30 text-purple-200 border-purple-500/30 hover:bg-purple-600/50' },
+                { value: 'dezert', label: 'Dezert', color: 'bg-amber-600/30 text-amber-200 border-amber-500/30 hover:bg-amber-600/50' },
+                { value: 'matcha', label: 'Matcha', color: 'bg-green-600/30 text-green-200 border-green-500/30 hover:bg-green-600/50' },
+                { value: 'snídaně', label: 'Snídaně', color: 'bg-yellow-600/30 text-yellow-200 border-yellow-500/30 hover:bg-yellow-600/50' },
+              ].map((tag) => (
+                <button
+                  key={tag.value}
+                  onClick={() => setSelectedTag(tag.value)}
+                  className={`px-4 py-2 rounded-xl border transition-all duration-200 font-medium ${
+                    selectedTag === tag.value
+                      ? tag.value === ''
+                        ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-900/50'
+                        : tag.value === 'dezert'
+                        ? 'bg-amber-600 text-white border-amber-500 shadow-lg shadow-amber-900/50'
+                        : tag.value === 'matcha'
+                        ? 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50'
+                        : 'bg-yellow-600 text-white border-yellow-500 shadow-lg shadow-yellow-900/50'
+                      : tag.color
+                  }`}
+                >
+                  {tag.label}
+                </button>
+              ))}
+            </div>
           </div>
-        )}
+        </div>
 
         {/* Count */}
         <div className="flex justify-between items-center mb-8">

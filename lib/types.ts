@@ -142,6 +142,7 @@ export interface Cafe {
   coordinates: Record<string, Coordinates> | null; // { "Náměstí Republiky": {"lat": 50.07, "lng": 14.40} }
   website_url: string | null;
   image_url: string | null;
+  tags: string[]; // ["dezert", "matcha", "snídaně"]
   created_at: string;
   updated_at: string;
 }
@@ -157,6 +158,7 @@ export const cafeSchema = z.object({
   })).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
   image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  tags: z.array(z.string()).default([]),
 });
 
 export type CafeInput = z.infer<typeof cafeSchema>;

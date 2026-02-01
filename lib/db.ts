@@ -624,6 +624,7 @@ export async function createCafe(input: CafeInput): Promise<Cafe> {
       coordinates: input.coordinates || null,
       website_url: input.website_url || null,
       image_url: input.image_url || null,
+      tags: input.tags || [],
     })
     .select()
     .single();
@@ -649,6 +650,7 @@ export async function updateCafe(
       coordinates: input.coordinates || null,
       website_url: input.website_url || null,
       image_url: input.image_url || null,
+      tags: input.tags || [],
     })
     .eq("id", id)
     .select()

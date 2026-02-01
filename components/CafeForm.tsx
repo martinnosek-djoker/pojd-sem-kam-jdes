@@ -36,6 +36,7 @@ export default function CafeForm({
       addresses: null,
       website_url: "",
       image_url: "",
+      tags: [],
     },
   });
 
@@ -43,6 +44,7 @@ export default function CafeForm({
   const cafeName = watch("name");
   const cafeLocation = watch("location");
   const cafeAddresses = watch("addresses");
+  const tags = watch("tags");
 
   useEffect(() => {
     if (cafeId) {
@@ -56,6 +58,7 @@ export default function CafeForm({
             addresses: data.addresses || null,
             website_url: data.website_url || "",
             image_url: data.image_url || "",
+            tags: data.tags || [],
           });
           // Set addresses text for textarea
           setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
@@ -240,6 +243,34 @@ export default function CafeForm({
           {errors.website_url && (
             <p className="mt-1 text-xs text-red-600">{errors.website_url.message}</p>
           )}
+        </div>
+
+        {/* Tags */}
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Kategorie
+          </label>
+          <div className="flex gap-4">
+            {['dezert', 'matcha', 'snídaně'].map((tag) => (
+              <label key={tag} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={tags.includes(tag)}
+                  onChange={(e) => {
+                    const newTags = e.target.checked
+                      ? [...tags, tag]
+                      : tags.filter((t: string) => t !== tag);
+                    setValue('tags', newTags);
+                  }}
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700 capitalize">{tag}</span>
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            Vyber kategorie pro filtrování (dezert = z původních cukráren, snídaně = původní snídaně)
+          </p>
         </div>
 
         {/* Addresses JSON */}

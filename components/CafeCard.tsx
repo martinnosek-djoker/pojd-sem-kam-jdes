@@ -34,7 +34,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
           )}
         </div>
       ) : (
-        <div className="relative -m-6 mb-4 h-32 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
+        <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
           <span className="text-6xl opacity-20">☕</span>
           {cafe.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">
@@ -54,6 +54,27 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
         <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">
           {cafe.name}
         </h3>
+        {/* Tags */}
+        {cafe.tags && cafe.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {cafe.tags.map((tag, idx) => {
+              const tagColors = {
+                'dezert': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+                'matcha': 'bg-green-500/20 text-green-300 border-green-500/30',
+                'snídaně': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+              };
+              const colorClass = tagColors[tag as keyof typeof tagColors] || 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+              return (
+                <span
+                  key={idx}
+                  className={`px-2 py-0.5 text-xs font-semibold rounded border ${colorClass}`}
+                >
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <div className="space-y-3 mb-5">

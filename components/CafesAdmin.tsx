@@ -49,23 +49,16 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
     setShowForm(false);
   };
 
-  const handleCopyToBreakfast = async (cafeId: number) => {
-    if (!confirm("Opravdu chcete zkopírovat tuto kavárnu do sekce Snídaně?")) return;
-
-    try {
-      const response = await fetch(getApiUrl(`/api/breakfasts/copy-from-cafe/${cafeId}`), {
-        method: "POST",
-      });
-
-      if (response.ok) {
-        alert("Kavárna byla úspěšně zkopírována do Snídaní");
-      } else {
-        const errorData = await response.json();
-        alert(errorData.error || "Chyba při kopírování");
-      }
-    } catch (error) {
-      console.error("Error copying to breakfast:", error);
-      alert("Chyba při kopírování");
+  const getTagBadgeColor = (tag: string): string => {
+    switch (tag) {
+      case 'dezert':
+        return 'bg-amber-100 text-amber-800';
+      case 'matcha':
+        return 'bg-green-100 text-green-800';
+      case 'snídaně':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -114,6 +107,9 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                 Lokalita
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Kategorie
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Web/Instagram
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -141,6 +137,22 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {cafe.location}
                   </td>
+                  <td className="px-6 py-4 text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {cafe.tags && cafe.tags.length > 0 ? (
+                        cafe.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className={`px-2 py-0.5 text-xs font-semibold rounded ${getTagBadgeColor(tag)}`}
+                          >
+                            {tag}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400 text-xs">Bez kategorie</span>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {cafe.website_url ? (
                       <a
@@ -164,13 +176,6 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                      onClick={() => handleCopyToBreakfast(cafe.id)}
-                      className="text-green-600 hover:text-green-900 mr-4"
-                      title="Zkopírovat do Snídaní"
-                    >
-                      🍳 Snídaně
-                    </button>
-                    <button
                       onClick={() => {
                         setEditingId(cafe.id);
                         setShowForm(true);
@@ -189,7 +194,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                 </tr>
                 {editingId === cafe.id && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 bg-gray-50">
+                    <td colSpan={6} className="px-6 py-4 bg-gray-50">
                       <CafeForm
                         cafeId={cafe.id}
                         onSave={handleSave}
