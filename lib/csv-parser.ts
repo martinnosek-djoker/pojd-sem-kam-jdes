@@ -78,6 +78,7 @@ export function parseRestaurantCSV(csvContent: string): CSVParseResult {
           name: cafeName,
           location: cafeLocation,
           website_url: null,
+          tags: [],
         });
       }
     } catch (error) {

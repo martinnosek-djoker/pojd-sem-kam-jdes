@@ -158,7 +158,7 @@ export const cafeSchema = z.object({
   })).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
   image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
 });
 
 export type CafeInput = z.infer<typeof cafeSchema>;
