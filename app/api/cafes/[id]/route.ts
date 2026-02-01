@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCafeById, updateCafe, deleteCafe } from "@/lib/db";
 import { cafeSchema } from "@/lib/types";
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // GET /api/cafes/[id] - Get single cafe
 export async function GET(
   request: NextRequest,

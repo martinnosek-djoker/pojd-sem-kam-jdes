@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:mobile": "mv app/api /tmp/gastro-api-backup && MOBILE_BUILD=true next build && mv /tmp/gastro-api-backup app/api && npx cap sync",
+    "build:mobile": "node scripts/build-mobile.mjs",
     "start": "next start",
     "lint": "next lint",
     "cap:android": "npx cap open android",

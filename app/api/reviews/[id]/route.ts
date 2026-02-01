@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getReviewById, updateReview, deleteReview } from "@/lib/db";
 import { reviewSchema } from "@/lib/types";
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // GET /api/reviews/[id] - Get single review
 export async function GET(
   request: NextRequest,

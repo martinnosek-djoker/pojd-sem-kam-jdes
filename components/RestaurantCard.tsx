@@ -12,9 +12,10 @@ interface RestaurantCardProps {
 }
 
 export default function RestaurantCard({ restaurant, forceLocation, review }: RestaurantCardProps) {
-  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
+  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
   const [imageError, setImageError] = useState(false);
-  const reviewSlug = review ? createReviewSlug(review.id, restaurant.name) : null;
+  // Use review.restaurant.name to match the static paths generated for mobile builds
+  const reviewSlug = review ? createReviewSlug(review.id, review.restaurant?.name || restaurant.name) : null;
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -83,7 +84,7 @@ export default function RestaurantCard({ restaurant, forceLocation, review }: Re
           )}
         </div>
       ) : (
-        <div className="relative -m-6 mb-4 h-32 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
+        <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
           <span className="text-6xl opacity-20">🍽️</span>
           {/* Review Badge */}
           {reviewSlug && (

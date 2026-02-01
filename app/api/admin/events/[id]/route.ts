@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { eventSchema } from "@/lib/types";
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // GET /api/admin/events/[id] - Get event by ID
 export async function GET(
   request: NextRequest,

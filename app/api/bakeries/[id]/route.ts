@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getBakeryById, updateBakery, deleteBakery } from "@/lib/db";
 import { bakerySchema } from "@/lib/types";
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // GET /api/bakeries/[id] - Get single bakery
 export async function GET(
   request: NextRequest,

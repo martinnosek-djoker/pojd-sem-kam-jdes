@@ -8,6 +8,11 @@ interface RouteParams {
   }>;
 }
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // GET /api/trendings/[id] - Get single trending
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {

@@ -53,7 +53,7 @@ export default function MichelinCard({ restaurant, forceLocation }: MichelinCard
           </div>
         </div>
       ) : (
-        <div className="relative -m-6 mb-4 h-32 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
+        <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
           <span className="text-6xl opacity-20">⭐</span>
           {restaurant.website_url && (
             <div className="absolute top-3 right-3 bg-purple-600/80 backdrop-blur-sm rounded-full p-2">

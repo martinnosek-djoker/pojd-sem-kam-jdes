@@ -7,6 +7,11 @@ import {
 import { michelinRestaurantSchema } from "@/lib/types";
 import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
 
+// Required for static export - no static params to generate
+export async function generateStaticParams() {
+  return [];
+}
+
 // OPTIONS /api/michelin/[id] - Handle CORS preflight
 export async function OPTIONS() {
   return handleOptionsRequest();
