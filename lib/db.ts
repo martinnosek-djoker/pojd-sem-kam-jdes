@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Event, EventInput, ReviewInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, ReviewInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
 // CRUD operations
@@ -761,6 +761,226 @@ export async function bulkInsertCafes(
   }
 
   return data?.length || 0;
+}
+
+// ============================================
+// BREAKFAST OPERATIONS
+// ============================================
+
+export async function getAllBreakfasts(): Promise<Breakfast[]> {
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .select("*")
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching breakfasts:", error);
+    throw error;
+  }
+
+  return data || [];
+}
+
+export async function getBreakfastById(id: number): Promise<Breakfast | null> {
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching breakfast:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function createBreakfast(input: BreakfastInput): Promise<Breakfast> {
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .insert({
+      name: input.name,
+      location: input.location,
+      addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
+      website_url: input.website_url || null,
+      image_url: input.image_url || null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating breakfast:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function updateBreakfast(
+  id: number,
+  input: BreakfastInput
+): Promise<Breakfast | null> {
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .update({
+      name: input.name,
+      location: input.location,
+      addresses: input.addresses || null,
+      coordinates: input.coordinates || null,
+      website_url: input.website_url || null,
+      image_url: input.image_url || null,
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating breakfast:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function deleteBreakfast(id: number): Promise<boolean> {
+  const { error } = await supabase
+    .from("breakfasts")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting breakfast:", error);
+    return false;
+  }
+
+  return true;
+}
+
+// Get unique locations for breakfasts
+export async function getUniqueBreakfastLocations(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .select("location")
+    .order("location", { ascending: true});
+
+  if (error) {
+    console.error("Error fetching breakfast locations:", error);
+    return [];
+  }
+
+  // Split locations by comma, normalize, and deduplicate
+  const allLocations: string[] = [];
+
+  data.forEach((row) => {
+    if (row.location) {
+      // Split by comma and normalize with proper Czech capitalization
+      const parts = row.location.split(',').map((part: string) => part.trim());
+      parts.forEach((part: string) => {
+        if (part) {
+          const normalized = normalizeLocationName(part);
+          allLocations.push(normalized);
+        }
+      });
+    }
+  });
+
+  // Get unique locations (case-insensitive)
+  const uniqueMap = new Map<string, string>();
+  allLocations.forEach((loc: string) => {
+    const key = loc.toLowerCase();
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, loc);
+    }
+  });
+
+  return Array.from(uniqueMap.values()).sort((a, b) => a.localeCompare(b, 'cs'));
+}
+
+// Bulk insert/update for CSV import (upsert based on name, preserve existing URLs, images and addresses)
+export async function bulkInsertBreakfasts(
+  breakfasts: BreakfastInput[]
+): Promise<number> {
+  // Get existing breakfasts to preserve their URLs, images, addresses and coordinates
+  const { data: existingBreakfasts } = await supabase
+    .from("breakfasts")
+    .select("name, website_url, image_url, addresses, coordinates");
+
+  const existingDataMap = new Map(
+    (existingBreakfasts || []).map(b => [b.name, {
+      website_url: b.website_url,
+      image_url: b.image_url,
+      addresses: b.addresses,
+      coordinates: b.coordinates
+    }])
+  );
+
+  const insertData = breakfasts.map((breakfast) => {
+    const existing = existingDataMap.get(breakfast.name);
+    return {
+      name: breakfast.name,
+      location: breakfast.location,
+      addresses: breakfast.addresses || existing?.addresses || null,
+      coordinates: breakfast.coordinates || existing?.coordinates || null,
+      // Preserve existing URLs if CSV doesn't have them
+      website_url: breakfast.website_url || existing?.website_url || null,
+      image_url: breakfast.image_url || existing?.image_url || null,
+    };
+  });
+
+  const { data, error } = await supabase
+    .from("breakfasts")
+    .upsert(insertData, {
+      onConflict: 'name',
+      ignoreDuplicates: false
+    })
+    .select();
+
+  if (error) {
+    console.error("Error bulk inserting breakfasts:", error);
+    throw error;
+  }
+
+  return data?.length || 0;
+}
+
+// Copy a cafe to breakfasts table
+export async function copyCafeToBreakfast(cafeId: number): Promise<Breakfast> {
+  const cafe = await getCafeById(cafeId);
+  if (!cafe) {
+    throw new Error("Kavárna nenalezena");
+  }
+
+  const breakfastInput: BreakfastInput = {
+    name: cafe.name,
+    location: cafe.location,
+    addresses: cafe.addresses,
+    coordinates: cafe.coordinates,
+    website_url: cafe.website_url,
+    image_url: cafe.image_url,
+  };
+
+  return createBreakfast(breakfastInput);
+}
+
+// Copy a bakery to breakfasts table
+export async function copyBakeryToBreakfast(bakeryId: number): Promise<Breakfast> {
+  const bakery = await getBakeryById(bakeryId);
+  if (!bakery) {
+    throw new Error("Cukrárna nenalezena");
+  }
+
+  const breakfastInput: BreakfastInput = {
+    name: bakery.name,
+    location: bakery.location,
+    addresses: bakery.addresses,
+    coordinates: bakery.coordinates,
+    website_url: bakery.website_url,
+    image_url: bakery.image_url,
+  };
+
+  return createBreakfast(breakfastInput);
 }
 
 // ====================

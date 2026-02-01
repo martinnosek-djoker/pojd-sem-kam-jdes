@@ -167,6 +167,40 @@ export interface CSVCafe {
   location: string;
 }
 
+// Breakfast types
+export interface Breakfast {
+  id: number;
+  name: string;
+  location: string;
+  addresses: Record<string, string> | null; // { "Náměstí Republiky": "adresa1", "Florenc": "adresa2" }
+  coordinates: Record<string, Coordinates> | null; // { "Náměstí Republiky": {"lat": 50.07, "lng": 14.40} }
+  website_url: string | null;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Zod validation schemas for breakfast
+export const breakfastSchema = z.object({
+  name: z.string().min(1, "Název je povinný"),
+  location: z.string().min(1, "Lokalita je povinná"),
+  addresses: z.record(z.string(), z.string()).optional().nullable(),
+  coordinates: z.record(z.string(), z.object({
+    lat: z.number(),
+    lng: z.number()
+  })).optional().nullable(),
+  website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
+  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+});
+
+export type BreakfastInput = z.infer<typeof breakfastSchema>;
+
+// For CSV import
+export interface CSVBreakfast {
+  name: string;
+  location: string;
+}
+
 // Event types
 export interface Event {
   id: number;

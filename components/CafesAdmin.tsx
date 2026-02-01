@@ -49,6 +49,26 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
     setShowForm(false);
   };
 
+  const handleCopyToBreakfast = async (cafeId: number) => {
+    if (!confirm("Opravdu chcete zkopírovat tuto kavárnu do sekce Snídaně?")) return;
+
+    try {
+      const response = await fetch(getApiUrl(`/api/breakfasts/copy-from-cafe/${cafeId}`), {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        alert("Kavárna byla úspěšně zkopírována do Snídaní");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || "Chyba při kopírování");
+      }
+    } catch (error) {
+      console.error("Error copying to breakfast:", error);
+      alert("Chyba při kopírování");
+    }
+  };
+
   return (
     <div className="mb-8">
       {/* Section Header */}
@@ -143,6 +163,13 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleCopyToBreakfast(cafe.id)}
+                      className="text-green-600 hover:text-green-900 mr-4"
+                      title="Zkopírovat do Snídaní"
+                    >
+                      🍳 Snídaně
+                    </button>
                     <button
                       onClick={() => {
                         setEditingId(cafe.id);

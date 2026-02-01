@@ -1,72 +1,52 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bakery } from "@/lib/types";
-import BakeryForm from "./BakeryForm";
+import { Breakfast } from "@/lib/types";
+import BreakfastForm from "./BreakfastForm";
 import NotificationDialog from "./NotificationDialog";
 import { getApiUrl } from "@/lib/api-config";
 
-interface BakeriesAdminProps {
-  initialBakeries: Bakery[];
+interface BreakfastsAdminProps {
+  initialBreakfasts: Breakfast[];
 }
 
-export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
-  const [bakeries, setBakeries] = useState(initialBakeries);
+export default function BreakfastsAdmin({ initialBreakfasts }: BreakfastsAdminProps) {
+  const [breakfasts, setBreakfasts] = useState(initialBreakfasts);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
-  const [savedBakery, setSavedBakery] = useState<Bakery | null>(null);
+  const [savedBreakfast, setSavedBreakfast] = useState<Breakfast | null>(null);
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Opravdu chcete smazat tuto cukrárnu?")) return;
+    if (!confirm("Opravdu chcete smazat tento podnik?")) return;
 
     try {
-      const response = await fetch(getApiUrl(`/api/bakeries/${id}`), {
+      const response = await fetch(getApiUrl(`/api/breakfasts/${id}`), {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setBakeries(bakeries.filter((b) => b.id !== id));
+        setBreakfasts(breakfasts.filter((b) => b.id !== id));
       } else {
-        alert("Chyba při mazání cukrárny");
+        alert("Chyba při mazání");
       }
     } catch (error) {
       console.error("Error deleting:", error);
-      alert("Chyba při mazání cukrárny");
+      alert("Chyba při mazání");
     }
   };
 
-  const handleSave = (bakery: Bakery) => {
+  const handleSave = (breakfast: Breakfast) => {
     if (editingId) {
-      setBakeries(bakeries.map((b) => (b.id === bakery.id ? bakery : b)));
+      setBreakfasts(breakfasts.map((b) => (b.id === breakfast.id ? breakfast : b)));
     } else {
-      setBakeries([bakery, ...bakeries]);
-      // Zobrazit notifikační dialog pro nově přidanou cukrárnu
-      setSavedBakery(bakery);
+      setBreakfasts([breakfast, ...breakfasts]);
+      // Zobrazit notifikační dialog pro nově přidanou snídani
+      setSavedBreakfast(breakfast);
       setShowNotificationDialog(true);
     }
     setEditingId(null);
     setShowForm(false);
-  };
-
-  const handleCopyToBreakfast = async (bakeryId: number) => {
-    if (!confirm("Opravdu chcete zkopírovat tuto cukrárnu do sekce Snídaně?")) return;
-
-    try {
-      const response = await fetch(getApiUrl(`/api/breakfasts/copy-from-bakery/${bakeryId}`), {
-        method: "POST",
-      });
-
-      if (response.ok) {
-        alert("Cukrárna byla úspěšně zkopírována do Snídaní");
-      } else {
-        const errorData = await response.json();
-        alert(errorData.error || "Chyba při kopírování");
-      }
-    } catch (error) {
-      console.error("Error copying to breakfast:", error);
-      alert("Chyba při kopírování");
-    }
   };
 
   return (
@@ -74,8 +54,8 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
       {/* Section Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">🍰 Cukrárny</h2>
-          <p className="text-gray-600 mt-1">Celkem {bakeries.length} cukráren</p>
+          <h2 className="text-2xl font-bold text-gray-900">🍳 Snídaně</h2>
+          <p className="text-gray-600 mt-1">Celkem {breakfasts.length} podniků</p>
         </div>
         <button
           onClick={() => {
@@ -84,15 +64,15 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
           }}
           className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm"
         >
-          + Přidat cukrárnu
+          + Přidat snídani
         </button>
       </div>
 
-      {/* Form for adding new bakery (only when not editing existing) */}
+      {/* Form for adding new breakfast (only when not editing existing) */}
       {showForm && !editingId && (
         <div className="mb-6">
-          <BakeryForm
-            bakeryId={null}
+          <BreakfastForm
+            breakfastId={null}
             onSave={handleSave}
             onCancel={() => {
               setShowForm(false);
@@ -125,13 +105,13 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {[...bakeries].sort((a, b) => a.name.localeCompare(b.name, 'cs')).map((bakery) => (
-              <React.Fragment key={bakery.id}>
+            {[...breakfasts].sort((a, b) => a.name.localeCompare(b.name, 'cs')).map((breakfast) => (
+              <React.Fragment key={breakfast.id}>
                 <tr className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <div className="text-sm font-medium text-gray-900">{bakery.name}</div>
-                      {(!bakery.coordinates || Object.keys(bakery.coordinates).length === 0) && (
+                      <div className="text-sm font-medium text-gray-900">{breakfast.name}</div>
+                      {(!breakfast.coordinates || Object.keys(breakfast.coordinates).length === 0) && (
                         <span className="px-2 py-0.5 text-xs font-semibold rounded bg-yellow-100 text-yellow-800" title="Chybí GPS souřadnice pro sekci 'V okolí'">
                           ⚠️ Bez GPS
                         </span>
@@ -139,12 +119,12 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {bakery.location}
+                    {breakfast.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {bakery.website_url ? (
+                    {breakfast.website_url ? (
                       <a
-                        href={bakery.website_url}
+                        href={breakfast.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-800 underline"
@@ -156,7 +136,7 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {bakery.image_url ? (
+                    {breakfast.image_url ? (
                       <span className="text-green-600">✓ Ano</span>
                     ) : (
                       <span className="text-gray-400">Bez fotky</span>
@@ -164,15 +144,8 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                      onClick={() => handleCopyToBreakfast(bakery.id)}
-                      className="text-green-600 hover:text-green-900 mr-4"
-                      title="Zkopírovat do Snídaní"
-                    >
-                      🍳 Snídaně
-                    </button>
-                    <button
                       onClick={() => {
-                        setEditingId(bakery.id);
+                        setEditingId(breakfast.id);
                         setShowForm(true);
                       }}
                       className="text-blue-600 hover:text-blue-900 mr-4"
@@ -180,18 +153,18 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
                       Upravit
                     </button>
                     <button
-                      onClick={() => handleDelete(bakery.id)}
+                      onClick={() => handleDelete(breakfast.id)}
                       className="text-red-600 hover:text-red-900"
                     >
                       Smazat
                     </button>
                   </td>
                 </tr>
-                {editingId === bakery.id && (
+                {editingId === breakfast.id && (
                   <tr>
                     <td colSpan={5} className="px-6 py-4 bg-gray-50">
-                      <BakeryForm
-                        bakeryId={bakery.id}
+                      <BreakfastForm
+                        breakfastId={breakfast.id}
                         onSave={handleSave}
                         onCancel={() => {
                           setShowForm(false);
@@ -206,21 +179,21 @@ export default function BakeriesAdmin({ initialBakeries }: BakeriesAdminProps) {
           </tbody>
         </table>
 
-        {bakeries.length === 0 && (
+        {breakfasts.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            Zatím nemáte žádné cukrárny. Přidejte první cukrárnu nebo importujte CSV.
+            Zatím nemáte žádné snídaně. Přidejte první podnik nebo zkopírujte z Kaváren/Cukráren.
           </div>
         )}
       </div>
 
       {/* Notification Dialog */}
-      {savedBakery && (
+      {savedBreakfast && (
         <NotificationDialog
           isOpen={showNotificationDialog}
           onClose={() => setShowNotificationDialog(false)}
-          itemName={savedBakery.name}
-          itemType="bakery"
-          itemId={savedBakery.id}
+          itemName={savedBreakfast.name}
+          itemType="breakfast"
+          itemId={savedBreakfast.id}
         />
       )}
     </div>

@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllEvents, getAllMichelinRestaurants, getAllReviews } from "@/lib/db";
+import { getAllRestaurants, getAllTrendings, getAllBakeries, getAllCafes, getAllBreakfasts, getAllEvents, getAllMichelinRestaurants, getAllReviews } from "@/lib/db";
 import AdminDashboard from "@/components/AdminDashboard";
 import TrendingsAdmin from "@/components/TrendingsAdmin";
 import BakeriesAdmin from "@/components/BakeriesAdmin";
 import CafesAdmin from "@/components/CafesAdmin";
+import BreakfastsAdmin from "@/components/BreakfastsAdmin";
 import MichelinAdmin from "@/components/MichelinAdmin";
 import EventsAdmin from "@/components/EventsAdmin";
 import ReviewsAdmin from "@/components/ReviewsAdmin";
@@ -19,14 +20,15 @@ export default async function AdminPage() {
     const isAuthenticated = await checkAuth();
 
     if (!isAuthenticated) {
-      redirect;
+      redirect("/");
     }
 
-    const [restaurants, trendings, bakeries, cafes, michelinRestaurants, events, reviews] = await Promise.all([
+    const [restaurants, trendings, bakeries, cafes, breakfasts, michelinRestaurants, events, reviews] = await Promise.all([
       getAllRestaurants(),
       getAllTrendings(),
       getAllBakeries(),
       getAllCafes(),
+      getAllBreakfasts(),
       getAllMichelinRestaurants(),
       getAllEvents(),
       getAllReviews(),
@@ -40,7 +42,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
-                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {michelinRestaurants.length} Michelin restaurací • {trendings.length} trending podniků • {events.length} akcí • {reviews.length} recenzí
+                {restaurants.length} restaurací • {bakeries.length} cukráren • {cafes.length} kaváren • {breakfasts.length} snídaní • {michelinRestaurants.length} Michelin restaurací • {trendings.length} trending podniků • {events.length} akcí • {reviews.length} recenzí
               </p>
             </div>
             <div className="flex gap-3">
@@ -80,6 +82,12 @@ export default async function AdminPage() {
 
           {/* Cafes Section */}
           <CafesAdmin initialCafes={cafes} />
+
+          {/* Separator */}
+          <div className="my-8 border-t border-gray-300"></div>
+
+          {/* Breakfasts Section */}
+          <BreakfastsAdmin initialBreakfasts={breakfasts} />
 
           {/* Separator */}
           <div className="my-8 border-t border-gray-300"></div>
