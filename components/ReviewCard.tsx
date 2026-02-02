@@ -1,17 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Review } from "@/lib/types";
 import { createReviewSlug } from "@/lib/slug";
-import { useRouter } from "next/navigation";
 
 interface ReviewCardProps {
   review: Review;
 }
 
 export default function ReviewCard({ review }: ReviewCardProps) {
-  const router = useRouter();
-
   // Get first image or fallback
   const mainImage = review.images?.[0] || review.restaurant?.image_url;
 
@@ -40,14 +38,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     ? createReviewSlug(review.id, review.restaurant.name)
     : review.id.toString();
 
-  const handleClick = () => {
-    router.push(`/recenze/${reviewSlug}`);
-  };
-
   return (
-    <div
-      onClick={handleClick}
-      className="group relative bg-gradient-to-br from-purple-900/20 via-gray-900/50 to-black border-2 border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/50 cursor-pointer">
+    <Link href={`/recenze/${reviewSlug}`}>
+      <div className="group relative bg-gradient-to-br from-purple-900/20 via-gray-900/50 to-black border-2 border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/50">
         {/* Badge - Featured Review */}
         <div className="absolute top-4 left-4 z-10 bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-purple-400 flex items-center gap-1.5">
           <span>✨</span>
@@ -142,6 +135,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             </svg>
           </div>
         </div>
-    </div>
+      </div>
+    </Link>
   );
 }
