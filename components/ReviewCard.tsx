@@ -142,7 +142,6 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             </svg>
           </div>
         </div>
-      </div>
     </div>
   );
 }
