@@ -10,7 +10,7 @@ interface CafeCardProps {
 }
 
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
-  const proxiedImageUrl = getProxiedImageUrl(cafe.image_url);
+  const proxiedImageUrl = getProxiedImageUrl(cafe.image_url, cafe.name, 'cafes');
   const [imageError, setImageError] = useState(false);
 
   const CardContent = () => (

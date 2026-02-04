@@ -28,25 +28,20 @@ function normalizeFileName(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
-// Helper pro lokální obrázky restaurací
-export function getLocalImageUrl(restaurantName: string): string | null {
-  const normalized = normalizeFileName(restaurantName);
-
-  // V mobile buildu vracíme lokální cestu
-  // Obrázky jsou uloženy jako .webp nebo .jpg
-  // Vrátíme .webp jako default (většina obrázků je webp)
-  return `/images/restaurants/${normalized}.webp`;
+// Helper pro lokální obrázky (restaurants, cafes, bakeries, michelin, trendings)
+export function getLocalImageUrl(name: string, category: string = 'restaurants'): string | null {
+  const normalized = normalizeFileName(name);
+  // Všechny obrázky ukládáme jako .webp (download skripty normalizují extension)
+  return `/images/${category}/${normalized}.webp`;
 }
 
 // Helper pro proxy obrázků (Google Maps API)
-export function getProxiedImageUrl(imageUrl: string | null | undefined, restaurantName?: string): string | null {
+export function getProxiedImageUrl(imageUrl: string | null | undefined, name?: string, category: string = 'restaurants'): string | null {
   if (!imageUrl) return null;
 
-  // Pro mobile build: pokud máme název restaurace, zkusíme lokální obrázek
-  if (IS_MOBILE && restaurantName) {
-    // Vracíme lokální cestu - pokud soubor neexistuje, img tag zobrazí error
-    // a můžeme fallbacknout na proxy
-    const localUrl = getLocalImageUrl(restaurantName);
+  // Pro mobile build: pokud máme název, zkusíme lokální obrázek
+  if (IS_MOBILE && name) {
+    const localUrl = getLocalImageUrl(name, category);
     if (localUrl) return localUrl;
   }
 

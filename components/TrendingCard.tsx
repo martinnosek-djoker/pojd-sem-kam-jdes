@@ -1,6 +1,7 @@
 "use client";
 
 import { Trending } from "@/lib/types";
+import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
 
 interface TrendingCardProps {
@@ -10,14 +11,15 @@ interface TrendingCardProps {
 
 export default function TrendingCard({ trending, rank }: TrendingCardProps) {
   const [imageError, setImageError] = useState(false);
+  const proxiedImageUrl = getProxiedImageUrl(trending.image_url, trending.name, 'trendings');
   const CardContent = () => (
     <>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-0 relative overflow-hidden">
         {/* Image section - top on mobile, left on desktop */}
-        {trending.image_url && !imageError ? (
+        {proxiedImageUrl && !imageError ? (
           <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden">
             <img
-              src={trending.image_url}
+              src={proxiedImageUrl}
               alt={trending.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               onError={() => setImageError(true)}

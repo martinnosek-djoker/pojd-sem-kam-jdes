@@ -10,7 +10,7 @@ interface MichelinCardProps {
 }
 
 export default function MichelinCard({ restaurant, forceLocation }: MichelinCardProps) {
-  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url);
+  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name, 'michelin');
   const [imageError, setImageError] = useState(false);
 
   const getAwardColor = (awardType: string) => {

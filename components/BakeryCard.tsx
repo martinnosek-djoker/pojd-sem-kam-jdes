@@ -10,7 +10,7 @@ interface BakeryCardProps {
 }
 
 export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
-  const proxiedImageUrl = getProxiedImageUrl(bakery.image_url);
+  const proxiedImageUrl = getProxiedImageUrl(bakery.image_url, bakery.name, 'bakeries');
   const [imageError, setImageError] = useState(false);
 
   const CardContent = () => (

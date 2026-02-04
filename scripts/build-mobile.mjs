@@ -20,13 +20,16 @@ async function buildMobile() {
     // Step 1: Prepare (exclude dynamic API routes)
     await runCommand('node scripts/prepare-mobile-build.mjs', 'Preparing mobile build');
 
-    // Step 2: Generate reviews cache
+    // Step 2: Download all images for offline use
+    await runCommand('node scripts/download-all-images.mjs', 'Downloading images for all categories');
+
+    // Step 3: Generate reviews cache
     await runCommand('node scripts/generate-reviews-data.mjs', 'Generating reviews cache');
 
-    // Step 3: Build with Next.js
+    // Step 4: Build with Next.js
     await runCommand('MOBILE_BUILD=true next build', 'Building Next.js app');
 
-    // Step 4: Sync with Capacitor
+    // Step 5: Sync with Capacitor
     await runCommand('npx cap sync', 'Syncing with Capacitor');
 
     console.log('\n✅ Mobile build completed successfully!\n');
