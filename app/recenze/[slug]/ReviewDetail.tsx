@@ -30,9 +30,9 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
     }
 
     async function fetchReview() {
+      const slug = params.slug as string;
       try {
         // Extract review ID from slug
-        const slug = params.slug as string;
         const reviewId = getReviewIdFromSlug(slug);
 
         if (!reviewId) {
