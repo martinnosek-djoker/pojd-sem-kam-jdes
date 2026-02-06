@@ -14,30 +14,40 @@ export async function GET(
 ) {
   try {
     // In Next.js 14.2+, params must be awaited
+    console.log("[API /api/reviews/[id]] Starting request, context:", typeof context, "params:", typeof context.params);
     const params = await context.params;
+    console.log("[API /api/reviews/[id]] Params resolved:", params);
     const id = parseInt(params.id);
+    console.log("[API /api/reviews/[id]] Parsed ID:", id);
 
     if (isNaN(id)) {
+      console.error("[API /api/reviews/[id]] Invalid ID:", params.id);
       return NextResponse.json(
         { error: "Neplatné ID recenze" },
         { status: 400 }
       );
     }
 
+    console.log("[API /api/reviews/[id]] Calling getReviewById with ID:", id);
     const review = await getReviewById(id);
+    console.log("[API /api/reviews/[id]] getReviewById returned:", review ? "Review found" : "null");
 
     if (!review) {
+      console.error("[API /api/reviews/[id]] Review not found for ID:", id);
       return NextResponse.json(
         { error: "Recenze nenalezena" },
         { status: 404 }
       );
     }
 
+    console.log("[API /api/reviews/[id]] Returning review successfully");
     return NextResponse.json(review);
   } catch (error) {
-    console.error("Error fetching review:", error);
+    console.error("[API /api/reviews/[id]] Error fetching review:", error);
+    console.error("[API /api/reviews/[id]] Error stack:", error instanceof Error ? error.stack : "No stack");
+    console.error("[API /api/reviews/[id]] Error message:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: "Nepodařilo se načíst recenzi" },
+      { error: "Nepodařilo se načíst recenzi", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
