@@ -56,7 +56,9 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
           setSimilarRestaurants(similar);
         }
       } catch (error) {
-        console.error("Error fetching review:", error);
+        console.error("[ReviewDetail] Error fetching review:", error);
+        console.error("[ReviewDetail] Slug:", slug, "Review ID:", getReviewIdFromSlug(slug));
+        console.error("[ReviewDetail] Redirecting to homepage due to error");
         router.push("/");
       } finally {
         setLoading(false);

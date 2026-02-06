@@ -17,6 +17,11 @@ export default function RestaurantCard({ restaurant, forceLocation, review }: Re
   const [imageError, setImageError] = useState(false);
   // Use review.restaurant.name to match the static paths generated for mobile builds
   const reviewSlug = review ? createReviewSlug(review.id, review.restaurant?.name || restaurant.name) : null;
+
+  // Debug logging for review links
+  if (reviewSlug) {
+    console.log(`[RestaurantCard] Review slug for ${restaurant.name}:`, reviewSlug, 'Full URL:', `/recenze/${reviewSlug}`);
+  }
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
