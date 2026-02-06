@@ -10,10 +10,12 @@ export async function generateStaticParams() {
 // GET /api/reviews/[id] - Get single review
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const id = parseInt(params.id);
+    // Support both async and sync params for Next.js compatibility
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const id = parseInt(resolvedParams.id);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -44,10 +46,11 @@ export async function GET(
 // PUT /api/reviews/[id] - Update review
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const id = parseInt(params.id);
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const id = parseInt(resolvedParams.id);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -82,10 +85,11 @@ export async function PUT(
 // DELETE /api/reviews/[id] - Delete review
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const id = parseInt(params.id);
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const id = parseInt(resolvedParams.id);
 
     if (isNaN(id)) {
       return NextResponse.json(
