@@ -125,7 +125,8 @@ export async function geocodeAddress(address: string): Promise<{ coordinates: Co
   try {
     // Použijeme OpenStreetMap Nominatim API (zdarma, bez API klíče)
     const encodedAddress = encodeURIComponent(address);
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=1&countrycodes=cz&addressdetails=1`;
+    // Limit 5 - dostaneme více výsledků pro lepší výběr
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=5&countrycodes=cz&addressdetails=1&extratags=1`;
 
     const response = await fetch(url, {
       headers: {
@@ -143,14 +144,71 @@ export async function geocodeAddress(address: string): Promise<{ coordinates: Co
       throw new Error("Adresa nebyla nalezena. Zkus zadat konkrétnější místo nebo použít formát: ulice, město");
     }
 
-    const result = data[0];
+    // Funkce pro skórování relevance výsledku
+    const scoreResult = (result: any): number => {
+      let score = 0;
+
+      // Preferujeme konkrétní místa (POI) před obecnými oblastmi
+      const type = result.type?.toLowerCase() || '';
+      const category = result.class?.toLowerCase() || '';
+      const osmType = result.osm_type?.toLowerCase() || '';
+
+      // Nejvyšší priorita: konkrétní budovy a POI
+      if (category === 'amenity' || category === 'tourism' || category === 'shop' ||
+          category === 'building' || category === 'leisure') {
+        score += 100;
+      }
+
+      // Střední priorita: ulice a adresy
+      if (type === 'house' || type === 'building' || type === 'commercial' ||
+          type === 'retail' || type === 'mall' || category === 'highway') {
+        score += 50;
+      }
+
+      // Nízká priorita: administrativní oblasti
+      if (type === 'administrative' || type === 'city' || type === 'suburb' ||
+          type === 'district' || type === 'neighbourhood') {
+        score += 10;
+      }
+
+      // Bonus pro node (konkrétní bod) vs way/relation (oblast)
+      if (osmType === 'node') {
+        score += 20;
+      }
+
+      // Bonus pokud má číslo popisné (přesná adresa)
+      if (result.address?.house_number) {
+        score += 30;
+      }
+
+      return score;
+    };
+
+    // Seřadíme výsledky podle relevance
+    const scoredResults = data.map((result: any) => ({
+      result,
+      score: scoreResult(result)
+    }));
+
+    scoredResults.sort((a: any, b: any) => b.score - a.score);
+
+    // Vezmeme nejvíce relevantní výsledek
+    const bestResult = scoredResults[0].result;
+
+    console.log('[Geocoding] Selected result:', {
+      name: bestResult.display_name,
+      type: bestResult.type,
+      class: bestResult.class,
+      osmType: bestResult.osm_type,
+      score: scoredResults[0].score
+    });
 
     return {
       coordinates: {
-        lat: parseFloat(result.lat),
-        lng: parseFloat(result.lon),
+        lat: parseFloat(bestResult.lat),
+        lng: parseFloat(bestResult.lon),
       },
-      displayName: result.display_name,
+      displayName: bestResult.display_name,
     };
   } catch (error: any) {
     console.error('[Geocoding] Error:', error);
