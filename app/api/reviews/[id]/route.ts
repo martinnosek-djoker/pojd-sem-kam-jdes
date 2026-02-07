@@ -16,17 +16,8 @@ export async function generateStaticParams() {
 // GET /api/reviews/[id] - Get single review
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString, 10);
-
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { error: "Neplatné ID recenze" },
-        { status: 400 }
-      );
-    }
-
-    const review = await getReviewById(id);
+    const { id } = await params;
+    const review = await getReviewById(parseInt(id, 10));
 
     if (!review) {
       return NextResponse.json(
@@ -48,20 +39,18 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 // PUT /api/reviews/[id] - Update review
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString, 10);
+    const { id } = await params;
+    const body = await request.json();
+    const validated = reviewSchema.parse(body);
 
-    if (isNaN(id)) {
+    const review = await updateReview(parseInt(id, 10), validated);
+
+    if (!review) {
       return NextResponse.json(
-        { error: "Neplatné ID recenze" },
-        { status: 400 }
+        { error: "Recenze nenalezena" },
+        { status: 404 }
       );
     }
-
-    const body = await request.json();
-    const validated = reviewSchema.partial().parse(body);
-
-    const review = await updateReview(id, validated);
 
     return NextResponse.json(review);
   } catch (error: any) {
@@ -84,17 +73,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 // DELETE /api/reviews/[id] - Delete review
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString, 10);
-
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { error: "Neplatné ID recenze" },
-        { status: 400 }
-      );
-    }
-
-    await deleteReview(id);
+    const { id } = await params;
+    await deleteReview(parseInt(id, 10));
 
     return NextResponse.json({ success: true });
   } catch (error) {
