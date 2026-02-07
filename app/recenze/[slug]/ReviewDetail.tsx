@@ -6,8 +6,36 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { Review, Restaurant } from "@/lib/types";
-import { getApiUrl } from "@/lib/api-config";
+import { getApiUrl, getProxiedImageUrl, IS_MOBILE } from "@/lib/api-config";
 import { getReviewIdFromSlug } from "@/lib/slug";
+
+// Helper to get review image with local fallback
+function getReviewImageUrl(imageUrl: string, reviewId: number, restaurantName: string, index: number): string {
+  // If already a local path, use it
+  if (imageUrl.startsWith('/images/')) {
+    return imageUrl;
+  }
+
+  // In mobile mode, try local path first
+  if (IS_MOBILE) {
+    const normalizedName = restaurantName
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    const fileName = index === 0 ? `${normalizedName}.webp` : `${normalizedName}-${index + 1}.webp`;
+    const localPath = `/images/reviews/${reviewId}/${fileName}`;
+
+    // Return local path - will fallback to external if not found
+    return localPath;
+  }
+
+  // Web mode - use proxy or original URL
+  return getProxiedImageUrl(imageUrl) || imageUrl;
+}
 
 interface ReviewDetailPageProps {
   initialReview?: Review | null;
@@ -101,7 +129,12 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
   });
 
   const allImages = review.images || [];
-  const currentImage = allImages[selectedImage] || review.restaurant?.image_url || "/placeholder-restaurant.jpg";
+
+  // Use helper to get image with local fallback
+  const currentImageUrl = allImages[selectedImage];
+  const currentImage = currentImageUrl
+    ? getReviewImageUrl(currentImageUrl, review.id, review.restaurant?.name || '', selectedImage)
+    : (review.restaurant?.image_url || "/placeholder-restaurant.jpg");
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black px-4 sm:px-8 py-8 pb-24">

@@ -4,14 +4,45 @@ import Image from "next/image";
 import Link from "next/link";
 import { Review } from "@/lib/types";
 import { createReviewSlug } from "@/lib/slug";
+import { getProxiedImageUrl, IS_MOBILE } from "@/lib/api-config";
+
+// Helper to get review image with local fallback
+function getReviewImageUrl(imageUrl: string, reviewId: number, restaurantName: string, index: number): string {
+  // If already a local path, use it
+  if (imageUrl.startsWith('/images/')) {
+    return imageUrl;
+  }
+
+  // In mobile mode, try local path first
+  if (IS_MOBILE) {
+    const normalizedName = restaurantName
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    const fileName = index === 0 ? `${normalizedName}.webp` : `${normalizedName}-${index + 1}.webp`;
+    const localPath = `/images/reviews/${reviewId}/${fileName}`;
+
+    return localPath;
+  }
+
+  // Web mode - use proxy or original URL
+  return getProxiedImageUrl(imageUrl) || imageUrl;
+}
 
 interface ReviewCardProps {
   review: Review;
 }
 
 export default function ReviewCard({ review }: ReviewCardProps) {
-  // Get first image or fallback
-  const mainImage = review.images?.[0] || review.restaurant?.image_url;
+  // Get first image with local fallback
+  const mainImageUrl = review.images?.[0];
+  const mainImage = mainImageUrl
+    ? getReviewImageUrl(mainImageUrl, review.id, review.restaurant?.name || '', 0)
+    : review.restaurant?.image_url;
 
   // Format date
   const visitDate = new Date(review.visit_date).toLocaleDateString("cs-CZ", {
