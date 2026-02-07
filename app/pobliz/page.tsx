@@ -7,7 +7,7 @@ import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import LoadingPot from "@/components/LoadingPot";
 import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
-import { calculateDistance, formatDistance, getCurrentPosition } from "@/lib/geolocation";
+import { calculateDistance, formatDistance, getCurrentPosition, geocodeAddress } from "@/lib/geolocation";
 import { getApiUrl } from "@/lib/api-config";
 
 interface RestaurantWithDistance extends Restaurant {
@@ -42,6 +42,11 @@ export default function NearbyRestaurants() {
   const [radiusKm, setRadiusKm] = useState(2);
   const [error, setError] = useState<string | null>(null);
   const [isPermissionDenied, setIsPermissionDenied] = useState(false);
+
+  // New states for address search
+  const [searchMode, setSearchMode] = useState<'gps' | 'address'>('gps');
+  const [searchAddress, setSearchAddress] = useState('');
+  const [locationDisplayName, setLocationDisplayName] = useState<string | null>(null);
 
   // Get next radius option for "enlarge" button
   const getNextRadius = (current: number) => {
@@ -183,6 +188,7 @@ export default function NearbyRestaurants() {
     try {
       const position = await getCurrentPosition();
       setUserLocation(position);
+      setLocationDisplayName(null); // Clear any previous address search
       setIsPermissionDenied(false);
     } catch (error: any) {
       const errorMsg = error.message || "Nepodařilo se získat polohu";
@@ -194,6 +200,29 @@ export default function NearbyRestaurants() {
       }
 
       console.error("Error getting location:", error);
+    } finally {
+      setGettingLocation(false);
+    }
+  };
+
+  const handleAddressSearch = async () => {
+    if (!searchAddress.trim()) {
+      setError("Zadej prosím adresu nebo místo");
+      return;
+    }
+
+    setGettingLocation(true);
+    setError(null);
+    setIsPermissionDenied(false);
+
+    try {
+      const result = await geocodeAddress(searchAddress);
+      setUserLocation(result.coordinates);
+      setLocationDisplayName(result.displayName);
+    } catch (error: any) {
+      const errorMsg = error.message || "Nepodařilo se najít adresu";
+      setError(errorMsg);
+      console.error("Error geocoding address:", error);
     } finally {
       setGettingLocation(false);
     }
@@ -230,26 +259,86 @@ export default function NearbyRestaurants() {
 
         {/* Location Controls */}
         <div className="mb-8 p-6 bg-gray-900/50 border border-purple-500/30 rounded-lg">
+          {/* Mode Toggle */}
+          <div className="flex justify-center gap-2 mb-6">
+            <button
+              onClick={() => setSearchMode('gps')}
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+                searchMode === 'gps'
+                  ? 'bg-purple-600 text-white border-2 border-purple-400'
+                  : 'bg-gray-800 text-gray-400 border-2 border-gray-700 hover:border-gray-600'
+              }`}
+            >
+              📍 Moje poloha
+            </button>
+            <button
+              onClick={() => setSearchMode('address')}
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+                searchMode === 'address'
+                  ? 'bg-purple-600 text-white border-2 border-purple-400'
+                  : 'bg-gray-800 text-gray-400 border-2 border-gray-700 hover:border-gray-600'
+              }`}
+            >
+              🔍 Hledat adresu
+            </button>
+          </div>
+
           <div className="flex flex-col gap-6 items-center">
-            {/* Get Location Button - centered */}
-            <div className="w-full flex justify-center">
-              <button
-                onClick={handleGetLocation}
-                disabled={gettingLocation}
-                className="w-full max-w-md px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg"
-              >
-                {gettingLocation ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    Zjišťuji polohu...
-                  </span>
-                ) : userLocation ? (
-                  "Aktualizovat polohu"
-                ) : (
-                  "Najít restaurace v okolí"
-                )}
-              </button>
-            </div>
+            {/* GPS Mode */}
+            {searchMode === 'gps' && (
+              <div className="w-full flex justify-center">
+                <button
+                  onClick={handleGetLocation}
+                  disabled={gettingLocation}
+                  className="w-full max-w-md px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg"
+                >
+                  {gettingLocation ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      Zjišťuji polohu...
+                    </span>
+                  ) : userLocation && !locationDisplayName ? (
+                    "Aktualizovat polohu"
+                  ) : (
+                    "Najít restaurace v okolí"
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* Address Search Mode */}
+            {searchMode === 'address' && (
+              <div className="w-full max-w-md">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={searchAddress}
+                    onChange={(e) => setSearchAddress(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleAddressSearch();
+                      }
+                    }}
+                    placeholder="např. Václavské náměstí, Praha"
+                    className="flex-1 px-4 py-3 border border-purple-600 rounded-lg bg-black text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                  <button
+                    onClick={handleAddressSearch}
+                    disabled={gettingLocation || !searchAddress.trim()}
+                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                  >
+                    {gettingLocation ? (
+                      <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    ) : (
+                      "Hledat"
+                    )}
+                  </button>
+                </div>
+                <p className="mt-2 text-xs text-gray-400 text-center">
+                  Zadej adresu, ulici, náměstí nebo městskou část
+                </p>
+              </div>
+            )}
 
             {/* Radius Selector */}
             {userLocation && (
@@ -278,7 +367,14 @@ export default function NearbyRestaurants() {
           {/* User Location Display */}
           {userLocation && (
             <div className="mt-4 text-sm text-gray-400 text-center">
-              Tvá poloha: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              {locationDisplayName ? (
+                <>
+                  <div className="font-medium text-purple-300 mb-1">📍 Vyhledaná adresa:</div>
+                  <div>{locationDisplayName}</div>
+                </>
+              ) : (
+                <>Tvá poloha: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}</>
+              )}
             </div>
           )}
 
@@ -351,7 +447,7 @@ export default function NearbyRestaurants() {
           <div className="text-center py-8">
             <div className="text-6xl mb-4">📍</div>
             <p className="text-xl text-gray-400 mb-4">
-              Klikni na tlačítko výše
+              Použij svou GPS polohu nebo vyhledej adresu
             </p>
             <p className="text-sm text-gray-500">
               Najdeme ti nejbližší restaurace, kavárny a cukrárny

@@ -119,3 +119,41 @@ export async function getCurrentPosition(): Promise<Coordinates> {
     });
   }
 }
+
+// Geocode an address to coordinates using Nominatim API
+export async function geocodeAddress(address: string): Promise<{ coordinates: Coordinates; displayName: string }> {
+  try {
+    // Použijeme OpenStreetMap Nominatim API (zdarma, bez API klíče)
+    const encodedAddress = encodeURIComponent(address);
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=1&countrycodes=cz&addressdetails=1`;
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'GastroTips/1.0' // Nominatim vyžaduje User-Agent
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Nepodařilo se vyhledat adresu");
+    }
+
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
+      throw new Error("Adresa nebyla nalezena. Zkus zadat konkrétnější místo nebo použít formát: ulice, město");
+    }
+
+    const result = data[0];
+
+    return {
+      coordinates: {
+        lat: parseFloat(result.lat),
+        lng: parseFloat(result.lon),
+      },
+      displayName: result.display_name,
+    };
+  } catch (error: any) {
+    console.error('[Geocoding] Error:', error);
+    throw new Error(error.message || "Nepodařilo se vyhledat adresu");
+  }
+}
