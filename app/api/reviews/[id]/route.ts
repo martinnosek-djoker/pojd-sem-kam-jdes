@@ -2,65 +2,54 @@ import { NextRequest, NextResponse } from "next/server";
 import { getReviewById, updateReview, deleteReview } from "@/lib/db";
 import { reviewSchema } from "@/lib/types";
 
+interface RouteParams {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
 // Required for static export - no static params to generate
 export async function generateStaticParams() {
   return [];
 }
 
 // GET /api/reviews/[id] - Get single review
-export async function GET(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    // In Next.js 14.2+, params must be awaited
-    console.log("[API /api/reviews/[id]] Starting request, context:", typeof context, "params:", typeof context.params);
-    const params = await context.params;
-    console.log("[API /api/reviews/[id]] Params resolved:", params);
-    const id = parseInt(params.id);
-    console.log("[API /api/reviews/[id]] Parsed ID:", id);
+    const { id: idString } = await params;
+    const id = parseInt(idString, 10);
 
     if (isNaN(id)) {
-      console.error("[API /api/reviews/[id]] Invalid ID:", params.id);
       return NextResponse.json(
         { error: "Neplatné ID recenze" },
         { status: 400 }
       );
     }
 
-    console.log("[API /api/reviews/[id]] Calling getReviewById with ID:", id);
     const review = await getReviewById(id);
-    console.log("[API /api/reviews/[id]] getReviewById returned:", review ? "Review found" : "null");
 
     if (!review) {
-      console.error("[API /api/reviews/[id]] Review not found for ID:", id);
       return NextResponse.json(
         { error: "Recenze nenalezena" },
         { status: 404 }
       );
     }
 
-    console.log("[API /api/reviews/[id]] Returning review successfully");
     return NextResponse.json(review);
   } catch (error) {
-    console.error("[API /api/reviews/[id]] Error fetching review:", error);
-    console.error("[API /api/reviews/[id]] Error stack:", error instanceof Error ? error.stack : "No stack");
-    console.error("[API /api/reviews/[id]] Error message:", error instanceof Error ? error.message : String(error));
+    console.error("Error fetching review:", error);
     return NextResponse.json(
-      { error: "Nepodařilo se načíst recenzi", details: error instanceof Error ? error.message : String(error) },
+      { error: "Nepodařilo se načíst recenzi" },
       { status: 500 }
     );
   }
 }
 
 // PUT /api/reviews/[id] - Update review
-export async function PUT(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
-    const params = await context.params;
-    const id = parseInt(params.id);
+    const { id: idString } = await params;
+    const id = parseInt(idString, 10);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -93,13 +82,10 @@ export async function PUT(
 }
 
 // DELETE /api/reviews/[id] - Delete review
-export async function DELETE(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    const params = await context.params;
-    const id = parseInt(params.id);
+    const { id: idString } = await params;
+    const id = parseInt(idString, 10);
 
     if (isNaN(id)) {
       return NextResponse.json(
