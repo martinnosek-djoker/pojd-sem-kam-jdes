@@ -177,7 +177,18 @@ export default function NearbyRestaurants() {
     // Sort by distance
     placesWithDistance.sort((a, b) => a.distance - b.distance);
 
-    setNearbyPlaces(placesWithDistance);
+    // Deduplicate - keep only the closest occurrence of each place
+    // Use name for deduplication since same place can be in multiple tables (restaurants/cafes/bakeries)
+    const seenNames = new Set<string>();
+    const deduplicatedPlaces = placesWithDistance.filter(place => {
+      if (seenNames.has(place.name)) {
+        return false; // Skip - already have a closer occurrence
+      }
+      seenNames.add(place.name);
+      return true;
+    });
+
+    setNearbyPlaces(deduplicatedPlaces);
   }, [userLocation, radiusKm, restaurants, bakeries, cafes]);
 
   const handleGetLocation = async () => {
