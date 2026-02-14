@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { eventSchema } from "@/lib/types";
 
-// Required for static export - no static params to generate
-export async function generateStaticParams() {
-  return [];
-}
+// Force dynamic rendering - API routes cannot be statically generated
+export const dynamic = 'force-dynamic';
 
 // GET /api/admin/events/[id] - Get event by ID
 export async function GET(

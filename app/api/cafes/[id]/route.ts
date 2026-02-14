@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCafeById, updateCafe, deleteCafe } from "@/lib/db";
 import { cafeSchema } from "@/lib/types";
 
-// Required for static export - no static params to generate
-export async function generateStaticParams() {
-  return [];
-}
+// Force dynamic rendering - API routes cannot be statically generated
+export const dynamic = 'force-dynamic';
 
 // GET /api/cafes/[id] - Get single cafe
 export async function GET(

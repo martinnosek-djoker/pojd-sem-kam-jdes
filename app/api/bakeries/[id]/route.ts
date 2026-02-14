@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getBakeryById, updateBakery, deleteBakery } from "@/lib/db";
 import { bakerySchema } from "@/lib/types";
 
-// Required for static export - no static params to generate
-export async function generateStaticParams() {
-  return [];
-}
+// Force dynamic rendering - API routes cannot be statically generated
+export const dynamic = 'force-dynamic';
 
 // GET /api/bakeries/[id] - Get single bakery
 export async function GET(
