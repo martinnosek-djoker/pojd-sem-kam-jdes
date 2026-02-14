@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bakerySchema, BakeryInput, Bakery } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 interface BakeryFormProps {
   bakeryId?: number | null;
@@ -47,7 +48,7 @@ export default function BakeryForm({
   useEffect(() => {
     if (bakeryId) {
       // Fetch bakery data for editing
-      fetch(`/api/bakeries/${bakeryId}`)
+      fetch(getApiUrl(`/api/bakeries/${bakeryId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -96,7 +97,7 @@ export default function BakeryForm({
         ...(bakeryLocation && { location: bakeryLocation }),
       });
 
-      const response = await fetch(`/api/places/photo?${params.toString()}`);
+      const response = await fetch(getApiUrl(`/api/places/photo?${params.toString()}`));
       const data = await response.json();
 
       if (response.ok) {
@@ -158,7 +159,7 @@ export default function BakeryForm({
 
       const method = bakeryId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

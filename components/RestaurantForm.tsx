@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantSchema, RestaurantInput, Restaurant } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 interface RestaurantFormProps {
   restaurantId?: number | null;
@@ -48,7 +49,7 @@ export default function RestaurantForm({
   useEffect(() => {
     if (restaurantId) {
       // Fetch restaurant data for editing
-      fetch(`/api/restaurants/${restaurantId}`)
+      fetch(getApiUrl(`/api/restaurants/${restaurantId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -101,7 +102,7 @@ export default function RestaurantForm({
         ...(restaurantLocation && { location: restaurantLocation }),
       });
 
-      const response = await fetch(`/api/places/photo?${params}`);
+      const response = await fetch(getApiUrl(`/api/places/photo?${params}`));
       const data = await response.json();
 
       if (response.ok) {
@@ -160,7 +161,7 @@ export default function RestaurantForm({
 
       const method = restaurantId ? "PATCH" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cleanData),

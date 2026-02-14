@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reviewSchema, ReviewInput, Review, Restaurant, Dish } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 import RichTextEditor from "./RichTextEditor";
 
 interface ReviewFormProps {
@@ -87,7 +88,7 @@ export default function ReviewForm({
   // Load review data if editing
   useEffect(() => {
     if (reviewId) {
-      fetch(`/api/reviews/${reviewId}`)
+      fetch(getApiUrl(`/api/reviews/${reviewId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -234,7 +235,7 @@ export default function ReviewForm({
       const url = reviewId ? `/api/reviews/${reviewId}` : "/api/reviews";
       const method = reviewId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: {
           "Content-Type": "application/json",

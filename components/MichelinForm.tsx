@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { michelinRestaurantSchema, MichelinRestaurantInput, MichelinRestaurant, MICHELIN_AWARD_LABELS } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 interface MichelinFormProps {
   restaurantId?: number | null;
@@ -45,7 +46,7 @@ export default function MichelinForm({
   useEffect(() => {
     if (restaurantId) {
       // Fetch restaurant data for editing
-      fetch(`/api/michelin/${restaurantId}`)
+      fetch(getApiUrl(`/api/michelin/${restaurantId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -96,7 +97,7 @@ export default function MichelinForm({
         : "/api/michelin";
       const method = restaurantId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: {
           "Content-Type": "application/json",

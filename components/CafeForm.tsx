@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cafeSchema, CafeInput, Cafe } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 interface CafeFormProps {
   cafeId?: number | null;
@@ -49,7 +50,7 @@ export default function CafeForm({
   useEffect(() => {
     if (cafeId) {
       // Fetch cafe data for editing
-      fetch(`/api/cafes/${cafeId}`)
+      fetch(getApiUrl(`/api/cafes/${cafeId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -99,7 +100,7 @@ export default function CafeForm({
         ...(cafeLocation && { location: cafeLocation }),
       });
 
-      const response = await fetch(`/api/places/photo?${params.toString()}`);
+      const response = await fetch(getApiUrl(`/api/places/photo?${params.toString()}`));
       const data = await response.json();
 
       if (response.ok) {
@@ -161,7 +162,7 @@ export default function CafeForm({
 
       const method = cafeId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trendingSchema, TrendingInput, Trending } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 interface TrendingFormProps {
   trendingId?: number | null;
@@ -42,7 +43,7 @@ export default function TrendingForm({
   useEffect(() => {
     if (trendingId) {
       // Fetch trending data for editing
-      fetch(`/api/trendings/${trendingId}`)
+      fetch(getApiUrl(`/api/trendings/${trendingId}`))
         .then((res) => res.json())
         .then((data) => {
           reset({
@@ -80,7 +81,7 @@ export default function TrendingForm({
 
       const method = trendingId ? "PATCH" : "POST";
 
-      const response = await fetch(url, {
+      const response = await fetch(getApiUrl(url), {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cleanData),
