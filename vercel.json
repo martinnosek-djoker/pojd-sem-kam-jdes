@@ -1,0 +1,11 @@
+{
+  "buildCommand": "next build",
+  "env": {
+    "MOBILE_BUILD": "false"
+  },
+  "build": {
+    "env": {
+      "MOBILE_BUILD": "false"
+    }
+  }
+}
