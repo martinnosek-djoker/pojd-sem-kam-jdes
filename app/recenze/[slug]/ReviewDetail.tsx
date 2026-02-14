@@ -270,7 +270,7 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                     )}
                     {review.total_spent && (
                       <div className="bg-purple-600/20 border-2 border-purple-500/50 rounded-xl p-6 text-center">
-                        <div className="text-sm text-purple-300 mb-2 font-semibold uppercase tracking-wide">Celková útrata</div>
+                        <div className="text-sm text-purple-300 mb-2 font-semibold uppercase tracking-wide">Celková útrata za osobu</div>
                         <div className="flex items-center justify-center gap-2">
                           <span className="text-6xl font-bold text-purple-400">{review.total_spent.toLocaleString('cs-CZ')}</span>
                           <div className="text-2xl text-gray-400">Kč</div>
