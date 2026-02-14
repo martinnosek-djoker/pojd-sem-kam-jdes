@@ -2,17 +2,31 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { renameSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const rootDir = join(__dirname, '..');
 
 async function runCommand(command, description) {
   console.log(`\n🚀 ${description}...`);
   try {
-    execSync(command, { stdio: 'inherit', cwd: join(__dirname, '..') });
+    execSync(command, { stdio: 'inherit', cwd: rootDir });
   } catch (error) {
     throw new Error(`Failed: ${description}`);
   }
+}
+
+async function swapConfigs() {
+  // Swap next.config.mjs with next.config.mobile.mjs for mobile build
+  renameSync(join(rootDir, 'next.config.mjs'), join(rootDir, 'next.config.web.mjs'));
+  renameSync(join(rootDir, 'next.config.mobile.mjs'), join(rootDir, 'next.config.mjs'));
+}
+
+async function restoreConfigs() {
+  // Restore original config files
+  renameSync(join(rootDir, 'next.config.mjs'), join(rootDir, 'next.config.mobile.mjs'));
+  renameSync(join(rootDir, 'next.config.web.mjs'), join(rootDir, 'next.config.mjs'));
 }
 
 async function buildMobile() {
@@ -26,10 +40,18 @@ async function buildMobile() {
     // Step 3: Generate reviews cache
     await runCommand('node scripts/generate-reviews-data.mjs', 'Generating reviews cache');
 
-    // Step 4: Build with Next.js
-    await runCommand('MOBILE_BUILD=true next build', 'Building Next.js app');
+    // Step 4: Swap config files for mobile build
+    console.log('\n🔄 Swapping config files for mobile build...');
+    await swapConfigs();
 
-    // Step 5: Sync with Capacitor
+    // Step 5: Build with Next.js (using mobile config)
+    await runCommand('next build', 'Building Next.js app for mobile');
+
+    // Step 6: Restore config files
+    console.log('\n🔄 Restoring config files...');
+    await restoreConfigs();
+
+    // Step 7: Sync with Capacitor
     await runCommand('npx cap sync', 'Syncing with Capacitor');
 
     console.log('\n✅ Mobile build completed successfully!\n');
@@ -37,7 +59,14 @@ async function buildMobile() {
     console.error(`\n❌ Build failed: ${error.message}\n`);
     process.exitCode = 1;
   } finally {
-    // Always restore API routes, even if build failed
+    // Always restore config files and API routes, even if build failed
+    try {
+      console.log('\n🔄 Restoring config files (cleanup)...');
+      await restoreConfigs();
+    } catch (restoreError) {
+      console.error(`\n⚠️  Warning: Failed to restore config files: ${restoreError.message}`);
+    }
+
     try {
       await runCommand('node scripts/restore-after-mobile-build.mjs', 'Restoring API routes');
     } catch (restoreError) {
