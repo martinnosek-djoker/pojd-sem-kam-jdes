@@ -1,0 +1,47 @@
+Priority,Name,Table,ID,Location,Address,Current_Lat,Current_Lon,Expected_Lat,Expected_Lon,Error_Distance_m,Status
+CRITICAL,Místo,bakeries,3,Dejvice,"Bubenečská 12, 160 00 Praha 6",50.13509285,14.37880820020478,50.0990304,14.4044095,4406,CRITICAL
+CRITICAL,Typika,cafes,27,Karlín,"Typika, Karlín, Praha",50.0864234,14.4156772,50.0930983,14.4560654,2975,CRITICAL
+CRITICAL,Aluha,restaurants,2332,Břevnov,"Bělohorská 245/71, 169 00 Praha 6",50.0756518,14.3320879,50.0837642,14.3703579,2876,CRITICAL
+CRITICAL,Grosseto,restaurants,951,Náměstí Míru,"Francouzská 79/2, 120 00 Praha 2-Vinohrady",50.0859028,14.4065097,50.0746317,14.4375603,2546,CRITICAL
+MAJOR,Café Sofa,bakeries,5,Dejvice,"Evropská 2690/17, 160 00 Praha 6",50.1013233,14.4134713,50.0999114,14.3883221,1801,MAJOR
+MAJOR,Café Sofa,restaurants,944,Dejvice,"Evropská 2690/17, 160 00 Praha 6",50.1013233,14.4134713,50.0999114,14.3883221,1801,MAJOR
+MAJOR,San Carlo,restaurants,904,Holešovice,"Dělnická 1481/71, 170 00 Praha 7-Holešovice",50.1106578,14.4397509,50.10343,14.4555655,1385,MAJOR
+MAJOR,La Degustation,restaurants,953,Náměstí republiky,"Haštalská 18, 110 00 Staré Město",50.0794019,14.4227982,50.0910323,14.4251059,1304,MAJOR
+MAJOR,An Bistro Café,restaurants,939,Dejvice,"Dejvická 317/8, 160 00 Praha 6-Dejvice",50.1066776,14.3931444,50.0980089,14.403577,1218,MAJOR
+MAJOR,Sansho,restaurants,965,Náměstí Republiky/Florenc,"Petrská 1170/25, 110 00 Nové Město",50.0821319,14.4271549,50.0917572,14.4349461,1206,MAJOR
+MAJOR,Fuze Restaurant,restaurants,1321,Náměstí Republiky/Florenc,"Na Florenci 2139, 110 00 Nové Město",50.078919,14.430967761293582,50.0884936,14.4357195,1117,MAJOR
+MAJOR,Loka,bakeries,11,Náměstí Republiky/Florenc,"Na Florenci 2139, 110 00 Nové Město",50.078919,14.430967761293582,50.0884936,14.4357195,1117,MAJOR
+MAJOR,Sugo Pasta Bar,restaurants,933,Karlín,"Sokolovská 715/107, 186 00 Praha 8-Karlín",50.0915542,14.4408703,50.0947931,14.454209,1017,MAJOR
+MAJOR,Masala,restaurants,958,Letná,"Keramická 287/3, 170 00 Praha 7-Bubeneč",50.0995062,14.435505996264585,50.1010457,14.4218014,992,MAJOR
+MAJOR,Lola Tapas,restaurants,957,Národní Třída/Karlovo náměstí,"Myslíkova 262/20, 120 00 Nové Město",50.0864234,14.4156772,50.0776547,14.4173679,982,MAJOR
+MAJOR,Bon Ramen,restaurants,943,Anděl,"Nádražní 96, 150 00 Praha 5-Smíchov",50.061198,14.4090904,50.0693961,14.4059074,939,MAJOR
+MAJOR,Isaac's BBQ,restaurants,920,Národní třída,"Jungmannova 10, 110 00 Nové Město",50.0864234,14.4156772,50.0802978,14.4225146,838,MAJOR
+MAJOR,Garage Poutine,restaurants,950,Karlín,"Křižíkova 58/134, 186 00 Karlín",50.0933902,14.4517852,50.0903208,14.4412598,825,MAJOR
+MAJOR,FatFuck,restaurants,915,Břevnov,"Bělohorská 158/14, 169 00 Praha 6-Střešovice",50.09256685,14.378449402774887,50.0858703,14.382813,807,MAJOR
+MAJOR,Óda Restaurant,restaurants,2336,Vinohrady,"Korunní 1304/92, 101 00 Vinohrady",50.0774839,14.4620778,50.075286,14.4535955,653,MAJOR
+MAJOR,Funwari Japanese Delights,cafes,63,Jiřího z Poděbrad,"Chopinova 6, 120 00 Praha 2-Vinohrady",50.076337800000005,14.437116709025648,50.079117,14.4450787,647,MAJOR
+MAJOR,Pork's,restaurants,961,Václavské náměstí,"Vodičkova 17, 110 00 Nové Město",50.0786315,14.415211580612244,50.0803799,14.4234041,616,MAJOR
+MAJOR,IF Café,cafes,54,Kampa,"Zborovská 620/47, 150 00 Malá Strana",50.0860181,14.4051053,50.0808462,14.4067838,587,MAJOR
+MAJOR,IF Café,bakeries,1,Kampa,"Zborovská 620/47, 150 00 Malá Strana",50.0860181,14.4051053,50.0808462,14.4067838,587,MAJOR
+MAJOR,Umámy Café,cafes,62,Národní třída,"Národní 37/38, 110 00 Staré Město",50.0864234,14.4156772,50.0826902,14.4214726,586,MAJOR
+MAJOR,Patê Bakery,restaurants,2335,Národní třída,"Národní 10, Nové Město, 110 00 Praha-Praha 1",50.0864234,14.4156772,50.0815932,14.4168497,544,MAJOR
+MINOR,Miska Ramen,restaurants,93,Václavské náměstí,"Španělská 2, 120 00 Praha 2-Vinohrady",50.0782289,14.426092,50.076961,14.4368859,490,MINOR
+MINOR,Dockhouse,restaurants,914,Kačerov,"110 Piney Narrows Rd, Chester, MD 21619, United States",50.0219811,14.4632449,39.0454445,-76.2974519,487,MINOR
+MINOR,Dim Sum Spot,restaurants,74,Letná,"M. Horákové 806/29, 170 00 Praha 7-Holešovice",50.1067706,14.4246602,50.1030042,14.4265974,454,MINOR
+MINOR,Nha Hai Hanh,restaurants,26,Anděl,"Drtinova 20, 150 00 Praha 5-Smíchov",50.071898,14.4082046,50.0708933,14.4037261,421,MINOR
+MINOR,Dian Prague,restaurants,9,Brumlovka,"Vyskočilova 4, 140 00 Praha 4",50.0621243,14.4321442,50.0607638,14.4268484,414,MINOR
+MINOR,AMUNÌ,restaurants,16,Vinohrady,"Vinohradská 1183/83, 120 00 Vinohrady",50.0757113,14.4409752,50.0777869,14.4381001,295,MINOR
+MINOR,Myšák,bakeries,7,Václavské náměstí,"710/31, Vodičkova, Nové Město, 110 00 Praha",50.0808687,14.4265313,50.081175,14.4236588,283,MINOR
+MINOR,Dish,restaurants,51,Náměstí Míru,"Belgická 335/26, 120 00 Praha 2-Vinohrady",50.0735093,14.4396543,50.0745806,14.4356165,280,MINOR
+MINOR,Centraaal Fried Chicken,restaurants,34,Karlovo náměstí,"Rašínovo nábř. 388/48, 128 00 Nové Město",50.0738983,14.4142961,50.0721044,14.4160551,237,MINOR
+MINOR,Grosseto,restaurants,951,Anděl,"Anděl City, Radlická 3179/1e, 150 00 Praha 5-Anděl",50.0711446,14.4058294,50.071164,14.4088802,233,MINOR
+MINOR,Vallmo,restaurants,894,Výtoň,"Plavecká 404/4, 128 00 Nové Město",50.0714455,14.4165139,50.0732135,14.4151282,212,MINOR
+MINOR,Hans by Solo,cafes,16,Petrská čtvrť,"Petrská 1179, 110 00 Petrská čtvrť",50.0918565,14.4308434,50.0919361,14.4281692,205,MINOR
+MINOR,Dim Sum Spot,restaurants,74,Anděl,"Lidická 653/25, 150 00 Praha 5-Smíchov",50.0681152,14.3997049,50.0676887,14.4020872,191,MINOR
+MINOR,Cantina,restaurants,65,Újezd,"Újezd 430/38, 118 00 Malá Strana",50.0842743,14.4069118,50.0844698,14.4044067,191,MINOR
+MINOR,Bon Ramen,restaurants,943,Letná,"M. Horákové 178/66, 160 00 Praha 7-Bubeneč",50.1013629,14.420043,50.1012596,14.4176646,182,MINOR
+MINOR,Aussino,restaurants,73,Vinohrady,"Ibsenova 1234/1, 120 00 Vinohrady",50.0701833,14.4422894,50.0696654,14.4446754,180,MINOR
+MINOR,IPPA Café,bakeries,2,Břevnov,"134, Bělohorská 724, 169 00 Praha",50.0838651,14.3633789,50.0849464,14.3658614,177,MINOR
+MINOR,Bruxx,restaurants,3,Náměstí Míru,"Náměstí Míru 9, 120 00 Praha 2-Vinohrady",50.0750237,14.4409847,50.0757913,14.4402068,100,MINOR
+MINOR,Ricefield,restaurants,92,Náměstí Míru,"Sázavská 807/14, 120 00 Praha 2-Vinohrady",50.0755424,14.4368172,50.0760056,14.4360002,100,MINOR
+MINOR,Votre Plaisir,bakeries,207,Náměstí Republiky,"Klimentská 1246/1, 110 00 Nové Město",50.0891682,14.4271866,50.0893766,14.4296359,188,MINOR

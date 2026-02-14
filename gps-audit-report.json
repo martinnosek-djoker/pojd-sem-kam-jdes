@@ -1,0 +1,4568 @@
+{
+  "CRITICAL": [
+    {
+      "name": "Grosseto",
+      "table": "restaurants",
+      "id": 951,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Dejvice, Anděl, Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0859028,
+        "lon": 14.4065097
+      },
+      "expectedGPS": {
+        "lat": 50.0746317,
+        "lon": 14.4375603,
+        "display_name": "79/2, Francouzská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 2546,
+      "status": "CRITICAL",
+      "issues": [
+        "GPS coordinates differ by 2546m (>2km)"
+      ],
+      "address": "Francouzská 79/2, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Aluha",
+      "table": "restaurants",
+      "id": 2332,
+      "locationName": "Břevnov",
+      "currentLocation": "Břevnov",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.0756518,
+        "lon": 14.3320879
+      },
+      "expectedGPS": {
+        "lat": 50.0837642,
+        "lon": 14.3703579,
+        "display_name": "245/71, Bělohorská, Břevnov, Praha 6, SO Praha 6, obvod Praha 6, Praha, 169 00, Česko"
+      },
+      "distance": 2876,
+      "status": "CRITICAL",
+      "issues": [
+        "GPS coordinates differ by 2876m (>2km)"
+      ],
+      "address": "Bělohorská 245/71, 169 00 Praha 6, Czechia"
+    },
+    {
+      "name": "Typika",
+      "table": "cafes",
+      "id": 27,
+      "locationName": "Karlín",
+      "currentLocation": "Holešovice, Karlín, Vršovice",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0930983,
+        "lon": 14.4560654,
+        "display_name": "Typika, 419/16, Šaldova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 2975,
+      "status": "CRITICAL",
+      "issues": [
+        "GPS coordinates differ by 2975m (>2km)"
+      ],
+      "address": "Typika, Karlín, Praha"
+    },
+    {
+      "name": "Místo",
+      "table": "bakeries",
+      "id": 3,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.13509285,
+        "lon": 14.37880820020478
+      },
+      "expectedGPS": {
+        "lat": 50.0990304,
+        "lon": 14.4044095,
+        "display_name": "Místo, 12, Bubenečská, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 4406,
+      "status": "CRITICAL",
+      "issues": [
+        "GPS coordinates differ by 4406m (>2km)"
+      ],
+      "address": "Bubenečská 12, 160 00 Praha 6, Czechia"
+    }
+  ],
+  "MAJOR": [
+    {
+      "name": "Óda Restaurant",
+      "table": "restaurants",
+      "id": 2336,
+      "locationName": "Vinohrady",
+      "currentLocation": "Vinohrady",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.0774839,
+        "lon": 14.4620778
+      },
+      "expectedGPS": {
+        "lat": 50.075286,
+        "lon": 14.4535955,
+        "display_name": "1304/92, Korunní, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 653,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 653m (500m-2km)"
+      ],
+      "address": "Korunní 1304/92, 101 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Sugo Pasta Bar",
+      "table": "restaurants",
+      "id": 933,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0915542,
+        "lon": 14.4408703
+      },
+      "expectedGPS": {
+        "lat": 50.0947931,
+        "lon": 14.454209,
+        "display_name": "715/107, Sokolovská, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 1017,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1017m (500m-2km)"
+      ],
+      "address": "Sokolovská 715/107, 186 00 Praha 8-Karlín, Czechia"
+    },
+    {
+      "name": "San Carlo",
+      "table": "restaurants",
+      "id": 904,
+      "locationName": "Holešovice",
+      "currentLocation": "Malostranská, Karlín, Letná, Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1106578,
+        "lon": 14.4397509
+      },
+      "expectedGPS": {
+        "lat": 50.10343,
+        "lon": 14.4555655,
+        "display_name": "1481/71, Dělnická, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 1385,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1385m (500m-2km)"
+      ],
+      "address": "Dělnická 1481/71, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "An Bistro Café",
+      "table": "restaurants",
+      "id": 939,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.1066776,
+        "lon": 14.3931444
+      },
+      "expectedGPS": {
+        "lat": 50.0980089,
+        "lon": 14.403577,
+        "display_name": "An bistro - ăn quán, 317/8, Dejvická, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 1218,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1218m (500m-2km)"
+      ],
+      "address": "Dejvická 317/8, 160 00 Praha 6-Dejvice, Czechia"
+    },
+    {
+      "name": "Fuze Restaurant",
+      "table": "restaurants",
+      "id": 1321,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.078919,
+        "lon": 14.430967761293582
+      },
+      "expectedGPS": {
+        "lat": 50.0884936,
+        "lon": 14.4357195,
+        "display_name": "2139/4, Na Florenci, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 1117,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1117m (500m-2km)"
+      ],
+      "address": "Na Florenci 2139, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Garage Poutine",
+      "table": "restaurants",
+      "id": 950,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0933902,
+        "lon": 14.4517852
+      },
+      "expectedGPS": {
+        "lat": 50.0903208,
+        "lon": 14.4412598,
+        "display_name": "Křižíkova, Florenc, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 825,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 825m (500m-2km)"
+      ],
+      "address": "Křižíkova 58/134, 186 00 Karlín, Czechia"
+    },
+    {
+      "name": "Isaac's BBQ",
+      "table": "restaurants",
+      "id": 920,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0802978,
+        "lon": 14.4225146,
+        "display_name": "736/10, Jungmannova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 838,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 838m (500m-2km)"
+      ],
+      "address": "Jungmannova 10, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Bon Ramen",
+      "table": "restaurants",
+      "id": 943,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl, Letná",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.061198,
+        "lon": 14.4090904
+      },
+      "expectedGPS": {
+        "lat": 50.0693961,
+        "lon": 14.4059074,
+        "display_name": "50/96, Nádražní, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 939,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 939m (500m-2km)"
+      ],
+      "address": "Nádražní 96, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "La Degustation",
+      "table": "restaurants",
+      "id": 953,
+      "locationName": "Náměstí republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí republiky",
+        "lat": 50.0794019,
+        "lon": 14.4227982
+      },
+      "expectedGPS": {
+        "lat": 50.0910323,
+        "lon": 14.4251059,
+        "display_name": "La Degustation Bohême Bourgeoise, 18, Haštalská, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 1304,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1304m (500m-2km)"
+      ],
+      "address": "Haštalská 18, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Lola Tapas",
+      "table": "restaurants",
+      "id": 957,
+      "locationName": "Národní Třída/Karlovo náměstí",
+      "currentLocation": "Národní Třída/Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Národní Třída/Karlovo náměstí",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0776547,
+        "lon": 14.4173679,
+        "display_name": "262/20, Myslíkova, Nové Město, obvod Praha 1, Praha, 120 00, Česko"
+      },
+      "distance": 982,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 982m (500m-2km)"
+      ],
+      "address": "Myslíkova 262/20, 120 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Masala",
+      "table": "restaurants",
+      "id": 958,
+      "locationName": "Letná",
+      "currentLocation": "Národní třída, Anděl, Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0995062,
+        "lon": 14.435505996264585
+      },
+      "expectedGPS": {
+        "lat": 50.1010457,
+        "lon": 14.4218014,
+        "display_name": "287/3, Keramická, Bubeneč, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 992,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 992m (500m-2km)"
+      ],
+      "address": "Keramická 287/3, 170 00 Praha 7-Bubeneč, Czechia"
+    },
+    {
+      "name": "Sansho",
+      "table": "restaurants",
+      "id": 965,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0821319,
+        "lon": 14.4271549
+      },
+      "expectedGPS": {
+        "lat": 50.0917572,
+        "lon": 14.4349461,
+        "display_name": "1170/25, Petrská, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 1206,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1206m (500m-2km)"
+      ],
+      "address": "Petrská 1170/25, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Café Sofa",
+      "table": "restaurants",
+      "id": 944,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.1013233,
+        "lon": 14.4134713
+      },
+      "expectedGPS": {
+        "lat": 50.0999114,
+        "lon": 14.3883221,
+        "display_name": "2690/17, Evropská, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 1801,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1801m (500m-2km)"
+      ],
+      "address": "Evropská 2690/17, 160 00 Praha 6, Czechia"
+    },
+    {
+      "name": "Pork's",
+      "table": "restaurants",
+      "id": 961,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0786315,
+        "lon": 14.415211580612244
+      },
+      "expectedGPS": {
+        "lat": 50.0803799,
+        "lon": 14.4234041,
+        "display_name": "Metropolitan ForU2, 17, Vodičkova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 616,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 616m (500m-2km)"
+      ],
+      "address": "Vodičkova 17, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "FatFuck",
+      "table": "restaurants",
+      "id": 915,
+      "locationName": "Břevnov",
+      "currentLocation": "Břevnov, Vinohrady",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.09256685,
+        "lon": 14.378449402774887
+      },
+      "expectedGPS": {
+        "lat": 50.0858703,
+        "lon": 14.382813,
+        "display_name": "158/14, Bělohorská, Střešovice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 169 00, Česko"
+      },
+      "distance": 807,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 807m (500m-2km)"
+      ],
+      "address": "Bělohorská 158/14, 169 00 Praha 6-Střešovice, Czechia"
+    },
+    {
+      "name": "Patê Bakery",
+      "table": "restaurants",
+      "id": 2335,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0815932,
+        "lon": 14.4168497,
+        "display_name": "138/10, Národní, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 544,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 544m (500m-2km)"
+      ],
+      "address": "Národní 10, Nové Město, 110 00 Praha-Praha 1, Czechia"
+    },
+    {
+      "name": "IF Café",
+      "table": "cafes",
+      "id": 54,
+      "locationName": "Kampa",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Kampa",
+        "lat": 50.0860181,
+        "lon": 14.4051053
+      },
+      "expectedGPS": {
+        "lat": 50.0808462,
+        "lon": 14.4067838,
+        "display_name": "620/47, Zborovská, Praha 5, Malá Strana, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 587,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 587m (500m-2km)"
+      ],
+      "address": "Zborovská 620/47, 150 00 Malá Strana, Czechia"
+    },
+    {
+      "name": "Umámy Café",
+      "table": "cafes",
+      "id": 62,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0826902,
+        "lon": 14.4214726,
+        "display_name": "Aligator, 37/38, Národní, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 586,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 586m (500m-2km)"
+      ],
+      "address": "Národní 37/38, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Funwari Japanese Delights",
+      "table": "cafes",
+      "id": 63,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.079117,
+        "lon": 14.4450787,
+        "display_name": "1556/6, Chopinova, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 647,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 647m (500m-2km)"
+      ],
+      "address": "Chopinova 6, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "IF Café",
+      "table": "bakeries",
+      "id": 1,
+      "locationName": "Kampa",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Kampa",
+        "lat": 50.0860181,
+        "lon": 14.4051053
+      },
+      "expectedGPS": {
+        "lat": 50.0808462,
+        "lon": 14.4067838,
+        "display_name": "620/47, Zborovská, Praha 5, Malá Strana, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 587,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 587m (500m-2km)"
+      ],
+      "address": "Zborovská 620/47, 150 00 Malá Strana, Czechia"
+    },
+    {
+      "name": "Loka",
+      "table": "bakeries",
+      "id": 11,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.078919,
+        "lon": 14.430967761293582
+      },
+      "expectedGPS": {
+        "lat": 50.0884936,
+        "lon": 14.4357195,
+        "display_name": "2139/4, Na Florenci, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 1117,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1117m (500m-2km)"
+      ],
+      "address": "Na Florenci 2139, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Café Sofa",
+      "table": "bakeries",
+      "id": 5,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.1013233,
+        "lon": 14.4134713
+      },
+      "expectedGPS": {
+        "lat": 50.0999114,
+        "lon": 14.3883221,
+        "display_name": "2690/17, Evropská, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 1801,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 1801m (500m-2km)"
+      ],
+      "address": "Evropská 2690/17, 160 00 Praha 6, Czechia"
+    },
+    {
+      "name": "Umámy Café",
+      "table": "bakeries",
+      "id": 13,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": {
+        "lat": 50.0826902,
+        "lon": 14.4214726,
+        "display_name": "Aligator, 37/38, Národní, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 586,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 586m (500m-2km)"
+      ],
+      "address": "Národní 37/38, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Funwari Japanese Delights",
+      "table": "bakeries",
+      "id": 15,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.079117,
+        "lon": 14.4450787,
+        "display_name": "1556/6, Chopinova, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 647,
+      "status": "MAJOR",
+      "issues": [
+        "GPS coordinates differ by 647m (500m-2km)"
+      ],
+      "address": "Chopinova 6, 120 00 Praha 2-Vinohrady, Czechia"
+    }
+  ],
+  "MINOR": [
+    {
+      "name": "di Nuovo",
+      "table": "restaurants",
+      "id": 946,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0738883,
+        "lon": 14.4421892,
+        "display_name": "998/10, Budečská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 453,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 453m (100m-500m)"
+      ],
+      "address": "Budečská 998/10, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Dim Sum Spot",
+      "table": "restaurants",
+      "id": 947,
+      "locationName": "Anděl",
+      "currentLocation": "Letná, Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0754027,
+        "lon": 14.40568790761613
+      },
+      "expectedGPS": {
+        "lat": 50.0722496,
+        "lon": 14.4066643,
+        "display_name": "653/25, Lidická, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 357,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 357m (100m-500m)"
+      ],
+      "address": "Lidická 653/25, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "Karlínská Holka",
+      "table": "restaurants",
+      "id": 1225,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.09164355,
+        "lon": 14.444650198490905
+      },
+      "expectedGPS": {
+        "lat": 50.0948022,
+        "lon": 14.4455977,
+        "display_name": "707/7, Karolinská, Florenc, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 358,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 358m (100m-500m)"
+      ],
+      "address": "Karolinská 7, 186 00 Praha 8-Karlín, Czechia"
+    },
+    {
+      "name": "Masala",
+      "table": "restaurants",
+      "id": 958,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "Národní třída, Anděl, Václavské náměstí",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0740527,
+        "lon": 14.4318001,
+        "display_name": "Masala I.P. Pavlova, 15, Rumunská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 457,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 457m (100m-500m)"
+      ],
+      "address": "Rumunská 15, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Masala",
+      "table": "restaurants",
+      "id": 958,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Národní třída, Anděl, Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0794019,
+        "lon": 14.4227982
+      },
+      "expectedGPS": {
+        "lat": 50.0801035,
+        "lon": 14.4247282,
+        "display_name": "1263/6, V Jámě, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 158,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 158m (100m-500m)"
+      ],
+      "address": "V Jámě 1263/6, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Le Pizze di Frankie",
+      "table": "restaurants",
+      "id": 954,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.071751,
+        "lon": 14.403113742602567
+      },
+      "expectedGPS": {
+        "lat": 50.0693826,
+        "lon": 14.4053462,
+        "display_name": "33/2, Ostrovského, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 308,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 308m (100m-500m)"
+      ],
+      "address": "Ostrovského 33/2, Smíchov 5, 150 00 Praha 5, Czechia"
+    },
+    {
+      "name": "The Italians",
+      "table": "restaurants",
+      "id": 969,
+      "locationName": "Smíchovské nádraží",
+      "currentLocation": "Smíchovské nádraží",
+      "currentGPS": {
+        "locationName": "Smíchovské nádraží",
+        "lat": 50.061198,
+        "lon": 14.4090904
+      },
+      "expectedGPS": {
+        "lat": 50.0631483,
+        "lon": 14.4105506,
+        "display_name": "948/1, Strakonická, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 241,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 241m (100m-500m)"
+      ],
+      "address": "Strakonická 948/1, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "Ricefield",
+      "table": "restaurants",
+      "id": 963,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0748382,
+        "lon": 14.4407173,
+        "display_name": "807/14, Sázavská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 306,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 306m (100m-500m)"
+      ],
+      "address": "Sázavská 807/14, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Miska Ramen",
+      "table": "restaurants",
+      "id": 960,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0791314,
+        "lon": 14.4339481,
+        "display_name": "770/2, Španělská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 384,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 384m (100m-500m)"
+      ],
+      "address": "Španělská 2, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "FatFuck",
+      "table": "restaurants",
+      "id": 915,
+      "locationName": "Vinohrady",
+      "currentLocation": "Břevnov, Vinohrady",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0771115,
+        "lon": 14.4436867,
+        "display_name": "Vinohradský Burger Bar, 1241/67, Vinohradská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 477,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 477m (100m-500m)"
+      ],
+      "address": "Vinohradská 1241/67, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "cafes",
+      "id": 56,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0743269,
+        "lon": 14.4321167,
+        "display_name": "MÚÚÚ, 645/2, Tylovo náměstí, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 421,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 421m (100m-500m)"
+      ],
+      "address": "Tylovo Nám. 2, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "cafes",
+      "id": 56,
+      "locationName": "Národní Třída",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "Národní Třída",
+        "lat": 50.08322645,
+        "lon": 14.422923502358412
+      },
+      "expectedGPS": {
+        "lat": 50.0812396,
+        "lon": 14.422285,
+        "display_name": "30/21, Jungmannova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 226,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 226m (100m-500m)"
+      ],
+      "address": "Jungmannova 30/21, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Myšák",
+      "table": "cafes",
+      "id": 57,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí, Holešovice",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0794019,
+        "lon": 14.4227982
+      },
+      "expectedGPS": {
+        "lat": 50.0812568,
+        "lon": 14.4243198,
+        "display_name": "Myšák Gallery, 710/31, Vodičkova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 233,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 233m (100m-500m)"
+      ],
+      "address": "710/31, Vodičkova, Nové Město, 110 00 Praha, Czechia"
+    },
+    {
+      "name": "Ollies",
+      "table": "cafes",
+      "id": 53,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0884239,
+        "lon": 14.4340113
+      },
+      "expectedGPS": {
+        "lat": 50.0884344,
+        "lon": 14.4324734,
+        "display_name": "Na Florenci, Nové Město, obvod Praha 1, Praha, 116 47, Česko"
+      },
+      "distance": 110,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 110m (100m-500m)"
+      ],
+      "address": "Na Florenci 1016/2, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Matcha Crew",
+      "table": "cafes",
+      "id": 64,
+      "locationName": "I. P. Pavlova/Náměstí Míru",
+      "currentLocation": "I. P. Pavlova/Náměstí Míru",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova/Náměstí Míru",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0742957,
+        "lon": 14.4335565,
+        "display_name": "256/25, Rumunská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 341,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 341m (100m-500m)"
+      ],
+      "address": "Rumunská 256/25, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Ollies",
+      "table": "bakeries",
+      "id": 12,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0884239,
+        "lon": 14.4340113
+      },
+      "expectedGPS": {
+        "lat": 50.0884344,
+        "lon": 14.4324734,
+        "display_name": "Na Florenci, Nové Město, obvod Praha 1, Praha, 116 47, Česko"
+      },
+      "distance": 110,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 110m (100m-500m)"
+      ],
+      "address": "Na Florenci 1016/2, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Můj šálek kávy",
+      "table": "bakeries",
+      "id": 4,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0933902,
+        "lon": 14.4517852
+      },
+      "expectedGPS": {
+        "lat": 50.0935184,
+        "lon": 14.455158,
+        "display_name": "Můj šálek kávy, 386/105, Křižíkova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 241,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 241m (100m-500m)"
+      ],
+      "address": "Křižíkova 386/105, 186 00 Praha 8-Karlín, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "bakeries",
+      "id": 2,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0743269,
+        "lon": 14.4321167,
+        "display_name": "MÚÚÚ, 645/2, Tylovo náměstí, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 421,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 421m (100m-500m)"
+      ],
+      "address": "Tylovo Nám. 2, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "bakeries",
+      "id": 2,
+      "locationName": "Národní Třída",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "Národní Třída",
+        "lat": 50.08322645,
+        "lon": 14.422923502358412
+      },
+      "expectedGPS": {
+        "lat": 50.0812396,
+        "lon": 14.422285,
+        "display_name": "30/21, Jungmannova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 226,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 226m (100m-500m)"
+      ],
+      "address": "Jungmannova 30/21, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Myšák",
+      "table": "bakeries",
+      "id": 7,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí, Holešovice",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0794019,
+        "lon": 14.4227982
+      },
+      "expectedGPS": {
+        "lat": 50.0812568,
+        "lon": 14.4243198,
+        "display_name": "Myšák Gallery, 710/31, Vodičkova, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 233,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 233m (100m-500m)"
+      ],
+      "address": "710/31, Vodičkova, Nové Město, 110 00 Praha, Czechia"
+    },
+    {
+      "name": "Matcha Crew",
+      "table": "bakeries",
+      "id": 17,
+      "locationName": "I. P. Pavlova/Náměstí Míru",
+      "currentLocation": "I. P. Pavlova/Náměstí Míru",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova/Náměstí Míru",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0742957,
+        "lon": 14.4335565,
+        "display_name": "256/25, Rumunská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 341,
+      "status": "MINOR",
+      "issues": [
+        "GPS coordinates differ by 341m (100m-500m)"
+      ],
+      "address": "Rumunská 256/25, 120 00 Praha 2-Vinohrady, Czechia"
+    }
+  ],
+  "NO_GPS": [],
+  "NO_ADDRESS": [],
+  "GEOCODE_FAILED": [
+    {
+      "name": "420",
+      "table": "restaurants",
+      "id": 884,
+      "locationName": "Staroměstské náměstí",
+      "currentLocation": "Staroměstské náměstí",
+      "currentGPS": {
+        "locationName": "Staroměstské náměstí",
+        "lat": 50.0874453,
+        "lon": 14.4209714
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Staroměstské nám. 480/24/110 00, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Hostinec Na Výtoni",
+      "table": "restaurants",
+      "id": 917,
+      "locationName": "Výtoň",
+      "currentLocation": "Výtoň",
+      "currentGPS": {
+        "locationName": "Výtoň",
+        "lat": 50.065323589382885,
+        "lon": 14.415451588397026
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Rašínovo nábř. 412/30/128 00, 128 00 Nové Město, Czechia"
+    },
+    {
+      "name": "La Paisanita",
+      "table": "restaurants",
+      "id": 922,
+      "locationName": "Žižkov",
+      "currentLocation": "Dejvice, Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.0846505,
+        "lon": 14.4540488
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Úřad městské části, Havlíčkovo nám. 3/700, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "Sasazu",
+      "table": "restaurants",
+      "id": 891,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.0992274,
+        "lon": 14.4450921
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "306/13, Holešovice, Bubenské nábř., 170 00 Praha 7, Czechia"
+    },
+    {
+      "name": "AMUNÌ",
+      "table": "restaurants",
+      "id": 1547,
+      "locationName": "Staroměstské náměstí",
+      "currentLocation": "Staroměstské náměstí, Vinohrady",
+      "currentGPS": {
+        "locationName": "Staroměstské náměstí",
+        "lat": 50.0851984,
+        "lon": 14.4140048
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Smetanovo nábř. 203/24, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Sandwich Rodeo",
+      "table": "restaurants",
+      "id": 931,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.099679,
+        "lon": 14.4276321
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 43, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Centraaal Fried Chicken",
+      "table": "restaurants",
+      "id": 913,
+      "locationName": "Karlovo náměstí",
+      "currentLocation": "Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Karlovo náměstí",
+        "lat": 50.0702364,
+        "lon": 14.4146678
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Rašínovo nábř. 388/48, 128 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Salabka",
+      "table": "restaurants",
+      "id": 890,
+      "locationName": "Trója",
+      "currentLocation": "Trója",
+      "currentGPS": {
+        "locationName": "Trója",
+        "lat": 50.1227337,
+        "lon": 14.4114527
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Troja Praha 7-Troja CZ, K Bohnicím 849/2a, 171 00 Praha 7, Czechia"
+    },
+    {
+      "name": "Sia Restaurant",
+      "table": "restaurants",
+      "id": 905,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0881862,
+        "lon": 14.4307779
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Spork Palace, V Celnici 1034/6, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Šnycl",
+      "table": "restaurants",
+      "id": 906,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0711112,
+        "lon": 14.4039874
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Nádražní 222/23, Smíchov, 151 34 pobočka-Praha 5, Czechia"
+    },
+    {
+      "name": "Ask4 Masaryčka",
+      "table": "restaurants",
+      "id": 1175,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0891682,
+        "lon": 14.4271866
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Masaryčka - Budova A, Na Florenci, Florenc, 110 00 Praha 8, Czechia"
+    },
+    {
+      "name": "Burgerman",
+      "table": "restaurants",
+      "id": 910,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1049265,
+        "lon": 14.45129540766419
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 63, 170 00 Praha 7-Letná, Czechia"
+    },
+    {
+      "name": "San Carlo",
+      "table": "restaurants",
+      "id": 904,
+      "locationName": "Letná",
+      "currentLocation": "Malostranská, Karlín, Letná, Holešovice",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1049265,
+        "lon": 14.45129540766419
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 1280/9, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Cafefin",
+      "table": "restaurants",
+      "id": 911,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.078163,
+        "lon": 14.4483946
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "nám. J. z Poděbrad 1407/4, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Cantina",
+      "table": "restaurants",
+      "id": 912,
+      "locationName": "Karlovo náměstí",
+      "currentLocation": "Újezd, Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Karlovo náměstí",
+        "lat": 50.0714419,
+        "lon": 14.4144225
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Rašínovo nábř. 382/60, 120 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Dockhouse",
+      "table": "restaurants",
+      "id": 914,
+      "locationName": "Kačerov",
+      "currentLocation": "Kačerov",
+      "currentGPS": {
+        "locationName": "Kačerov",
+        "lat": 38.9742334,
+        "lon": -76.27354752170373
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "110 Piney Narrows Rd, Chester, MD 21619, United States"
+    },
+    {
+      "name": "Grosseto",
+      "table": "restaurants",
+      "id": 951,
+      "locationName": "Anděl",
+      "currentLocation": "Dejvice, Anděl, Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0710748,
+        "lon": 14.4013721
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Anděl City, Radlická 3179/1e, 150 00 Praha 5-Anděl, Czechia"
+    },
+    {
+      "name": "Bon Ramen",
+      "table": "restaurants",
+      "id": 943,
+      "locationName": "Letná",
+      "currentLocation": "Anděl, Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1001266,
+        "lon": 14.4224919
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 178/66, 160 00 Praha 7-Bubeneč, Czechia"
+    },
+    {
+      "name": "Dim Sum Spot",
+      "table": "restaurants",
+      "id": 947,
+      "locationName": "Letná",
+      "currentLocation": "Letná, Anděl",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1049265,
+        "lon": 14.45129540766419
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 806/29, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Cruz Rotiseria",
+      "table": "restaurants",
+      "id": 945,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.10003450000001,
+        "lon": 14.4220061
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "M. Horákové 141/70, 170 00 Praha 7-Bubeneč, Czechia"
+    },
+    {
+      "name": "Masala",
+      "table": "restaurants",
+      "id": 958,
+      "locationName": "Anděl",
+      "currentLocation": "Národní třída, Anděl, Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0703641,
+        "lon": 14.4057848
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "J. Plachty 27, 150 00 Praha 5-Anděl, Czechia"
+    },
+    {
+      "name": "Masala",
+      "table": "restaurants",
+      "id": 958,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída, Anděl, Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0794019,
+        "lon": 14.4227982
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Vladislavova 1747/16/110 00, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "U Kalendů",
+      "table": "restaurants",
+      "id": 971,
+      "locationName": "Karlovo náměstí",
+      "currentLocation": "Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Karlovo náměstí",
+        "lat": 50.0712662,
+        "lon": 14.4144521
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Rašínovo nábř. 383/58, 128 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Miska Ramen",
+      "table": "restaurants",
+      "id": 960,
+      "locationName": "Malostranská",
+      "currentLocation": "Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Malostranská",
+        "lat": 50.0877651,
+        "lon": 14.408318
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Czechia, Míšeňská, CZ邮政编码: 118 00"
+    },
+    {
+      "name": "Acid Coffee",
+      "table": "cafes",
+      "id": 14,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.08177175,
+        "lon": 14.41414746429405
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Acid Coffee, Letná, Praha"
+    },
+    {
+      "name": "Sensu Café",
+      "table": "cafes",
+      "id": 36,
+      "locationName": "Žižkov",
+      "currentLocation": "Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.086332,
+        "lon": 14.4704702
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "J. Želivského 2934/2b, 130 00 Praha 3, Czechia"
+    },
+    {
+      "name": "Bjukitchen",
+      "table": "cafes",
+      "id": 38,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Bjukitchen, Národní třída, Praha"
+    },
+    {
+      "name": "Format Coffee",
+      "table": "cafes",
+      "id": 15,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0829609,
+        "lon": 14.4193024
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Format Coffee, Letná, Praha"
+    },
+    {
+      "name": "Café Sofa",
+      "table": "cafes",
+      "id": 22,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0989043,
+        "lon": 14.410123117789599
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Café Sofa, Dejvice, Praha"
+    },
+    {
+      "name": "mèmè & brunch",
+      "table": "cafes",
+      "id": 52,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0792906,
+        "lon": 14.4477406
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "mèmè & brunch, Jiřího z Poděbrad, Praha"
+    },
+    {
+      "name": "Cafedu",
+      "table": "cafes",
+      "id": 33,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0815867,
+        "lon": 14.42716991538461
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Cafedu, Václavské náměstí, Praha"
+    },
+    {
+      "name": "Hans by Solo",
+      "table": "cafes",
+      "id": 16,
+      "locationName": "Florenc",
+      "currentLocation": "Florenc, Petrská čtvrť",
+      "currentGPS": {
+        "locationName": "Florenc",
+        "lat": 50.0929782,
+        "lon": 14.446123
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Hans by Solo, Florenc, Praha"
+    },
+    {
+      "name": "Hans by Solo",
+      "table": "cafes",
+      "id": 16,
+      "locationName": "Petrská čtvrť",
+      "currentLocation": "Florenc, Petrská čtvrť",
+      "currentGPS": {
+        "locationName": "Petrská čtvrť",
+        "lat": 50.091663,
+        "lon": 14.4348796
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Petrská 1179, 110 00 Petrská čtvrť"
+    },
+    {
+      "name": "Francin",
+      "table": "cafes",
+      "id": 35,
+      "locationName": "Anděl",
+      "currentLocation": "Letná, Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Francin, Anděl, Praha"
+    },
+    {
+      "name": "Francin",
+      "table": "cafes",
+      "id": 35,
+      "locationName": "Letná",
+      "currentLocation": "Letná, Anděl",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Francin, Letná, Praha"
+    },
+    {
+      "name": "EMA Espresso Bar",
+      "table": "cafes",
+      "id": 26,
+      "locationName": "Karlín",
+      "currentLocation": "Náměstí Republiky/Florenc, Holešovice, Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.1057744,
+        "lon": 14.4733717
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "EMA Espresso Bar, Karlín, Praha"
+    },
+    {
+      "name": "EMA Espresso Bar",
+      "table": "cafes",
+      "id": 26,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc, Holešovice, Karlín",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0887732,
+        "lon": 14.4334805
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "EMA Espresso Bar, Florenc, Praha"
+    },
+    {
+      "name": "IF Café",
+      "table": "cafes",
+      "id": 54,
+      "locationName": "Florenc",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Florenc",
+        "lat": 50.078919,
+        "lon": 14.430967761293582
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Na Florenci 2139/4/110 00, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "IF Café",
+      "table": "cafes",
+      "id": 54,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0891183,
+        "lon": 14.4287105
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Náměstí Republiky 1078, 110 00 Petrská čtvrť, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "cafes",
+      "id": 56,
+      "locationName": "Břevnov",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.0838651,
+        "lon": 14.3633789
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "134, Bělohorská 724, 169 00 Praha, Czechia"
+    },
+    {
+      "name": "Matilda",
+      "table": "cafes",
+      "id": 34,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Matilda, Letná, Praha"
+    },
+    {
+      "name": "Moe",
+      "table": "cafes",
+      "id": 39,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Moe, Letná, Praha"
+    },
+    {
+      "name": "Vila 63",
+      "table": "cafes",
+      "id": 18,
+      "locationName": "Vršovice",
+      "currentLocation": "Vršovice",
+      "currentGPS": {
+        "locationName": "Vršovice",
+        "lat": 50.0644412,
+        "lon": 14.4657372
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Vila 63, Vršovice, Praha"
+    },
+    {
+      "name": "Miners",
+      "table": "cafes",
+      "id": 29,
+      "locationName": "Letná",
+      "currentLocation": "Národní třída, Jiřího z Poděbrad, Staroměstské náměstí, Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Miners, Letná, Praha"
+    },
+    {
+      "name": "Miners",
+      "table": "cafes",
+      "id": 29,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída, Jiřího z Poděbrad, Staroměstské náměstí, Letná",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Miners, Národní třída, Praha"
+    },
+    {
+      "name": "Miners",
+      "table": "cafes",
+      "id": 29,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Národní třída, Jiřího z Poděbrad, Staroměstské náměstí, Letná",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0777115,
+        "lon": 14.4507304
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Miners, Jiřího z Poděbrad, Praha"
+    },
+    {
+      "name": "Miners",
+      "table": "cafes",
+      "id": 29,
+      "locationName": "Staroměstské náměstí",
+      "currentLocation": "Národní třída, Jiřího z Poděbrad, Staroměstské náměstí, Letná",
+      "currentGPS": {
+        "locationName": "Staroměstské náměstí",
+        "lat": 50.08744525,
+        "lon": 14.420971429359513
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Miners, Staroměstské náměstí, Praha"
+    },
+    {
+      "name": "Solo Bakery",
+      "table": "cafes",
+      "id": 37,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.0743299,
+        "lon": 14.4303111
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Solo Bakery, I. P. Pavlova, Praha"
+    },
+    {
+      "name": "Café Milleme",
+      "table": "cafes",
+      "id": 60,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0471728,
+        "lon": 14.3047101
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Klimentská 2067/34, 110 00 Petrská čtvrť, Czechia"
+    },
+    {
+      "name": "May Café",
+      "table": "cafes",
+      "id": 28,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0777115,
+        "lon": 14.4507304
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "May Café, Jiřího z Poděbrad, Praha"
+    },
+    {
+      "name": "Ask4 Masaryčka",
+      "table": "cafes",
+      "id": 65,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0891682,
+        "lon": 14.4271866
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Masaryčka - Budova A, Na Florenci, Florenc, 110 00 Praha 8, Czechia"
+    },
+    {
+      "name": "Café Hrnek",
+      "table": "cafes",
+      "id": 8,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1011355,
+        "lon": 14.4282502
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Café Hrnek, Letná, Praha"
+    },
+    {
+      "name": "Kavárna co hledá jméno",
+      "table": "cafes",
+      "id": 9,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0697123,
+        "lon": 14.4038433
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Kavárna co hledá jméno, Anděl, Praha"
+    },
+    {
+      "name": "Kro Libeň",
+      "table": "cafes",
+      "id": 51,
+      "locationName": "Palmovka",
+      "currentLocation": "Palmovka",
+      "currentGPS": {
+        "locationName": "Palmovka",
+        "lat": 50.1041703,
+        "lon": 14.4687136
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Kro Libeň, Palmovka, Praha"
+    },
+    {
+      "name": "Šodó Bistro",
+      "table": "cafes",
+      "id": 32,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0989043,
+        "lon": 14.410123117789599
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Šodó Bistro, Dejvice, Praha"
+    },
+    {
+      "name": "Dos Mundos",
+      "table": "cafes",
+      "id": 46,
+      "locationName": "Letná",
+      "currentLocation": "Letná, Vinohrady",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0754451,
+        "lon": 14.4429299
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Dos Mundos, Letná, Praha"
+    },
+    {
+      "name": "Typika",
+      "table": "cafes",
+      "id": 27,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice, Karlín, Vršovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1028733,
+        "lon": 14.4402734
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Typika, Holešovice, Praha"
+    },
+    {
+      "name": "Kro Coffee",
+      "table": "cafes",
+      "id": 12,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0777115,
+        "lon": 14.4507304
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Kro Coffee, Jiřího z Poděbrad, Praha"
+    },
+    {
+      "name": "Kiosek Coffee",
+      "table": "cafes",
+      "id": 44,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice, Petřiny",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0989043,
+        "lon": 14.410123117789599
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Kiosek Coffee, Dejvice, Praha"
+    },
+    {
+      "name": "Kiosek Coffee",
+      "table": "cafes",
+      "id": 44,
+      "locationName": "Petřiny",
+      "currentLocation": "Dejvice, Petřiny",
+      "currentGPS": {
+        "locationName": "Petřiny",
+        "lat": 50.0829609,
+        "lon": 14.4193024
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Kiosek Coffee, Petřiny, Praha"
+    },
+    {
+      "name": "La Forme Bakery",
+      "table": "cafes",
+      "id": 45,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0991969,
+        "lon": 14.4035422
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "La Forme Bakery, Dejvice, Praha"
+    },
+    {
+      "name": "Letec Espresso Bar",
+      "table": "cafes",
+      "id": 13,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.103008,
+        "lon": 14.4333124
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Letec Espresso Bar, Letná, Praha"
+    },
+    {
+      "name": "Loka",
+      "table": "cafes",
+      "id": 30,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0864234,
+        "lon": 14.4156772
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Loka, Náměstí Republiky, Praha"
+    },
+    {
+      "name": "IF Café",
+      "table": "bakeries",
+      "id": 1,
+      "locationName": "Florenc",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Florenc",
+        "lat": 50.078919,
+        "lon": 14.430967761293582
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Na Florenci 2139/4/110 00, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "IF Café",
+      "table": "bakeries",
+      "id": 1,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Kampa, Náměstí Republiky, Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0891183,
+        "lon": 14.4287105
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Náměstí Republiky 1078, 110 00 Petrská čtvrť, Czechia"
+    },
+    {
+      "name": "IPPA Café",
+      "table": "bakeries",
+      "id": 2,
+      "locationName": "Břevnov",
+      "currentLocation": "I. P. Pavlova, Národní Třída, Břevnov",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.0838651,
+        "lon": 14.3633789
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "134, Bělohorská 724, 169 00 Praha, Czechia"
+    },
+    {
+      "name": "Café Milleme",
+      "table": "bakeries",
+      "id": 8,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0471728,
+        "lon": 14.3047101
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Klimentská 2067/34, 110 00 Petrská čtvrť, Czechia"
+    },
+    {
+      "name": "Sensu Café",
+      "table": "bakeries",
+      "id": 16,
+      "locationName": "Žižkov",
+      "currentLocation": "Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.086332,
+        "lon": 14.4704702
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "J. Želivského 2934/2b, 130 00 Praha 3, Czechia"
+    },
+    {
+      "name": "Ask4 Masaryčka",
+      "table": "bakeries",
+      "id": 18,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0891682,
+        "lon": 14.4271866
+      },
+      "expectedGPS": null,
+      "distance": null,
+      "status": "GEOCODE_FAILED",
+      "issues": [
+        "Failed to geocode address"
+      ],
+      "address": "Masaryčka - Budova A, Na Florenci, Florenc, 110 00 Praha 8, Czechia"
+    }
+  ],
+  "OK": [
+    {
+      "name": "Bockem",
+      "table": "restaurants",
+      "id": 885,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0772922,
+        "lon": 14.4051895
+      },
+      "expectedGPS": {
+        "lat": 50.0772922,
+        "lon": 14.4051895,
+        "display_name": "1095/5, Elišky Peškové, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Elišky Peškové 1095/5, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "U Matěje",
+      "table": "restaurants",
+      "id": 1271,
+      "locationName": "Suchdol",
+      "currentLocation": "Suchdol",
+      "currentGPS": {
+        "locationName": "Suchdol",
+        "lat": 50.1130916,
+        "lon": 14.3798591
+      },
+      "expectedGPS": {
+        "lat": 50.1130916,
+        "lon": 14.3798591,
+        "display_name": "152/1, U Matěje, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "U Matěje 152/1, 160 00 Praha 6-Dejvice, Czechia"
+    },
+    {
+      "name": "Bruxx",
+      "table": "restaurants",
+      "id": 909,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0756408,
+        "lon": 14.4380126
+      },
+      "expectedGPS": {
+        "lat": 50.0755916,
+        "lon": 14.4379635,
+        "display_name": "820/9, náměstí Míru, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 6,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 6m"
+      ],
+      "address": "Náměstí Míru 9, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Brasileiro",
+      "table": "restaurants",
+      "id": 895,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky, Staroměstské náměstí",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.085565,
+        "lon": 14.4256651
+      },
+      "expectedGPS": {
+        "lat": 50.0855651,
+        "lon": 14.4256651,
+        "display_name": "Na Příkopě, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Na Příkopě 859/22, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Brasileiro",
+      "table": "restaurants",
+      "id": 895,
+      "locationName": "Staroměstské náměstí",
+      "currentLocation": "Náměstí Republiky, Staroměstské náměstí",
+      "currentGPS": {
+        "locationName": "Staroměstské náměstí",
+        "lat": 50.0870426,
+        "lon": 14.4192892
+      },
+      "expectedGPS": {
+        "lat": 50.0870426,
+        "lon": 14.4192892,
+        "display_name": "U Radnice, Staré Město, obvod Praha 1, Praha, 115 72, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "U Radnice 8/13, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Hoxton Burgers",
+      "table": "restaurants",
+      "id": 918,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru, Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.076085,
+        "lon": 14.4358605
+      },
+      "expectedGPS": {
+        "lat": 50.076085,
+        "lon": 14.4358605,
+        "display_name": "1221/4, náměstí Míru, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Náměstí Míru 1221/4, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Hoxton Burgers",
+      "table": "restaurants",
+      "id": 918,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Náměstí Míru, Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0786966,
+        "lon": 14.448539
+      },
+      "expectedGPS": {
+        "lat": 50.0786966,
+        "lon": 14.448539,
+        "display_name": "1562/4, Slavíkova, Vinohrady, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Slavíkova 4, 130 00 Praha 3-Vinohrady, Czechia"
+    },
+    {
+      "name": "Dian Prague",
+      "table": "restaurants",
+      "id": 887,
+      "locationName": "Brumlovka",
+      "currentLocation": "Brumlovka",
+      "currentGPS": {
+        "locationName": "Brumlovka",
+        "lat": 50.0474481,
+        "lon": 14.4559417
+      },
+      "expectedGPS": {
+        "lat": 50.0479002,
+        "lon": 14.4559213,
+        "display_name": "1481/4, Vyskočilova, Michle, Praha 4, SO Praha 4, obvod Praha 4, Praha, 140 00, Česko"
+      },
+      "distance": 50,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 50m"
+      ],
+      "address": "Vyskočilova 4, 140 00 Praha 4, Czechia"
+    },
+    {
+      "name": "El Camino Tapas",
+      "table": "restaurants",
+      "id": 888,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0793439,
+        "lon": 14.452787
+      },
+      "expectedGPS": {
+        "lat": 50.0793439,
+        "lon": 14.452787,
+        "display_name": "2150/10, Jagellonská, Vinohrady, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Jagellonská 10, 130 00 Praha 3-Vinohrady, Czechia"
+    },
+    {
+      "name": "Mazel",
+      "table": "restaurants",
+      "id": 1194,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0729081,
+        "lon": 14.4394379
+      },
+      "expectedGPS": {
+        "lat": 50.0729081,
+        "lon": 14.4394379,
+        "display_name": "Záhřebská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Záhřebská 23/25, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Alma Prague",
+      "table": "restaurants",
+      "id": 1173,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0800529,
+        "lon": 14.4166114
+      },
+      "expectedGPS": {
+        "lat": 50.0800529,
+        "lon": 14.4166114,
+        "display_name": "BackYard, 150/8, V Jirchářích, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "V Jirchářích 150/8, Nové Město 110 00, 1 Praha 1, Czechia"
+    },
+    {
+      "name": "Čestr",
+      "table": "restaurants",
+      "id": 897,
+      "locationName": "Václavské náměstí",
+      "currentLocation": "Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Václavské náměstí",
+        "lat": 50.0804865,
+        "lon": 14.4329548
+      },
+      "expectedGPS": {
+        "lat": 50.0804865,
+        "lon": 14.4329548,
+        "display_name": "Státní opera Praha, 57/75, Legerova, Vinohrady, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Legerova 57/75, 110 00 Praha 1-Vinohrady, Czechia"
+    },
+    {
+      "name": "La Paisanita",
+      "table": "restaurants",
+      "id": 922,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice, Žižkov",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0985514,
+        "lon": 14.397817
+      },
+      "expectedGPS": {
+        "lat": 50.0985514,
+        "lon": 14.397817,
+        "display_name": "La Paisanita Dejvice, 341/1, Kyjevská, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Kyjevská 341/1, 160 00 Praha 6-Dejvice, Czechia"
+    },
+    {
+      "name": "AMUNÌ",
+      "table": "restaurants",
+      "id": 1547,
+      "locationName": "Vinohrady",
+      "currentLocation": "Staroměstské náměstí, Vinohrady",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.0771817,
+        "lon": 14.4465066
+      },
+      "expectedGPS": {
+        "lat": 50.0771978,
+        "lon": 14.4464371,
+        "display_name": "Amuni Pizzeria, 1183/83, Vinohradská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 5,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 5m"
+      ],
+      "address": "Vinohradská 1183/83, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Mensa Holešovice",
+      "table": "restaurants",
+      "id": 925,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1062383,
+        "lon": 14.455907
+      },
+      "expectedGPS": {
+        "lat": 50.1062383,
+        "lon": 14.455907,
+        "display_name": "1587/8d, Jankovcova, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Jankovcova 1587/8, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "The Eatery",
+      "table": "restaurants",
+      "id": 1243,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1074393,
+        "lon": 14.4509146
+      },
+      "expectedGPS": {
+        "lat": 50.1074393,
+        "lon": 14.4509146,
+        "display_name": "954/18, U Uranie, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "U Uranie 18, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Tamarind Tree",
+      "table": "restaurants",
+      "id": 968,
+      "locationName": "Karlovo náměstí",
+      "currentLocation": "Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Karlovo náměstí",
+        "lat": 50.0709532,
+        "lon": 14.4187204
+      },
+      "expectedGPS": {
+        "lat": 50.0709532,
+        "lon": 14.4187204,
+        "display_name": "1376/43, Vyšehradská, Nové Město, obvod Praha 2, Praha, 128 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Vyšehradská 1376/43, 128 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Da Pietro",
+      "table": "restaurants",
+      "id": 898,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.0724861,
+        "lon": 14.4333044
+      },
+      "expectedGPS": {
+        "lat": 50.0724861,
+        "lon": 14.4333044,
+        "display_name": "573/61, Bělehradská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Bělehradská 573/61, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Mamam Bistro",
+      "table": "restaurants",
+      "id": 923,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0740328,
+        "lon": 14.4382804
+      },
+      "expectedGPS": {
+        "lat": 50.0740328,
+        "lon": 14.4382804,
+        "display_name": "176/19, Uruguayská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Uruguayská 176/19, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Sangam",
+      "table": "restaurants",
+      "id": 964,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.093588,
+        "lon": 14.448627
+      },
+      "expectedGPS": {
+        "lat": 50.0935467,
+        "lon": 14.4486721,
+        "display_name": "161/71, Sokolovská, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 6,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 6m"
+      ],
+      "address": "Sokolovská 71, 186 00 Karlín, Czechia"
+    },
+    {
+      "name": "Mr. Hotdog",
+      "table": "restaurants",
+      "id": 926,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.0994669,
+        "lon": 14.4277374
+      },
+      "expectedGPS": {
+        "lat": 50.0994669,
+        "lon": 14.4277374,
+        "display_name": "Mr HotDog, 24, Kamenická, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Kamenická 24, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Rakin",
+      "table": "restaurants",
+      "id": 930,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.1050664,
+        "lon": 14.394527
+      },
+      "expectedGPS": {
+        "lat": 50.1050556,
+        "lon": 14.3945405,
+        "display_name": "1426/7, Jugoslávských partyzánů, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 2,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 2m"
+      ],
+      "address": "Jugoslávských partyzánů 7, 160 00 Praha 6, Czechia"
+    },
+    {
+      "name": "Červený Jelen",
+      "table": "restaurants",
+      "id": 896,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0873156,
+        "lon": 14.4308457
+      },
+      "expectedGPS": {
+        "lat": 50.0873156,
+        "lon": 14.4308457,
+        "display_name": "1034/5, Hybernská, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Hybernská 1034/5, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Nha Hai Hanh",
+      "table": "restaurants",
+      "id": 927,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0774892,
+        "lon": 14.4023651
+      },
+      "expectedGPS": {
+        "lat": 50.0774892,
+        "lon": 14.4023651,
+        "display_name": "358/20, Drtinova, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Drtinova 20, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "InTown",
+      "table": "restaurants",
+      "id": 919,
+      "locationName": "Náměstí Republiky/Florenc",
+      "currentLocation": "Náměstí Republiky/Florenc",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Florenc",
+        "lat": 50.0892899,
+        "lon": 14.4352957
+      },
+      "expectedGPS": {
+        "lat": 50.0892899,
+        "lon": 14.4352957,
+        "display_name": "Sushi Time Florentinum, 2116/15, Na Florenci, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Na Florenci 2116/15, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Kantýna",
+      "table": "restaurants",
+      "id": 900,
+      "locationName": "Náměstí Republiky/Václavské náměstí",
+      "currentLocation": "Náměstí Republiky/Václavské náměstí",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky/Václavské náměstí",
+        "lat": 50.0833618,
+        "lon": 14.4287285
+      },
+      "expectedGPS": {
+        "lat": 50.0833618,
+        "lon": 14.4287285,
+        "display_name": "1511/5, Politických vězňů, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Politických vězňů 1511/5, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Mexická",
+      "table": "restaurants",
+      "id": 901,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1056348,
+        "lon": 14.450199
+      },
+      "expectedGPS": {
+        "lat": 50.1055992,
+        "lon": 14.4502067,
+        "display_name": "Albert, 800/13, U Průhonu, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 4,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 4m"
+      ],
+      "address": "U Průhonu 800/13, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Okonomiyaki Izakaya",
+      "table": "restaurants",
+      "id": 928,
+      "locationName": "Letná",
+      "currentLocation": "Letná",
+      "currentGPS": {
+        "locationName": "Letná",
+        "lat": 50.1005576,
+        "lon": 14.4247984
+      },
+      "expectedGPS": {
+        "lat": 50.1005576,
+        "lon": 14.4247984,
+        "display_name": "Izakaya, 820/73, Veletržní, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Veletržní 820/73, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Mlýnec",
+      "table": "restaurants",
+      "id": 1166,
+      "locationName": "Staroměstské náměstí",
+      "currentLocation": "Staroměstské náměstí",
+      "currentGPS": {
+        "locationName": "Staroměstské náměstí",
+        "lat": 50.0854101,
+        "lon": 14.4135949
+      },
+      "expectedGPS": {
+        "lat": 50.0854101,
+        "lon": 14.4135949,
+        "display_name": "Mlýnec, 9, Novotného lávka, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Novotného lávka 9, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Brambory",
+      "table": "restaurants",
+      "id": 1176,
+      "locationName": "Pankrác",
+      "currentLocation": "Pankrác",
+      "currentGPS": {
+        "locationName": "Pankrác",
+        "lat": 50.0510239,
+        "lon": 14.4407523
+      },
+      "expectedGPS": {
+        "lat": 50.0511816,
+        "lon": 14.4405787,
+        "display_name": "VOK DAMS Eastern Europe S.R.O., 1724/129, Na Pankráci, Nusle, Praha 4, SO Praha 4, obvod Praha 4, Praha, 140 00, Česko"
+      },
+      "distance": 21,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 21m"
+      ],
+      "address": "Na Pankráci 1724/129, 140 00 Praha 4-Nusle, Czechia"
+    },
+    {
+      "name": "Sushi Oishi House",
+      "table": "restaurants",
+      "id": 935,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0814094,
+        "lon": 14.4193855
+      },
+      "expectedGPS": {
+        "lat": 50.081432,
+        "lon": 14.4193899,
+        "display_name": "Bistreet, 105/45, Spálená, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 3,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 3m"
+      ],
+      "address": "Spálená 105/45, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Pizza Nuova",
+      "table": "restaurants",
+      "id": 903,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0895299,
+        "lon": 14.4278811
+      },
+      "expectedGPS": {
+        "lat": 50.0895299,
+        "lon": 14.4278811,
+        "display_name": "655/1, Revoluční, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Revoluční 655/1, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Kro Vršovice",
+      "table": "restaurants",
+      "id": 1190,
+      "locationName": "Vršovice",
+      "currentLocation": "Vršovice",
+      "currentGPS": {
+        "locationName": "Vršovice",
+        "lat": 50.0699882,
+        "lon": 14.451256
+      },
+      "expectedGPS": {
+        "lat": 50.0699896,
+        "lon": 14.4512169,
+        "display_name": "KRO Vršovice, 43/30, Moskevská, Vršovice, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 3,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 3m"
+      ],
+      "address": "Moskevská 43/30, 101 00 Praha 10-Vršovice, Czechia"
+    },
+    {
+      "name": "Amano",
+      "table": "restaurants",
+      "id": 1210,
+      "locationName": "Florenc",
+      "currentLocation": "Florenc",
+      "currentGPS": {
+        "locationName": "Florenc",
+        "lat": 50.0903627,
+        "lon": 14.4366696
+      },
+      "expectedGPS": {
+        "lat": 50.0903627,
+        "lon": 14.4366696,
+        "display_name": "1054/48, Na Poříčí, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Na Poříčí 48, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Výčep",
+      "table": "restaurants",
+      "id": 907,
+      "locationName": "Vinohrady",
+      "currentLocation": "Vinohrady",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.075286,
+        "lon": 14.4535955
+      },
+      "expectedGPS": {
+        "lat": 50.075286,
+        "lon": 14.4535955,
+        "display_name": "1304/92, Korunní, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Korunní 1304/92, 101 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Arthur's Pub",
+      "table": "restaurants",
+      "id": 908,
+      "locationName": "Florenc",
+      "currentLocation": "Florenc",
+      "currentGPS": {
+        "locationName": "Florenc",
+        "lat": 50.0909545,
+        "lon": 14.4434696
+      },
+      "expectedGPS": {
+        "lat": 50.0909545,
+        "lon": 14.4434696,
+        "display_name": "176/27, Křižíkova, Florenc, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Křižíkova 27, 186 00 Praha 8-Karlín, Czechia"
+    },
+    {
+      "name": "Kamin",
+      "table": "restaurants",
+      "id": 921,
+      "locationName": "Vršovice",
+      "currentLocation": "Vršovice",
+      "currentGPS": {
+        "locationName": "Vršovice",
+        "lat": 50.0710041,
+        "lon": 14.4454964
+      },
+      "expectedGPS": {
+        "lat": 50.071003,
+        "lon": 14.445484,
+        "display_name": "183/6, Kozácká, Vršovice, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 1,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 1m"
+      ],
+      "address": "Kozácká 6, 101 00 Praha 10-Vršovice, Czechia"
+    },
+    {
+      "name": "Pho100",
+      "table": "restaurants",
+      "id": 1199,
+      "locationName": "Anděl",
+      "currentLocation": "Anděl",
+      "currentGPS": {
+        "locationName": "Anděl",
+        "lat": 50.0697287,
+        "lon": 14.405667
+      },
+      "expectedGPS": {
+        "lat": 50.0697287,
+        "lon": 14.405667,
+        "display_name": "300/100, Nádražní, Smíchov, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Nádražní 300/100, 150 00 Praha 5-Smíchov, Czechia"
+    },
+    {
+      "name": "Areparna",
+      "table": "restaurants",
+      "id": 940,
+      "locationName": "Žižkov",
+      "currentLocation": "Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.083352,
+        "lon": 14.4459664
+      },
+      "expectedGPS": {
+        "lat": 50.083352,
+        "lon": 14.4459664,
+        "display_name": "365/19, Vlkova, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Vlkova 365/19, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "Banh mi makers",
+      "table": "restaurants",
+      "id": 942,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0912346,
+        "lon": 14.4267504
+      },
+      "expectedGPS": {
+        "lat": 50.0912346,
+        "lon": 14.4267504,
+        "display_name": "Divadlo V Dlouhé, 727/39, Dlouhá, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Dlouhá 39, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Marie B",
+      "table": "restaurants",
+      "id": 889,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0907907,
+        "lon": 14.426517
+      },
+      "expectedGPS": {
+        "lat": 50.0907898,
+        "lon": 14.4266189,
+        "display_name": "2.Patro, 729/37, Dlouhá, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 7,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 7m"
+      ],
+      "address": "Dlouhá 729/37, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Slice Slice Baby",
+      "table": "restaurants",
+      "id": 932,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1033061,
+        "lon": 14.4471682
+      },
+      "expectedGPS": {
+        "lat": 50.1033061,
+        "lon": 14.4471682,
+        "display_name": "311/19, Dělnická, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Dělnická 311/19, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Dejvická34",
+      "table": "restaurants",
+      "id": 886,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0987824,
+        "lon": 14.3992302
+      },
+      "expectedGPS": {
+        "lat": 50.0987824,
+        "lon": 14.3992302,
+        "display_name": "397/34, Dejvická, Dejvice, Bubeneč, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Dejvická 397/34, 160 00 Praha 6-Bubeneč, Czechia"
+    },
+    {
+      "name": "Dish",
+      "table": "restaurants",
+      "id": 899,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0730136,
+        "lon": 14.4361788
+      },
+      "expectedGPS": {
+        "lat": 50.0729878,
+        "lon": 14.4361705,
+        "display_name": "Dish {fine burger bistro}, 335/26, Belgická, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 3,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 3m"
+      ],
+      "address": "Belgická 335/26, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Pru58",
+      "table": "restaurants",
+      "id": 929,
+      "locationName": "Holešovice",
+      "currentLocation": "Holešovice",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1018152,
+        "lon": 14.4534124
+      },
+      "expectedGPS": {
+        "lat": 50.1018152,
+        "lon": 14.4534124,
+        "display_name": "857/58, Tusarova, Holešovice, Praha 7, obvod Praha 7, Praha, 170 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Tusarova 58, 170 00 Praha 7-Holešovice, Czechia"
+    },
+    {
+      "name": "Naše maso",
+      "table": "restaurants",
+      "id": 902,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky, Holešovice",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0912346,
+        "lon": 14.4267504
+      },
+      "expectedGPS": {
+        "lat": 50.0912346,
+        "lon": 14.4267504,
+        "display_name": "Divadlo V Dlouhé, 727/39, Dlouhá, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Dlouhá 727/39, 110 00 Staré Město, Czechia"
+    },
+    {
+      "name": "Filema",
+      "table": "restaurants",
+      "id": 948,
+      "locationName": "Košíře",
+      "currentLocation": "Košíře",
+      "currentGPS": {
+        "locationName": "Košíře",
+        "lat": 50.0673032,
+        "lon": 14.3677308
+      },
+      "expectedGPS": {
+        "lat": 50.0673032,
+        "lon": 14.3677308,
+        "display_name": "Filema, 568/35, Musílkova, Košíře, Praha 5, SO Praha 5, obvod Praha 5, Praha, 150 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Musílkova 568/35, 150 00 Praha 5-Košíře, Czechia"
+    },
+    {
+      "name": "Taro",
+      "table": "restaurants",
+      "id": 893,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0816,
+        "lon": 14.41685
+      },
+      "expectedGPS": {
+        "lat": 50.0815932,
+        "lon": 14.4168497,
+        "display_name": "138/10, Národní, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 1,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 1m"
+      ],
+      "address": "Národní 10, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Sumi Garden",
+      "table": "restaurants",
+      "id": 934,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0798318,
+        "lon": 14.4476931
+      },
+      "expectedGPS": {
+        "lat": 50.0799141,
+        "lon": 14.4476306,
+        "display_name": "1190/18, Slavíkova, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 10,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 10m"
+      ],
+      "address": "Slavíkova 18, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "San Carlo",
+      "table": "restaurants",
+      "id": 904,
+      "locationName": "Karlín",
+      "currentLocation": "Malostranská, Karlín, Letná, Holešovice",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0945816,
+        "lon": 14.4550746
+      },
+      "expectedGPS": {
+        "lat": 50.0945717,
+        "lon": 14.4550599,
+        "display_name": "466/34, Šaldova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 2,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 2m"
+      ],
+      "address": "Šaldova 466/34, Karlín 8, 186 00 Praha 8, Czechia"
+    },
+    {
+      "name": "San Carlo",
+      "table": "restaurants",
+      "id": 904,
+      "locationName": "Malostranská",
+      "currentLocation": "Malostranská, Karlín, Letná, Holešovice",
+      "currentGPS": {
+        "locationName": "Malostranská",
+        "lat": 50.0870984,
+        "lon": 14.402803
+      },
+      "expectedGPS": {
+        "lat": 50.0870819,
+        "lon": 14.4027962,
+        "display_name": "369/7, Tržiště, Malá Strana, obvod Praha 1, Praha, 118 00, Česko"
+      },
+      "distance": 2,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 2m"
+      ],
+      "address": "Tržiště 369/7, 118 00 Malá Strana, Czechia"
+    },
+    {
+      "name": "Vallmo",
+      "table": "restaurants",
+      "id": 894,
+      "locationName": "Výtoň",
+      "currentLocation": "Výtoň",
+      "currentGPS": {
+        "locationName": "Výtoň",
+        "lat": 50.0690971,
+        "lon": 14.4152128
+      },
+      "expectedGPS": {
+        "lat": 50.0691164,
+        "lon": 14.4153445,
+        "display_name": "404/4, Plavecká, Nové Město, obvod Praha 2, Praha, 128 00, Česko"
+      },
+      "distance": 10,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 10m"
+      ],
+      "address": "Plavecká 404/4, 128 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Cantina",
+      "table": "restaurants",
+      "id": 912,
+      "locationName": "Újezd",
+      "currentLocation": "Újezd, Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Újezd",
+        "lat": 50.082941,
+        "lon": 14.4046143
+      },
+      "expectedGPS": {
+        "lat": 50.0828955,
+        "lon": 14.4046467,
+        "display_name": "Cantina, 430/38, Újezd, Malá Strana, obvod Praha 1, Praha, 118 00, Česko"
+      },
+      "distance": 6,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 6m"
+      ],
+      "address": "Újezd 430/38, 118 00 Malá Strana, Czechia"
+    },
+    {
+      "name": "Bamico",
+      "table": "restaurants",
+      "id": 941,
+      "locationName": "Žižkov",
+      "currentLocation": "Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.085492,
+        "lon": 14.4409496
+      },
+      "expectedGPS": {
+        "lat": 50.0854351,
+        "lon": 14.4410155,
+        "display_name": "Domácí těstoviny, 11, Seifertova, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 8,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 8m"
+      ],
+      "address": "Seifertova 11, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "Grosseto",
+      "table": "restaurants",
+      "id": 951,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice, Anděl, Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.10347558922942,
+        "lon": 14.39521234006088
+      },
+      "expectedGPS": {
+        "lat": 50.1032447,
+        "lon": 14.3954088,
+        "display_name": "611/8, Jugoslávských partyzánů, Nový Bubeneč, Bubeneč, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 29,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 29m"
+      ],
+      "address": "Jugoslávských partyzánů 611/8, 160 00 Praha 6-Bubeneč, Czechia"
+    },
+    {
+      "name": "Gao Den",
+      "table": "restaurants",
+      "id": 949,
+      "locationName": "Lužiny",
+      "currentLocation": "Lužiny",
+      "currentGPS": {
+        "locationName": "Lužiny",
+        "lat": 50.0402589,
+        "lon": 14.336013
+      },
+      "expectedGPS": {
+        "lat": 50.0402589,
+        "lon": 14.336013,
+        "display_name": "Jabloňka, 2766/26, Tlumačovská, Stodůlky, Praha 13, SO Praha 13, obvod Praha 5, Praha, 155 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Tlumačovská 26, 155 00 Praha 13, Czechia"
+    },
+    {
+      "name": "Bon Ramen",
+      "table": "restaurants",
+      "id": 943,
+      "locationName": "Vinohrady",
+      "currentLocation": "Anděl, Letná",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0762653,
+        "lon": 14.4365346,
+        "display_name": "1234/1, Ibsenova, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 42,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 42m"
+      ],
+      "address": "Ibsenova 1234/1, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Xi Chiaomian",
+      "table": "restaurants",
+      "id": 937,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0786677,
+        "lon": 14.4505407
+      },
+      "expectedGPS": {
+        "lat": 50.0786677,
+        "lon": 14.4505407,
+        "display_name": "Happy Bean bistro & café, 1659/2, Laubova, Vinohrady, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Laubova 1659/2, 130 00 Praha 3-Vinohrady, Czechia"
+    },
+    {
+      "name": "Praha Ggogi",
+      "table": "restaurants",
+      "id": 962,
+      "locationName": "Národní třída",
+      "currentLocation": "Národní třída",
+      "currentGPS": {
+        "locationName": "Národní třída",
+        "lat": 50.0805653,
+        "lon": 14.4195866
+      },
+      "expectedGPS": {
+        "lat": 50.0805793,
+        "lon": 14.4196703,
+        "display_name": "98/31, Spálená, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 6,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 6m"
+      ],
+      "address": "Spálená 98/31, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Chiaki",
+      "table": "restaurants",
+      "id": 952,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.0761146,
+        "lon": 14.4328179
+      },
+      "expectedGPS": {
+        "lat": 50.0761163,
+        "lon": 14.4328997,
+        "display_name": "379/73, Londýnská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 6,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 6m"
+      ],
+      "address": "Londýnská 73, 120 00 Vinohrady"
+    },
+    {
+      "name": "The Nest",
+      "table": "restaurants",
+      "id": 970,
+      "locationName": "Karlovo náměstí",
+      "currentLocation": "Karlovo náměstí",
+      "currentGPS": {
+        "locationName": "Karlovo náměstí",
+        "lat": 50.0779826,
+        "lon": 14.4186628
+      },
+      "expectedGPS": {
+        "lat": 50.0779826,
+        "lon": 14.4186628,
+        "display_name": "283/28, Myslíkova, Nové Město, obvod Praha 1, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Myslíkova 28, 120 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Taiko",
+      "table": "restaurants",
+      "id": 966,
+      "locationName": "Žižkov",
+      "currentLocation": "Žižkov",
+      "currentGPS": {
+        "locationName": "Žižkov",
+        "lat": 50.0874365,
+        "lon": 14.4524648
+      },
+      "expectedGPS": {
+        "lat": 50.0874365,
+        "lon": 14.4524648,
+        "display_name": "344/63, Husitská, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Husitská 63, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "Takumi",
+      "table": "restaurants",
+      "id": 967,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0860254,
+        "lon": 14.4311082
+      },
+      "expectedGPS": {
+        "lat": 50.0860254,
+        "lon": 14.4311082,
+        "display_name": "Takumi Praha, 1464/6, Senovážné náměstí, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Senovážné nám. 1464/6, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Tandoor",
+      "table": "restaurants",
+      "id": 936,
+      "locationName": "Břevnov",
+      "currentLocation": "Břevnov",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.0834593,
+        "lon": 14.363472
+      },
+      "expectedGPS": {
+        "lat": 50.0834616,
+        "lon": 14.3636663,
+        "display_name": "Konecchlumského, Břevnov, Praha 6, SO Praha 6, obvod Praha 6, Praha, 169 00, Česko"
+      },
+      "distance": 14,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 14m"
+      ],
+      "address": "Konecchlumského 596/9, 169 00 Praha 6, Czechia"
+    },
+    {
+      "name": "Yuniku BBQ",
+      "table": "restaurants",
+      "id": 938,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.076337800000005,
+        "lon": 14.437116709025648
+      },
+      "expectedGPS": {
+        "lat": 50.0759942,
+        "lon": 14.4380984,
+        "display_name": "1297/3, Slezská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 80,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 80m"
+      ],
+      "address": "Slezská 1297, 120 00 Vinohrady, Czechia"
+    },
+    {
+      "name": "Funwari Japanese Delights",
+      "table": "restaurants",
+      "id": 916,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0790804,
+        "lon": 14.4449359
+      },
+      "expectedGPS": {
+        "lat": 50.079117,
+        "lon": 14.4450787,
+        "display_name": "1556/6, Chopinova, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 11,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 11m"
+      ],
+      "address": "Chopinova 6, 120 00 Praha 2-Vinohrady, Czechia"
+    },
+    {
+      "name": "Štangl",
+      "table": "restaurants",
+      "id": 892,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0913622,
+        "lon": 14.454374
+      },
+      "expectedGPS": {
+        "lat": 50.0913304,
+        "lon": 14.4544196,
+        "display_name": "673/49, Pernerova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 5,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 5m"
+      ],
+      "address": "Pernerova 49, 186 00 Praha 8-Karlín, Czechia"
+    },
+    {
+      "name": "An Prague",
+      "table": "cafes",
+      "id": 40,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.101579,
+        "lon": 14.3525174
+      },
+      "expectedGPS": {
+        "lat": 50.101579,
+        "lon": 14.3525174,
+        "display_name": "Na Krutci, Vokovice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 162 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "An Prague, Dejvice, Praha"
+    },
+    {
+      "name": "Místo",
+      "table": "cafes",
+      "id": 19,
+      "locationName": "Dejvice",
+      "currentLocation": "Dejvice",
+      "currentGPS": {
+        "locationName": "Dejvice",
+        "lat": 50.0990304,
+        "lon": 14.4044095
+      },
+      "expectedGPS": {
+        "lat": 50.0990304,
+        "lon": 14.4044095,
+        "display_name": "Místo, 12, Bubenečská, Dejvice, Praha 6, SO Praha 6, obvod Praha 6, Praha, 160 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Místo, Dejvice, Praha"
+    },
+    {
+      "name": "Ba Lam",
+      "table": "cafes",
+      "id": 25,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0949861,
+        "lon": 14.456322
+      },
+      "expectedGPS": {
+        "lat": 50.0949861,
+        "lon": 14.456322,
+        "display_name": "Ba Lam, 444/118, Sokolovská, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Ba Lam, Karlín, Praha"
+    },
+    {
+      "name": "EMA Espresso Bar",
+      "table": "cafes",
+      "id": 26,
+      "locationName": "Holešovice",
+      "currentLocation": "Náměstí Republiky/Florenc, Holešovice, Karlín",
+      "currentGPS": {
+        "locationName": "Holešovice",
+        "lat": 50.1058809,
+        "lon": 14.4504221
+      },
+      "expectedGPS": {
+        "lat": 50.1058809,
+        "lon": 14.4504221,
+        "display_name": "EMA espresso bar, Komunardů, Holešovice, Praha 7, obvod Praha 7, Praha, 170 04, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "EMA Espresso Bar, Holešovice, Praha"
+    },
+    {
+      "name": "Votre Plaisir",
+      "table": "cafes",
+      "id": 55,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.091569,
+        "lon": 14.4281013
+      },
+      "expectedGPS": {
+        "lat": 50.0915075,
+        "lon": 14.4279608,
+        "display_name": "1246/1, Klimentská, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 12,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 12m"
+      ],
+      "address": "Klimentská 1246/1, 110 00 Nové Město"
+    },
+    {
+      "name": "O-Mai Coffee",
+      "table": "cafes",
+      "id": 21,
+      "locationName": "Náměstí Míru",
+      "currentLocation": "Náměstí Míru",
+      "currentGPS": {
+        "locationName": "Náměstí Míru",
+        "lat": 50.0723586,
+        "lon": 14.4361021
+      },
+      "expectedGPS": {
+        "lat": 50.0723586,
+        "lon": 14.4361021,
+        "display_name": "633/17, Belgická, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Belgická 633/17, 120 00 Vinohrady"
+    },
+    {
+      "name": "Arte Bianca Bakery & Caffè",
+      "table": "cafes",
+      "id": 58,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.0731975,
+        "lon": 14.4333642
+      },
+      "expectedGPS": {
+        "lat": 50.0732051,
+        "lon": 14.4334369,
+        "display_name": "213/88, Bělehradská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 5,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 5m"
+      ],
+      "address": "Bělehradská 88, 120 00 Praha 2-Vinohrady"
+    },
+    {
+      "name": "Aux Merveilleux",
+      "table": "cafes",
+      "id": 59,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0901399,
+        "lon": 14.4281099
+      },
+      "expectedGPS": {
+        "lat": 50.0901399,
+        "lon": 14.4281099,
+        "display_name": "1082/8, Revoluční, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Revoluční 1082/8, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Funwari Pancakes",
+      "table": "cafes",
+      "id": 61,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0798318,
+        "lon": 14.4476931
+      },
+      "expectedGPS": {
+        "lat": 50.0799141,
+        "lon": 14.4476306,
+        "display_name": "1190/18, Slavíkova, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 10,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 10m"
+      ],
+      "address": "Slavíkova 18, 130 00 Praha 3-Žižkov, Czechia"
+    },
+    {
+      "name": "Cafefin",
+      "table": "cafes",
+      "id": 10,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.078163,
+        "lon": 14.4483946
+      },
+      "expectedGPS": {
+        "lat": 50.078163,
+        "lon": 14.4483946,
+        "display_name": "Cafefin, 1407/4, náměstí Jiřího z Poděbrad, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Cafefin, Jiřího z Poděbrad, Praha"
+    },
+    {
+      "name": "Můj šálek kávy",
+      "table": "cafes",
+      "id": 20,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0935184,
+        "lon": 14.455158
+      },
+      "expectedGPS": {
+        "lat": 50.0935184,
+        "lon": 14.455158,
+        "display_name": "Můj šálek kávy, 386/105, Křižíkova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Můj šálek kávy, Karlín, Praha"
+    },
+    {
+      "name": "Dos Mundos",
+      "table": "cafes",
+      "id": 46,
+      "locationName": "Vinohrady",
+      "currentLocation": "Letná, Vinohrady",
+      "currentGPS": {
+        "locationName": "Vinohrady",
+        "lat": 50.0754451,
+        "lon": 14.4429299
+      },
+      "expectedGPS": {
+        "lat": 50.0754451,
+        "lon": 14.4429299,
+        "display_name": "Dos Mundos, Korunní, Vinohrady, obvod Praha 2, Praha, 120 09, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Dos Mundos, Vinohrady, Praha"
+    },
+    {
+      "name": "Pekárna Praktika",
+      "table": "cafes",
+      "id": 48,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.094069,
+        "lon": 14.4509342
+      },
+      "expectedGPS": {
+        "lat": 50.094069,
+        "lon": 14.4509342,
+        "display_name": "Pekárna Praktika, Sokolovská, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Pekárna Praktika, Karlín, Praha"
+    },
+    {
+      "name": "Etapa",
+      "table": "cafes",
+      "id": 11,
+      "locationName": "Karlín",
+      "currentLocation": "Karlín",
+      "currentGPS": {
+        "locationName": "Karlín",
+        "lat": 50.0945126,
+        "lon": 14.4578272
+      },
+      "expectedGPS": {
+        "lat": 50.0945126,
+        "lon": 14.4578272,
+        "display_name": "Etapa, Urxova, Karlín, Praha 8, obvod Praha 8, Praha, 186 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Etapa, Karlín, Praha"
+    },
+    {
+      "name": "Typika",
+      "table": "cafes",
+      "id": 27,
+      "locationName": "Vršovice",
+      "currentLocation": "Holešovice, Karlín, Vršovice",
+      "currentGPS": {
+        "locationName": "Vršovice",
+        "lat": 50.0706506,
+        "lon": 14.4588645
+      },
+      "expectedGPS": {
+        "lat": 50.0706506,
+        "lon": 14.4588645,
+        "display_name": "Typika, 24, Kodaňská, Vršovice, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Typika, Vršovice, Praha"
+    },
+    {
+      "name": "OneSip Coffee",
+      "table": "cafes",
+      "id": 23,
+      "locationName": "Staré Město",
+      "currentLocation": "Staré Město",
+      "currentGPS": {
+        "locationName": "Staré Město",
+        "lat": 50.0912753,
+        "lon": 14.4254096
+      },
+      "expectedGPS": {
+        "lat": 50.0913069,
+        "lon": 14.4254402,
+        "display_name": "One Sip Coffee, 755/15, Haštalská, Staré Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 4,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 4m"
+      ],
+      "address": "Haštalská 755/15, 110 00 Staré Město"
+    },
+    {
+      "name": "20m2",
+      "table": "cafes",
+      "id": 41,
+      "locationName": "Břevnov",
+      "currentLocation": "Břevnov",
+      "currentGPS": {
+        "locationName": "Břevnov",
+        "lat": 50.0844048,
+        "lon": 14.3757533
+      },
+      "expectedGPS": {
+        "lat": 50.0844048,
+        "lon": 14.3757533,
+        "display_name": "20m2 by Kapkafe, 265/29, Bělohorská, Břevnov, Praha 6, SO Praha 6, obvod Praha 6, Praha, 169 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "20m2, Břevnov, Praha"
+    },
+    {
+      "name": "Café Jen",
+      "table": "cafes",
+      "id": 17,
+      "locationName": "Vršovice",
+      "currentLocation": "Vršovice",
+      "currentGPS": {
+        "locationName": "Vršovice",
+        "lat": 50.0713641,
+        "lon": 14.4558607
+      },
+      "expectedGPS": {
+        "lat": 50.0713641,
+        "lon": 14.4558607,
+        "display_name": "Café Jen, 553/37, Kodaňská, Vršovice, SO Praha 10, obvod Praha 10, Praha, 101 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Café Jen, Vršovice, Praha"
+    },
+    {
+      "name": "Kopi Prague",
+      "table": "cafes",
+      "id": 50,
+      "locationName": "Palmovka",
+      "currentLocation": "Palmovka",
+      "currentGPS": {
+        "locationName": "Palmovka",
+        "lat": 50.1053348,
+        "lon": 14.472752
+      },
+      "expectedGPS": {
+        "lat": 50.1053348,
+        "lon": 14.472752,
+        "display_name": "kopi, 2530/23, Zenklova, Palmovka, Libeň, Praha 8, obvod Praha 8, Praha, 180 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Kopi Prague, Palmovka, Praha"
+    },
+    {
+      "name": "Helen's Coffee",
+      "table": "cafes",
+      "id": 42,
+      "locationName": "Stodůlky",
+      "currentLocation": "Stodůlky",
+      "currentGPS": {
+        "locationName": "Stodůlky",
+        "lat": 50.0504906,
+        "lon": 14.3420856
+      },
+      "expectedGPS": {
+        "lat": 50.0504906,
+        "lon": 14.3420856,
+        "display_name": "2560/4, Sluneční náměstí, Stodůlky, Praha 13, SO Praha 13, obvod Praha 5, Praha, 158 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Sluneční nám. 2560/4, 158 00 Praha 13"
+    },
+    {
+      "name": "La Zmrzka",
+      "table": "cafes",
+      "id": 43,
+      "locationName": "Stodůlky",
+      "currentLocation": "Stodůlky",
+      "currentGPS": {
+        "locationName": "Stodůlky",
+        "lat": 50.04617,
+        "lon": 14.3037049
+      },
+      "expectedGPS": {
+        "lat": 50.04617,
+        "lon": 14.3037049,
+        "display_name": "La Zmrzka, 2870/3, náměstí Junkových, Stodůlky, Praha 13, SO Praha 13, obvod Praha 5, Praha, 155 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "La Zmrzka, Stodůlky, Praha"
+    },
+    {
+      "name": "Votre Plaisir",
+      "table": "bakeries",
+      "id": 207,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.091569,
+        "lon": 14.4281013
+      },
+      "expectedGPS": {
+        "lat": 50.0915075,
+        "lon": 14.4279608,
+        "display_name": "1246/1, Klimentská, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 12,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 12m"
+      ],
+      "address": "Klimentská 1246/1, 110 00 Nové Město"
+    },
+    {
+      "name": "Arte Bianca Bakery & Caffè",
+      "table": "bakeries",
+      "id": 213,
+      "locationName": "I. P. Pavlova",
+      "currentLocation": "I. P. Pavlova",
+      "currentGPS": {
+        "locationName": "I. P. Pavlova",
+        "lat": 50.0731975,
+        "lon": 14.4333642
+      },
+      "expectedGPS": {
+        "lat": 50.0732051,
+        "lon": 14.4334369,
+        "display_name": "213/88, Bělehradská, Vinohrady, obvod Praha 2, Praha, 120 00, Česko"
+      },
+      "distance": 5,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 5m"
+      ],
+      "address": "Bělehradská 88, 120 00 Praha 2-Vinohrady"
+    },
+    {
+      "name": "Aux Merveilleux",
+      "table": "bakeries",
+      "id": 6,
+      "locationName": "Náměstí Republiky",
+      "currentLocation": "Náměstí Republiky",
+      "currentGPS": {
+        "locationName": "Náměstí Republiky",
+        "lat": 50.0901399,
+        "lon": 14.4281099
+      },
+      "expectedGPS": {
+        "lat": 50.0901399,
+        "lon": 14.4281099,
+        "display_name": "1082/8, Revoluční, Nové Město, obvod Praha 1, Praha, 110 00, Česko"
+      },
+      "distance": 0,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 0m"
+      ],
+      "address": "Revoluční 1082/8, 110 00 Nové Město, Czechia"
+    },
+    {
+      "name": "Funwari Pancakes",
+      "table": "bakeries",
+      "id": 14,
+      "locationName": "Jiřího z Poděbrad",
+      "currentLocation": "Jiřího z Poděbrad",
+      "currentGPS": {
+        "locationName": "Jiřího z Poděbrad",
+        "lat": 50.0798318,
+        "lon": 14.4476931
+      },
+      "expectedGPS": {
+        "lat": 50.0799141,
+        "lon": 14.4476306,
+        "display_name": "1190/18, Slavíkova, Žižkov, obvod Praha 3, Praha, 130 00, Česko"
+      },
+      "distance": 10,
+      "status": "OK",
+      "issues": [
+        "GPS coordinates accurate within 10m"
+      ],
+      "address": "Slavíkova 18, 130 00 Praha 3-Žižkov, Czechia"
+    }
+  ]
+}
