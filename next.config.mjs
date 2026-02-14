@@ -12,15 +12,9 @@ const nextConfig = {
       },
     ],
   },
-  // Conditional static export - ONLY for mobile builds when explicitly set
-  // Vercel production builds should NOT have MOBILE_BUILD env var set
-  ...(process.env.MOBILE_BUILD === 'true' ? {
-    output: 'export',
-    images: {
-      unoptimized: true,
-    },
-    trailingSlash: true,
-  } : {}),
+  // IMPORTANT: This config is for web/production builds with API routes
+  // Mobile builds use build-mobile.mjs which swaps in next.config.mobile.mjs
+  // DO NOT add output: 'export' here - it breaks API routes!
 };
 
 export default nextConfig;
