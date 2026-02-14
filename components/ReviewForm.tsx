@@ -68,21 +68,32 @@ export default function ReviewForm({
     },
   });
 
-  // Fetch restaurants for dropdown
+  // Fetch restaurants and cafes for dropdown
   useEffect(() => {
-    async function fetchRestaurants() {
+    async function fetchRestaurantsAndCafes() {
       try {
-        const res = await fetch("/api/restaurants");
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          // Sort alphabetically
-          setRestaurants(data.sort((a, b) => a.name.localeCompare(b.name)));
-        }
+        // Fetch both restaurants and cafes
+        const [restaurantsRes, cafesRes] = await Promise.all([
+          fetch(getApiUrl("/api/restaurants")),
+          fetch(getApiUrl("/api/cafes"))
+        ]);
+
+        const restaurantsData = await restaurantsRes.json();
+        const cafesData = await cafesRes.json();
+
+        // Combine and mark type for each
+        const allPlaces = [
+          ...(Array.isArray(restaurantsData) ? restaurantsData.map(r => ({ ...r, type: 'restaurace' })) : []),
+          ...(Array.isArray(cafesData) ? cafesData.map(c => ({ ...c, type: 'kavárna' })) : [])
+        ];
+
+        // Sort alphabetically
+        setRestaurants(allPlaces.sort((a, b) => a.name.localeCompare(b.name)));
       } catch (error) {
-        console.error("Error fetching restaurants:", error);
+        console.error("Error fetching restaurants and cafes:", error);
       }
     }
-    fetchRestaurants();
+    fetchRestaurantsAndCafes();
   }, []);
 
   // Load review data if editing
@@ -266,20 +277,20 @@ export default function ReviewForm({
           </div>
         )}
 
-        {/* Restaurant selection */}
+        {/* Restaurant/Cafe selection */}
         <div>
           <label htmlFor="restaurant_id" className="block text-sm font-medium text-gray-700 mb-1">
-            Restaurace *
+            Podnik (restaurace/kavárna) *
           </label>
           <select
             id="restaurant_id"
             {...register("restaurant_id", { valueAsNumber: true })}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Vyber restauraci</option>
+            <option value="">Vyber podnik</option>
             {restaurants.map((restaurant) => (
               <option key={restaurant.id} value={restaurant.id}>
-                {restaurant.name} ({restaurant.location})
+                {restaurant.name} ({restaurant.location}) {restaurant.type && `[${restaurant.type}]`}
               </option>
             ))}
           </select>
@@ -591,13 +602,13 @@ export default function ReviewForm({
           </label>
         </div>
 
-        {/* Similar Restaurants */}
+        {/* Similar Places */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Podobné restaurace (doporučení)
+            Podobné podniky (doporučení)
           </label>
           <p className="text-sm text-gray-500 mb-3">
-            Vyber restaurace, které se zobrazí jako doporučení pod touto recenzí
+            Vyber podniky (restaurace/kavárny), které se zobrazí jako doporučení pod touto recenzí
           </p>
           <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
             {restaurants
@@ -634,7 +645,7 @@ export default function ReviewForm({
           </div>
           {similarRestaurantIds.length > 0 && (
             <p className="mt-2 text-sm text-gray-600">
-              Vybráno: {similarRestaurantIds.length} {similarRestaurantIds.length === 1 ? 'restaurace' : similarRestaurantIds.length < 5 ? 'restaurace' : 'restaurací'}
+              Vybráno: {similarRestaurantIds.length} {similarRestaurantIds.length === 1 ? 'podnik' : similarRestaurantIds.length < 5 ? 'podniky' : 'podniků'}
             </p>
           )}
         </div>
