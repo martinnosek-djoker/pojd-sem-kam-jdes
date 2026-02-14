@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MichelinRestaurant, MICHELIN_AWARD_LABELS } from "@/lib/types";
 import MichelinForm from "./MichelinForm";
+import { getApiUrl } from "@/lib/api-config";
 
 interface MichelinAdminProps {
   initialRestaurants: MichelinRestaurant[];
@@ -29,7 +30,7 @@ export default function MichelinAdmin({ initialRestaurants }: MichelinAdminProps
     if (!confirm("Opravdu chcete smazat tuto restauraci?")) return;
 
     try {
-      const response = await fetch(`/api/michelin/${id}`, {
+      const response = await fetch(getApiUrl(`/api/michelin/${id}`), {
         method: "DELETE",
       });
 

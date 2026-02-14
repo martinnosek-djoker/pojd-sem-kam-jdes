@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Event } from "@/lib/types";
 import EventForm from "./EventForm";
 import NotificationDialog from "./NotificationDialog";
+import { getApiUrl } from "@/lib/api-config";
 import {
   DndContext,
   closestCenter,
@@ -173,7 +174,7 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
         display_order: index + 1,
       }));
 
-      const response = await fetch("/api/admin/events/reorder", {
+      const response = await fetch(getApiUrl("/api/admin/events/reorder"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ updates }),
@@ -191,7 +192,7 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
   const handleAdd = async (data: any) => {
     try {
       console.log("Sending event data:", data);
-      const response = await fetch("/api/admin/events", {
+      const response = await fetch(getApiUrl("/api/admin/events"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -220,7 +221,7 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
     if (!editingId) return;
 
     try {
-      const response = await fetch(`/api/admin/events/${editingId}`, {
+      const response = await fetch(getApiUrl(`/api/admin/events/${editingId}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -245,7 +246,7 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
     }
 
     try {
-      const response = await fetch(`/api/admin/events/${id}`, {
+      const response = await fetch(getApiUrl(`/api/admin/events/${id}`), {
         method: "DELETE",
       });
 

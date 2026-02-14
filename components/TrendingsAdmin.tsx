@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trending } from "@/lib/types";
 import TrendingForm from "./TrendingForm";
 import NotificationDialog from "./NotificationDialog";
+import { getApiUrl } from "@/lib/api-config";
 import {
   DndContext,
   closestCenter,
@@ -130,7 +131,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
     if (!confirm("Opravdu chcete smazat tento trending podnik?")) return;
 
     try {
-      const response = await fetch(`/api/trendings/${id}`, {
+      const response = await fetch(getApiUrl(`/api/trendings/${id}`), {
         method: "DELETE",
       });
 
@@ -183,7 +184,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
     try {
       await Promise.all(
         updatedTrendings.map((trending) =>
-          fetch(`/api/trendings/${trending.id}`, {
+          fetch(getApiUrl(`/api/trendings/${trending.id}`), {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

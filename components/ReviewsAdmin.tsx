@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ReviewForm from "./ReviewForm";
 import { Review } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function ReviewsAdmin() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -16,7 +17,7 @@ export default function ReviewsAdmin() {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch("/api/reviews");
+      const res = await fetch(getApiUrl("/api/reviews"));
       const data = await res.json();
       if (Array.isArray(data)) {
         setReviews(data);
@@ -50,7 +51,7 @@ export default function ReviewsAdmin() {
     }
 
     try {
-      const res = await fetch(`/api/reviews/${id}`, {
+      const res = await fetch(getApiUrl(`/api/reviews/${id}`), {
         method: "DELETE",
       });
 
