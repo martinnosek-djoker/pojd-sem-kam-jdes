@@ -46,7 +46,7 @@ export interface Restaurant {
   image_url: string | null;
   created_at: string;
   updated_at: string;
-  type?: 'restaurace' | 'kavárna'; // Optional - added client-side when combining with cafes
+  type?: string; // Optional - added client-side for categorization (e.g., 'restaurace', 'kavárna', 'restaurant', 'bakery', 'cafe')
 }
 
 // Zod validation schemas
