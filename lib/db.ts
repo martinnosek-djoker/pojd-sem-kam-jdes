@@ -1240,7 +1240,8 @@ export async function getAllReviews() {
     .from("reviews")
     .select(`
       *,
-      restaurant:restaurants(*)
+      restaurant:restaurants(*),
+      cafe:cafes(*)
     `)
     .order("display_order", { ascending: true })
     .order("visit_date", { ascending: false });
@@ -1258,7 +1259,8 @@ export async function getFeaturedReviews() {
     .from("reviews")
     .select(`
       *,
-      restaurant:restaurants(*)
+      restaurant:restaurants(*),
+      cafe:cafes(*)
     `)
     .eq("is_featured", true)
     .order("display_order", { ascending: true })
@@ -1277,7 +1279,8 @@ export async function getReviewById(id: number) {
     .from("reviews")
     .select(`
       *,
-      restaurant:restaurants(*)
+      restaurant:restaurants(*),
+      cafe:cafes(*)
     `)
     .eq("id", id)
     .single();

@@ -289,8 +289,10 @@ export interface Dish {
 // Review types
 export interface Review {
   id: number;
-  restaurant_id: number;
+  restaurant_id: number | null;
+  cafe_id?: number | null;
   restaurant?: Restaurant; // Optional joined restaurant data
+  cafe?: Cafe; // Optional joined cafe data
   title: string;
   content: string; // Markdown/HTML content with formatting
   visit_date: string;
@@ -314,7 +316,8 @@ const dishSchema = z.object({
 });
 
 export const reviewSchema = z.object({
-  restaurant_id: z.number().min(1, "Restaurace je povinná"),
+  restaurant_id: z.number().min(1).optional().nullable(),
+  cafe_id: z.number().min(1).optional().nullable(),
   title: z.string().min(1, "Název recenze je povinný"),
   content: z.string().min(10, "Obsah recenze musí mít alespoň 10 znaků"),
   visit_date: z.string().min(1, "Datum návštěvy je povinné"),
@@ -328,6 +331,9 @@ export const reviewSchema = z.object({
   total_spent: z.number().min(0).optional().nullable(),
   dishes: z.array(dishSchema).optional().nullable(),
   similar_restaurant_ids: z.array(z.number()).optional().nullable(),
+}).refine(data => data.restaurant_id || data.cafe_id, {
+  message: "Podnik je povinný",
+  path: ["restaurant_id"],
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;

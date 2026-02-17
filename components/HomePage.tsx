@@ -61,10 +61,12 @@ export default function HomePage() {
         }
         if (Array.isArray(allReviewsData)) {
           setAllReviews(allReviewsData);
-          // Create a map of restaurant_id -> review
+          // Create a map of restaurant_id -> review (only for restaurant reviews)
           const reviewMap = new Map<number, Review>();
           allReviewsData.forEach((review: Review) => {
-            reviewMap.set(review.restaurant_id, review);
+            if (review.restaurant_id) {
+              reviewMap.set(review.restaurant_id, review);
+            }
           });
           setRestaurantReviewMap(reviewMap);
         }

@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { reviewSchema, ReviewInput, Review, Restaurant, Dish } from "@/lib/types";
+import { Review, Restaurant, Dish } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 import RichTextEditor from "./RichTextEditor";
 
@@ -29,16 +28,16 @@ export default function ReviewForm({
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [content, setContent] = useState("");
   const [similarRestaurantIds, setSimilarRestaurantIds] = useState<number[]>([]);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(null);
+  const [selectedPlaceType, setSelectedPlaceType] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<{
-    restaurant_id: number;
     title: string;
     content: string;
     visit_date: string;
@@ -53,7 +52,6 @@ export default function ReviewForm({
     dishes?: Dish[] | null;
     similar_restaurant_ids?: number[] | null;
   }>({
-    resolver: zodResolver(reviewSchema) as any,
     defaultValues: {
       images: [],
       is_featured: false,
@@ -103,7 +101,6 @@ export default function ReviewForm({
         .then((res) => res.json())
         .then((data) => {
           reset({
-            restaurant_id: data.restaurant_id,
             title: data.title,
             content: data.content,
             visit_date: data.visit_date,
@@ -118,6 +115,14 @@ export default function ReviewForm({
             dishes: data.dishes || [],
             similar_restaurant_ids: data.similar_restaurant_ids || [],
           });
+          // Set the selected place (restaurant or cafe)
+          if (data.cafe_id) {
+            setSelectedPlaceId(data.cafe_id);
+            setSelectedPlaceType('kavárna');
+          } else if (data.restaurant_id) {
+            setSelectedPlaceId(data.restaurant_id);
+            setSelectedPlaceType('restaurace');
+          }
           setImages(data.images || []);
           setDishes(data.dishes || []);
           setContent(data.content || "");
@@ -233,10 +238,20 @@ export default function ReviewForm({
     setLoading(true);
     setError("");
 
+    // Validate place is selected
+    if (!selectedPlaceId) {
+      setError("Vyber podnik (restauraci nebo kavárnu)");
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Ensure images, dishes, and content are included
+      // Build the correct payload based on place type
+      const isCafe = selectedPlaceType === 'kavárna';
       const reviewData = {
         ...data,
+        restaurant_id: isCafe ? null : selectedPlaceId,
+        cafe_id: isCafe ? selectedPlaceId : null,
         content: content,
         images: images,
         dishes: dishes.length > 0 ? dishes : null,
@@ -279,24 +294,32 @@ export default function ReviewForm({
 
         {/* Restaurant/Cafe selection */}
         <div>
-          <label htmlFor="restaurant_id" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="place_select" className="block text-sm font-medium text-gray-700 mb-1">
             Podnik (restaurace/kavárna) *
           </label>
           <select
-            id="restaurant_id"
-            {...register("restaurant_id", { valueAsNumber: true })}
+            id="place_select"
+            value={selectedPlaceId || ""}
+            onChange={(e) => {
+              const id = parseInt(e.target.value, 10);
+              if (!id) {
+                setSelectedPlaceId(null);
+                setSelectedPlaceType(null);
+                return;
+              }
+              const place = restaurants.find(r => r.id === id);
+              setSelectedPlaceId(id);
+              setSelectedPlaceType(place?.type || 'restaurace');
+            }}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Vyber podnik</option>
             {restaurants.map((restaurant) => (
-              <option key={restaurant.id} value={restaurant.id}>
+              <option key={`${restaurant.type}-${restaurant.id}`} value={restaurant.id}>
                 {restaurant.name} ({restaurant.location}) {restaurant.type && `[${restaurant.type}]`}
               </option>
             ))}
           </select>
-          {errors.restaurant_id && (
-            <p className="mt-1 text-sm text-red-600">{errors.restaurant_id.message}</p>
-          )}
         </div>
 
         {/* Title */}
@@ -612,10 +635,10 @@ export default function ReviewForm({
           </p>
           <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
             {restaurants
-              .filter((r) => r.id !== watch("restaurant_id"))
+              .filter((r) => !(r.id === selectedPlaceId && r.type === selectedPlaceType))
               .map((restaurant) => (
                 <label
-                  key={restaurant.id}
+                  key={`${restaurant.type}-${restaurant.id}`}
                   className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
                 >
                   <input
