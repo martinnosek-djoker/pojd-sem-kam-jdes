@@ -306,6 +306,7 @@ export interface Review {
   total_spent?: number | null; // Total amount spent in CZK
   dishes?: Dish[] | null; // Dishes with ratings
   similar_restaurant_ids?: number[] | null; // Manually selected similar restaurants
+  similar_cafe_ids?: number[] | null; // Manually selected similar cafes
   created_at: string;
   updated_at: string;
 }
@@ -331,6 +332,7 @@ export const reviewSchema = z.object({
   total_spent: z.number().min(0).optional().nullable(),
   dishes: z.array(dishSchema).optional().nullable(),
   similar_restaurant_ids: z.array(z.number()).optional().nullable(),
+  similar_cafe_ids: z.array(z.number()).optional().nullable(),
 }).refine(data => data.restaurant_id || data.cafe_id, {
   message: "Podnik je povinný",
   path: ["restaurant_id"],

@@ -5,9 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { Review, Restaurant } from "@/lib/types";
+import { Review, Restaurant, Cafe } from "@/lib/types";
 import { getApiUrl, getProxiedImageUrl, IS_MOBILE } from "@/lib/api-config";
+
 import { getReviewIdFromSlug } from "@/lib/slug";
+
+// Unified similar place type for display
+type SimilarPlace =
+  | { kind: "restaurant"; data: Restaurant }
+  | { kind: "cafe"; data: Cafe };
 
 // Helper to get review image with local fallback
 function getReviewImageUrl(imageUrl: string, reviewId: number, restaurantName: string, index: number): string {
@@ -47,7 +53,7 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
   const [review, setReview] = useState<Review | null>(initialReview || null);
   const [loading, setLoading] = useState(!initialReview);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [similarRestaurants, setSimilarRestaurants] = useState<Restaurant[]>([]);
+  const [similarPlaces, setSimilarPlaces] = useState<SimilarPlace[]>([]);
   const [showAllDishes, setShowAllDishes] = useState(false);
 
   useEffect(() => {
@@ -74,14 +80,26 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
         const data = await res.json();
         setReview(data);
 
-        // Fetch similar restaurants if they exist
-        if (data.similar_restaurant_ids && data.similar_restaurant_ids.length > 0) {
-          const restaurantsRes = await fetch(getApiUrl("/api/restaurants"));
-          const allRestaurants = await restaurantsRes.json();
-          const similar = allRestaurants.filter((r: Restaurant) =>
-            data.similar_restaurant_ids.includes(r.id)
-          );
-          setSimilarRestaurants(similar);
+        // Fetch similar places (restaurants and/or cafes)
+        const hasRestaurants = Array.isArray(data.similar_restaurant_ids) && data.similar_restaurant_ids.length > 0;
+        const hasCafes = Array.isArray(data.similar_cafe_ids) && data.similar_cafe_ids.length > 0;
+        if (hasRestaurants || hasCafes) {
+          const [restaurantsRaw, cafesRaw] = await Promise.all([
+            hasRestaurants ? fetch(getApiUrl("/api/restaurants")).then(r => r.json()) : Promise.resolve([]),
+            hasCafes ? fetch(getApiUrl("/api/cafes")).then(r => r.json()) : Promise.resolve([]),
+          ]);
+          const places: SimilarPlace[] = [];
+          if (Array.isArray(restaurantsRaw)) {
+            restaurantsRaw
+              .filter((r: Restaurant) => data.similar_restaurant_ids.includes(r.id))
+              .forEach((r: Restaurant) => places.push({ kind: "restaurant", data: r }));
+          }
+          if (Array.isArray(cafesRaw)) {
+            cafesRaw
+              .filter((c: Cafe) => data.similar_cafe_ids.includes(c.id))
+              .forEach((c: Cafe) => places.push({ kind: "cafe", data: c }));
+          }
+          setSimilarPlaces(places);
         }
       } catch (error) {
         console.error("Error fetching review:", error);
@@ -399,29 +417,29 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
           </div>
         </article>
 
-        {/* Similar Restaurants */}
-        {similarRestaurants.length > 0 && (
+        {/* Similar Places (restaurants and/or cafes) */}
+        {similarPlaces.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-              Podobné restaurace
+              Podobné podniky
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {similarRestaurants
-                .sort((a, b) => a.name.localeCompare(b.name, 'cs'))
-                .map((restaurant) => (
+              {[...similarPlaces]
+                .sort((a, b) => a.data.name.localeCompare(b.data.name, 'cs'))
+                .map((place) => (
                 <a
-                  key={restaurant.id}
-                  href={restaurant.website_url || `/?restaurant=${restaurant.id}`}
+                  key={`${place.kind}-${place.data.id}`}
+                  href={place.data.website_url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group bg-gray-900/50 border border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-500/60 transition-all hover:scale-[1.02]"
                 >
-                  {/* Restaurant Image */}
+                  {/* Image */}
                   <div className="relative h-48 overflow-hidden bg-gray-800">
-                    {restaurant.image_url ? (
+                    {place.data.image_url ? (
                       <Image
-                        src={restaurant.image_url}
-                        alt={restaurant.name}
+                        src={place.data.image_url}
+                        alt={place.data.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -436,10 +454,10 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                     )}
                   </div>
 
-                  {/* Restaurant Info */}
+                  {/* Info */}
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
-                      {restaurant.name}
+                      {place.data.name}
                     </h3>
                     <div className="space-y-1 text-sm text-gray-400">
                       <div className="flex items-center gap-2">
@@ -447,23 +465,38 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <span>{restaurant.location}</span>
+                        <span>{place.data.location}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span>{restaurant.cuisine_type}</span>
-                      </div>
-                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-800">
-                        <div className="flex items-center gap-1">
-                          <span className="text-yellow-400">⭐</span>
-                          <span className="text-white font-semibold">{restaurant.rating}/10</span>
+                      {place.kind === "restaurant" && (
+                        <>
+                          {place.data.cuisine_type && (
+                            <div className="flex items-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                              <span>{place.data.cuisine_type}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-800">
+                            <div className="flex items-center gap-1">
+                              <span className="text-yellow-400">⭐</span>
+                              <span className="text-white font-semibold">{place.data.rating}/10</span>
+                            </div>
+                            <div className="text-purple-400 font-semibold">
+                              {place.data.price} Kč
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {place.kind === "cafe" && place.data.tags && place.data.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {place.data.tags.map((tag) => (
+                            <span key={tag} className="px-2 py-0.5 bg-purple-900/40 border border-purple-500/30 rounded-full text-xs text-purple-300">
+                              {tag}
+                            </span>
+                          ))}
                         </div>
-                        <div className="text-purple-400 font-semibold">
-                          {restaurant.price} Kč
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </a>

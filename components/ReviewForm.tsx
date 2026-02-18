@@ -28,6 +28,7 @@ export default function ReviewForm({
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [content, setContent] = useState("");
   const [similarRestaurantIds, setSimilarRestaurantIds] = useState<number[]>([]);
+  const [similarCafeIds, setSimilarCafeIds] = useState<number[]>([]);
   const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(null);
   const [selectedPlaceType, setSelectedPlaceType] = useState<string | null>(null);
 
@@ -51,6 +52,7 @@ export default function ReviewForm({
     total_spent?: number | null;
     dishes?: Dish[] | null;
     similar_restaurant_ids?: number[] | null;
+    similar_cafe_ids?: number[] | null;
   }>({
     defaultValues: {
       images: [],
@@ -63,6 +65,7 @@ export default function ReviewForm({
       total_spent: null,
       dishes: [],
       similar_restaurant_ids: [],
+      similar_cafe_ids: [],
     },
   });
 
@@ -114,6 +117,7 @@ export default function ReviewForm({
             total_spent: data.total_spent,
             dishes: data.dishes || [],
             similar_restaurant_ids: data.similar_restaurant_ids || [],
+          similar_cafe_ids: data.similar_cafe_ids || [],
           });
           // Set the selected place (restaurant or cafe)
           if (data.cafe_id) {
@@ -127,6 +131,7 @@ export default function ReviewForm({
           setDishes(data.dishes || []);
           setContent(data.content || "");
           setSimilarRestaurantIds(data.similar_restaurant_ids || []);
+          setSimilarCafeIds(data.similar_cafe_ids || []);
         })
         .catch((err) => {
           console.error("Error fetching review:", err);
@@ -256,6 +261,7 @@ export default function ReviewForm({
         images: images,
         dishes: dishes.length > 0 ? dishes : null,
         similar_restaurant_ids: similarRestaurantIds.length > 0 ? similarRestaurantIds : null,
+        similar_cafe_ids: similarCafeIds.length > 0 ? similarCafeIds : null,
       };
 
       const url = reviewId ? `/api/reviews/${reviewId}` : "/api/reviews";
@@ -636,39 +642,52 @@ export default function ReviewForm({
           <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
             {restaurants
               .filter((r) => !(r.id === selectedPlaceId && r.type === selectedPlaceType))
-              .map((restaurant) => (
-                <label
-                  key={`${restaurant.type}-${restaurant.id}`}
-                  className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={similarRestaurantIds.includes(restaurant.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        const newIds = [...similarRestaurantIds, restaurant.id];
-                        setSimilarRestaurantIds(newIds);
-                        setValue("similar_restaurant_ids", newIds, { shouldValidate: true, shouldDirty: true });
-                      } else {
-                        const newIds = similarRestaurantIds.filter((id) => id !== restaurant.id);
-                        setSimilarRestaurantIds(newIds);
-                        setValue("similar_restaurant_ids", newIds, { shouldValidate: true, shouldDirty: true });
-                      }
-                    }}
-                    className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">{restaurant.name}</div>
-                    <div className="text-sm text-gray-500">
-                      {restaurant.location} • {restaurant.cuisine_type} • {restaurant.price}Kč
+              .map((restaurant) => {
+                const isCafePlace = restaurant.type === 'kavárna';
+                const isChecked = isCafePlace
+                  ? similarCafeIds.includes(restaurant.id)
+                  : similarRestaurantIds.includes(restaurant.id);
+                return (
+                  <label
+                    key={`${restaurant.type}-${restaurant.id}`}
+                    className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) => {
+                        if (isCafePlace) {
+                          const newIds = e.target.checked
+                            ? [...similarCafeIds, restaurant.id]
+                            : similarCafeIds.filter((id) => id !== restaurant.id);
+                          setSimilarCafeIds(newIds);
+                          setValue("similar_cafe_ids", newIds, { shouldValidate: true, shouldDirty: true });
+                        } else {
+                          const newIds = e.target.checked
+                            ? [...similarRestaurantIds, restaurant.id]
+                            : similarRestaurantIds.filter((id) => id !== restaurant.id);
+                          setSimilarRestaurantIds(newIds);
+                          setValue("similar_restaurant_ids", newIds, { shouldValidate: true, shouldDirty: true });
+                        }
+                      }}
+                      className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <div className="flex-1">
+                      <div className="font-medium text-gray-900">{restaurant.name}</div>
+                      <div className="text-sm text-gray-500">
+                        {restaurant.location}{restaurant.cuisine_type ? ` • ${restaurant.cuisine_type}` : ''}{restaurant.price ? ` • ${restaurant.price}Kč` : ''}
+                      </div>
                     </div>
-                  </div>
-                </label>
-              ))}
+                  </label>
+                );
+              })}
           </div>
-          {similarRestaurantIds.length > 0 && (
+          {(similarRestaurantIds.length + similarCafeIds.length) > 0 && (
             <p className="mt-2 text-sm text-gray-600">
-              Vybráno: {similarRestaurantIds.length} {similarRestaurantIds.length === 1 ? 'podnik' : similarRestaurantIds.length < 5 ? 'podniky' : 'podniků'}
+              {(() => {
+                const total = similarRestaurantIds.length + similarCafeIds.length;
+                return `Vybráno: ${total} ${total === 1 ? 'podnik' : total < 5 ? 'podniky' : 'podniků'}`;
+              })()}
             </p>
           )}
         </div>
