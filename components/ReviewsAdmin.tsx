@@ -152,10 +152,13 @@ export default function ReviewsAdmin() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {review.restaurant && (
+                    {(review.restaurant || review.cafe) && (
                       <>
-                        <div className="text-sm text-gray-900">{review.restaurant.name}</div>
-                        <div className="text-xs text-gray-500">{review.restaurant.location}</div>
+                        <div className="text-sm text-gray-900">
+                          {review.restaurant?.name ?? review.cafe?.name}
+                          {review.cafe && <span className="ml-1 text-xs text-purple-500">[kavárna]</span>}
+                        </div>
+                        <div className="text-xs text-gray-500">{review.restaurant?.location ?? review.cafe?.location}</div>
                       </>
                     )}
                   </td>
