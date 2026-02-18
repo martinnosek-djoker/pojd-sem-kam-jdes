@@ -69,14 +69,23 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     ? createReviewSlug(review.id, review.restaurant.name)
     : review.id.toString();
 
+  // Show "Nová recenze" badge only within 14 days of visit date
+  const isNew = (() => {
+    const visitDateObj = new Date(review.visit_date);
+    const diffMs = Date.now() - visitDateObj.getTime();
+    return diffMs / (1000 * 60 * 60 * 24) <= 14;
+  })();
+
   return (
     <Link href={`/recenze/${reviewSlug}`}>
       <div className="group relative bg-gradient-to-br from-purple-900/20 via-gray-900/50 to-black border-2 border-purple-500/30 rounded-xl overflow-hidden hover:border-purple-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/50">
-        {/* Badge - Featured Review */}
-        <div className="absolute top-4 left-4 z-10 bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-purple-400 flex items-center gap-1.5">
-          <span>✨</span>
-          <span>Nová recenze</span>
-        </div>
+        {/* Badge - New Review (visible for 14 days after visit) */}
+        {isNew && (
+          <div className="absolute top-4 left-4 z-10 bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-purple-400 flex items-center gap-1.5">
+            <span>✨</span>
+            <span>Nová recenze</span>
+          </div>
+        )}
 
         {/* Image or Placeholder */}
         <div className="relative h-64 md:h-80 overflow-hidden">
