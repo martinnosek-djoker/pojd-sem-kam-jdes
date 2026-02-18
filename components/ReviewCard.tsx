@@ -40,9 +40,10 @@ interface ReviewCardProps {
 export default function ReviewCard({ review }: ReviewCardProps) {
   // Get first image with local fallback
   const mainImageUrl = review.images?.[0];
+  const placeName = review.restaurant?.name ?? review.cafe?.name ?? '';
   const mainImage = mainImageUrl
-    ? getReviewImageUrl(mainImageUrl, review.id, review.restaurant?.name || '', 0)
-    : review.restaurant?.image_url;
+    ? getReviewImageUrl(mainImageUrl, review.id, placeName, 0)
+    : (review.restaurant?.image_url ?? review.cafe?.image_url);
 
   // Format date
   const visitDate = new Date(review.visit_date).toLocaleDateString("cs-CZ", {
@@ -64,9 +65,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     return text;
   };
 
-  // Create slug from review ID and restaurant name
-  const reviewSlug = review.restaurant
-    ? createReviewSlug(review.id, review.restaurant.name)
+  // Create slug from review ID and place name (restaurant or cafe)
+  const reviewSlug = placeName
+    ? createReviewSlug(review.id, placeName)
     : review.id.toString();
 
   // Show "Nová recenze" badge only within 14 days of visit date
@@ -117,15 +118,15 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
         {/* Content */}
         <div className="relative p-6">
-          {/* Restaurant name */}
-          {review.restaurant && (
+          {/* Place name (restaurant or cafe) */}
+          {(review.restaurant || review.cafe) && (
             <div className="mb-2 flex items-center gap-2">
               <span className="text-purple-400 text-sm font-semibold">
-                {review.restaurant.name}
+                {review.restaurant?.name ?? review.cafe?.name}
               </span>
               <span className="text-gray-500">•</span>
               <span className="text-gray-400 text-sm">
-                {review.restaurant.location}
+                {review.restaurant?.location ?? review.cafe?.location}
               </span>
             </div>
           )}
