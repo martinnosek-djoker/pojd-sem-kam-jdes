@@ -214,6 +214,11 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
           </div>
         )}
 
+        {/* Review Title */}
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+          {review.title}
+        </h1>
+
         {/* Main Image Gallery */}
         {allImages.length > 0 && (
           <div className="mb-8">
@@ -222,7 +227,7 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                 src={currentImage}
                 alt={review.title}
                 fill
-                className="object-contain bg-gray-900"
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, 896px"
                 priority
               />
