@@ -222,12 +222,13 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
         {/* Main Image Gallery */}
         {allImages.length > 0 && (
           <div className="mb-8">
-            <div className="relative h-[500px] md:h-[650px] rounded-xl overflow-hidden mb-4">
+            <div className="rounded-xl overflow-hidden mb-4">
               <Image
                 src={currentImage}
                 alt={review.title}
-                fill
-                className="object-cover"
+                width={1200}
+                height={800}
+                className="w-full h-auto"
                 sizes="(max-width: 768px) 100vw, 896px"
                 priority
               />
