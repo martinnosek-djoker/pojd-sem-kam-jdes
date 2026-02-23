@@ -1,6 +1,7 @@
 import { supabase, supabaseAdmin } from "./supabase";
 import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, ReviewInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
+import { downloadAndSaveImage } from "./image-downloader";
 
 // CRUD operations
 
@@ -57,6 +58,30 @@ export async function createRestaurant(input: RestaurantInput): Promise<Restaura
     throw error;
   }
 
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'restaurants'
+    );
+
+    // Update record with local path if download succeeded
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("restaurants")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
+  }
+
   return data;
 }
 
@@ -85,6 +110,30 @@ export async function updateRestaurant(
   if (error) {
     console.error("Error updating restaurant:", error);
     return null;
+  }
+
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'restaurants'
+    );
+
+    // Update record with local path if download succeeded
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("restaurants")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
   }
 
   return data;
@@ -317,6 +366,29 @@ export async function createTrending(input: TrendingInput): Promise<Trending> {
     throw error;
   }
 
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'trendings'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("trendings")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
+  }
+
   return data;
 }
 
@@ -340,6 +412,29 @@ export async function updateTrending(
   if (error) {
     console.error("Error updating trending:", error);
     return null;
+  }
+
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'trendings'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("trendings")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
   }
 
   return data;
@@ -451,6 +546,29 @@ export async function createBakery(input: BakeryInput): Promise<Bakery> {
     throw error;
   }
 
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'bakeries'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("bakeries")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
+  }
+
   return data;
 }
 
@@ -475,6 +593,29 @@ export async function updateBakery(
   if (error) {
     console.error("Error updating bakery:", error);
     return null;
+  }
+
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'bakeries'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("bakeries")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
   }
 
   return data;
@@ -634,6 +775,29 @@ export async function createCafe(input: CafeInput): Promise<Cafe> {
     throw error;
   }
 
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'cafes'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("cafes")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
+  }
+
   return data;
 }
 
@@ -659,6 +823,29 @@ export async function updateCafe(
   if (error) {
     console.error("Error updating cafe:", error);
     return null;
+  }
+
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'cafes'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("cafes")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
   }
 
   return data;
@@ -1188,6 +1375,29 @@ export async function createMichelinRestaurant(restaurant: any) {
     throw error;
   }
 
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'michelin'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("michelin_restaurants")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
+  }
+
   return data;
 }
 
@@ -1202,6 +1412,29 @@ export async function updateMichelinRestaurant(id: number, restaurant: any) {
   if (error) {
     console.error("Error updating Michelin restaurant:", error);
     throw error;
+  }
+
+  // Auto-download image if it's an external URL
+  if (data.image_url && !data.image_url.startsWith('/images/')) {
+    const localImagePath = await downloadAndSaveImage(
+      data.image_url,
+      data.name,
+      data.id,
+      'michelin'
+    );
+
+    if (localImagePath && localImagePath !== data.image_url) {
+      const { data: updated } = await supabase
+        .from("michelin_restaurants")
+        .update({ image_url: localImagePath })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (updated) {
+        return updated;
+      }
+    }
   }
 
   return data;
