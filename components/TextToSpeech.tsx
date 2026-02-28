@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { IS_MOBILE } from "@/lib/api-config";
 
 interface TextToSpeechProps {
   text: string;
@@ -14,9 +15,42 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [isSupported, setIsSupported] = useState(false);
   const [showVoiceSelector, setShowVoiceSelector] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [TextToSpeechPlugin, setTextToSpeechPlugin] = useState<any>(null);
 
   useEffect(() => {
-    // Check if speech synthesis is supported
+    // Detect mobile environment
+    setIsMobile(IS_MOBILE);
+
+    // Initialize TTS based on environment
+    if (IS_MOBILE) {
+      // Mobile: Use Capacitor TTS plugin
+      initMobileTTS();
+    } else {
+      // Web: Use Web Speech API
+      initWebTTS();
+    }
+
+    return () => {
+      if (!IS_MOBILE && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const initMobileTTS = async () => {
+    try {
+      const { TextToSpeech } = await import('@capacitor-community/text-to-speech');
+      setTextToSpeechPlugin(TextToSpeech);
+      setIsSupported(true);
+      console.log('✅ Mobile TTS initialized');
+    } catch (error) {
+      console.error('❌ Failed to load Mobile TTS:', error);
+      setIsSupported(false);
+    }
+  };
+
+  const initWebTTS = () => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       setIsSupported(true);
 
@@ -42,12 +76,8 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
       // Voices might load asynchronously
       loadVoices();
       window.speechSynthesis.onvoiceschanged = loadVoices;
-
-      return () => {
-        window.speechSynthesis.cancel();
-      };
     }
-  }, []);
+  };
 
   const extractPlainText = (html: string): string => {
     // Remove HTML tags and convert to plain text
@@ -118,7 +148,7 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
 
     // Postupně nahradit všechna problematická slova
     Object.entries(pronunciationFixes).forEach(([wrong, correct]) => {
-      // Použít word boundary (\b) aby se nenahrадily části slov
+      // Použít word boundary (\b) aby se nenahradily části slov
       const regex = new RegExp(`\\b${wrong}\\b`, 'g');
       fixedText = fixedText.replace(regex, correct);
     });
@@ -126,7 +156,54 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
     return fixedText;
   };
 
-  const handlePlay = () => {
+  const handlePlayMobile = async () => {
+    if (!TextToSpeechPlugin) return;
+
+    try {
+      // Extract plain text from HTML
+      const plainText = extractPlainText(text);
+
+      // Create title text if provided
+      let fullText = title ? `${title}. ${plainText}` : plainText;
+
+      // Fix Czech pronunciation issues
+      fullText = fixCzechPronunciation(fullText);
+
+      setIsPlaying(true);
+      setIsPaused(false);
+
+      await TextToSpeechPlugin.speak({
+        text: fullText,
+        lang: 'cs-CZ',
+        rate: 0.9,
+        pitch: 1.0,
+        volume: 1.0,
+        category: 'ambient',
+      });
+
+      // After speaking completes
+      setIsPlaying(false);
+      setIsPaused(false);
+    } catch (error) {
+      console.error('Mobile TTS error:', error);
+      setIsPlaying(false);
+      setIsPaused(false);
+    }
+  };
+
+  const handleStopMobile = async () => {
+    if (!TextToSpeechPlugin) return;
+
+    try {
+      await TextToSpeechPlugin.stop();
+      setIsPlaying(false);
+      setIsPaused(false);
+    } catch (error) {
+      console.error('Mobile TTS stop error:', error);
+    }
+  };
+
+  const handlePlayWeb = () => {
     if (!isSupported) return;
 
     // If paused, resume
@@ -177,18 +254,44 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
     window.speechSynthesis.speak(utterance);
   };
 
-  const handlePause = () => {
+  const handlePauseWeb = () => {
     if (!isSupported) return;
     window.speechSynthesis.pause();
     setIsPaused(true);
     setIsPlaying(false);
   };
 
-  const handleStop = () => {
+  const handleStopWeb = () => {
     if (!isSupported) return;
     window.speechSynthesis.cancel();
     setIsPlaying(false);
     setIsPaused(false);
+  };
+
+  // Unified handlers
+  const handlePlay = () => {
+    if (isMobile) {
+      handlePlayMobile();
+    } else {
+      handlePlayWeb();
+    }
+  };
+
+  const handlePause = () => {
+    if (isMobile) {
+      // Mobile doesn't support pause, only stop
+      handleStopMobile();
+    } else {
+      handlePauseWeb();
+    }
+  };
+
+  const handleStop = () => {
+    if (isMobile) {
+      handleStopMobile();
+    } else {
+      handleStopWeb();
+    }
   };
 
   if (!isSupported) {
@@ -212,7 +315,7 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
           </button>
         ) : (
           <>
-            {isPlaying && (
+            {isPlaying && !isMobile && (
               <button
                 onClick={handlePause}
                 className="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-all font-medium active:scale-95"
@@ -250,8 +353,8 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
         )}
       </div>
 
-      {/* Voice selector */}
-      {voices.length > 1 && (
+      {/* Voice selector (only for web) */}
+      {!isMobile && voices.length > 1 && (
         <div className="relative">
           <button
             onClick={() => setShowVoiceSelector(!showVoiceSelector)}
