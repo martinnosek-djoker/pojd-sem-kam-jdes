@@ -58,24 +58,22 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
 
   const initWebTTS = () => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      setIsSupported(true);
-
       // Load available voices
       const loadVoices = () => {
         const availableVoices = window.speechSynthesis.getVoices();
 
-        // Filter Czech voices
+        // Filter Czech voices only
         const czechVoices = availableVoices.filter(voice =>
           voice.lang.startsWith('cs') || voice.lang.startsWith('cs-CZ')
         );
 
-        setVoices(czechVoices.length > 0 ? czechVoices : availableVoices);
-
-        // Select default Czech voice or first available
+        // Only enable TTS if Czech voices are available
         if (czechVoices.length > 0) {
+          setVoices(czechVoices);
           setSelectedVoice(czechVoices[0]);
-        } else if (availableVoices.length > 0) {
-          setSelectedVoice(availableVoices[0]);
+          setIsSupported(true);
+        } else {
+          setIsSupported(false);
         }
       };
 
