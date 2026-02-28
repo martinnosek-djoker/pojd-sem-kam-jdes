@@ -69,6 +69,63 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
     return plainText;
   };
 
+  const fixCzechPronunciation = (text: string): string => {
+    // Slovník oprav výslovnosti pro české text-to-speech
+    const pronunciationFixes: Record<string, string> = {
+      // Pizza píšeme jako "pica" ale vyslovuje se "pitsa"
+      'pica': 'pitsa',
+      'pice': 'pitse',
+      'pici': 'pitsi',
+      'picu': 'pitsu',
+      'picou': 'pitsou',
+      'Pica': 'Pitsa',
+      'Pice': 'Pitse',
+      'Pici': 'Pitsi',
+      'Picu': 'Pitsu',
+      'Picou': 'Pitsou',
+
+      // Další problematická slova můžeme přidat
+      'bruschetta': 'brusketa',
+      'Bruschetta': 'Brusketa',
+      'gnocchi': 'ňoky',
+      'Gnocchi': 'Ňoky',
+      'prosciutto': 'prošuto',
+      'Prosciutto': 'Prošuto',
+      'focaccia': 'fokača',
+      'Focaccia': 'Fokača',
+      'tiramisu': 'tiramisu',
+      'Tiramisu': 'Tiramisu',
+      'carpaccio': 'karpačo',
+      'Carpaccio': 'Karpačo',
+      'panna cotta': 'pana kota',
+      'Panna cotta': 'Pana kota',
+      'Panna Cotta': 'Pana Kota',
+      'mozzarella': 'mocarela',
+      'Mozzarella': 'Mocarela',
+      'risotto': 'rizoto',
+      'Risotto': 'Rizoto',
+      'espresso': 'espreso',
+      'Espresso': 'Espreso',
+      'cappuccino': 'kapučíno',
+      'Cappuccino': 'Kapučíno',
+      'latte': 'late',
+      'Latte': 'Late',
+      'macchiato': 'makjato',
+      'Macchiato': 'Makjato',
+    };
+
+    let fixedText = text;
+
+    // Postupně nahradit všechna problematická slova
+    Object.entries(pronunciationFixes).forEach(([wrong, correct]) => {
+      // Použít word boundary (\b) aby se nenahrадily části slov
+      const regex = new RegExp(`\\b${wrong}\\b`, 'g');
+      fixedText = fixedText.replace(regex, correct);
+    });
+
+    return fixedText;
+  };
+
   const handlePlay = () => {
     if (!isSupported) return;
 
@@ -87,7 +144,10 @@ export default function TextToSpeech({ text, title }: TextToSpeechProps) {
     const plainText = extractPlainText(text);
 
     // Create title text if provided
-    const fullText = title ? `${title}. ${plainText}` : plainText;
+    let fullText = title ? `${title}. ${plainText}` : plainText;
+
+    // Fix Czech pronunciation issues
+    fullText = fixCzechPronunciation(fullText);
 
     const utterance = new SpeechSynthesisUtterance(fullText);
     utterance.lang = 'cs-CZ';
