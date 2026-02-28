@@ -8,7 +8,7 @@ import RichTextEditor from "./RichTextEditor";
 
 interface ReviewFormProps {
   reviewId?: number | null;
-  onSave: (review: Review) => void;
+  onSave: (review: Review, isNew?: boolean) => void;
   onCancel: () => void;
 }
 
@@ -281,7 +281,8 @@ export default function ReviewForm({
       }
 
       const savedReview = await response.json();
-      onSave(savedReview);
+      const isNewReview = !reviewId; // True if creating new review
+      onSave(savedReview, isNewReview);
     } catch (err: any) {
       setError(err.message);
     } finally {

@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import TextToSpeech from "@/components/TextToSpeech";
 import { Review, Restaurant, Cafe } from "@/lib/types";
 import { getApiUrl, getProxiedImageUrl, IS_MOBILE } from "@/lib/api-config";
 
@@ -148,38 +149,44 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
 
   const allImages = review.images || [];
 
+  // Get place name (restaurant or cafe)
+  const placeName = review.restaurant?.name ?? review.cafe?.name ?? '';
+
   // Use helper to get image with local fallback
   const currentImageUrl = allImages[selectedImage];
   const currentImage = currentImageUrl
-    ? getReviewImageUrl(currentImageUrl, review.id, review.restaurant?.name || '', selectedImage)
-    : (review.restaurant?.image_url || "/placeholder-restaurant.jpg");
+    ? getReviewImageUrl(currentImageUrl, review.id, placeName, selectedImage)
+    : (review.restaurant?.image_url ?? review.cafe?.image_url ?? "/placeholder-restaurant.jpg");
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black px-4 sm:px-8 py-8 pb-24">
       <div className="max-w-4xl mx-auto">
-        {/* Header with Logo */}
-        <div className="mb-8 flex items-center justify-between">
+        {/* Header with Back Button and Logo */}
+        <div className="mb-8 flex items-center gap-4">
+          {/* Back button - left */}
+          <Link
+            href="/"
+            className="text-purple-400 hover:text-purple-300 transition-all p-2 -ml-2 rounded-lg hover:bg-purple-900/20 active:scale-95"
+            aria-label="Zpět na homepage"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </Link>
+
+          {/* Logo and brand */}
           <Link href="/" className="hover:opacity-80 transition-opacity">
             <Logo />
           </Link>
-          <Link
-            href="/"
-            className="text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>Zpět na homepage</span>
-          </Link>
         </div>
 
-        {/* Restaurant Header */}
-        {review.restaurant && (
+        {/* Place Header (Restaurant or Cafe) */}
+        {(review.restaurant || review.cafe) && (
           <div className="mb-8">
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div>
                 <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
-                  {review.restaurant.name}
+                  {review.restaurant?.name ?? review.cafe?.name}
                 </h1>
                 <div className="flex items-center gap-3 text-lg text-gray-300">
                   <div className="flex items-center gap-2">
@@ -187,9 +194,9 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>{review.restaurant.location}</span>
+                    <span>{review.restaurant?.location ?? review.cafe?.location}</span>
                   </div>
-                  {review.restaurant.cuisine_type && (
+                  {review.restaurant?.cuisine_type && (
                     <>
                       <span className="text-gray-600">•</span>
                       <span>{review.restaurant.cuisine_type}</span>
@@ -197,9 +204,9 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
                   )}
                 </div>
               </div>
-              {review.restaurant.website_url && (
+              {(review.restaurant?.website_url ?? review.cafe?.website_url) && (
                 <a
-                  href={review.restaurant.website_url}
+                  href={(review.restaurant?.website_url ?? review.cafe?.website_url) || ''}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium flex items-center gap-2"
@@ -269,6 +276,11 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <span>Navštíveno {visitDate}</span>
+          </div>
+
+          {/* Text-to-Speech */}
+          <div className="mb-6">
+            <TextToSpeech text={review.content} title={review.title} />
           </div>
 
           {/* Ratings and Dishes Header */}

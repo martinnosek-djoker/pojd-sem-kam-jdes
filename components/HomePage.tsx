@@ -7,6 +7,7 @@ import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import ReviewCard from "@/components/ReviewCard";
+import AIRestaurantSearch from "@/components/AIRestaurantSearch";
 import { Restaurant, Review, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
@@ -329,6 +330,9 @@ export default function HomePage() {
           <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🍽️ Nejlepší restaurace v Praze</h2>
           <p className="text-sm md:text-base text-gray-400">Filtruj podle lokality, typu kuchyně nebo najdi restauraci ve svém okolí</p>
         </div>
+
+        {/* AI Restaurant Search */}
+        <AIRestaurantSearch />
 
         {/* Filters */}
         <RestaurantFilter

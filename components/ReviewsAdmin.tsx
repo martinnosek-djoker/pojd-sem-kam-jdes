@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ReviewForm from "./ReviewForm";
+import NotificationDialog from "./NotificationDialog";
 import { Review } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -10,6 +11,8 @@ export default function ReviewsAdmin() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [savedReview, setSavedReview] = useState<Review | null>(null);
 
   useEffect(() => {
     fetchReviews();
@@ -29,10 +32,16 @@ export default function ReviewsAdmin() {
     }
   };
 
-  const handleSave = (review: Review) => {
+  const handleSave = (review: Review, isNew: boolean = false) => {
     setShowForm(false);
     setEditingId(null);
     fetchReviews();
+
+    // Show notification dialog for new reviews only
+    if (isNew) {
+      setSavedReview(review);
+      setShowNotificationDialog(true);
+    }
   };
 
   const handleCancel = () => {
@@ -187,6 +196,17 @@ export default function ReviewsAdmin() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {/* Notification Dialog */}
+      {savedReview && (
+        <NotificationDialog
+          isOpen={showNotificationDialog}
+          onClose={() => setShowNotificationDialog(false)}
+          itemName={savedReview.restaurant?.name || savedReview.cafe?.name || "Neznámý podnik"}
+          itemType="review"
+          itemId={savedReview.id}
+        />
       )}
     </div>
   );
