@@ -11,11 +11,11 @@ interface Restaurant {
   name: string;
   location: string;
   cuisine_type: string;
+  specialty: string | null;
   rating: number;
   price: number;
   website_url?: string;
   image_url?: string;
-  description?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -64,9 +64,9 @@ export async function POST(request: NextRequest) {
       name: r.name,
       location: r.location,
       cuisine_type: r.cuisine_type,
+      specialty: r.specialty || "",
       rating: r.rating,
       price: r.price,
-      description: r.description || "",
     }));
 
     // Zavolat Claude AI
@@ -88,12 +88,14 @@ Kritéria mohou zahrnovat:
 - Lokalita (např. "Anděl", "centrum", "Vinohrady", "Žižkov")
 - Cenová kategorie (např. "levné", "do 500 Kč", "fine dining")
 - Hodnocení (vždy preferuj vyšší hodnocení při stejné shodě)
+- Specializace (konkrétní pokrmy nebo vlastnosti - např. "výborné burgery", "fresh pasta", "raw dezerty")
 
 DŮLEŽITÉ:
 - Cena (price) je průměrná cena za osobu v Kč
 - Rating je hodnocení 1-10
 - Lokace může obsahovat více hodnot oddělených čárkou
 - Cuisine_type může obsahovat více typů oddělených čárkou
+- Specialty obsahuje konkrétní specializaci restaurace (co dělají nejlépe)
 - Vždy vysvětli své rozhodnutí stručně a přátelsky
 - Pokud nejsou žádné perfektní shody, nabídni nejbližší alternativy
 
