@@ -100,8 +100,8 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
     async function fetchSimilarPlaces() {
       try {
         // Fetch similar places (restaurants and/or cafes)
-        const hasRestaurants = Array.isArray(review.similar_restaurant_ids) && review.similar_restaurant_ids.length > 0;
-        const hasCafes = Array.isArray(review.similar_cafe_ids) && review.similar_cafe_ids.length > 0;
+        const hasRestaurants = Array.isArray(review?.similar_restaurant_ids) && review.similar_restaurant_ids.length > 0;
+        const hasCafes = Array.isArray(review?.similar_cafe_ids) && review.similar_cafe_ids.length > 0;
 
         if (hasRestaurants || hasCafes) {
           const [restaurantsRaw, cafesRaw] = await Promise.all([
