@@ -31,7 +31,7 @@ interface CafeWithDistance extends Cafe {
 type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance | CafeWithDistance;
 
 export default function NearbyRestaurants() {
-  
+
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [bakeries, setBakeries] = useState<Bakery[]>([]);
   const [cafes, setCafes] = useState<Cafe[]>([]);
@@ -42,6 +42,8 @@ export default function NearbyRestaurants() {
   const [radiusKm, setRadiusKm] = useState(2);
   const [error, setError] = useState<string | null>(null);
   const [isPermissionDenied, setIsPermissionDenied] = useState(false);
+  const [restaurantReviewMap, setRestaurantReviewMap] = useState<Map<number, any>>(new Map());
+  const [cafeReviewMap, setCafeReviewMap] = useState<Map<number, any>>(new Map());
 
   // New states for address search
   const [searchMode, setSearchMode] = useState<'gps' | 'address'>('gps');
@@ -58,19 +60,21 @@ export default function NearbyRestaurants() {
     return options[currentIndex + 1];
   };
 
-  // Fetch all restaurants, bakeries and cafes
+  // Fetch all restaurants, bakeries, cafes and reviews
   useEffect(() => {
     async function fetchData() {
       try {
-        const [restaurantsRes, bakeriesRes, cafesRes] = await Promise.all([
+        const [restaurantsRes, bakeriesRes, cafesRes, reviewsRes] = await Promise.all([
           fetch(getApiUrl("/api/restaurants")),
           fetch(getApiUrl("/api/bakeries")),
           fetch(getApiUrl("/api/cafes")),
+          fetch(getApiUrl("/api/reviews")),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const bakeriesData = await bakeriesRes.json();
         const cafesData = await cafesRes.json();
+        const reviewsData = await reviewsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -82,6 +86,24 @@ export default function NearbyRestaurants() {
 
         if (Array.isArray(cafesData)) {
           setCafes(cafesData);
+        }
+
+        // Create review maps
+        if (Array.isArray(reviewsData)) {
+          const restaurantMap = new Map();
+          const cafeMap = new Map();
+
+          reviewsData.forEach((review: any) => {
+            if (review.restaurant_id) {
+              restaurantMap.set(review.restaurant_id, review);
+            }
+            if (review.cafe_id) {
+              cafeMap.set(review.cafe_id, review);
+            }
+          });
+
+          setRestaurantReviewMap(restaurantMap);
+          setCafeReviewMap(cafeMap);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -507,6 +529,7 @@ export default function NearbyRestaurants() {
                     <RestaurantCard
                       restaurant={place}
                       forceLocation={place.displayLocation}
+                      review={restaurantReviewMap.get(place.id)}
                     />
                   ) : place.type === 'bakery' ? (
                     <BakeryCard
@@ -517,6 +540,7 @@ export default function NearbyRestaurants() {
                     <CafeCard
                       cafe={place}
                       forceLocation={place.displayLocation}
+                      review={cafeReviewMap.get(place.id)}
                     />
                   )}
                 </div>

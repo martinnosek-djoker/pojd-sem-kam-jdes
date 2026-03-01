@@ -37,6 +37,9 @@ async function buildMobile() {
     // Step 2: Download all images for offline use
     await runCommand('node scripts/download-all-images.mjs', 'Downloading images for all categories');
 
+    // Step 2.5: Download review images for offline use
+    await runCommand('node scripts/download-review-images.mjs', 'Downloading review images');
+
     // Step 3: Generate reviews cache
     await runCommand('node scripts/generate-reviews-data.mjs', 'Generating reviews cache');
 
@@ -45,7 +48,10 @@ async function buildMobile() {
     await swapConfigs();
 
     // Step 5: Build with Next.js (using mobile config)
-    await runCommand('next build', 'Building Next.js app for mobile');
+    await runCommand('MOBILE_BUILD=true next build', 'Building Next.js app for mobile');
+
+    // Step 5.5: Copy review images to out directory (Next.js doesn't auto-copy them)
+    await runCommand('cp -r public/images/reviews out/images/', 'Copying review images to build output');
 
     // Step 6: Restore config files
     console.log('\n🔄 Restoring config files...');

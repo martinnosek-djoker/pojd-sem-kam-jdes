@@ -6,9 +6,28 @@ Tato složka obsahuje kompletní dokumentaci projektu a návody pro přechod na 
 
 ## 📚 Dokumenty
 
-### Projektová dokumentace
+### Základní dokumentace (START HERE!)
+
+- **[DEVELOPMENT-PRINCIPLES.md](./DEVELOPMENT-PRINCIPLES.md)** - ⭐ **DŮLEŽITÉ - čti jako první!**
+  - ✅ **No-Rebuild-Needed princip** - jak funguje aplikace bez buildů
+  - 🎨 Recent updates (Homepage redesign, Bottom Navigation)
+  - 🏗️ Architektura, tech stack a best practices
+  - 📱 Mobile-specific features
+  - 🎨 Design system a styling guidelines
+  - 🚀 Build & deploy workflow
+
+### Feature-specific dokumentace
+
+- **[recenze-system.md](./recenze-system.md)** - Systém recenzí
+  - 📝 Architektura review systému
+  - 🔄 Smart 404 fallback pro nové recenze
+  - 🖼️ Image handling a gallery
+  - 💾 Reviews cache system
+  - 🌐 Slug system a routing
+
+### Projektová dokumentace (historická)
 - **[project-overview.md](./project-overview.md)** - Kompletní přehled projektu
-  - Struktura stránkek a komponent
+  - Struktura stránek a komponent
   - API endpointy
   - Databázové modely
   - Klíčové funkcionality
@@ -182,8 +201,21 @@ Pokud narazíte na problém:
 
 ---
 
-*Dokumentace vytvořena: 9.11.2025*
-*Aktualizováno: 9.11.2025*
+## 🆕 Changelog
 
-**Autor:** Claude (AI Assistant)
+### 28.2.2026
+- ➕ Přidána [DEVELOPMENT-PRINCIPLES.md](./DEVELOPMENT-PRINCIPLES.md) - core principles
+- ➕ Přidána [recenze-system.md](./recenze-system.md) - review system docs
+- ✅ Dokumentovány změny z posledních 2 měsíců (Homepage, Bottom Nav)
+- ✅ Zdokumentován no-rebuild princip
+
+### 9.11.2025
+- ✅ Původní dokumentace (project-overview, capacitor-setup, atd.)
+
+---
+
+*Dokumentace vytvořena: 9.11.2025*
+*Aktualizováno: 28.2.2026*
+
+**Autoři:** Claude (AI Assistant) + Martin Nosek
 **Pro projekt:** Gastro Tips - Pojď sem! Kam jdeš?

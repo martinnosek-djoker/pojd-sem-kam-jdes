@@ -1,6 +1,7 @@
 import "./globals.css";
 import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
+import BackButtonHandler from "@/components/BackButtonHandler";
 import ScrollToTop from "@/components/ScrollToTop";
 import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
@@ -151,6 +152,7 @@ export default function RootLayout({
         <StructuredData />
         <ScrollToTop />
         <PushNotificationHandler />
+        <BackButtonHandler />
         <main className="min-h-screen">
           {children}
         </main>

@@ -1,44 +1,40 @@
 #!/usr/bin/env node
-import { renameSync, existsSync } from 'fs';
+import { renameSync, existsSync, readdirSync, rmSync } from 'fs';
 import { join } from 'path';
-import { readdirSync } from 'fs';
+
+const API_ROUTES_TO_RESTORE = [
+  'app/api/cafes/[id]',
+  'app/api/restaurants/[id]',
+  'app/api/admin/events/[id]',
+  'app/api/trendings/[id]',
+  'app/api/michelin/[id]',
+  'app/api/reviews/[id]',
+  'app/api/bakeries/[id]',
+  'app/api/breakfasts',
+  'app/api/story/[slug]',
+];
 
 console.log('🔧 Restoring API routes after mobile build...');
 
-function findBackups(dir) {
-  const backups = [];
+const backupDir = join(process.cwd(), '.temp-api-backup');
 
-  function scan(currentDir) {
-    try {
-      const items = readdirSync(currentDir, { withFileTypes: true });
+if (existsSync(backupDir)) {
+  for (const route of API_ROUTES_TO_RESTORE) {
+    const originalPath = join(process.cwd(), route);
+    const backupPath = join(backupDir, route.replace(/\//g, '_'));
 
-      for (const item of items) {
-        const fullPath = join(currentDir, item.name);
-
-        if (item.isDirectory()) {
-          if (item.name.endsWith('.backup')) {
-            backups.push(fullPath);
-          } else {
-            scan(fullPath);
-          }
-        }
-      }
-    } catch (error) {
-      // Ignore permission errors
+    if (existsSync(backupPath)) {
+      console.log(`  ↳ Restoring ${route}`);
+      renameSync(backupPath, originalPath);
     }
   }
 
-  scan(dir);
-  return backups;
-}
-
-const appDir = join(process.cwd(), 'app');
-const backups = findBackups(appDir);
-
-for (const backupPath of backups) {
-  const originalPath = backupPath.replace('.backup', '');
-  console.log(`  ↳ Restoring ${originalPath.replace(process.cwd() + '/', '')}`);
-  renameSync(backupPath, originalPath);
+  // Clean up temp backup directory
+  try {
+    rmSync(backupDir, { recursive: true, force: true });
+  } catch (error) {
+    console.log(`  ⚠️  Could not remove temp backup directory: ${error.message}`);
+  }
 }
 
 console.log('✓ API routes restored\n');

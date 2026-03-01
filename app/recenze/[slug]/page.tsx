@@ -15,7 +15,7 @@ export async function generateStaticParams() {
       const reviews = JSON.parse(readFileSync(cacheFile, 'utf-8'));
 
       return reviews.map((review: any) => ({
-        slug: createReviewSlug(review.id, review.restaurant?.name || "review"),
+        slug: createReviewSlug(review.id, review.restaurant?.name || review.cafe?.name || "review"),
       }));
     } catch (error) {
       console.log('Could not read reviews cache, returning empty array');

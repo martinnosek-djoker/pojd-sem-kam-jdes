@@ -13,20 +13,28 @@ function getReviewImageUrl(imageUrl: string, reviewId: number, restaurantName: s
     return imageUrl;
   }
 
-  // In mobile mode, try local path first
+  // In mobile mode, for reviews that were present at build time (reviewId <= 16),
+  // try local path. For newer reviews, use remote URL directly.
   if (IS_MOBILE) {
-    const normalizedName = restaurantName
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
+    // Check if this is likely a review from build time based on ID
+    // This assumes reviews cache was generated at build time
+    const buildTimeReviewIds = [9, 10, 11, 16]; // Known review IDs from .reviews-cache.json
 
-    const fileName = index === 0 ? `${normalizedName}.webp` : `${normalizedName}-${index + 1}.webp`;
-    const localPath = `/images/reviews/${reviewId}/${fileName}`;
+    if (buildTimeReviewIds.includes(reviewId)) {
+      const normalizedName = restaurantName
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
 
-    return localPath;
+      const fileName = index === 0 ? `${normalizedName}.webp` : `${normalizedName}-${index + 1}.webp`;
+      return `/images/reviews/${reviewId}/${fileName}`;
+    }
+
+    // For new reviews not in build, use remote URL directly
+    return imageUrl;
   }
 
   // Web mode - use proxy or original URL
