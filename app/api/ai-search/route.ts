@@ -111,7 +111,7 @@ ${JSON.stringify(restaurantsData, null, 2)}
 Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.`;
 
     const message = await anthropic.messages.create({
-      model: "claude-3-5-sonnet",
+      model: "claude-4-sonnet",
       max_tokens: 2000,
       messages: [
         {
