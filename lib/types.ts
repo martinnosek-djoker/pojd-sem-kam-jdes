@@ -49,6 +49,16 @@ export interface Restaurant {
   type?: string; // Optional - added client-side for categorization (e.g., 'restaurace', 'kavárna', 'restaurant', 'bakery', 'cafe')
 }
 
+// Helper: Image URL validation - accepts full URLs or relative paths starting with /
+const imageUrlSchema = z.string()
+  .refine(
+    (val) => !val || val === "" || val.startsWith("http://") || val.startsWith("https://") || val.startsWith("/"),
+    { message: "URL obrázku musí začínat na http://, https:// nebo /" }
+  )
+  .optional()
+  .nullable()
+  .or(z.literal(""));
+
 // Zod validation schemas
 export const restaurantSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
@@ -63,7 +73,7 @@ export const restaurantSchema = z.object({
   price: z.number().min(0, "Cena musí být kladné číslo"),
   rating: z.number().min(1).max(10, "Hodnocení musí být mezi 1-10"),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
 });
 
 export type RestaurantInput = z.infer<typeof restaurantSchema>;
@@ -94,7 +104,7 @@ export const trendingSchema = z.object({
   name: z.string().min(1, "Název je povinný"),
   address: z.string().optional().nullable().or(z.literal("")),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
   display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
 });
 
@@ -123,7 +133,7 @@ export const bakerySchema = z.object({
     lng: z.number()
   })).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
 });
 
 export type BakeryInput = z.infer<typeof bakerySchema>;
@@ -158,7 +168,7 @@ export const cafeSchema = z.object({
     lng: z.number()
   })).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
   tags: z.array(z.string()),
 });
 
@@ -193,7 +203,7 @@ export const breakfastSchema = z.object({
     lng: z.number()
   })).optional().nullable(),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
 });
 
 export type BreakfastInput = z.infer<typeof breakfastSchema>;
@@ -274,7 +284,7 @@ export const michelinRestaurantSchema = z.object({
   cuisine_type: z.string().optional().nullable().or(z.literal("")),
   description: z.string().optional().nullable().or(z.literal("")),
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
-  image_url: z.string().url("Neplatná URL obrázku").optional().nullable().or(z.literal("")),
+  image_url: imageUrlSchema,
   display_order: z.number().min(0, "Pořadí musí být kladné číslo"),
 });
 
