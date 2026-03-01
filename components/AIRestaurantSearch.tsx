@@ -140,10 +140,10 @@ export default function AIRestaurantSearch() {
             <div className="mt-3 flex flex-wrap gap-2">
               <span className="text-xs text-gray-500">Zkuste například:</span>
               {[
-                "nejlepší sushi v Praze",
-                "levná italská restaurace na Vinohradech",
-                "fine dining pod 2000 Kč",
-                "vegetariánské jídlo v centru"
+                "nejlepší pizza na Vinohradech",
+                "vietnamská restaurace na Andělu",
+                "degustační menu do 2000 Kč",
+                "kde dají skvělý tatarák"
               ].map((example) => (
                 <button
                   key={example}
