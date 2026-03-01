@@ -80,28 +80,6 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
         }
         const data = await res.json();
         setReview(data);
-
-        // Fetch similar places (restaurants and/or cafes)
-        const hasRestaurants = Array.isArray(data.similar_restaurant_ids) && data.similar_restaurant_ids.length > 0;
-        const hasCafes = Array.isArray(data.similar_cafe_ids) && data.similar_cafe_ids.length > 0;
-        if (hasRestaurants || hasCafes) {
-          const [restaurantsRaw, cafesRaw] = await Promise.all([
-            hasRestaurants ? fetch(getApiUrl("/api/restaurants")).then(r => r.json()) : Promise.resolve([]),
-            hasCafes ? fetch(getApiUrl("/api/cafes")).then(r => r.json()) : Promise.resolve([]),
-          ]);
-          const places: SimilarPlace[] = [];
-          if (Array.isArray(restaurantsRaw)) {
-            restaurantsRaw
-              .filter((r: Restaurant) => data.similar_restaurant_ids.includes(r.id))
-              .forEach((r: Restaurant) => places.push({ kind: "restaurant", data: r }));
-          }
-          if (Array.isArray(cafesRaw)) {
-            cafesRaw
-              .filter((c: Cafe) => data.similar_cafe_ids.includes(c.id))
-              .forEach((c: Cafe) => places.push({ kind: "cafe", data: c }));
-          }
-          setSimilarPlaces(places);
-        }
       } catch (error) {
         console.error("Error fetching review:", error);
         router.push("/");
@@ -114,6 +92,42 @@ export default function ReviewDetailPage({ initialReview }: ReviewDetailPageProp
       fetchReview();
     }
   }, [params.slug, router, initialReview]);
+
+  // Separate effect for fetching similar places - runs whenever review data is available
+  useEffect(() => {
+    if (!review) return;
+
+    async function fetchSimilarPlaces() {
+      try {
+        // Fetch similar places (restaurants and/or cafes)
+        const hasRestaurants = Array.isArray(review.similar_restaurant_ids) && review.similar_restaurant_ids.length > 0;
+        const hasCafes = Array.isArray(review.similar_cafe_ids) && review.similar_cafe_ids.length > 0;
+
+        if (hasRestaurants || hasCafes) {
+          const [restaurantsRaw, cafesRaw] = await Promise.all([
+            hasRestaurants ? fetch(getApiUrl("/api/restaurants")).then(r => r.json()) : Promise.resolve([]),
+            hasCafes ? fetch(getApiUrl("/api/cafes")).then(r => r.json()) : Promise.resolve([]),
+          ]);
+          const places: SimilarPlace[] = [];
+          if (Array.isArray(restaurantsRaw)) {
+            restaurantsRaw
+              .filter((r: Restaurant) => review.similar_restaurant_ids!.includes(r.id))
+              .forEach((r: Restaurant) => places.push({ kind: "restaurant", data: r }));
+          }
+          if (Array.isArray(cafesRaw)) {
+            cafesRaw
+              .filter((c: Cafe) => review.similar_cafe_ids!.includes(c.id))
+              .forEach((c: Cafe) => places.push({ kind: "cafe", data: c }));
+          }
+          setSimilarPlaces(places);
+        }
+      } catch (error) {
+        console.error("Error fetching similar places:", error);
+      }
+    }
+
+    fetchSimilarPlaces();
+  }, [review]);
 
   if (loading) {
     return (
