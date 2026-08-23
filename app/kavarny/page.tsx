@@ -4,8 +4,8 @@ import { useEffect, useState, useMemo } from "react";
 import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import LoadingPot from "@/components/LoadingPot";
-import { Cafe, Review } from "@/lib/types";
-import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Cafe } from "@/lib/types";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function CafesPage() {
 
@@ -16,45 +16,18 @@ export default function CafesPage() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(true);
-  const [reviewsByCafeId, setReviewsByCafeId] = useState<Map<number, Review>>(new Map());
 
-  // Fetch cafes, reviews, and filters
+  // Fetch cafes and filters
   useEffect(() => {
     async function fetchData() {
       try {
-        // For mobile builds, load reviews from cache
-        let reviewsData: Review[] = [];
-        if (IS_MOBILE) {
-          try {
-            const reviewsCacheRes = await fetch('/.reviews-cache.json');
-            if (reviewsCacheRes.ok) {
-              reviewsData = await reviewsCacheRes.json();
-            }
-          } catch (err) {
-            console.error("Could not load reviews cache:", err);
-          }
-        }
+        const [cafesRes, filtersRes] = await Promise.all([
+          fetch(getApiUrl("/api/cafes")),
+          fetch(getApiUrl("/api/cafes/filters")),
+        ]);
 
-        const fetchPromises = IS_MOBILE
-          ? [
-              fetch(getApiUrl("/api/cafes")),
-              fetch(getApiUrl("/api/cafes/filters")),
-            ]
-          : [
-              fetch(getApiUrl("/api/cafes")),
-              fetch(getApiUrl("/api/cafes/filters")),
-              fetch(getApiUrl("/api/reviews")),
-            ];
-
-        const responses = await Promise.all(fetchPromises);
-        const [cafesData, filtersData, ...rest] = await Promise.all(
-          responses.map(r => r.json())
-        );
-
-        // Get reviews data (from cache for mobile, from API for web)
-        if (!IS_MOBILE && rest.length > 0) {
-          reviewsData = rest[0];
-        }
+        const cafesData = await cafesRes.json();
+        const filtersData = await filtersRes.json();
 
         // Validate that cafesData is an array
         if (Array.isArray(cafesData)) {
@@ -69,17 +42,6 @@ export default function CafesPage() {
         // Validate filters data
         if (filtersData && Array.isArray(filtersData.locations)) {
           setAllLocations(filtersData.locations);
-        }
-
-        // Create map of cafe_id to review
-        if (Array.isArray(reviewsData)) {
-          const reviewsMap = new Map<number, Review>();
-          reviewsData.forEach((review: Review) => {
-            if (review.cafe_id) {
-              reviewsMap.set(review.cafe_id, review);
-            }
-          });
-          setReviewsByCafeId(reviewsMap);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -265,7 +227,6 @@ export default function CafesPage() {
               <CafeCard
                 key={cafe.id}
                 cafe={cafe}
-                review={reviewsByCafeId.get(cafe.id)}
               />
             ))}
           </div>

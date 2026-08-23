@@ -1,22 +1,18 @@
 "use client";
 
-import { Restaurant, Review } from "@/lib/types";
+import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
-import { createReviewSlug } from "@/lib/slug";
 import { useState } from "react";
 import Link from "next/link";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   forceLocation?: string; // If provided, only show this location instead of all
-  review?: Review; // If restaurant has a review, include it here
 }
 
-export default function RestaurantCard({ restaurant, forceLocation, review }: RestaurantCardProps) {
+export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
   const [imageError, setImageError] = useState(false);
-  // Use review.restaurant.name to match the static paths generated for mobile builds
-  const reviewSlug = review ? createReviewSlug(review.id, review.restaurant?.name || restaurant.name) : null;
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1;
@@ -51,13 +47,6 @@ export default function RestaurantCard({ restaurant, forceLocation, review }: Re
     return { label: "2000+ Kč", color: "bg-rose-900/40 text-rose-300 border-rose-600/40" };
   };
 
-  // Check if review is new (within 14 days of visit date)
-  const isNewReview = review ? (() => {
-    const visitDateObj = new Date(review.visit_date);
-    const diffMs = Date.now() - visitDateObj.getTime();
-    return diffMs / (1000 * 60 * 60 * 24) <= 14;
-  })() : false;
-
   const CardContent = () => (
     <>
       {/* Image Header */}
@@ -70,31 +59,6 @@ export default function RestaurantCard({ restaurant, forceLocation, review }: Re
             onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
-          {/* Review Badge */}
-          {reviewSlug && (
-            <Link
-              href={`/recenze/${reviewSlug}`}
-              className={`absolute top-3 left-3 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transition-colors z-10 ${
-                isNewReview
-                  ? 'bg-purple-600/90 hover:bg-purple-500/90 border-2 border-purple-400'
-                  : 'bg-green-600/90 hover:bg-green-500/90'
-              }`}
-            >
-              {isNewReview ? (
-                <>
-                  <span className="text-white">✨</span>
-                  <span className="text-white text-sm font-bold">Nová recenze</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  <span className="text-white text-sm font-semibold">Recenze</span>
-                </>
-              )}
-            </Link>
-          )}
           {restaurant.website_url && (
             <Link
               href={restaurant.website_url}
@@ -111,31 +75,6 @@ export default function RestaurantCard({ restaurant, forceLocation, review }: Re
       ) : (
         <div className="relative -m-6 mb-4 h-48 overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-900/20 to-gray-900/40 flex items-center justify-center">
           <span className="text-6xl opacity-20">🍽️</span>
-          {/* Review Badge */}
-          {reviewSlug && (
-            <Link
-              href={`/recenze/${reviewSlug}`}
-              className={`absolute top-3 left-3 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transition-colors z-10 ${
-                isNewReview
-                  ? 'bg-purple-600/90 hover:bg-purple-500/90 border-2 border-purple-400'
-                  : 'bg-green-600/90 hover:bg-green-500/90'
-              }`}
-            >
-              {isNewReview ? (
-                <>
-                  <span className="text-white">✨</span>
-                  <span className="text-white text-sm font-bold">Nová recenze</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  <span className="text-white text-sm font-semibold">Recenze</span>
-                </>
-              )}
-            </Link>
-          )}
           {restaurant.website_url && (
             <Link
               href={restaurant.website_url}

@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Logo from "@/components/Logo";
 import RestaurantCard from "@/components/RestaurantCard";
 import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
-import ReviewCard from "@/components/ReviewCard";
 import AIRestaurantSearch from "@/components/AIRestaurantSearch";
-import { Restaurant, Review, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
 
@@ -21,42 +20,21 @@ export default function HomePage() {
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
-  const [featuredReviews, setFeaturedReviews] = useState<Review[]>([]);
-  const [reviewsLoading, setReviewsLoading] = useState(true);
-  const [allReviews, setAllReviews] = useState<Review[]>([]);
-  const [restaurantReviewMap, setRestaurantReviewMap] = useState<Map<number, Review>>(new Map());
-  const carouselRef = useRef<HTMLDivElement>(null);
 
-  const scrollCarousel = (direction: "prev" | "next") => {
-    if (!carouselRef.current) return;
-    const cardWidth = carouselRef.current.querySelector("[data-carousel-card]")?.clientWidth ?? 380;
-    const gap = 32; // gap-8 = 2rem = 32px
-    carouselRef.current.scrollBy({
-      left: direction === "next" ? cardWidth + gap : -(cardWidth + gap),
-      behavior: "smooth",
-    });
-  };
-
-  // Fetch restaurants, filters, and featured reviews
+  // Fetch restaurants and filters
   useEffect(() => {
     async function fetchData() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
-        const featuredReviewsUrl = getApiUrl("/api/reviews?featured=true");
-        const allReviewsUrl = getApiUrl("/api/reviews");
 
-        const [restaurantsRes, filtersRes, featuredReviewsRes, allReviewsRes] = await Promise.all([
+        const [restaurantsRes, filtersRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(filtersUrl),
-          fetch(featuredReviewsUrl),
-          fetch(allReviewsUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const filtersData = await filtersRes.json();
-        const featuredReviewsData = await featuredReviewsRes.json();
-        const allReviewsData = await allReviewsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -68,27 +46,12 @@ export default function HomePage() {
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
         }
-        if (Array.isArray(featuredReviewsData)) {
-          setFeaturedReviews(featuredReviewsData);
-        }
-        if (Array.isArray(allReviewsData)) {
-          setAllReviews(allReviewsData);
-          // Create a map of restaurant_id -> review (only for restaurant reviews)
-          const reviewMap = new Map<number, Review>();
-          allReviewsData.forEach((review: Review) => {
-            if (review.restaurant_id) {
-              reviewMap.set(review.restaurant_id, review);
-            }
-          });
-          setRestaurantReviewMap(reviewMap);
-        }
       } catch (error) {
         console.error("[HomePage] Error fetching data:", error);
         setRestaurants([]);
         setFilteredRestaurants([]);
       } finally {
         setLoading(false);
-        setReviewsLoading(false);
       }
     }
 
@@ -271,60 +234,6 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Featured Reviews Section */}
-        {!reviewsLoading && featuredReviews.length > 0 && (
-          <div className="mb-12 sm:mb-16">
-            <div className="flex items-end justify-between mb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">
-                  ✨ Čerstvé recenze
-                </h2>
-                <p className="text-sm md:text-base text-gray-400">
-                  Moje poslední návštěvy a zážitky z pražských restaurací
-                </p>
-              </div>
-              {/* Navigation arrows */}
-              {featuredReviews.length > 1 && (
-                <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-                  <button
-                    onClick={() => scrollCarousel("prev")}
-                    className="w-10 h-10 flex items-center justify-center rounded-full border border-purple-500/50 bg-black/60 text-purple-400 hover:border-purple-400 hover:text-purple-300 hover:bg-purple-900/30 transition-all duration-200"
-                    aria-label="Předchozí recenze"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => scrollCarousel("next")}
-                    className="w-10 h-10 flex items-center justify-center rounded-full border border-purple-500/50 bg-black/60 text-purple-400 hover:border-purple-400 hover:text-purple-300 hover:bg-purple-900/30 transition-all duration-200"
-                    aria-label="Další recenze"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-              )}
-            </div>
-            {/* Carousel */}
-            <div
-              ref={carouselRef}
-              className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-            >
-              {featuredReviews.map((review) => (
-                <div
-                  key={review.id}
-                  data-carousel-card
-                  className="flex-none w-[85vw] sm:w-[380px] lg:w-[420px] snap-start"
-                >
-                  <ReviewCard review={review} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🍽️ Nejlepší restaurace v Praze</h2>
@@ -393,7 +302,6 @@ export default function HomePage() {
               <RestaurantCard
                 key={restaurant.id}
                 restaurant={restaurant}
-                review={restaurantReviewMap.get(restaurant.id)}
               />
             ))}
           </div>

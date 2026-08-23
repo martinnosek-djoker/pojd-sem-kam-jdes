@@ -6,7 +6,7 @@ interface NotificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   itemName: string;
-  itemType: 'restaurant' | 'cafe' | 'bakery' | 'breakfast' | 'trending' | 'event' | 'review';
+  itemType: 'restaurant' | 'cafe' | 'bakery' | 'breakfast' | 'trending' | 'event';
   itemId?: number;
 }
 
@@ -17,7 +17,6 @@ const itemTypeLabels = {
   breakfast: 'snídaně',
   trending: 'trending podnik',
   event: 'gastro akce',
-  review: 'recenze',
 };
 
 const itemTypeTitlePrefix = {
@@ -27,7 +26,6 @@ const itemTypeTitlePrefix = {
   breakfast: 'Nová',
   trending: 'Nový',
   event: 'Nová',
-  review: 'Nová',
 };
 
 const itemTypeBodyPrefix = {
@@ -37,7 +35,6 @@ const itemTypeBodyPrefix = {
   breakfast: 'novou',
   trending: 'nový',
   event: 'novou',
-  review: 'novou',
 };
 
 const itemTypeAccusative = {
@@ -47,7 +44,6 @@ const itemTypeAccusative = {
   breakfast: 'snídani',
   trending: 'trending podnik',
   event: 'gastro akci',
-  review: 'recenzi',
 };
 
 const itemTypeEmojis = {
@@ -57,7 +53,6 @@ const itemTypeEmojis = {
   breakfast: '🍳',
   trending: '🔥',
   event: '🎉',
-  review: '✨',
 };
 
 export default function NotificationDialog({
@@ -88,14 +83,8 @@ export default function NotificationDialog({
       itemId,
     });
 
-    // Special text for reviews
-    const title = itemType === 'review'
-      ? `${emoji} ${titlePrefix} ${label}!`
-      : `${emoji} ${titlePrefix} ${label}!`;
-
-    const body = itemType === 'review'
-      ? `Přidána nová recenze na podnik ${itemName}`
-      : `Přidali jsme ${bodyPrefix} ${accusative}: ${itemName}`;
+    const title = `${emoji} ${titlePrefix} ${label}!`;
+    const body = `Přidali jsme ${bodyPrefix} ${accusative}: ${itemName}`;
 
     try {
       const response = await fetch('/api/notifications/send', {

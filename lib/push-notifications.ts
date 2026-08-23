@@ -90,9 +90,9 @@ export async function initializePushNotifications() {
 
           // Zpracovat kliknutí podle typu notifikace
           const data = notification.notification.data;
-          if (data.type && data.itemId) {
+          if (data.type) {
             // Navigovat na detail položky
-            handleNotificationNavigation(data.type, data.itemId);
+            handleNotificationNavigation(data.type);
           }
         }
       );
@@ -104,26 +104,7 @@ export async function initializePushNotifications() {
   }
 }
 
-async function handleNotificationNavigation(type: string, itemId: string) {
-  // Pro recenze potřebujeme načíst data a sestavit slug
-  if (type === 'review') {
-    try {
-      const response = await fetch(getApiUrl(`/api/reviews/${itemId}`));
-      if (response.ok) {
-        const review = await response.json();
-        const placeName = review.restaurant?.name || review.cafe?.name || 'review';
-        const slug = createReviewSlug(parseInt(itemId, 10), placeName);
-        window.location.href = `/recenze/${slug}`;
-        return;
-      }
-    } catch (error) {
-      console.error('Error loading review for notification:', error);
-      // Fallback na homepage
-      window.location.href = '/';
-      return;
-    }
-  }
-
+async function handleNotificationNavigation(type: string) {
   // Navigace podle typu notifikace
   const routes: Record<string, string> = {
     restaurant: '/',      // Restaurace → homepage
@@ -137,32 +118,6 @@ async function handleNotificationNavigation(type: string, itemId: string) {
   if (route) {
     window.location.href = route;
   }
-}
-
-// Helper function to create review slug
-function createReviewSlug(id: number, name: string): string {
-  const normalized = name
-    .toLowerCase()
-    .trim()
-    .replace(/[áä]/g, 'a')
-    .replace(/[éěë]/g, 'e')
-    .replace(/[íï]/g, 'i')
-    .replace(/[óö]/g, 'o')
-    .replace(/[úůü]/g, 'u')
-    .replace(/[ýÿ]/g, 'y')
-    .replace(/č/g, 'c')
-    .replace(/ď/g, 'd')
-    .replace(/ň/g, 'n')
-    .replace(/ř/g, 'r')
-    .replace(/š/g, 's')
-    .replace(/ť/g, 't')
-    .replace(/ž/g, 'z')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/[\s]+/g, '-')
-    .replace(/[-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-  return `${id}-${normalized}`;
 }
 
 export async function unregisterPushNotifications() {

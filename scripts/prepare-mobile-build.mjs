@@ -8,10 +8,8 @@ const API_ROUTES_TO_EXCLUDE = [
   'app/api/admin/events/[id]',
   'app/api/trendings/[id]',
   'app/api/michelin/[id]',
-  'app/api/reviews/[id]',
   'app/api/bakeries/[id]',
   'app/api/breakfasts',
-  'app/api/story/[slug]',
 ];
 
 console.log('🔧 Preparing for mobile build...');

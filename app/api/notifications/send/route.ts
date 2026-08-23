@@ -10,7 +10,7 @@ const firebaseServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT!;
 interface NotificationPayload {
   title: string;
   body: string;
-  type: 'restaurant' | 'cafe' | 'bakery' | 'trending' | 'event' | 'review';
+  type: 'restaurant' | 'cafe' | 'bakery' | 'trending' | 'event';
   itemId?: number;
 }
 

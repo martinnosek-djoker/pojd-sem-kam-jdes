@@ -16,15 +16,6 @@ Tato složka obsahuje kompletní dokumentaci projektu a návody pro přechod na 
   - 🎨 Design system a styling guidelines
   - 🚀 Build & deploy workflow
 
-### Feature-specific dokumentace
-
-- **[recenze-system.md](./recenze-system.md)** - Systém recenzí
-  - 📝 Architektura review systému
-  - 🔄 Smart 404 fallback pro nové recenze
-  - 🖼️ Image handling a gallery
-  - 💾 Reviews cache system
-  - 🌐 Slug system a routing
-
 ### Projektová dokumentace (historická)
 - **[project-overview.md](./project-overview.md)** - Kompletní přehled projektu
   - Struktura stránek a komponent
