@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bakerySchema, BakeryInput, Bakery } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
+import LocationAddressFields from "@/components/LocationAddressFields";
 
 interface BakeryFormProps {
   bakeryId?: number | null;
@@ -19,10 +20,6 @@ export default function BakeryForm({
 }: BakeryFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [fetchingPhoto, setFetchingPhoto] = useState(false);
-  const [addressesText, setAddressesText] = useState("");
-  const [coordinatesText, setCoordinatesText] = useState("");
-  const [availablePhotos, setAvailablePhotos] = useState<string[]>([]);
 
   const {
     register,
@@ -41,9 +38,9 @@ export default function BakeryForm({
   });
 
   const imageUrl = watch("image_url");
-  const bakeryName = watch("name");
   const bakeryLocation = watch("location");
   const bakeryAddresses = watch("addresses");
+  const bakeryCoordinates = watch("coordinates");
 
   useEffect(() => {
     if (bakeryId) {
@@ -55,101 +52,26 @@ export default function BakeryForm({
             name: data.name,
             location: data.location,
             addresses: data.addresses || null,
+            coordinates: data.coordinates || null,
             website_url: data.website_url || "",
             image_url: data.image_url || "",
           });
-          // Set addresses text for textarea
-          setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
-          // Set coordinates text for textarea
-          setCoordinatesText(data.coordinates ? JSON.stringify(data.coordinates, null, 2) : "");
-          // Clear photo gallery when loading existing bakery
-          setAvailablePhotos([]);
         })
         .catch((err) => {
           console.error("Error fetching bakery:", err);
           setError("Nepodařilo se načíst data cukrárny");
         });
-    } else {
-      // Clear photo gallery when creating new bakery
-      setAvailablePhotos([]);
     }
   }, [bakeryId, reset]);
-
-  // Sync addressesText when addresses are fetched via auto-fetch
-  useEffect(() => {
-    if (bakeryAddresses) {
-      setAddressesText(JSON.stringify(bakeryAddresses, null, 2));
-    }
-  }, [bakeryAddresses]);
-
-  const handleFetchPhoto = async () => {
-    if (!bakeryName) {
-      setError("Vyplň nejdřív název cukrárny");
-      return;
-    }
-
-    setFetchingPhoto(true);
-    setError("");
-
-    try {
-      const params = new URLSearchParams({
-        name: bakeryName,
-        ...(bakeryLocation && { location: bakeryLocation }),
-      });
-
-      const response = await fetch(getApiUrl(`/api/places/photo?${params.toString()}`));
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.photoUrls && data.photoUrls.length > 0) {
-          setAvailablePhotos(data.photoUrls);
-          setValue("image_url", data.photoUrls[0]);
-        } else {
-          setError("Fotka nenalezena");
-        }
-      } else {
-        setError(data.error || "Nepodařilo se načíst fotku");
-      }
-    } catch (err) {
-      console.error("Error fetching photo:", err);
-      setError("Nepodařilo se načíst fotku");
-    } finally {
-      setFetchingPhoto(false);
-    }
-  };
 
   const onSubmit = async (data: BakeryInput) => {
     setLoading(true);
     setError("");
 
-    // Parse addresses from textarea
-    let parsedAddresses = null;
-    if (addressesText.trim()) {
-      try {
-        parsedAddresses = JSON.parse(addressesText);
-      } catch (e) {
-        setError("Neplatný formát adres (JSON)");
-        setLoading(false);
-        return;
-      }
-    }
-
-    // Parse coordinates from textarea
-    let parsedCoordinates = null;
-    if (coordinatesText.trim()) {
-      try {
-        parsedCoordinates = JSON.parse(coordinatesText);
-      } catch (e) {
-        setError("Neplatný formát GPS souřadnic (JSON)");
-        setLoading(false);
-        return;
-      }
-    }
-
     const payload = {
       ...data,
-      addresses: parsedAddresses,
-      coordinates: parsedCoordinates,
+      addresses: data.addresses || null,
+      coordinates: data.coordinates || null,
     };
 
     try {
@@ -169,7 +91,6 @@ export default function BakeryForm({
         const savedBakeryData = await response.json();
         onSave(savedBakeryData);
         reset();
-        setAddressesText("");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Nepodařilo se uložit cukrárnu");
@@ -243,98 +164,29 @@ export default function BakeryForm({
           )}
         </div>
 
-        {/* Addresses JSON */}
+        {/* Addresses + auto-geocoded coordinates */}
+        <LocationAddressFields
+          key={bakeryId || "new"}
+          location={bakeryLocation || ""}
+          addresses={bakeryAddresses}
+          coordinates={bakeryCoordinates}
+          onAddressesChange={(value) => setValue("addresses", value)}
+          onCoordinatesChange={(value) => setValue("coordinates", value)}
+        />
+
+        {/* Image URL */}
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Adresy (JSON) <span className="text-xs text-gray-500">např. {"{\"Anděl\": \"ulice 123, Praha\"}"}</span>
+            URL obrázku
           </label>
-          <textarea
-            value={addressesText}
-            onChange={(e) => setAddressesText(e.target.value)}
-            placeholder='{"Anděl": "ulice 123, Praha", "Letná": "ulice 456, Praha"}'
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
-            rows={3}
+          <input
+            {...register("image_url")}
+            type="url"
+            placeholder="https://..."
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-
-        {/* Coordinates JSON */}
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            GPS souřadnice (JSON) <span className="text-xs text-gray-500">pro sekci "V okolí"</span>
-          </label>
-          <textarea
-            value={coordinatesText}
-            onChange={(e) => setCoordinatesText(e.target.value)}
-            placeholder='{"Anděl": {"lat": 50.0711, "lng": 14.4039}, "Letná": {"lat": 50.1011, "lng": 14.4282}}'
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
-            rows={3}
-          />
-          <p className="text-xs text-gray-400 mt-1">
-            📍 Tip: Souřadnice najdeš na{" "}
-            <a href="https://mapy.cz" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              mapy.cz
-            </a>
-            {" "}(klikni pravým → "Co je zde?")
-          </p>
-        </div>
-
-        {/* Image URL + Fetch Button */}
-        <div className="col-span-2">
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                URL obrázku
-              </label>
-              <input
-                {...register("image_url")}
-                type="url"
-                placeholder="https://..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {errors.image_url && (
-                <p className="mt-1 text-xs text-red-600">{errors.image_url.message}</p>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={handleFetchPhoto}
-              disabled={fetchingPhoto}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 transition-colors text-sm whitespace-nowrap"
-            >
-              {fetchingPhoto ? "Načítám..." : "📷 Načíst fotku"}
-            </button>
-          </div>
-
-          {/* Photo Gallery */}
-          {availablePhotos.length > 0 && (
-            <div className="mt-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                Dostupné fotky z Google Places:
-              </p>
-              <div className="grid grid-cols-4 gap-2">
-                {availablePhotos.map((photoUrl, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setValue("image_url", photoUrl)}
-                    className={`relative aspect-square rounded border-2 overflow-hidden hover:border-purple-500 transition-colors ${
-                      imageUrl === photoUrl ? "border-purple-600" : "border-gray-300"
-                    }`}
-                  >
-                    <img
-                      src={photoUrl}
-                      alt={`Photo ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    {imageUrl === photoUrl && (
-                      <div className="absolute inset-0 bg-purple-600 bg-opacity-20 flex items-center justify-center">
-                        <span className="text-white text-2xl">✓</span>
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+          {errors.image_url && (
+            <p className="mt-1 text-xs text-red-600">{errors.image_url.message}</p>
           )}
 
           {/* Image Preview */}

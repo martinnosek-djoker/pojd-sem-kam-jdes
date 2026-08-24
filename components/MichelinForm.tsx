@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { michelinRestaurantSchema, MichelinRestaurantInput, MichelinRestaurant, MICHELIN_AWARD_LABELS } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
+import LocationAddressFields from "@/components/LocationAddressFields";
 
 interface MichelinFormProps {
   restaurantId?: number | null;
@@ -19,7 +20,6 @@ export default function MichelinForm({
 }: MichelinFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [addressesText, setAddressesText] = useState("");
 
   const {
     register,
@@ -41,7 +41,9 @@ export default function MichelinForm({
     },
   });
 
+  const restaurantLocation = watch("location");
   const restaurantAddresses = watch("addresses");
+  const restaurantCoordinates = watch("coordinates");
 
   useEffect(() => {
     if (restaurantId) {
@@ -61,7 +63,6 @@ export default function MichelinForm({
             image_url: data.image_url || "",
             display_order: data.display_order,
           });
-          setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
         })
         .catch((err) => {
           console.error("Error fetching restaurant:", err);
@@ -70,28 +71,11 @@ export default function MichelinForm({
     }
   }, [restaurantId, reset]);
 
-  useEffect(() => {
-    if (restaurantAddresses) {
-      setAddressesText(JSON.stringify(restaurantAddresses, null, 2));
-    }
-  }, [restaurantAddresses]);
-
   const onSubmit = async (data: MichelinRestaurantInput) => {
     setLoading(true);
     setError("");
 
     try {
-      // Parse addresses JSON if provided
-      if (addressesText.trim()) {
-        try {
-          data.addresses = JSON.parse(addressesText);
-        } catch (e) {
-          setError("Neplatný JSON formát pro adresy");
-          setLoading(false);
-          return;
-        }
-      }
-
       const url = restaurantId
         ? `/api/michelin/${restaurantId}`
         : "/api/michelin";
@@ -115,7 +99,6 @@ export default function MichelinForm({
       const savedRestaurant = await response.json();
       onSave(savedRestaurant);
       reset();
-      setAddressesText("");
     } catch (err) {
       console.error("Error saving restaurant:", err);
       const errorMessage = err instanceof Error ? err.message : "Nepodařilo se uložit restauraci";
@@ -189,19 +172,14 @@ export default function MichelinForm({
         )}
       </div>
 
-      <div>
-        <label htmlFor="addressesText" className="block text-sm font-medium text-gray-700">
-          Adresy (JSON)
-        </label>
-        <textarea
-          id="addressesText"
-          value={addressesText}
-          onChange={(e) => setAddressesText(e.target.value)}
-          rows={3}
-          placeholder='{"Vinohrady": "Korunní 2569/100, Praha 10"}'
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 font-mono text-sm"
-        />
-      </div>
+      <LocationAddressFields
+        key={restaurantId || "new"}
+        location={restaurantLocation || ""}
+        addresses={restaurantAddresses}
+        coordinates={restaurantCoordinates}
+        onAddressesChange={(value) => setValue("addresses", value)}
+        onCoordinatesChange={(value) => setValue("coordinates", value)}
+      />
 
       <div>
         <label htmlFor="cuisine_type" className="block text-sm font-medium text-gray-700">

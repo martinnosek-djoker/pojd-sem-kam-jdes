@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantSchema, RestaurantInput, Restaurant } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
+import LocationAddressFields from "@/components/LocationAddressFields";
 
 interface RestaurantFormProps {
   restaurantId?: number | null;
@@ -19,10 +20,6 @@ export default function RestaurantForm({
 }: RestaurantFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [fetchingPhoto, setFetchingPhoto] = useState(false);
-  const [addressesText, setAddressesText] = useState("");
-  const [coordinatesText, setCoordinatesText] = useState("");
-  const [availablePhotos, setAvailablePhotos] = useState<string[]>([]);
 
   const {
     register,
@@ -42,9 +39,9 @@ export default function RestaurantForm({
   });
 
   const imageUrl = watch("image_url");
-  const restaurantName = watch("name");
   const restaurantLocation = watch("location");
   const restaurantAddresses = watch("addresses");
+  const restaurantCoordinates = watch("coordinates");
 
   useEffect(() => {
     if (restaurantId) {
@@ -56,6 +53,7 @@ export default function RestaurantForm({
             name: data.name,
             location: data.location,
             addresses: data.addresses || null,
+            coordinates: data.coordinates || null,
             cuisine_type: data.cuisine_type,
             specialty: data.specialty || "",
             price: data.price,
@@ -63,94 +61,25 @@ export default function RestaurantForm({
             website_url: data.website_url || "",
             image_url: data.image_url || "",
           });
-          // Set addresses text for textarea
-          setAddressesText(data.addresses ? JSON.stringify(data.addresses, null, 2) : "");
-          // Set coordinates text for textarea
-          setCoordinatesText(data.coordinates ? JSON.stringify(data.coordinates, null, 2) : "");
-          // Clear photo gallery when loading existing restaurant
-          setAvailablePhotos([]);
         })
         .catch((err) => {
           console.error("Error fetching restaurant:", err);
           setError("Nepodařilo se načíst data restaurace");
         });
-    } else {
-      // Clear photo gallery when creating new restaurant
-      setAvailablePhotos([]);
     }
   }, [restaurantId, reset]);
-
-  // Sync addressesText when addresses are fetched via auto-fetch
-  useEffect(() => {
-    if (restaurantAddresses) {
-      setAddressesText(JSON.stringify(restaurantAddresses, null, 2));
-    }
-  }, [restaurantAddresses]);
-
-  const handleFetchPhoto = async () => {
-    if (!restaurantName) {
-      setError("Vyplň nejdřív název restaurace");
-      return;
-    }
-
-    setFetchingPhoto(true);
-    setError("");
-
-    try {
-      const params = new URLSearchParams({
-        name: restaurantName,
-        ...(restaurantLocation && { location: restaurantLocation }),
-      });
-
-      const response = await fetch(getApiUrl(`/api/places/photo?${params}`));
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.photoUrl) {
-          setValue("image_url", data.photoUrl);
-        }
-        // Save all available photos for selection
-        if (data.photoUrls && data.photoUrls.length > 0) {
-          setAvailablePhotos(data.photoUrls);
-        }
-        // Also set addresses if available
-        if (data.addresses) {
-          setValue("addresses", data.addresses);
-        }
-      } else {
-        setError(data.error || "Nepodařilo se načíst data");
-      }
-    } catch (err) {
-      console.error("Error fetching photo:", err);
-      setError("Nepodařilo se načíst fotografii");
-    } finally {
-      setFetchingPhoto(false);
-    }
-  };
 
   const onSubmit = async (data: RestaurantInput) => {
     setLoading(true);
     setError("");
 
     try {
-      // Parse coordinates from JSON text
-      let coordinates = null;
-      if (coordinatesText.trim()) {
-        try {
-          coordinates = JSON.parse(coordinatesText.trim());
-        } catch (e) {
-          setError("Neplatný JSON formát v GPS souřadnicích");
-          setLoading(false);
-          return;
-        }
-      }
-
       // Clean up empty strings
       const cleanData = {
         ...data,
         specialty: data.specialty || null,
         addresses: data.addresses || null,
-        coordinates: coordinates,
+        coordinates: data.coordinates || null,
         website_url: data.website_url || null,
         image_url: data.image_url || null,
       };
@@ -223,73 +152,18 @@ export default function RestaurantForm({
             )}
           </div>
 
-          {/* Addresses - Editable JSON field */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Adresy (JSON formát - nepovinné)
-            </label>
-            <textarea
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-              rows={4}
-              placeholder='{"Václavák": "Václavské náměstí 1, Praha 1", "Anděl": "Nádražní 2, Praha 5"}'
-              value={addressesText}
-              onChange={(e) => {
-                const value = e.target.value;
-                setAddressesText(value);
-
-                try {
-                  const trimmedValue = value.trim();
-                  if (trimmedValue) {
-                    const parsed = JSON.parse(trimmedValue);
-                    setValue("addresses", parsed);
-                  } else {
-                    setValue("addresses", null);
-                  }
-                } catch {
-                  // Invalid JSON, keep the raw string temporarily
-                  // User can continue editing
-                }
-              }}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              💡 Formát: {`{"lokalita": "úplná adresa"}`}. Klíče musí odpovídat názvům lokalit výše.
-            </p>
-            {errors.addresses?.message && (
-              <p className="text-red-600 text-sm mt-1">{String(errors.addresses.message)}</p>
-            )}
-          </div>
-
-          {/* Coordinates - GPS for "V okolí" section */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              GPS souřadnice (JSON formát - nepovinné)
-            </label>
-            <textarea
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-              rows={4}
-              placeholder='{"Anděl": {"lat": 50.0711, "lng": 14.4039}, "Vinohrady": {"lat": 50.0763, "lng": 14.4371}}'
-              value={coordinatesText}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCoordinatesText(value);
-              }}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              📍 Pro sekci "V okolí". Formát: {`{"lokalita": {"lat": 50.0711, "lng": 14.4039}}`}. Klíče musí odpovídat lokalitám.
-            </p>
-            <p className="text-xs text-gray-400 mt-1">
-              Tip: Souřadnice najdeš na{" "}
-              <a
-                href="https://mapy.cz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                mapy.cz
-              </a>
-              {" "}(klikni pravým tlačítkem → "Co je zde?" → zkopíruj souřadnice)
-            </p>
-          </div>
+          {/* Addresses + auto-geocoded coordinates */}
+          <LocationAddressFields
+            key={restaurantId || "new"}
+            location={restaurantLocation || ""}
+            addresses={restaurantAddresses}
+            coordinates={restaurantCoordinates}
+            onAddressesChange={(value) => setValue("addresses", value)}
+            onCoordinatesChange={(value) => setValue("coordinates", value)}
+          />
+          {errors.addresses?.message && (
+            <p className="text-red-600 text-sm -mt-2 md:col-span-2">{String(errors.addresses.message)}</p>
+          )}
 
           {/* Cuisine Type */}
           <div>
@@ -366,27 +240,17 @@ export default function RestaurantForm({
             )}
           </div>
 
-          {/* Image URL with Auto-fetch */}
+          {/* Image URL */}
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               URL fotky (nepovinné)
             </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                {...register("image_url")}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="https://... nebo /images/..."
-              />
-              <button
-                type="button"
-                onClick={handleFetchPhoto}
-                disabled={fetchingPhoto || !restaurantName}
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-              >
-                {fetchingPhoto ? "Načítám..." : "🔍 Auto-fetch"}
-              </button>
-            </div>
+            <input
+              type="text"
+              {...register("image_url")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://... nebo /images/..."
+            />
             {errors.image_url && (
               <p className="text-red-600 text-sm mt-1">{errors.image_url.message}</p>
             )}
@@ -403,42 +267,6 @@ export default function RestaurantForm({
                     e.currentTarget.className = "w-full max-w-md h-48 flex items-center justify-center bg-gray-100 rounded-md border border-gray-300 text-gray-500 text-sm";
                   }}
                 />
-              </div>
-            )}
-
-            {/* Photo Gallery */}
-            {availablePhotos.length > 0 && (
-              <div className="mt-4">
-                <p className="text-sm text-gray-600 mb-2">
-                  Dostupné fotky ({availablePhotos.length}) - klikněte na fotku pro výběr:
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {availablePhotos.map((photoUrl, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => {
-                        setValue("image_url", photoUrl);
-                      }}
-                      className={`relative h-24 rounded-md overflow-hidden border-2 transition-all hover:border-blue-500 ${
-                        imageUrl === photoUrl
-                          ? "border-blue-600 ring-2 ring-blue-400"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      <img
-                        src={photoUrl}
-                        alt={`Option ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      {imageUrl === photoUrl && (
-                        <div className="absolute inset-0 bg-blue-600/20 flex items-center justify-center">
-                          <span className="text-2xl">✓</span>
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
           </div>
