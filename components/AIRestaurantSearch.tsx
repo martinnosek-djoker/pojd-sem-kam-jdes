@@ -99,7 +99,7 @@ export default function AIRestaurantSearch() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder='Např. "chci na řízek na Andělu" nebo "vegan restaurace v centru do 500 Kč"'
+                placeholder='Např. "chci na řízek na Andělu" nebo "burger do 600 Kč"'
                 className="w-full px-4 py-3 pr-24 bg-black border border-purple-600/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 disabled={loading}
               />
@@ -142,8 +142,8 @@ export default function AIRestaurantSearch() {
               {[
                 "nejlepší pizza na Vinohradech",
                 "vietnamská restaurace na Andělu",
-                "degustační menu do 2000 Kč",
-                "kde dají skvělý tatarák"
+                "degustační menu do 3000 Kč",
+                "kde mají skvělý tatarák"
               ].map((example) => (
                 <button
                   key={example}
