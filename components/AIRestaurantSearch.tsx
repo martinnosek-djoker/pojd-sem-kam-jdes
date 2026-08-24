@@ -9,6 +9,19 @@ interface AISearchResult {
   explanation: string;
 }
 
+// AI explanation text comes back with markdown-style **bold** markers - render them as actual bold
+function renderFormattedExplanation(text: string) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="text-white font-semibold">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function AIRestaurantSearch() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -183,7 +196,7 @@ export default function AIRestaurantSearch() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-purple-400 mb-2">AI doporučuje:</h4>
-                    <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{result.explanation}</p>
+                    <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{renderFormattedExplanation(result.explanation)}</p>
                   </div>
                 </div>
               </div>
