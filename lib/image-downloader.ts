@@ -93,14 +93,14 @@ function downloadImage(url: string): Promise<{ buffer: Buffer; contentType?: str
  * @param imageUrl - External image URL (e.g. Google Photos URL)
  * @param name - Item name (restaurant/cafe/bakery name)
  * @param id - Item ID (for unique filename)
- * @param category - Category folder (restaurants/cafes/bakeries/michelin/trendings)
+ * @param category - Category folder (restaurants/cafes/bakeries/trendings)
  * @returns Local path (e.g. /images/restaurants/campo-de-fiori.webp) or null if failed
  */
 export async function downloadAndSaveImage(
   imageUrl: string | null | undefined,
   name: string,
   id: number,
-  category: 'restaurants' | 'cafes' | 'bakeries' | 'michelin' | 'trendings'
+  category: 'restaurants' | 'cafes' | 'bakeries' | 'trendings'
 ): Promise<string | null> {
   // No URL provided
   if (!imageUrl) {

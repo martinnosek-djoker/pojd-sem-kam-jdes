@@ -28,7 +28,7 @@ function normalizeFileName(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
-// Helper pro lokální obrázky (restaurants, cafes, bakeries, michelin, trendings)
+// Helper pro lokální obrázky (restaurants, cafes, bakeries, trendings)
 export function getLocalImageUrl(name: string, category: string = 'restaurants'): string | null {
   const normalized = normalizeFileName(name);
   // Všechny obrázky ukládáme jako .webp (download skripty normalizují extension)

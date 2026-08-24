@@ -175,8 +175,7 @@ async function main() {
     { name: 'restaurants', dir: path.join(IMAGES_DIR, 'restaurants'), prefix: 'restaurants' },
     { name: 'cafes', dir: path.join(IMAGES_DIR, 'cafes'), prefix: 'cafes' },
     { name: 'bakeries', dir: path.join(IMAGES_DIR, 'bakeries'), prefix: 'bakeries' },
-    { name: 'trendings', dir: path.join(IMAGES_DIR, 'trendings'), prefix: 'trendings' },
-    { name: 'michelin_restaurants', dir: path.join(IMAGES_DIR, 'michelin'), prefix: 'michelin' }
+    { name: 'trendings', dir: path.join(IMAGES_DIR, 'trendings'), prefix: 'trendings' }
   ];
 
   if (target === 'all') {

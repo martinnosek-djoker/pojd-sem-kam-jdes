@@ -7,7 +7,6 @@ const API_ROUTES_TO_RESTORE = [
   'app/api/restaurants/[id]',
   'app/api/admin/events/[id]',
   'app/api/trendings/[id]',
-  'app/api/michelin/[id]',
   'app/api/bakeries/[id]',
   'app/api/breakfasts',
 ];

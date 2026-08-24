@@ -3,7 +3,6 @@
 const categories = [
   { name: 'cafes', endpoint: '/api/cafes' },
   { name: 'bakeries', endpoint: '/api/bakeries' },
-  { name: 'michelin_restaurants', endpoint: '/api/michelin' },
   { name: 'trendings', endpoint: '/api/trendings' }
 ];
 

@@ -25,10 +25,9 @@ const RESTAURANTS_DIR = path.join(IMAGES_DIR, 'restaurants');
 const CAFES_DIR = path.join(IMAGES_DIR, 'cafes');
 const BAKERIES_DIR = path.join(IMAGES_DIR, 'bakeries');
 const TRENDINGS_DIR = path.join(IMAGES_DIR, 'trendings');
-const MICHELIN_DIR = path.join(IMAGES_DIR, 'michelin');
 
 // Vytvoření všech potřebných složek
-[IMAGES_DIR, RESTAURANTS_DIR, CAFES_DIR, BAKERIES_DIR, TRENDINGS_DIR, MICHELIN_DIR].forEach(dir => {
+[IMAGES_DIR, RESTAURANTS_DIR, CAFES_DIR, BAKERIES_DIR, TRENDINGS_DIR].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -115,7 +114,7 @@ async function main() {
     console.log('  node scripts/download-image.mjs <URL> [název-souboru] [typ]');
     console.log('\nPříklad:');
     console.log('  node scripts/download-image.mjs https://example.com/photo.jpg moje-restaurace restaurants');
-    console.log('\nTypy: restaurants, cafes, bakeries, trendings, michelin (výchozí: restaurants)');
+    console.log('\nTypy: restaurants, cafes, bakeries, trendings (výchozí: restaurants)');
     process.exit(1);
   }
 
@@ -128,8 +127,7 @@ async function main() {
     'restaurants': RESTAURANTS_DIR,
     'cafes': CAFES_DIR,
     'bakeries': BAKERIES_DIR,
-    'trendings': TRENDINGS_DIR,
-    'michelin': MICHELIN_DIR
+    'trendings': TRENDINGS_DIR
   };
 
   const targetDir = typeToDir[type] || RESTAURANTS_DIR;

@@ -4,7 +4,7 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "Pojď sem! Kam jdeš?",
     "url": "https://www.pojdsemkamjdes.cz",
-    "description": "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. Objevte TOP 10 trendů, Michelin průvodce a skvělá místa na snídani.",
+    "description": "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. Objevte TOP 10 trendů a skvělá místa na snídani.",
     "inLanguage": "cs-CZ",
     "potentialAction": {
       "@type": "SearchAction",
@@ -38,7 +38,7 @@ export default function StructuredData() {
       "name": "Gastronomie v Praze",
       "description": "Průvodce nejlepšími restauracemi, kavárnami a cukrárnami v Praze s osobními doporučeními, vyhledáváním podle lokality, typu kuchyně a vzdálenosti od vaší polohy"
     },
-    "keywords": "nejlepší restaurace Praha, nejlepší kavárny Praha, nejlepší cukrárny Praha, doporučení restaurace, kam na kávu, kam na snídani, specialty coffee, Michelin Praha, top 10 trendů"
+    "keywords": "nejlepší restaurace Praha, nejlepší kavárny Praha, nejlepší cukrárny Praha, doporučení restaurace, kam na kávu, kam na snídani, specialty coffee, top 10 trendů"
   };
 
   return (

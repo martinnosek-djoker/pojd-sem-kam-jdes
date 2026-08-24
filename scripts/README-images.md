@@ -38,9 +38,6 @@ node scripts/download-image.mjs https://example.com/cake.jpg cukrarna-mysak bake
 
 # Pro trending
 node scripts/download-image.mjs https://example.com/trend.jpg novy-podnik trendings
-
-# Pro Michelin
-node scripts/download-image.mjs https://example.com/restaurant.jpg field michelin
 ```
 
 ### Dostupné typy:
@@ -48,7 +45,6 @@ node scripts/download-image.mjs https://example.com/restaurant.jpg field micheli
 - `cafes` - kavárny
 - `bakeries` - cukrárny
 - `trendings` - TOP 10 trendy
-- `michelin` - Michelin restaurace
 
 ### Výstup:
 
@@ -82,9 +78,6 @@ node scripts/migrate-images.mjs bakeries
 
 # Migruje pouze trendingy
 node scripts/migrate-images.mjs trendings
-
-# Migruje pouze Michelin
-node scripts/migrate-images.mjs michelin_restaurants
 ```
 
 ### Co script dělá:
@@ -126,7 +119,6 @@ public/
     cafes/         # Obrázky kaváren
     bakeries/      # Obrázky cukráren
     trendings/     # Obrázky TOP 10 trendů
-    michelin/      # Obrázky Michelin restaurací
 ```
 
 ## 🔧 Jak to funguje

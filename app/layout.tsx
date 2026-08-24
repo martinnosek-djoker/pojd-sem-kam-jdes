@@ -26,7 +26,7 @@ export const metadata = {
   },
   themeColor: '#9333EA', // Purple color to match your brand
   description:
-    "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů, Michelin průvodce a prémiová káva.",
+    "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů a prémiová káva.",
   keywords: [
     // Core - balanced across all categories
     "nejlepší restaurace Praha",
@@ -89,11 +89,6 @@ export const metadata = {
     "top 10 trendů Praha",
     "top 10 podniků Praha",
 
-    // Michelin & quality
-    "Michelin restaurace Praha",
-    "Bib Gourmand Praha",
-    "hvězdičkové restaurace Praha",
-
     // Events (less priority but still there)
     "gastro akce Praha",
     "food festival Praha",
@@ -109,7 +104,7 @@ export const metadata = {
     siteName: "Pojď sem! Kam jdeš?",
     title: "Nejlepší restaurace, kavárny a cukrárny v Praze | Doporučení od @Peču si život",
     description:
-      "Osobní doporučení nejlepších gastro míst v Praze. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů, Michelin průvodce, prémiová káva a skvělé dezerty.",
+      "Osobní doporučení nejlepších gastro míst v Praze. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů, prémiová káva a skvělé dezerty.",
     images: [
       {
         url: "/og-image.jpg",

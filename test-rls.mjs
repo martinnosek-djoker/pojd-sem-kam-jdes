@@ -17,14 +17,7 @@ async function testRLS() {
     .limit(1);
   
   console.log('✓ Public read restaurants:', restError ? '❌ ' + restError.message : '✅ OK (' + restaurants.length + ' rows)');
-  
-  const { data: michelin, error: michError } = await supabase
-    .from('michelin_restaurants')
-    .select('id, name')
-    .limit(1);
-  
-  console.log('✓ Public read michelin:', michError ? '❌ ' + michError.message : '✅ OK (' + (michelin?.length || 0) + ' rows)');
-  
+
   const { error: writeError } = await supabase
     .from('restaurants')
     .insert({ name: 'Test', location: 'Test', rating: 5, price: 500 });

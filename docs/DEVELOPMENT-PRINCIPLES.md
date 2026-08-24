@@ -199,7 +199,6 @@ app/
 ├── trendy/page.tsx            # Trending places
 ├── pobliz/page.tsx            # Nearby (geolocation)
 ├── akce/page.tsx              # Events
-├── michelin/page.tsx          # Michelin guide
 └── lokality/page.tsx          # Locations
 ```
 

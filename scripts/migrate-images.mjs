@@ -30,9 +30,8 @@ const RESTAURANTS_DIR = path.join(IMAGES_DIR, 'restaurants');
 const CAFES_DIR = path.join(IMAGES_DIR, 'cafes');
 const BAKERIES_DIR = path.join(IMAGES_DIR, 'bakeries');
 const TRENDINGS_DIR = path.join(IMAGES_DIR, 'trendings');
-const MICHELIN_DIR = path.join(IMAGES_DIR, 'michelin');
 
-[IMAGES_DIR, RESTAURANTS_DIR, CAFES_DIR, BAKERIES_DIR, TRENDINGS_DIR, MICHELIN_DIR].forEach(dir => {
+[IMAGES_DIR, RESTAURANTS_DIR, CAFES_DIR, BAKERIES_DIR, TRENDINGS_DIR].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -222,8 +221,7 @@ async function main() {
     { name: 'restaurants', dir: RESTAURANTS_DIR, prefix: 'restaurants' },
     { name: 'cafes', dir: CAFES_DIR, prefix: 'cafes' },
     { name: 'bakeries', dir: BAKERIES_DIR, prefix: 'bakeries' },
-    { name: 'trendings', dir: TRENDINGS_DIR, prefix: 'trendings' },
-    { name: 'michelin_restaurants', dir: MICHELIN_DIR, prefix: 'michelin' }
+    { name: 'trendings', dir: TRENDINGS_DIR, prefix: 'trendings' }
   ];
 
   if (target === 'all') {

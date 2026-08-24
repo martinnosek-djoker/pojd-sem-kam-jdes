@@ -25,7 +25,6 @@ const CATEGORIES = {
   restaurants: { endpoint: '/api/restaurants', nameField: 'name' },
   cafes:       { endpoint: '/api/cafes',       nameField: 'name' },
   bakeries:    { endpoint: '/api/bakeries',    nameField: 'name' },
-  michelin:    { endpoint: '/api/michelin',    nameField: 'name' },
   trendings:   { endpoint: '/api/trendings',   nameField: 'name' },
 };
 

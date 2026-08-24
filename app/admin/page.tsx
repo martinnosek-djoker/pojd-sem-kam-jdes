@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import { getAllRestaurants, getAllTrendings, getAllCafes, getAllEvents, getAllMichelinRestaurants } from "@/lib/db";
+import { getAllRestaurants, getAllTrendings, getAllCafes, getAllEvents } from "@/lib/db";
 import AdminDashboard from "@/components/AdminDashboard";
 import TrendingsAdmin from "@/components/TrendingsAdmin";
 import CafesAdmin from "@/components/CafesAdmin";
-import MichelinAdmin from "@/components/MichelinAdmin";
 import EventsAdmin from "@/components/EventsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -20,11 +19,10 @@ export default async function AdminPage() {
       redirect("/admin/login");
     }
 
-    const [restaurants, trendings, cafes, michelinRestaurants, events] = await Promise.all([
+    const [restaurants, trendings, cafes, events] = await Promise.all([
       getAllRestaurants(),
       getAllTrendings(),
       getAllCafes(),
-      getAllMichelinRestaurants(),
       getAllEvents(),
     ]);
 
@@ -36,7 +34,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
-                {restaurants.length} restaurací • {cafes.length} kaváren • {michelinRestaurants.length} Michelin restaurací • {trendings.length} trending podniků • {events.length} akcí
+                {restaurants.length} restaurací • {cafes.length} kaváren • {trendings.length} trending podniků • {events.length} akcí
               </p>
             </div>
             <div className="flex gap-3">
@@ -64,12 +62,6 @@ export default async function AdminPage() {
 
           {/* Cafes Section */}
           <CafesAdmin initialCafes={cafes} />
-
-          {/* Separator */}
-          <div className="my-8 border-t border-gray-300"></div>
-
-          {/* Michelin Section */}
-          <MichelinAdmin initialRestaurants={michelinRestaurants} />
 
           {/* Separator */}
           <div className="my-8 border-t border-gray-300"></div>
