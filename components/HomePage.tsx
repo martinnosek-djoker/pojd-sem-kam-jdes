@@ -7,6 +7,7 @@ import RestaurantFilter from "@/components/RestaurantFilter";
 import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import AIRestaurantSearch from "@/components/AIRestaurantSearch";
+import RecentVisits from "@/components/RecentVisits";
 import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
@@ -233,6 +234,9 @@ export default function HomePage() {
             </a>
           </p>
         </div>
+
+        {/* Recent Visits Carousel */}
+        <RecentVisits />
 
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">

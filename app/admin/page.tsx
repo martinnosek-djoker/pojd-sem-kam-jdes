@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
-import { getAllRestaurants, getAllTrendings, getAllCafes, getAllEvents } from "@/lib/db";
+import { getAllRestaurants, getAllTrendings, getAllCafes, getAllEvents, getAllVisits } from "@/lib/db";
+import { Visit } from "@/lib/types";
 import AdminDashboard from "@/components/AdminDashboard";
 import TrendingsAdmin from "@/components/TrendingsAdmin";
 import CafesAdmin from "@/components/CafesAdmin";
 import EventsAdmin from "@/components/EventsAdmin";
+import VisitsAdmin from "@/components/VisitsAdmin";
 import LogoutButton from "@/components/LogoutButton";
 
 // Only force dynamic on server builds, not on static export for mobile
@@ -26,6 +28,14 @@ export default async function AdminPage() {
       getAllEvents(),
     ]);
 
+    // Visits table is new/optional - don't let a not-yet-migrated DB break the whole admin page
+    let visits: Visit[] = [];
+    try {
+      visits = await getAllVisits();
+    } catch (error) {
+      console.error("Visits not available yet (has the migration been run?):", error);
+    }
+
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-7xl mx-auto">
@@ -34,7 +44,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
-                {restaurants.length} restaurací • {cafes.length} kaváren • {trendings.length} trending podniků • {events.length} akcí
+                {restaurants.length} restaurací • {cafes.length} kaváren • {trendings.length} trending podniků • {events.length} akcí • {visits.length} návštěv
               </p>
             </div>
             <div className="flex gap-3">
@@ -47,6 +57,12 @@ export default async function AdminPage() {
               <LogoutButton />
             </div>
           </div>
+
+          {/* Visits Section */}
+          <VisitsAdmin initialVisits={visits} />
+
+          {/* Separator */}
+          <div className="my-8 border-t border-gray-300"></div>
 
           {/* Trendings Section */}
           <TrendingsAdmin initialTrendings={trendings} />

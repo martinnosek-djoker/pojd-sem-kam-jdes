@@ -9,6 +9,7 @@ const API_ROUTES_TO_RESTORE = [
   'app/api/trendings/[id]',
   'app/api/bakeries/[id]',
   'app/api/breakfasts',
+  'app/api/visits/[id]',
 ];
 
 console.log('🔧 Restoring API routes after mobile build...');

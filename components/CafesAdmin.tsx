@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Cafe } from "@/lib/types";
 import CafeForm from "./CafeForm";
 import NotificationDialog from "./NotificationDialog";
+import VisitForm from "./VisitForm";
 import { getApiUrl } from "@/lib/api-config";
 
 interface CafesAdminProps {
@@ -16,6 +17,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
   const [showForm, setShowForm] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [savedCafe, setSavedCafe] = useState<Cafe | null>(null);
+  const [visitFor, setVisitFor] = useState<Cafe | null>(null);
 
   const handleDelete = async (id: number) => {
     if (!confirm("Opravdu chcete smazat tuto kavárnu?")) return;
@@ -176,6 +178,12 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
+                      onClick={() => setVisitFor(cafe)}
+                      className="text-purple-600 hover:text-purple-900 mr-4"
+                    >
+                      📝 Byl jsem tu
+                    </button>
+                    <button
                       onClick={() => {
                         setEditingId(cafe.id);
                         setShowForm(true);
@@ -226,6 +234,16 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
           itemName={savedCafe.name}
           itemType="cafe"
           itemId={savedCafe.id}
+        />
+      )}
+
+      {/* Log a visit */}
+      {visitFor && (
+        <VisitForm
+          cafeId={visitFor.id}
+          placeName={visitFor.name}
+          onSave={() => setVisitFor(null)}
+          onCancel={() => setVisitFor(null)}
         />
       )}
     </div>

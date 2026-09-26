@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Restaurant } from "@/lib/types";
 import RestaurantForm from "./RestaurantForm";
 import NotificationDialog from "./NotificationDialog";
+import VisitForm from "./VisitForm";
 import { getApiUrl } from "@/lib/api-config";
 
 interface AdminDashboardProps {
@@ -16,6 +17,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
   const [showForm, setShowForm] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [savedRestaurant, setSavedRestaurant] = useState<Restaurant | null>(null);
+  const [visitFor, setVisitFor] = useState<Restaurant | null>(null);
 
   const handleDelete = async (id: number) => {
     if (!confirm("Opravdu chcete smazat tuto restauraci?")) return;
@@ -140,6 +142,12 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
+                        onClick={() => setVisitFor(restaurant)}
+                        className="text-purple-600 hover:text-purple-900 mr-4"
+                      >
+                        📝 Byl jsem tu
+                      </button>
+                      <button
                         onClick={() => {
                           setEditingId(restaurant.id);
                           setShowForm(true);
@@ -190,6 +198,16 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
             itemName={savedRestaurant.name}
             itemType="restaurant"
             itemId={savedRestaurant.id}
+          />
+        )}
+
+        {/* Log a visit */}
+        {visitFor && (
+          <VisitForm
+            restaurantId={visitFor.id}
+            placeName={visitFor.name}
+            onSave={() => setVisitFor(null)}
+            onCancel={() => setVisitFor(null)}
           />
         )}
       </div>

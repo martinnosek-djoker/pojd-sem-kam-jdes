@@ -246,3 +246,30 @@ export const eventSchema = z.object({
 });
 
 export type EventInput = z.infer<typeof eventSchema>;
+
+// Visit types - lightweight "I was here, this is what I ate" log entry.
+// Everything else (name, location, price, rating, photo) is joined in from
+// the restaurant/cafe at read time, never duplicated here.
+export interface Visit {
+  id: number;
+  restaurant_id: number | null;
+  cafe_id: number | null;
+  restaurant?: Restaurant; // Optional joined restaurant data
+  cafe?: Cafe; // Optional joined cafe data
+  visit_date: string;
+  dishes: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+export const visitSchema = z.object({
+  restaurant_id: z.number().min(1).optional().nullable(),
+  cafe_id: z.number().min(1).optional().nullable(),
+  visit_date: z.string().min(1, "Datum návštěvy je povinné"),
+  dishes: z.array(z.string()).optional().default([]),
+}).refine(data => data.restaurant_id || data.cafe_id, {
+  message: "Podnik je povinný",
+  path: ["restaurant_id"],
+});
+
+export type VisitInput = z.infer<typeof visitSchema>;

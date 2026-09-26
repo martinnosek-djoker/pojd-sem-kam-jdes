@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, Visit, VisitInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
 import { downloadAndSaveImage } from "./image-downloader";
 
@@ -1330,4 +1330,92 @@ export async function updateEventOrder(updates: { id: number; display_order: num
       throw updateError;
     }
   }
+}
+
+// ==================== VISITS ====================
+
+const VISIT_SELECT = `*, restaurant:restaurants(*), cafe:cafes(*)`;
+
+export async function getRecentVisits(limit: number = 10): Promise<Visit[]> {
+  const { data, error } = await supabase
+    .from("visits")
+    .select(VISIT_SELECT)
+    .order("visit_date", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error fetching recent visits:", error);
+    throw error;
+  }
+
+  return data as unknown as Visit[];
+}
+
+export async function getAllVisits(): Promise<Visit[]> {
+  const { data, error } = await supabase
+    .from("visits")
+    .select(VISIT_SELECT)
+    .order("visit_date", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching visits:", error);
+    throw error;
+  }
+
+  return data as unknown as Visit[];
+}
+
+export async function createVisit(input: VisitInput): Promise<Visit> {
+  const { data, error } = await supabase
+    .from("visits")
+    .insert({
+      restaurant_id: input.restaurant_id || null,
+      cafe_id: input.cafe_id || null,
+      visit_date: input.visit_date,
+      dishes: input.dishes || [],
+    })
+    .select(VISIT_SELECT)
+    .single();
+
+  if (error) {
+    console.error("Error creating visit:", error);
+    throw error;
+  }
+
+  return data as unknown as Visit;
+}
+
+export async function updateVisit(id: number, input: Partial<VisitInput>): Promise<Visit | null> {
+  const { data, error } = await supabase
+    .from("visits")
+    .update({
+      ...(input.visit_date !== undefined && { visit_date: input.visit_date }),
+      ...(input.dishes !== undefined && { dishes: input.dishes }),
+    })
+    .eq("id", id)
+    .select(VISIT_SELECT)
+    .single();
+
+  if (error) {
+    console.error("Error updating visit:", error);
+    return null;
+  }
+
+  return data as unknown as Visit;
+}
+
+export async function deleteVisit(id: number): Promise<boolean> {
+  const { error } = await supabase
+    .from("visits")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting visit:", error);
+    return false;
+  }
+
+  return true;
 }
