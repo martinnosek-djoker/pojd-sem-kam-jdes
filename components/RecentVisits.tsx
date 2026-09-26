@@ -40,7 +40,7 @@ export default function RecentVisits() {
       <div className="flex items-end justify-between mb-6">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">
-            ✨ Nejnovější recenze
+            ✨ Nejnovější návštěvy
           </h2>
           <p className="text-sm md:text-base text-gray-400">
             Moje poslední návštěvy restaurací a kaváren

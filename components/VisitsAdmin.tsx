@@ -46,7 +46,7 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
       {/* Section Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">📝 Nejnovější recenze</h2>
+          <h2 className="text-2xl font-bold text-gray-900">📝 Nejnovější návštěvy</h2>
           <p className="text-gray-600 mt-1">
             Celkem {visits.length} návštěv — přidávají se tlačítkem &quot;📝 Byl jsem tu&quot; u restaurace nebo kavárny níže
           </p>
@@ -67,6 +67,9 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Jídla
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Hodnocení podniku
+              </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Akce
               </th>
@@ -86,10 +89,15 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   {visit.dishes && visit.dishes.length > 0 ? (
-                    visit.dishes.join(", ")
+                    visit.dishes
+                      .map((d) => (d.rating ? `${d.name} (${d.rating}/10)` : d.name))
+                      .join(", ")
                   ) : (
                     <span className="text-gray-400">—</span>
                   )}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-600 max-w-xs italic">
+                  {visit.comment || <span className="text-gray-400 not-italic">—</span>}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button

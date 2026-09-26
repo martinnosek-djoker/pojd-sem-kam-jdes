@@ -1375,6 +1375,7 @@ export async function createVisit(input: VisitInput): Promise<Visit> {
       cafe_id: input.cafe_id || null,
       visit_date: input.visit_date,
       dishes: input.dishes || [],
+      comment: input.comment || null,
     })
     .select(VISIT_SELECT)
     .single();
@@ -1393,6 +1394,7 @@ export async function updateVisit(id: number, input: Partial<VisitInput>): Promi
     .update({
       ...(input.visit_date !== undefined && { visit_date: input.visit_date }),
       ...(input.dishes !== undefined && { dishes: input.dishes }),
+      ...(input.comment !== undefined && { comment: input.comment || null }),
     })
     .eq("id", id)
     .select(VISIT_SELECT)

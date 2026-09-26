@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Visit } from "@/lib/types";
+import { Visit, VisitDish } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 
 interface VisitFormProps {
@@ -21,6 +21,32 @@ function todayISO(): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+// One dish per line (or comma-separated on a single line, for the old habit),
+// optionally ending in a 1-10 rating: "Tatarák 9", "Burger - 7", or just "Wellington".
+function parseDishesText(text: string): VisitDish[] {
+  const lines = text.includes("\n") ? text.split("\n") : text.split(",");
+
+  return lines
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line): VisitDish => {
+      const match = line.match(/^(.+?)[\s\-–:]*\s*(\d{1,2})\s*(?:\/\s*10)?$/);
+      if (match) {
+        const rating = Number(match[2]);
+        const name = match[1].trim().replace(/[-–:]+$/, "").trim();
+        if (name && rating >= 1 && rating <= 10) {
+          return { name, rating };
+        }
+      }
+      return { name: line, rating: null };
+    })
+    .filter((d) => d.name.length > 0);
+}
+
+function formatDishesText(dishes: VisitDish[]): string {
+  return dishes.map((d) => (d.rating ? `${d.name} ${d.rating}` : d.name)).join("\n");
+}
+
 export default function VisitForm({
   restaurantId,
   cafeId,
@@ -30,7 +56,8 @@ export default function VisitForm({
   onCancel,
 }: VisitFormProps) {
   const [visitDate, setVisitDate] = useState(visit?.visit_date?.slice(0, 10) || todayISO());
-  const [dishesText, setDishesText] = useState(visit?.dishes?.join(", ") || "");
+  const [dishesText, setDishesText] = useState(visit ? formatDishesText(visit.dishes || []) : "");
+  const [comment, setComment] = useState(visit?.comment || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,21 +66,19 @@ export default function VisitForm({
     setLoading(true);
     setError("");
 
-    const dishes = dishesText
-      .split(",")
-      .map((d) => d.trim())
-      .filter(Boolean);
+    const dishes = parseDishesText(dishesText);
 
     try {
       const url = visit ? `/api/visits/${visit.id}` : "/api/visits";
       const method = visit ? "PUT" : "POST";
       const body = visit
-        ? { visit_date: visitDate, dishes }
+        ? { visit_date: visitDate, dishes, comment: comment.trim() || null }
         : {
             restaurant_id: restaurantId || null,
             cafe_id: cafeId || null,
             visit_date: visitDate,
             dishes,
+            comment: comment.trim() || null,
           };
 
       const response = await fetch(getApiUrl(url), {
@@ -108,15 +133,29 @@ export default function VisitForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Co jsi tam měl? <span className="text-xs text-gray-500">(odděl čárkou)</span>
+              Co jsi tam měl?{" "}
+              <span className="text-xs text-gray-500">(jedno jídlo na řádek, hodnocení 1-10 nepovinné)</span>
             </label>
-            <input
-              type="text"
+            <textarea
               value={dishesText}
               onChange={(e) => setDishesText(e.target.value)}
-              placeholder="Tatarák, Burger, Tiramisu"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder={"Tatarák 9\nBurger 7\nTiramisu"}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-sm"
               autoFocus
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Krátké hodnocení podniku <span className="text-xs text-gray-500">(nepovinné, 1-2 věty)</span>
+            </label>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Skvělá atmosféra, ale trochu pomalejší obsluha."
+              rows={2}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 

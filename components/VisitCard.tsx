@@ -58,7 +58,12 @@ export default function VisitCard({ visit }: VisitCardProps) {
       </h3>
       <p className="text-sm text-gray-400 mb-3">📍 {place.location}</p>
 
-      {/* Dishes */}
+      {/* Short overall comment */}
+      {visit.comment && (
+        <p className="text-sm text-gray-300 italic mb-3 leading-relaxed">&quot;{visit.comment}&quot;</p>
+      )}
+
+      {/* Dishes with optional per-dish rating */}
       {visit.dishes && visit.dishes.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-4">
           {visit.dishes.map((dish, i) => (
@@ -66,7 +71,8 @@ export default function VisitCard({ visit }: VisitCardProps) {
               key={i}
               className="px-2.5 py-1 bg-purple-900/30 text-purple-300 text-xs rounded-full border border-purple-700/30"
             >
-              {dish}
+              {dish.name}
+              {dish.rating ? <span className="text-purple-400 font-semibold"> {dish.rating}/10</span> : null}
             </span>
           ))}
         </div>
