@@ -5,6 +5,7 @@ import { Restaurant } from "@/lib/types";
 import RestaurantForm from "./RestaurantForm";
 import NotificationDialog from "./NotificationDialog";
 import VisitForm from "./VisitForm";
+import AdminRowActions from "./AdminRowActions";
 import { getApiUrl } from "@/lib/api-config";
 
 interface AdminDashboardProps {
@@ -51,10 +52,12 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
     setShowForm(false);
   };
 
+  const sortedRestaurants = [...restaurants].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+
   return (
     <div className="mb-8">
       {/* Section Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">🍴 Restaurace</h2>
           <p className="text-gray-600 mt-1">Celkem {restaurants.length} restaurací</p>
@@ -64,7 +67,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
             setShowForm(true);
             setEditingId(null);
           }}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm"
+          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm w-full sm:w-auto"
         >
           + Přidat restauraci
         </button>
@@ -84,8 +87,8 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
           </div>
         )}
 
-        {/* Table */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        {/* Desktop table */}
+        <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -110,7 +113,7 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {[...restaurants].sort((a, b) => a.name.localeCompare(b.name, 'cs')).map((restaurant) => (
+              {sortedRestaurants.map((restaurant) => (
                 <React.Fragment key={restaurant.id}>
                   <tr className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -141,27 +144,14 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
                       {restaurant.rating}/10
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => setVisitFor(restaurant)}
-                        className="text-purple-600 hover:text-purple-900 mr-4"
-                      >
-                        📝 Byl jsem tu
-                      </button>
-                      <button
-                        onClick={() => {
+                      <AdminRowActions
+                        onVisit={() => setVisitFor(restaurant)}
+                        onEdit={() => {
                           setEditingId(restaurant.id);
                           setShowForm(true);
                         }}
-                        className="text-blue-600 hover:text-blue-900 mr-4"
-                      >
-                        Upravit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(restaurant.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        Smazat
-                      </button>
+                        onDelete={() => handleDelete(restaurant.id)}
+                      />
                     </td>
                   </tr>
                   {editingId === restaurant.id && (
@@ -185,6 +175,63 @@ export default function AdminDashboard({ initialRestaurants }: AdminDashboardPro
 
           {restaurants.length === 0 && (
             <div className="text-center py-12 text-gray-500">
+              Zatím nemáte žádné restaurace. Přidejte první restauraci nebo importujte CSV.
+            </div>
+          )}
+        </div>
+
+        {/* Mobile card list */}
+        <div className="md:hidden bg-white rounded-lg shadow-md divide-y divide-gray-200">
+          {sortedRestaurants.map((restaurant) => (
+            <div key={restaurant.id} className="p-4">
+              <div className="flex items-start gap-2 flex-wrap">
+                <span className="font-medium text-gray-900">{restaurant.name}</span>
+                {(!restaurant.coordinates || Object.keys(restaurant.coordinates).length === 0) && (
+                  <span className="px-2 py-0.5 text-xs font-semibold rounded bg-yellow-100 text-yellow-800">
+                    ⚠️ Bez GPS
+                  </span>
+                )}
+              </div>
+              {restaurant.specialty && (
+                <div className="text-xs text-gray-500 mt-0.5">{restaurant.specialty}</div>
+              )}
+              <div className="text-sm text-gray-600 mt-1">📍 {restaurant.location}</div>
+              <div className="flex items-center gap-2 flex-wrap mt-2">
+                <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  {restaurant.cuisine_type}
+                </span>
+                <span className="text-sm text-gray-700">{restaurant.price} Kč</span>
+                <span className="text-sm text-gray-700">★ {restaurant.rating}/10</span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-end">
+                <AdminRowActions
+                  onVisit={() => setVisitFor(restaurant)}
+                  onEdit={() => {
+                    setEditingId(restaurant.id);
+                    setShowForm(true);
+                  }}
+                  onDelete={() => handleDelete(restaurant.id)}
+                />
+              </div>
+
+              {editingId === restaurant.id && (
+                <div className="mt-3">
+                  <RestaurantForm
+                    restaurantId={restaurant.id}
+                    onSave={handleSave}
+                    onCancel={() => {
+                      setShowForm(false);
+                      setEditingId(null);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+
+          {restaurants.length === 0 && (
+            <div className="text-center py-12 text-gray-500 px-4">
               Zatím nemáte žádné restaurace. Přidejte první restauraci nebo importujte CSV.
             </div>
           )}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Event } from "@/lib/types";
 import EventForm from "./EventForm";
 import NotificationDialog from "./NotificationDialog";
+import AdminRowActions from "./AdminRowActions";
 import { getApiUrl } from "@/lib/api-config";
 import {
   DndContext,
@@ -111,18 +112,7 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
           )}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <button
-            onClick={onEdit}
-            className="text-blue-600 hover:text-blue-900 mr-4"
-          >
-            Upravit
-          </button>
-          <button
-            onClick={onDelete}
-            className="text-red-600 hover:text-red-900"
-          >
-            Smazat
-          </button>
+          <AdminRowActions onEdit={onEdit} onDelete={onDelete} />
         </td>
       </tr>
       {isEditing && editForm && (
@@ -262,12 +252,12 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Správa akcí</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 w-full sm:w-auto"
         >
           {showForm ? "Zrušit" : "Přidat akci"}
         </button>

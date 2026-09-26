@@ -118,7 +118,7 @@ export default function BakeryForm({
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -149,7 +149,7 @@ export default function BakeryForm({
         </div>
 
         {/* Website URL */}
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Web / Instagram URL
           </label>
@@ -175,7 +175,7 @@ export default function BakeryForm({
         />
 
         {/* Image URL */}
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             URL obrázku
           </label>

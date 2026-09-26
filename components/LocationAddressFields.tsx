@@ -31,7 +31,7 @@ export default function LocationAddressFields({
 
   if (locations.length === 0) {
     return (
-      <div className="md:col-span-2 col-span-2">
+      <div className="md:col-span-2">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Adresy poboček
         </label>
@@ -70,7 +70,7 @@ export default function LocationAddressFields({
   };
 
   return (
-    <div className="md:col-span-2 col-span-2 space-y-3">
+    <div className="md:col-span-2 space-y-3">
       <label className="block text-sm font-medium text-gray-700">
         Adresy poboček
       </label>
@@ -80,8 +80,8 @@ export default function LocationAddressFields({
       {locations.map((loc) => {
         const status = statuses[loc] ?? (coordinates?.[loc] ? "success" : "idle");
         return (
-          <div key={loc} className="flex items-start gap-3">
-            <div className="w-28 flex-shrink-0 pt-2 text-sm font-medium text-gray-600 truncate" title={loc}>
+          <div key={loc} className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3">
+            <div className="sm:w-28 flex-shrink-0 sm:pt-2 text-sm font-medium text-gray-600 truncate" title={loc}>
               {loc}
             </div>
             <div className="flex-1">

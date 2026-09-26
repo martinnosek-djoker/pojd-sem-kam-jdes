@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trending } from "@/lib/types";
 import TrendingForm from "./TrendingForm";
 import NotificationDialog from "./NotificationDialog";
+import AdminRowActions from "./AdminRowActions";
 import { getApiUrl } from "@/lib/api-config";
 import {
   DndContext,
@@ -88,18 +89,7 @@ function SortableRow({ trending, rank, onEdit, onDelete, isEditing, editForm }: 
           )}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <button
-            onClick={onEdit}
-            className="text-blue-600 hover:text-blue-900 mr-4"
-          >
-            Upravit
-          </button>
-          <button
-            onClick={onDelete}
-            className="text-red-600 hover:text-red-900"
-          >
-            Smazat
-          </button>
+          <AdminRowActions onEdit={onEdit} onDelete={onDelete} />
         </td>
       </tr>
       {isEditing && (
@@ -209,7 +199,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
 
   return (
     <div className="mb-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">🔥 TOP 10 Trendingy</h2>
           <p className="text-gray-600 mt-1">Celkem {trendings.length} trending podniků</p>
@@ -219,7 +209,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
             setShowForm(true);
             setEditingId(null);
           }}
-          className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium"
+          className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium w-full sm:w-auto"
         >
           + Přidat trending podnik
         </button>
@@ -241,6 +231,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="overflow-x-auto">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -295,6 +286,7 @@ export default function TrendingsAdmin({ initialTrendings }: TrendingsAdminProps
             </tbody>
           </table>
         </DndContext>
+        </div>
 
         {trendings.length === 0 && (
           <div className="text-center py-12 text-gray-500">

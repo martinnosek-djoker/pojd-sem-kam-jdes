@@ -37,10 +37,10 @@ export default async function AdminPage() {
     }
 
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Administrace</h1>
               <p className="text-gray-600 mt-1">
