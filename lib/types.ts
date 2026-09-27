@@ -264,6 +264,7 @@ export interface Visit {
   visit_date: string;
   dishes: VisitDish[];
   comment: string | null; // Short 1-2 sentence take on the visit
+  images: string[]; // Uploaded photo URLs (Supabase Storage)
   created_at: string;
   updated_at: string;
 }
@@ -278,6 +279,7 @@ export const visitSchema = z.object({
   cafe_id: z.number().min(1).optional().nullable(),
   visit_date: z.string().min(1, "Datum návštěvy je povinné"),
   dishes: z.array(visitDishSchema).optional().default([]),
+  images: z.array(z.string()).optional().default([]),
   comment: z.string().optional().nullable(),
 }).refine(data => data.restaurant_id || data.cafe_id, {
   message: "Podnik je povinný",

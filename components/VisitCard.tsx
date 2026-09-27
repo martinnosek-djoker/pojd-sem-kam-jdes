@@ -23,7 +23,10 @@ export default function VisitCard({ visit }: VisitCardProps) {
   if (!place) return null;
 
   const isRestaurant = !!visit.restaurant;
-  const proxiedImageUrl = getProxiedImageUrl(place.image_url, place.name);
+  // Prefer an actual photo from this visit over the place's generic photo
+  const visitPhotos = visit.images || [];
+  const heroImageUrl = visitPhotos.length > 0 ? visitPhotos[0] : getProxiedImageUrl(place.image_url, place.name);
+  const extraPhotos = visitPhotos.slice(1);
   const visitDate = new Date(visit.visit_date).toLocaleDateString("cs-CZ", {
     day: "numeric",
     month: "long",
@@ -34,9 +37,9 @@ export default function VisitCard({ visit }: VisitCardProps) {
     <>
       {/* Image */}
       <div className="relative h-48 -m-6 mb-4 overflow-hidden rounded-t-lg">
-        {proxiedImageUrl && !imageError ? (
+        {heroImageUrl && !imageError ? (
           <img
-            src={proxiedImageUrl}
+            src={heroImageUrl}
             alt={place.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             onError={() => setImageError(true)}
@@ -51,6 +54,22 @@ export default function VisitCard({ visit }: VisitCardProps) {
           📅 {visitDate}
         </div>
       </div>
+
+      {/* Extra photos from this visit, beyond the hero image */}
+      {extraPhotos.length > 0 && (
+        <div className="flex gap-1.5 mb-3 -mt-1">
+          {extraPhotos.slice(0, 4).map((url, i) => (
+            <div key={url} className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
+              <img src={url} alt="" className="w-full h-full object-cover" />
+              {i === 3 && extraPhotos.length > 4 && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xs font-semibold">
+                  +{extraPhotos.length - 4}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Name + location */}
       <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">

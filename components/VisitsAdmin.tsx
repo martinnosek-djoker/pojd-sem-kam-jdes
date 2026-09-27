@@ -87,6 +87,9 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
                   <span className="text-xs text-gray-400 font-normal">
                     ({visit.restaurant ? "restaurace" : "kavárna"})
                   </span>
+                  {visit.images && visit.images.length > 0 && (
+                    <span className="ml-2 text-xs text-gray-400 font-normal">📷 {visit.images.length}</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {new Date(visit.visit_date).toLocaleDateString("cs-CZ")}
@@ -124,6 +127,9 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
               <span className="text-xs text-gray-400">
                 ({visit.restaurant ? "restaurace" : "kavárna"})
               </span>
+              {visit.images && visit.images.length > 0 && (
+                <span className="text-xs text-gray-400">📷 {visit.images.length}</span>
+              )}
             </div>
             <div className="text-sm text-gray-600 mt-1">
               📅 {new Date(visit.visit_date).toLocaleDateString("cs-CZ")}
