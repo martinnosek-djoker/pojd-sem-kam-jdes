@@ -1,26 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Visit } from "@/lib/types";
-import { getApiUrl } from "@/lib/api-config";
 import VisitCard from "./VisitCard";
 
-export default function RecentVisits() {
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [loading, setLoading] = useState(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
+interface RecentVisitsProps {
+  visits: Visit[];
+}
 
-  useEffect(() => {
-    fetch(getApiUrl("/api/visits?limit=10"))
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) setVisits(data);
-      })
-      .catch((error) => {
-        console.error("[RecentVisits] Error fetching visits:", error);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+export default function RecentVisits({ visits }: RecentVisitsProps) {
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollCarousel = (direction: "prev" | "next") => {
     if (!carouselRef.current) return;
@@ -32,8 +21,8 @@ export default function RecentVisits() {
     });
   };
 
-  // Nothing to show yet (still loading, no visits logged, or table not migrated) - stay invisible
-  if (loading || visits.length === 0) return null;
+  // Nothing to show (no visits logged, or table not migrated) - stay invisible
+  if (visits.length === 0) return null;
 
   return (
     <div className="mb-12 sm:mb-16">

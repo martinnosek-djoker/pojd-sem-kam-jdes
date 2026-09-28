@@ -8,13 +8,14 @@ import QuickFilters from "@/components/QuickFilters";
 import FloatingNearbyButton from "@/components/FloatingNearbyButton";
 import AIRestaurantSearch from "@/components/AIRestaurantSearch";
 import RecentVisits from "@/components/RecentVisits";
-import { Restaurant, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
+import { Restaurant, Visit, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl } from "@/lib/api-config";
 
 export default function HomePage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
+  const [visits, setVisits] = useState<Visit[]>([]);
   const [allLocations, setAllLocations] = useState<string[]>([]);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -28,14 +29,17 @@ export default function HomePage() {
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
+        const visitsUrl = getApiUrl("/api/visits?limit=10");
 
-        const [restaurantsRes, filtersRes] = await Promise.all([
+        const [restaurantsRes, filtersRes, visitsRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(filtersUrl),
+          fetch(visitsUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const filtersData = await filtersRes.json();
+        const visitsData = await visitsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -46,6 +50,9 @@ export default function HomePage() {
         }
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
+        }
+        if (Array.isArray(visitsData)) {
+          setVisits(visitsData);
         }
       } catch (error) {
         console.error("[HomePage] Error fetching data:", error);
@@ -237,7 +244,7 @@ export default function HomePage() {
         </div>
 
         {/* Recent Visits Carousel */}
-        <RecentVisits />
+        <RecentVisits visits={visits} />
 
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">
