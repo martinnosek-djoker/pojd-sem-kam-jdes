@@ -223,6 +223,7 @@ export interface Event {
   start_date: string | null; // ISO 8601 timestamp for event start
   end_date: string | null; // ISO 8601 timestamp for event end
   link: string | null;
+  image_url: string | null;
   display_order: number;
   created_at: string;
 }
@@ -242,6 +243,7 @@ export const eventSchema = z.object({
       (val) => !val || val === "" || z.string().url().safeParse(val).success,
       { message: "Neplatná URL" }
     ),
+  image_url: imageUrlSchema,
   display_order: z.number().int().min(1, "Pořadí musí být kladné číslo").default(1),
 });
 

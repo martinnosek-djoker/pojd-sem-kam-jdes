@@ -111,13 +111,20 @@ function SortableRow({ event, rank, onEdit, onDelete, isEditing, editForm }: Sor
             <span className="text-gray-400">—</span>
           )}
         </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm">
+          {event.image_url ? (
+            <span className="text-green-600">✓ Ano</span>
+          ) : (
+            <span className="text-gray-400">Bez fotky</span>
+          )}
+        </td>
         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
           <AdminRowActions onEdit={onEdit} onDelete={onDelete} />
         </td>
       </tr>
       {isEditing && editForm && (
         <tr>
-          <td colSpan={7} className="px-6 py-4 bg-gray-50">
+          <td colSpan={8} className="px-6 py-4 bg-gray-50">
             {editForm}
           </td>
         </tr>
@@ -294,6 +301,9 @@ export default function EventsAdmin({ initialEvents }: EventsAdminProps) {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Odkaz
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Foto
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Akce

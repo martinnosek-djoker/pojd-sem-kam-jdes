@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
       start_date: validated.start_date || null,
       end_date: validated.end_date || null,
       link: validated.link || null,
+      image_url: validated.image_url || null,
       display_order: validated.display_order,
     };
 

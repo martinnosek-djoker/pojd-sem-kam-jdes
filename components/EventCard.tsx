@@ -33,45 +33,62 @@ export default function EventCard({ event }: EventCardProps) {
   const dateDisplay = formatEventDate();
 
   const CardContent = () => (
-    <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
-      {/* Date section */}
-      {dateDisplay && (
-        <div className="flex-shrink-0 flex flex-col items-center justify-center bg-surface-2 border border-hairline rounded-lg p-2 sm:p-3 md:p-4 min-w-[100px] sm:min-w-[120px] md:min-w-[140px]">
-          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-ink-mid mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span className="text-xs sm:text-sm text-ink font-semibold text-center leading-tight whitespace-nowrap px-1">
-            {dateDisplay}
-          </span>
-        </div>
-      )}
-
-      {/* Content section */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-serif text-base sm:text-lg md:text-2xl font-bold text-ink mb-1 sm:mb-2 tracking-wide group-hover:text-terracotta transition-colors">
-          {event.name}
-        </h3>
-
-        {event.location && (
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <svg className="w-4 h-4 text-ink-mid flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    <>
+      {/* Banner: real photo/logo when available, otherwise a lively gradient */}
+      <div className="relative h-40 sm:h-44 overflow-hidden bg-gradient-to-br from-terracotta via-terracotta to-terracotta-dark">
+        {event.image_url ? (
+          <img
+            src={event.image_url}
+            alt={event.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <svg className="w-14 h-14 text-white/25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span className="text-sm sm:text-base text-text-muted truncate">{event.location}</span>
+          </div>
+        )}
+
+        {/* Date badge overlaid on the banner */}
+        {dateDisplay && (
+          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-surface/95 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md">
+            <svg className="w-4 h-4 text-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span className="text-xs sm:text-sm text-ink font-semibold whitespace-nowrap">
+              {dateDisplay}
+            </span>
+          </div>
+        )}
+
+        {/* Link icon indicator */}
+        {event.link && (
+          <div className="absolute top-3 right-3 bg-surface/95 backdrop-blur-sm rounded-full p-2 shadow-md">
+            <svg className="w-4 h-4 text-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
           </div>
         )}
       </div>
 
-      {/* Link icon indicator */}
-      {event.link && (
-        <div className="flex-shrink-0 bg-terracotta/90 backdrop-blur-sm rounded-full p-2 sm:p-2.5 md:p-3">
-          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </div>
-      )}
-    </div>
+      {/* Content section */}
+      <div className="p-4 sm:p-5">
+        <h3 className="font-serif text-lg sm:text-xl font-bold text-ink mb-1.5 tracking-wide group-hover:text-terracotta transition-colors">
+          {event.name}
+        </h3>
+
+        {event.location && (
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4 text-ink-mid flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-sm text-text-muted truncate">{event.location}</span>
+          </div>
+        )}
+      </div>
+    </>
   );
 
   if (event.link) {
@@ -80,7 +97,7 @@ export default function EventCard({ event }: EventCardProps) {
         href={event.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-surface rounded-lg shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300 p-6 border border-hairline hover:border-terracotta/40 group relative overflow-hidden cursor-pointer hover:scale-[1.02]"
+        className="block bg-surface rounded-2xl shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300 border border-hairline hover:border-terracotta/40 group relative overflow-hidden cursor-pointer hover:-translate-y-1"
       >
         <CardContent />
       </a>
@@ -88,7 +105,7 @@ export default function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <div className="bg-surface rounded-lg shadow-lg shadow-black/5 transition-all duration-300 p-6 border border-hairline group relative overflow-hidden">
+    <div className="bg-surface rounded-2xl shadow-lg shadow-black/5 transition-all duration-300 border border-hairline group relative overflow-hidden">
       <CardContent />
     </div>
   );

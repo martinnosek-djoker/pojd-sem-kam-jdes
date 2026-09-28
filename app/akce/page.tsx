@@ -48,7 +48,7 @@ export default function EventsPage() {
         {loading ? (
           <LoadingPot />
         ) : events && events.length > 0 ? (
-          <div className="max-w-4xl mx-auto space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {events.map((event: Event) => (
               <EventCard key={event.id} event={event} />
             ))}

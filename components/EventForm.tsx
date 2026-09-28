@@ -25,6 +25,7 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
     start_date: initialData?.start_date || "",
     end_date: initialData?.end_date || "",
     link: initialData?.link || "",
+    image_url: initialData?.image_url || "",
     display_order: initialData?.display_order || 1,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -158,6 +159,30 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
         />
         {errors.link && <p className="mt-1 text-sm text-red-600">{errors.link}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="image_url" className="block text-sm font-medium text-gray-700">
+          URL fotky / loga akce
+        </label>
+        <input
+          type="url"
+          id="image_url"
+          placeholder="https://..."
+          value={formData.image_url || ""}
+          onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+        />
+        {errors.image_url && <p className="mt-1 text-sm text-red-600">{errors.image_url}</p>}
+        {formData.image_url && (
+          <div className="mt-2">
+            <img
+              src={formData.image_url}
+              alt="Náhled"
+              className="h-32 w-auto rounded border border-gray-300"
+            />
+          </div>
+        )}
       </div>
 
       <div>
