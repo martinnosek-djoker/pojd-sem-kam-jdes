@@ -31,7 +31,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={cafe.name}
+            alt={`${cafe.name} – kavárna ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

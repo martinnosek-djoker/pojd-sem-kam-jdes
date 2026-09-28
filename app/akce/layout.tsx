@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Gastro akce v Praze | Adventní trhy, food festivaly a kulinářské události",
+  title: "Gastro akce v Praze",
   description: "Aktuální gastro akce, adventní trhy, food festivaly a kulinářské události v Praze. Kompletní kalendář gastronomických akcí v Praze.",
   keywords: [
     "gastro akce Praha",
@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     "degustace Praha",
     "wine festival Praha",
   ],
+  alternates: {
+    canonical: "/akce",
+  },
   openGraph: {
     title: "Gastro akce v Praze | Adventní trhy a food festivaly",
     description: "Aktuální gastro akce, adventní trhy, food festivaly a kulinářské události v Praze. Kompletní kalendář gastronomických akcí.",

@@ -103,7 +103,7 @@ export default function BakeriesPage() {
           <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Cukrárny</h1>
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Cukrárny a pekárny v Praze</h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
             Nejlepší cukrárny v Praze od{" "}
             <a

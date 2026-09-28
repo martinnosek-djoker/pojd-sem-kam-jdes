@@ -20,7 +20,7 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={bakery.name}
+            alt={`${bakery.name} – cukrárna ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

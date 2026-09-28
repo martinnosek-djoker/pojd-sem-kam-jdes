@@ -40,6 +40,9 @@ export const metadata = {
     title: 'Pojď sem! Kam jdeš?',
   },
   themeColor: '#FBF3E7',
+  alternates: {
+    canonical: "/",
+  },
   description:
     "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů a prémiová káva.",
   keywords: [

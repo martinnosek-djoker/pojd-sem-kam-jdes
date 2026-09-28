@@ -28,7 +28,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={restaurant.name}
+            alt={`${restaurant.name} – restaurace ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

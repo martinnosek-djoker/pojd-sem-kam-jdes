@@ -261,7 +261,7 @@ export default function NearbyRestaurants() {
             <Logo />
           </div>
           <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6">
-            V okolí
+            Restaurace v okolí
           </h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
             Najdi skvělá místa poblíž tvé polohy
