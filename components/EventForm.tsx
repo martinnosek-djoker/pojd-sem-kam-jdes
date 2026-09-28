@@ -166,9 +166,9 @@ export default function EventForm({ onSubmit, initialData, onCancel }: EventForm
           URL fotky / loga akce
         </label>
         <input
-          type="url"
+          type="text"
           id="image_url"
-          placeholder="https://..."
+          placeholder="https://... nebo /images/..."
           value={formData.image_url || ""}
           onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"

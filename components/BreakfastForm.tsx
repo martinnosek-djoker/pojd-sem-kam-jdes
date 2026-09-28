@@ -181,8 +181,8 @@ export default function BreakfastForm({
           </label>
           <input
             {...register("image_url")}
-            type="url"
-            placeholder="https://..."
+            type="text"
+            placeholder="https://... nebo /images/..."
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.image_url && (

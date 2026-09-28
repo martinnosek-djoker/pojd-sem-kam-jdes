@@ -179,10 +179,10 @@ export default function TrendingForm({
               URL fotky (nepovinné)
             </label>
             <input
-              type="url"
+              type="text"
               {...register("image_url")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="https://..."
+              placeholder="https://... nebo /images/..."
             />
             {errors.image_url && (
               <p className="text-red-600 text-sm mt-1">{errors.image_url.message}</p>
