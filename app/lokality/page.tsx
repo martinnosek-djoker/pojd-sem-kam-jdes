@@ -85,7 +85,7 @@ export default function LocalitiesPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen px-8 pb-8 bg-black">
+      <main className="min-h-screen px-8 pb-8 bg-bg">
         <div className="max-w-7xl mx-auto">
           <div className="pt-10 md:pt-8 mb-8">
             <Logo />
@@ -97,15 +97,15 @@ export default function LocalitiesPage() {
   }
 
   return (
-    <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
+          <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">Podle lokality</h1>
-          <p className="text-sm md:text-lg text-gray-300 mt-2">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Podle lokality</h1>
+          <p className="text-sm md:text-lg text-text-muted mt-2">
             Nejlepší restaurace v Praze roztříděné podle lokality
           </p>
         </div>
@@ -116,11 +116,11 @@ export default function LocalitiesPage() {
             <div key={location.name}>
               {/* Location Header */}
               <div className="mb-6">
-                <h2 className="text-xl md:text-2xl font-bold text-purple-400 mb-2 flex items-center gap-3">
+                <h2 className="text-xl md:text-2xl font-serif font-bold text-ink mb-2 flex items-center gap-3">
                   <span className="text-2xl">📍</span>
                   <span>{location.name}</span>
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-text-muted">
                   {location.count} {location.count === 1 ? "restaurace" : location.count < 5 ? "restaurace" : "restaurací"}
                 </p>
               </div>
@@ -143,12 +143,12 @@ export default function LocalitiesPage() {
                     <div
                       key={index}
                       className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                        index === (scrollIndices[location.name] || 0) ? 'bg-purple-400' : 'bg-purple-500/30'
+                        index === (scrollIndices[location.name] || 0) ? 'bg-terracotta' : 'bg-hairline'
                       }`}
                     />
                   ))}
                   {restaurantsByLocation[location.name]?.length > 10 && (
-                    <span className="text-xs text-purple-400 ml-1">+{restaurantsByLocation[location.name].length - 10}</span>
+                    <span className="text-xs text-terracotta ml-1">+{restaurantsByLocation[location.name].length - 10}</span>
                   )}
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function LocalitiesPage() {
         {/* Empty State */}
         {sortedLocations.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-text-muted">
               Nebyly nalezeny žádné lokality s dostatečným počtem restaurací
             </p>
           </div>

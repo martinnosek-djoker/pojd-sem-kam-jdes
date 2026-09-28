@@ -39,10 +39,10 @@ export default function RecentVisits() {
     <div className="mb-12 sm:mb-16">
       <div className="flex items-end justify-between mb-6">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-ink tracking-wide mb-1 md:mb-2">
             ✨ Nejnovější návštěvy
           </h2>
-          <p className="text-sm md:text-base text-gray-400">
+          <p className="text-sm md:text-base text-text-muted">
             Moje poslední návštěvy restaurací a kaváren
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function RecentVisits() {
           <div className="flex items-center gap-2 flex-shrink-0 ml-4">
             <button
               onClick={() => scrollCarousel("prev")}
-              className="w-10 h-10 flex items-center justify-center rounded-full border border-purple-500/50 bg-black/60 text-purple-400 hover:border-purple-400 hover:text-purple-300 hover:bg-purple-900/30 transition-all duration-200"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-hairline bg-surface text-terracotta hover:border-terracotta hover:bg-terracotta/10 transition-all duration-200"
               aria-label="Předchozí návštěva"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@ export default function RecentVisits() {
             </button>
             <button
               onClick={() => scrollCarousel("next")}
-              className="w-10 h-10 flex items-center justify-center rounded-full border border-purple-500/50 bg-black/60 text-purple-400 hover:border-purple-400 hover:text-purple-300 hover:bg-purple-900/30 transition-all duration-200"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-hairline bg-surface text-terracotta hover:border-terracotta hover:bg-terracotta/10 transition-all duration-200"
               aria-label="Další návštěva"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

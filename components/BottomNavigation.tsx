@@ -85,7 +85,7 @@ export default function BottomNavigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-purple-600/30 shadow-lg shadow-purple-900/20 z-30 safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 bg-surface border-t border-hairline shadow-lg shadow-black/5 z-30 safe-area-inset-bottom">
       <div className="flex items-center justify-around px-2 py-2 max-w-lg mx-auto">
         {mainItems.map((item) => {
           const active = isActive(item.href);
@@ -96,8 +96,8 @@ export default function BottomNavigation() {
               href={item.href}
               className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all min-w-[68px] ${
                 active
-                  ? 'bg-purple-600 text-white scale-105 shadow-md shadow-purple-600/50'
-                  : 'text-gray-400 hover:text-purple-400 hover:bg-purple-600/10'
+                  ? 'bg-terracotta text-white scale-105 shadow-md shadow-terracotta/50'
+                  : 'text-text-muted hover:text-terracotta hover:bg-terracotta/10'
               }`}
             >
               <IconComponent />

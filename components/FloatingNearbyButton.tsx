@@ -27,7 +27,7 @@ export default function FloatingNearbyButton() {
       onClick={handleClick}
       className={`
         fixed bottom-20 right-4 z-40
-        bg-purple-600 hover:bg-purple-700
+        bg-terracotta hover:bg-terracotta-dark
         text-white font-semibold
         shadow-lg hover:shadow-xl
         transition-all duration-300 ease-in-out

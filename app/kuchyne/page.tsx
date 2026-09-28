@@ -160,7 +160,7 @@ export default function CuisinesPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen px-8 pb-8 bg-black">
+      <main className="min-h-screen px-8 pb-8 bg-bg">
         <div className="max-w-7xl mx-auto">
           <div className="pt-10 md:pt-8 mb-8">
             <Logo />
@@ -172,15 +172,15 @@ export default function CuisinesPage() {
   }
 
   return (
-    <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="pt-10 md:pt-8 mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-6 mb-4">
+          <div className="inline-block border-b-2 border-hairline pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-bold text-purple-400 mt-6 mb-2">Světové kuchyně</h1>
-          <p className="text-lg text-gray-300">
+          <h1 className="text-4xl font-serif font-bold text-ink mt-6 mb-2">Světové kuchyně</h1>
+          <p className="text-lg text-text-muted">
             Najdi nejlepší restaurace podle typu kuchyně
           </p>
         </div>
@@ -191,10 +191,10 @@ export default function CuisinesPage() {
             <div key={cuisine.name}>
               {/* Cuisine Header */}
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-purple-400 mb-2">
+                <h2 className="text-3xl font-serif font-bold text-ink mb-2">
                   {cuisine.emoji} {cuisine.name}
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-text-muted">
                   {cuisine.count} {cuisine.count === 1 ? "restaurace" : cuisine.count < 5 ? "restaurace" : "restaurací"}
                 </p>
               </div>
@@ -217,12 +217,12 @@ export default function CuisinesPage() {
                     <div
                       key={index}
                       className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                        index === (scrollIndices[cuisine.name] || 0) ? 'bg-purple-400' : 'bg-purple-500/30'
+                        index === (scrollIndices[cuisine.name] || 0) ? 'bg-terracotta' : 'bg-hairline'
                       }`}
                     />
                   ))}
                   {restaurantsByCuisine[cuisine.name]?.length > 10 && (
-                    <span className="text-xs text-purple-400 ml-1">+{restaurantsByCuisine[cuisine.name].length - 10}</span>
+                    <span className="text-xs text-terracotta ml-1">+{restaurantsByCuisine[cuisine.name].length - 10}</span>
                   )}
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function CuisinesPage() {
         {/* Empty State */}
         {sortedCuisines.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-text-muted">
               Nebyly nalezeny žádné kuchyně
             </p>
           </div>

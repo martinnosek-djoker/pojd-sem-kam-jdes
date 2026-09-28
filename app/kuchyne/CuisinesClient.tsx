@@ -45,19 +45,19 @@ export default function CuisinesClient({ restaurants, allCuisineTypes }: Cuisine
   };
 
   return (
-    <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
+          <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">""</h1>
-          <p className="text-sm md:text-lg text-gray-300 mt-2">""</p>
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">""</h1>
+          <p className="text-sm md:text-lg text-text-muted mt-2">""</p>
         </div>
 
         {allCuisineTypes.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400">""</p>
+            <p className="text-xl text-text-muted">""</p>
           </div>
         ) : (
           <div className="space-y-8 md:space-y-12">
@@ -78,10 +78,10 @@ export default function CuisinesClient({ restaurants, allCuisineTypes }: Cuisine
 
               return (
                 <div key={cuisineType} className="space-y-4">
-                  <h2 className="text-xl md:text-2xl font-bold text-purple-400 flex items-center gap-3">
+                  <h2 className="text-xl md:text-2xl font-serif font-bold text-ink flex items-center gap-3">
                     <span className="text-2xl">🌍</span>
                     <span>{cuisineType}</span>
-                    <span className="text-base md:text-lg text-gray-400 font-normal">
+                    <span className="text-base md:text-lg text-text-muted font-normal">
                       ({count} {countText})
                     </span>
                   </h2>
@@ -102,14 +102,14 @@ export default function CuisinesClient({ restaurants, allCuisineTypes }: Cuisine
                         <div
                           key={index}
                           className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                            index === (scrollIndices[cuisineType] || 0) ? 'bg-purple-400' : 'bg-purple-500/30'
+                            index === (scrollIndices[cuisineType] || 0) ? 'bg-terracotta' : 'bg-hairline'
                           }`}
                         />
                       ))}
                     </div>
                   </div>
 
-                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {cuisineRestaurants.map((restaurant) => (
                       <RestaurantCard key={restaurant.id} restaurant={restaurant} />
                     ))}

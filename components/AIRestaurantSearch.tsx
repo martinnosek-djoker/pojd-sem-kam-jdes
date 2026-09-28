@@ -13,7 +13,7 @@ interface AISearchResult {
 function renderFormattedExplanation(text: string) {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
     part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="text-white font-semibold">
+      <strong key={i} className="text-ink font-semibold">
         {part.slice(2, -2)}
       </strong>
     ) : (
@@ -77,24 +77,24 @@ export default function AIRestaurantSearch() {
       {/* Collapsible header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/50 rounded-xl hover:border-purple-400/70 transition-all mb-4"
+        className="w-full flex items-center justify-between p-4 bg-surface border border-hairline rounded-xl hover:border-terracotta/40 transition-all mb-4"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-purple-600/30 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center">
+            <svg className="w-6 h-6 text-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </div>
           <div className="text-left">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">AI Asistent</span>
-              <span className="px-2 py-0.5 bg-purple-600/40 border border-purple-400/50 rounded-full text-xs text-purple-300 font-semibold">NOVÉ</span>
+            <h3 className="text-lg font-serif font-bold text-ink flex items-center gap-2">
+              <span className="text-terracotta">AI Asistent</span>
+              <span className="px-2 py-0.5 bg-terracotta/10 border border-terracotta/30 rounded-full text-xs text-terracotta font-semibold">NOVÉ</span>
             </h3>
-            <p className="text-sm text-gray-400">Inteligentní vyhledávání restaurací</p>
+            <p className="text-sm text-text-muted">Inteligentní vyhledávání restaurací</p>
           </div>
         </div>
         <svg
-          className={`w-6 h-6 text-purple-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+          className={`w-6 h-6 text-terracotta transition-transform ${isExpanded ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -105,7 +105,7 @@ export default function AIRestaurantSearch() {
 
       {/* Expandable content */}
       {isExpanded && (
-        <div className="bg-gray-900/50 border border-purple-500/30 rounded-xl p-6 animate-in slide-in-from-top-2 duration-300">
+        <div className="bg-surface border border-hairline rounded-xl p-6 animate-in slide-in-from-top-2 duration-300">
           <form onSubmit={handleSearch} className="mb-6">
             <div className="relative">
               <input
@@ -113,7 +113,7 @@ export default function AIRestaurantSearch() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder='Např. "chci na řízek na Andělu" nebo "burger do 600 Kč"'
-                className="w-full px-4 py-3 pr-24 bg-black border border-purple-600/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-24 bg-bg border border-hairline rounded-lg text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                 disabled={loading}
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-2">
@@ -121,7 +121,7 @@ export default function AIRestaurantSearch() {
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="px-3 py-1.5 text-sm text-gray-400 hover:text-white transition-colors"
+                    className="px-3 py-1.5 text-sm text-text-muted hover:text-ink transition-colors"
                     disabled={loading}
                   >
                     Vymazat
@@ -130,7 +130,7 @@ export default function AIRestaurantSearch() {
                 <button
                   type="submit"
                   disabled={loading || !query.trim()}
-                  className="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded-md transition-colors font-medium flex items-center gap-2"
+                  className="px-4 py-1.5 bg-terracotta hover:bg-terracotta-dark disabled:bg-surface-2 disabled:text-text-muted text-white rounded-md transition-colors font-medium flex items-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -151,7 +151,7 @@ export default function AIRestaurantSearch() {
 
             {/* Example queries */}
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="text-xs text-gray-500">Zkuste například:</span>
+              <span className="text-xs text-text-muted">Zkuste například:</span>
               {[
                 "nejlepší pizza na Vinohradech",
                 "vietnamská restaurace na Andělu",
@@ -162,7 +162,7 @@ export default function AIRestaurantSearch() {
                   key={example}
                   type="button"
                   onClick={() => setQuery(example)}
-                  className="text-xs px-2 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-purple-300 hover:bg-purple-900/50 hover:border-purple-400/50 transition-all"
+                  className="text-xs px-2 py-1 bg-surface-2 border border-hairline rounded-full text-ink-mid hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
                   disabled={loading}
                 >
                   {example}
@@ -187,16 +187,16 @@ export default function AIRestaurantSearch() {
           {result && (
             <div>
               {/* AI Explanation */}
-              <div className="mb-6 p-4 bg-gradient-to-br from-purple-900/20 to-blue-900/20 border border-purple-500/40 rounded-lg">
+              <div className="mb-6 p-4 bg-surface-tint border border-terracotta/20 rounded-lg">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-purple-600/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 bg-surface-2 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-5 h-5 text-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-purple-400 mb-2">AI doporučuje:</h4>
-                    <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{renderFormattedExplanation(result.explanation)}</p>
+                    <h4 className="text-sm font-semibold text-terracotta mb-2">AI doporučuje:</h4>
+                    <p className="text-ink-mid text-sm leading-relaxed whitespace-pre-line">{renderFormattedExplanation(result.explanation)}</p>
                   </div>
                 </div>
               </div>
@@ -204,7 +204,7 @@ export default function AIRestaurantSearch() {
               {/* Restaurant results */}
               {result.restaurants.length > 0 ? (
                 <div>
-                  <h4 className="text-lg font-semibold text-white mb-4">
+                  <h4 className="text-lg font-serif font-semibold text-ink mb-4">
                     Nalezeno {result.restaurants.length} {result.restaurants.length === 1 ? "restaurace" : result.restaurants.length < 5 ? "restaurace" : "restaurací"}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -215,7 +215,7 @@ export default function AIRestaurantSearch() {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400">Bohužel jsem nenašel žádné vhodné restaurace.</p>
+                  <p className="text-text-muted">Bohužel jsem nenašel žádné vhodné restaurace.</p>
                 </div>
               )}
             </div>

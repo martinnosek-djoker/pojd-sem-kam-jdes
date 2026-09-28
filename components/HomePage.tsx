@@ -172,37 +172,38 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <main className="min-h-screen bg-bg">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
           {/* Hero Section Skeleton */}
           <div className="text-center mb-8 sm:mb-12">
             <div className="inline-block mb-4 sm:mb-6">
               <Logo />
             </div>
-            <div className="h-6 sm:h-10 md:h-12 bg-gray-800 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 animate-pulse" />
-            <div className="h-4 sm:h-6 bg-gray-800 rounded-lg max-w-md mx-auto animate-pulse" />
+            <div className="h-6 sm:h-10 md:h-12 bg-surface-2 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 animate-pulse" />
+            <div className="h-4 sm:h-6 bg-surface-2 rounded-lg max-w-md mx-auto animate-pulse" />
           </div>
 
           {/* Restaurant Section Skeleton */}
           <div className="mb-6 md:mb-8">
-            <div className="h-8 bg-gray-800 rounded-lg max-w-md mb-2 animate-pulse" />
-            <div className="h-5 bg-gray-800 rounded-lg max-w-lg animate-pulse" />
+            <div className="h-8 bg-surface-2 rounded-lg max-w-md mb-2 animate-pulse" />
+            <div className="h-5 bg-surface-2 rounded-lg max-w-lg animate-pulse" />
           </div>
 
           {/* Filters Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="h-12 bg-gray-800 rounded-md animate-pulse" />
-            <div className="h-12 bg-gray-800 rounded-md animate-pulse" />
+            <div className="h-12 bg-surface-2 rounded-md animate-pulse" />
+            <div className="h-12 bg-surface-2 rounded-md animate-pulse" />
           </div>
 
           {/* Restaurant Cards Skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-gray-800/50 rounded-lg p-6 animate-pulse">
-                <div className="h-48 bg-gray-700/50 rounded-lg mb-4" />
-                <div className="h-6 bg-gray-700/50 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-gray-700/50 rounded w-1/2 mb-4" />
-                <div className="h-4 bg-gray-700/50 rounded w-full" />
+              <div key={i} className="flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl animate-pulse">
+                <div className="w-[72px] h-[72px] bg-surface-2 rounded-xl flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="h-4 bg-surface-2 rounded w-3/4 mb-2" />
+                  <div className="h-3 bg-surface-2 rounded w-1/2" />
+                </div>
               </div>
             ))}
           </div>
@@ -212,23 +213,23 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen bg-bg">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-block mb-4 sm:mb-6">
             <Logo />
           </div>
-          <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 px-2">
+          <h1 className="font-serif text-xl sm:text-3xl md:text-4xl font-semibold text-ink mb-3 sm:mb-4 px-2">
             Objevuj nejlepší gastro místa v Praze
           </h1>
-          <p className="text-sm sm:text-lg text-gray-300 max-w-2xl mx-auto px-2">
+          <p className="text-sm sm:text-lg text-text-muted max-w-2xl mx-auto px-2">
             Osobní doporučení od{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
+              className="text-terracotta hover:text-terracotta-dark transition-colors font-semibold"
             >
               @Peču si život
             </a>
@@ -240,8 +241,18 @@ export default function HomePage() {
 
         {/* Restaurants Section Header */}
         <div className="mb-6 md:mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-purple-400 tracking-wide mb-1 md:mb-2">🍽️ Nejlepší restaurace v Praze</h2>
-          <p className="text-sm md:text-base text-gray-400">Filtruj podle lokality, typu kuchyně nebo najdi restauraci ve svém okolí</p>
+          <h2 className="flex items-center gap-2 font-serif text-2xl md:text-3xl font-semibold text-ink tracking-wide mb-1 md:mb-2">
+            <svg width="24" height="24" viewBox="0 0 24 24" className="text-terracotta flex-shrink-0">
+              <line x1="6" y1="3" x2="6" y2="8" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
+              <line x1="8" y1="3" x2="8" y2="8" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
+              <line x1="10" y1="3" x2="10" y2="8" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
+              <line x1="8" y1="8" x2="8" y2="21" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+              <path d="M16 3 L18 8 L14 8 Z" fill="currentColor" />
+              <line x1="16" y1="8" x2="16" y2="21" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+            </svg>
+            Nejlepší restaurace v Praze
+          </h2>
+          <p className="text-sm md:text-base text-text-muted">Filtruj podle lokality, typu kuchyně nebo najdi restauraci ve svém okolí</p>
         </div>
 
         {/* AI Restaurant Search */}
@@ -267,20 +278,20 @@ export default function HomePage() {
 
         {/* Sort and count */}
         <div className="flex justify-between items-center mb-8">
-          <p className="text-gray-400 text-sm">
-            Nalezeno <span className="font-semibold text-purple-400">{filteredRestaurants.length}</span> restaurací
+          <p className="text-text-muted text-sm">
+            Nalezeno <span className="font-semibold text-terracotta">{filteredRestaurants.length}</span> restaurací
           </p>
 
           <div className="flex items-center gap-3">
-            <label htmlFor="sort" className="text-sm text-gray-400">
+            <label htmlFor="sort" className="text-sm text-text-muted">
               Seřadit:
             </label>
             <select
               id="sort"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="pl-4 pr-12 py-2 border border-purple-600 rounded-md text-sm bg-black text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-no-repeat bg-right"
-              style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a78bfa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
+              className="pl-4 pr-12 py-2 border border-hairline rounded-md text-sm bg-surface text-ink focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent appearance-none bg-no-repeat bg-right"
+              style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238A6A56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
             >
               <option value="rating">Podle hodnocení</option>
               <option value="price">Podle ceny</option>
@@ -292,16 +303,16 @@ export default function HomePage() {
         {/* Restaurant grid */}
         {filteredRestaurants.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400 mb-8">Nebyly nalezeny žádné restaurace</p>
+            <p className="text-xl text-text-muted mb-8">Nebyly nalezeny žádné restaurace</p>
             <button
               onClick={handleReset}
-              className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50"
+              className="px-6 py-3 bg-terracotta text-white rounded-md hover:bg-terracotta-dark transition-all duration-300 border border-terracotta shadow-lg shadow-terracotta/30"
             >
               Resetovat filtry
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-16">
             {filteredRestaurants.map((restaurant) => (
               <RestaurantCard
                 key={restaurant.id}

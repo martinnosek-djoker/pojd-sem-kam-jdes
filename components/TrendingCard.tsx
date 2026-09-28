@@ -24,17 +24,17 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               onError={() => setImageError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-transparent via-transparent to-gray-900/50 sm:to-gray-900"></div>
+            <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-transparent via-transparent to-ink/50 sm:to-ink/90"></div>
             {/* Rank badge overlaid on image */}
-            <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
+            <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-terracotta to-terracotta-dark flex items-center justify-center shadow-lg">
               <span className="text-lg font-bold text-white">#{rank}</span>
             </div>
           </div>
         ) : (
-          <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 bg-gradient-to-br from-purple-900/30 to-gray-900/50 flex items-center justify-center">
+          <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 bg-gradient-to-br from-surface-2 to-bg flex items-center justify-center">
             <span className="text-4xl opacity-30">🔥</span>
             {/* Rank badge overlaid */}
-            <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
+            <div className="absolute top-2 left-2 w-10 h-10 rounded-full bg-gradient-to-br from-terracotta to-terracotta-dark flex items-center justify-center shadow-lg">
               <span className="text-lg font-bold text-white">#{rank}</span>
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
         <div className="flex-1 px-4 py-3 flex items-center justify-between gap-2">
           {/* Name and Address */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg font-bold text-purple-300 tracking-wide group-hover:text-purple-200 transition-colors">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-ink tracking-wide group-hover:text-terracotta transition-colors">
               {trending.name}
             </h3>
             {trending.address && (
@@ -52,7 +52,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${trending.name}, ${trending.address}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs sm:text-sm text-gray-400 hover:text-purple-300 underline transition-colors mt-1 block truncate"
+                className="text-xs sm:text-sm text-text-muted hover:text-terracotta underline transition-colors mt-1 block truncate"
                 onClick={(e) => e.stopPropagation()}
                 title={trending.address}
               >
@@ -63,7 +63,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
 
           {/* Arrow indicator if has link */}
           {trending.website_url && (
-            <div className="flex-shrink-0 text-purple-400 group-hover:text-purple-300 group-hover:translate-x-1 transition-all">
+            <div className="flex-shrink-0 text-ink-mid group-hover:text-terracotta group-hover:translate-x-1 transition-all">
               <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -80,7 +80,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
         href={trending.website_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-gradient-to-r from-gray-900 to-black rounded-lg shadow-lg shadow-purple-900/10 hover:shadow-purple-600/30 transition-all duration-300 p-4 border border-purple-600/30 hover:border-purple-500/50 group cursor-pointer hover:scale-102"
+        className="block bg-surface rounded-lg shadow-md shadow-black/5 hover:shadow-lg hover:shadow-black/10 transition-all duration-300 p-4 border border-hairline hover:border-terracotta/40 group cursor-pointer hover:scale-102"
       >
         <CardContent />
       </a>
@@ -88,7 +88,7 @@ export default function TrendingCard({ trending, rank }: TrendingCardProps) {
   }
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 to-black rounded-lg shadow-lg shadow-purple-900/10 p-4 border border-purple-600/30 group">
+    <div className="bg-surface rounded-lg shadow-md shadow-black/5 p-4 border border-hairline group">
       <CardContent />
     </div>
   );

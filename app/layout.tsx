@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Lora, Work_Sans } from "next/font/google";
 import BottomNavigation from "@/components/BottomNavigation";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import BackButtonHandler from "@/components/BackButtonHandler";
@@ -6,6 +7,20 @@ import ScrollToTop from "@/components/ScrollToTop";
 import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const lora = Lora({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700"],
+  variable: "--font-lora",
+  display: "swap",
+});
+
+const workSans = Work_Sans({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-work-sans",
+  display: "swap",
+});
 
 export const metadata = {
   title: {
@@ -24,7 +39,7 @@ export const metadata = {
     statusBarStyle: 'default',
     title: 'Pojď sem! Kam jdeš?',
   },
-  themeColor: '#9333EA', // Purple color to match your brand
+  themeColor: '#FBF3E7',
   description:
     "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů a prémiová káva.",
   keywords: [
@@ -139,11 +154,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="cs">
+    <html lang="cs" className={`${lora.variable} ${workSans.variable}`}>
       <head>
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#FBF3E7" />
       </head>
-      <body className="antialiased pb-20 bg-black">
+      <body className="antialiased pb-20 bg-bg text-ink font-sans">
         <StructuredData />
         <ScrollToTop />
         <PushNotificationHandler />

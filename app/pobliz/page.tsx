@@ -241,7 +241,7 @@ export default function NearbyRestaurants() {
 
   if (loading) {
     return (
-      <main className="min-h-screen px-8 pb-8 bg-black">
+      <main className="min-h-screen px-8 pb-8 bg-bg">
         <div className="max-w-7xl mx-auto">
           <div className="pt-10 md:pt-8 mb-8">
             <Logo />
@@ -253,31 +253,31 @@ export default function NearbyRestaurants() {
   }
 
   return (
-    <main className="min-h-screen px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
+          <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6">
             V okolí
           </h1>
-          <p className="text-sm md:text-lg text-gray-300 mt-2">
+          <p className="text-sm md:text-lg text-text-muted mt-2">
             Najdi skvělá místa poblíž tvé polohy
           </p>
         </div>
 
         {/* Location Controls */}
-        <div className="mb-8 p-6 bg-gray-900/50 border border-purple-500/30 rounded-lg">
+        <div className="mb-8 p-6 bg-surface border border-hairline rounded-lg">
           {/* Mode Toggle */}
           <div className="flex justify-center gap-2 mb-6">
             <button
               onClick={() => setSearchMode('gps')}
               className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
                 searchMode === 'gps'
-                  ? 'bg-purple-600 text-white border-2 border-purple-400'
-                  : 'bg-gray-800 text-gray-400 border-2 border-gray-700 hover:border-gray-600'
+                  ? 'bg-terracotta text-white border-2 border-terracotta-dark'
+                  : 'bg-surface-2 text-text-muted border-2 border-hairline hover:border-ink-mid'
               }`}
             >
               📍 Moje poloha
@@ -286,8 +286,8 @@ export default function NearbyRestaurants() {
               onClick={() => setSearchMode('address')}
               className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
                 searchMode === 'address'
-                  ? 'bg-purple-600 text-white border-2 border-purple-400'
-                  : 'bg-gray-800 text-gray-400 border-2 border-gray-700 hover:border-gray-600'
+                  ? 'bg-terracotta text-white border-2 border-terracotta-dark'
+                  : 'bg-surface-2 text-text-muted border-2 border-hairline hover:border-ink-mid'
               }`}
             >
               🔍 Hledat adresu
@@ -301,7 +301,7 @@ export default function NearbyRestaurants() {
                 <button
                   onClick={handleGetLocation}
                   disabled={gettingLocation}
-                  className="w-full max-w-md px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg"
+                  className="w-full max-w-md px-8 py-4 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg"
                 >
                   {gettingLocation ? (
                     <span className="flex items-center justify-center gap-2">
@@ -331,12 +331,12 @@ export default function NearbyRestaurants() {
                       }
                     }}
                     placeholder="např. Václavské náměstí, Praha"
-                    className="flex-1 px-4 py-3 border border-purple-600 rounded-lg bg-black text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 border border-hairline rounded-lg bg-surface text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                   />
                   <button
                     onClick={handleAddressSearch}
                     disabled={gettingLocation || !searchAddress.trim()}
-                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                    className="px-6 py-3 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
                   >
                     {gettingLocation ? (
                       <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
@@ -345,7 +345,7 @@ export default function NearbyRestaurants() {
                     )}
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-gray-400 text-center">
+                <p className="mt-2 text-xs text-text-muted text-center">
                   Zadej adresu, ulici, náměstí nebo městskou část
                 </p>
               </div>
@@ -354,13 +354,13 @@ export default function NearbyRestaurants() {
             {/* Radius Selector */}
             {userLocation && (
               <div className="w-full flex justify-center items-center gap-4">
-                <label className="text-gray-300 font-medium">Poloměr hledání:</label>
+                <label className="text-ink font-medium">Poloměr hledání:</label>
                 <select
                   value={radiusKm}
                   onChange={(e) => setRadiusKm(Number(e.target.value))}
-                  className="px-4 py-2 pr-10 border border-purple-600 rounded-md bg-black text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-no-repeat bg-right cursor-pointer"
+                  className="px-4 py-2 pr-10 border border-hairline rounded-md bg-surface text-ink focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent appearance-none bg-no-repeat bg-right cursor-pointer"
                   style={{
-                    backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a78bfa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                    backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238A6A56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
                     backgroundPosition: "right 0.5rem center",
                     backgroundSize: "1.5em 1.5em"
                   }}
@@ -377,10 +377,10 @@ export default function NearbyRestaurants() {
 
           {/* User Location Display */}
           {userLocation && (
-            <div className="mt-4 text-sm text-gray-400 text-center">
+            <div className="mt-4 text-sm text-text-muted text-center">
               {locationDisplayName ? (
                 <>
-                  <div className="font-medium text-purple-300 mb-1">📍 Vyhledaná adresa:</div>
+                  <div className="font-medium text-terracotta mb-1">📍 Vyhledaná adresa:</div>
                   <div>{locationDisplayName}</div>
                 </>
               ) : (
@@ -457,26 +457,26 @@ export default function NearbyRestaurants() {
         {!userLocation ? (
           <div className="text-center py-8">
             <div className="text-6xl mb-4">📍</div>
-            <p className="text-xl text-gray-400 mb-4">
+            <p className="text-xl text-text-muted mb-4">
               Použij svou GPS polohu nebo vyhledej adresu
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-text-muted">
               Najdeme ti nejbližší restaurace, kavárny a cukrárny
             </p>
           </div>
         ) : nearbyPlaces.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
-            <p className="text-xl text-gray-400 mb-4">
+            <p className="text-xl text-text-muted mb-4">
               {`V okruhu ${radiusKm} km nenalezena žádná místa`}
             </p>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-text-muted mb-6">
               Zkus zvětšit poloměr hledání
             </p>
             <button
               onClick={() => setRadiusKm(getNextRadius(radiusKm))}
               disabled={radiusKm >= 10}
-              className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 border border-purple-500 shadow-lg shadow-purple-900/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-terracotta text-white rounded-md hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {`Zvětšit na ${getNextRadius(radiusKm)} km`}
             </button>
@@ -485,22 +485,22 @@ export default function NearbyRestaurants() {
           <>
             {/* Results Count */}
             <div className="mb-6 text-center">
-              <p className="text-gray-400">
+              <p className="text-text-muted">
                 Nalezeno{" "}
-                <span className="font-semibold text-purple-400">
+                <span className="font-semibold text-terracotta">
                   {nearbyPlaces.length}
                 </span>{" "}
                 {nearbyPlaces.length === 1 ? "místo" : nearbyPlaces.length < 5 ? "místa" : "míst"}{" "}
-                v okruhu <span className="font-semibold text-purple-400">{radiusKm} km</span>
+                v okruhu <span className="font-semibold text-terracotta">{radiusKm} km</span>
               </p>
             </div>
 
             {/* Places Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {nearbyPlaces.map((place, index) => (
                 <div key={`${place.type}-${place.id}-${place.displayLocation}-${index}`} className="relative">
                   {/* Distance Badge */}
-                  <div className="absolute top-4 right-4 z-10 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  <div className="absolute top-4 right-4 z-10 bg-terracotta text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
                     📍 {formatDistance(place.distance)}
                   </div>
                   {place.type === 'restaurant' ? (

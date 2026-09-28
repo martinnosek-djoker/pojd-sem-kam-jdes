@@ -37,7 +37,7 @@ export default function TrendyPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <main className="min-h-screen bg-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="text-center mb-12">
             <Logo />
@@ -45,7 +45,7 @@ export default function TrendyPage() {
           {/* Loading skeleton */}
           <div className="space-y-4 max-w-3xl mx-auto">
             {[...Array(10)].map((_, i) => (
-              <div key={i} className="bg-gray-800/50 rounded-lg p-4 h-24 animate-pulse" />
+              <div key={i} className="bg-surface-2 rounded-lg p-4 h-24 animate-pulse" />
             ))}
           </div>
         </div>
@@ -54,23 +54,23 @@ export default function TrendyPage() {
   }
 
   return (
-    <main className="min-h-screen px-4 sm:px-8 pb-8 bg-gradient-to-br from-black via-gray-900 to-black">
+    <main className="min-h-screen px-4 sm:px-8 pb-8 bg-bg">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="pt-10 md:pt-8 mb-6 md:mb-12 text-center">
-          <div className="inline-block border-b-2 border-purple-500 pb-3 md:pb-6 mb-2 md:mb-4">
+          <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold text-purple-400 mt-4 md:mt-6 mb-2">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">
             🔥 TOP 10 trendů
           </h1>
-          <p className="text-sm md:text-lg text-gray-300 mt-2">
+          <p className="text-sm md:text-lg text-text-muted mt-2">
             Nejžhavější tipy v pražské gastronomii od{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
+              className="text-terracotta hover:text-terracotta-dark transition-colors font-semibold"
             >
               @Peču si život
             </a>
@@ -80,7 +80,7 @@ export default function TrendyPage() {
         {/* Trending list */}
         {trendings.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-gray-400">Momentálně nejsou k dispozici žádné trendy</p>
+            <p className="text-xl text-text-muted">Momentálně nejsou k dispozici žádné trendy</p>
           </div>
         ) : (
           <div className="space-y-4">

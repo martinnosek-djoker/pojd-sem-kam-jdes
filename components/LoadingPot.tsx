@@ -11,8 +11,8 @@ export default function LoadingPot() {
           {/* Gradient definition */}
           <defs>
             <linearGradient id="potGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
+              <stop offset="0%" style={{ stopColor: '#9C4224', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: '#C1572E', stopOpacity: 1 }} />
             </linearGradient>
           </defs>
 
@@ -20,7 +20,7 @@ export default function LoadingPot() {
           <path
             d="M 60 80 L 50 140 Q 50 150 60 150 L 140 150 Q 150 150 150 140 L 140 80 Z"
             fill="url(#potGradient)"
-            stroke="#a78bfa"
+            stroke="#C1572E"
             strokeWidth="3"
           />
 
@@ -28,14 +28,14 @@ export default function LoadingPot() {
           <path
             d="M 50 90 Q 35 90 30 100"
             fill="none"
-            stroke="#c084fc"
+            stroke="#C1572E"
             strokeWidth="4"
             strokeLinecap="round"
           />
           <path
             d="M 150 90 Q 165 90 170 100"
             fill="none"
-            stroke="#c084fc"
+            stroke="#C1572E"
             strokeWidth="4"
             strokeLinecap="round"
           />
@@ -46,8 +46,8 @@ export default function LoadingPot() {
             cy="80"
             rx="45"
             ry="8"
-            fill="#a78bfa"
-            stroke="#9333ea"
+            fill="#C1572E"
+            stroke="#9C4224"
             strokeWidth="2"
           />
 
@@ -57,8 +57,8 @@ export default function LoadingPot() {
             cy="70"
             rx="10"
             ry="6"
-            fill="#c084fc"
-            stroke="#9333ea"
+            fill="#C1572E"
+            stroke="#9C4224"
             strokeWidth="2"
           />
 
@@ -69,7 +69,7 @@ export default function LoadingPot() {
               cy="50"
               rx="8"
               ry="12"
-              fill="#e9d5ff"
+              fill="#F3D9C4"
               opacity="0.7"
             />
             <ellipse
@@ -77,7 +77,7 @@ export default function LoadingPot() {
               cy="45"
               rx="10"
               ry="15"
-              fill="#e9d5ff"
+              fill="#F3D9C4"
               opacity="0.6"
             />
             <ellipse
@@ -85,7 +85,7 @@ export default function LoadingPot() {
               cy="50"
               rx="8"
               ry="12"
-              fill="#e9d5ff"
+              fill="#F3D9C4"
               opacity="0.7"
             />
           </g>
@@ -97,7 +97,7 @@ export default function LoadingPot() {
               cy="35"
               rx="6"
               ry="10"
-              fill="#d8b4fe"
+              fill="#E6B792"
               opacity="0.5"
             />
             <ellipse
@@ -105,7 +105,7 @@ export default function LoadingPot() {
               cy="35"
               rx="6"
               ry="10"
-              fill="#d8b4fe"
+              fill="#E6B792"
               opacity="0.5"
             />
           </g>
@@ -113,10 +113,10 @@ export default function LoadingPot() {
       </div>
 
       {/* Loading text */}
-      <p className="mt-6 text-xl font-semibold text-purple-400 animate-pulse">
+      <p className="mt-6 text-xl font-semibold text-terracotta animate-pulse">
         Vaříme pro vás...
       </p>
-      <p className="mt-2 text-sm text-gray-400">
+      <p className="mt-2 text-sm text-text-muted">
         Načítání dat
       </p>
     </div>

@@ -50,7 +50,7 @@ export default function QuickFilters({
 
   return (
     <div className="mb-6 sm:mb-8">
-      <h3 className="text-sm font-semibold text-purple-300 mb-3 px-1">
+      <h3 className="text-sm font-semibold text-text-muted mb-3 px-1">
         Rychlé filtry
       </h3>
       {/* Horizontal scrollable on mobile, wrapped on desktop */}
@@ -68,8 +68,8 @@ export default function QuickFilters({
                   active:scale-95 touch-manipulation
                   ${
                     isActive
-                      ? "bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-600/40"
-                      : "bg-black/40 text-purple-200 border-purple-600/30 hover:bg-purple-600/20 hover:border-purple-500/50"
+                      ? "bg-terracotta text-white border-terracotta shadow-lg shadow-terracotta/40"
+                      : "bg-surface text-ink border-hairline hover:bg-terracotta/10 hover:border-terracotta/40"
                   }
                 `}
               >
