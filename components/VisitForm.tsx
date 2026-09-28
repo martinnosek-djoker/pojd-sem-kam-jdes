@@ -58,6 +58,9 @@ export default function VisitForm({
 }: VisitFormProps) {
   const [visitDate, setVisitDate] = useState(visit?.visit_date?.slice(0, 10) || todayISO());
   const [dishesText, setDishesText] = useState(visit ? formatDishesText(visit.dishes || []) : "");
+  const [overallRating, setOverallRating] = useState<string>(
+    visit?.overall_rating != null ? String(visit.overall_rating) : ""
+  );
   const [comment, setComment] = useState(visit?.comment || "");
   const [images, setImages] = useState<string[]>(visit?.images || []);
   const [uploading, setUploading] = useState(false);
@@ -110,17 +113,19 @@ export default function VisitForm({
     setError("");
 
     const dishes = parseDishesText(dishesText);
+    const overall_rating = overallRating === "" ? null : Number(overallRating);
 
     try {
       const url = visit ? `/api/visits/${visit.id}` : "/api/visits";
       const method = visit ? "PUT" : "POST";
       const body = visit
-        ? { visit_date: visitDate, dishes, comment: comment.trim() || null, images }
+        ? { visit_date: visitDate, dishes, overall_rating, comment: comment.trim() || null, images }
         : {
             restaurant_id: restaurantId || null,
             cafe_id: cafeId || null,
             visit_date: visitDate,
             dishes,
+            overall_rating,
             comment: comment.trim() || null,
             images,
           };
@@ -192,7 +197,22 @@ export default function VisitForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Krátké hodnocení podniku <span className="text-xs text-gray-500">(nepovinné, 1-2 věty)</span>
+              Celkové hodnocení návštěvy <span className="text-xs text-gray-500">(nepovinné, 1-10)</span>
+            </label>
+            <input
+              type="number"
+              min={1}
+              max={10}
+              value={overallRating}
+              onChange={(e) => setOverallRating(e.target.value)}
+              placeholder="9"
+              className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Poznámka k návštěvě <span className="text-xs text-gray-500">(nepovinné, 1-2 věty)</span>
             </label>
             <textarea
               value={comment}

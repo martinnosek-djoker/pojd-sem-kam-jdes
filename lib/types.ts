@@ -263,10 +263,16 @@ export interface Visit {
   cafe?: Cafe; // Optional joined cafe data
   visit_date: string;
   dishes: VisitDish[];
+  overall_rating: number | null; // 1-10, how this specific visit went
   comment: string | null; // Short 1-2 sentence take on the visit
   images: string[]; // Uploaded photo URLs (Supabase Storage)
   created_at: string;
   updated_at: string;
+  // Computed at read time (not a DB column): average overall_rating across this
+  // place's rated visits, falling back to the restaurant's static rating when
+  // there's no visit history yet. Cafes have no static rating, so this is their
+  // only source of a long-term score.
+  placeRating?: number | null;
 }
 
 const visitDishSchema = z.object({
@@ -279,6 +285,7 @@ export const visitSchema = z.object({
   cafe_id: z.number().min(1).optional().nullable(),
   visit_date: z.string().min(1, "Datum návštěvy je povinné"),
   dishes: z.array(visitDishSchema).optional().default([]),
+  overall_rating: z.number().min(1).max(10).optional().nullable(),
   images: z.array(z.string()).optional().default([]),
   comment: z.string().optional().nullable(),
 }).refine(data => data.restaurant_id || data.cafe_id, {

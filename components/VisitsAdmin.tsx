@@ -72,7 +72,10 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
                 Jídla
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Hodnocení podniku
+                Hodnocení
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Poznámka
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Akce
@@ -96,6 +99,9 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   {formatDishes(visit) || <span className="text-gray-400">—</span>}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {visit.overall_rating != null ? `${visit.overall_rating}/10` : <span className="text-gray-400">—</span>}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-600 max-w-xs italic">
                   {visit.comment || <span className="text-gray-400 not-italic">—</span>}
@@ -133,6 +139,9 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
             </div>
             <div className="text-sm text-gray-600 mt-1">
               📅 {new Date(visit.visit_date).toLocaleDateString("cs-CZ")}
+              {visit.overall_rating != null && (
+                <span className="ml-2 text-gray-900 font-medium">⭐ {visit.overall_rating}/10</span>
+              )}
             </div>
             {formatDishes(visit) && (
               <div className="text-sm text-gray-700 mt-1">{formatDishes(visit)}</div>
