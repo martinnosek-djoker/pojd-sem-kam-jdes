@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Visit } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
-import { getRatingMedal } from "@/lib/rating";
 
 interface VisitCardProps {
   visit: Visit;
@@ -64,8 +63,6 @@ export default function VisitCard({ visit }: VisitCardProps) {
     year: "numeric",
   });
 
-  const placeMedal = getRatingMedal(visit.placeRating);
-
   const CardContent = () => (
     <>
       {/* Image */}
@@ -100,9 +97,45 @@ export default function VisitCard({ visit }: VisitCardProps) {
         )}
       </div>
 
-      {/* Extra photos from this visit, beyond the hero image */}
+      {/* Name + location - single line each, so length never shifts what follows */}
+      <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors truncate">
+        {place.name}
+      </h3>
+      <p className="text-sm text-gray-400 mb-3 truncate">📍 {place.location}</p>
+
+      {/* Short overall comment - reserved 4-line height whether present or not */}
+      <div className="mb-3 min-h-[92px]">
+        {visit.comment && (
+          <p className="text-sm text-gray-300 italic leading-relaxed line-clamp-4">&quot;{visit.comment}&quot;</p>
+        )}
+      </div>
+
+      {/* Dishes with optional per-dish rating - capped count, reserved height */}
+      <div className="h-[60px] overflow-hidden mb-4">
+        {visit.dishes && visit.dishes.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {visit.dishes.slice(0, 3).map((dish, i) => (
+              <span
+                key={i}
+                className="px-2.5 py-1 bg-purple-900/30 text-purple-300 text-xs rounded-full border border-purple-700/30"
+              >
+                {dish.name}
+                {dish.rating ? <span className="text-purple-400 font-semibold"> {dish.rating}/10</span> : null}
+              </span>
+            ))}
+            {visit.dishes.length > 3 && (
+              <span className="px-2.5 py-1 bg-purple-900/20 text-purple-400 text-xs rounded-full border border-purple-700/20">
+                +{visit.dishes.length - 3} další
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Extra photos from this visit, beyond the hero image - down at the bottom
+          so their presence/absence doesn't push the name/comment/dishes around. */}
       {extraPhotos.length > 0 && (
-        <div className="flex gap-1.5 mb-3 -mt-1">
+        <div className="flex gap-1.5 mb-4">
           {extraPhotos.slice(0, 4).map((url, i) => (
             <div
               key={url}
@@ -122,53 +155,14 @@ export default function VisitCard({ visit }: VisitCardProps) {
         </div>
       )}
 
-      {/* Name + location */}
-      <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors">
-        {place.name}
-      </h3>
-      <p className="text-sm text-gray-400 mb-3">📍 {place.location}</p>
-
-      {/* Short overall comment */}
-      {visit.comment && (
-        <p className="text-sm text-gray-300 italic mb-3 leading-relaxed">&quot;{visit.comment}&quot;</p>
-      )}
-
-      {/* Dishes with optional per-dish rating */}
-      {visit.dishes && visit.dishes.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {visit.dishes.map((dish, i) => (
-            <span
-              key={i}
-              className="px-2.5 py-1 bg-purple-900/30 text-purple-300 text-xs rounded-full border border-purple-700/30"
-            >
-              {dish.name}
-              {dish.rating ? <span className="text-purple-400 font-semibold"> {dish.rating}/10</span> : null}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Long-term rating of the place (medal, or ban sign if it's bad) + price for restaurants */}
-      {(visit.placeRating != null || isRestaurant) && (
-        <div className="pt-3 border-t border-purple-900/30 flex items-center justify-between gap-3">
-          <span className="text-sm text-gray-300 flex items-center gap-1.5" title={placeMedal?.label}>
-            {placeMedal ? (
-              <>
-                <span className="text-base leading-none">{placeMedal.emoji}</span> {placeMedal.label}
-              </>
-            ) : visit.placeRating != null ? (
-              <>★ {visit.placeRating.toFixed(1).replace(/\.0$/, "")}/10</>
-            ) : (
-              <span className="text-gray-500">Zatím bez hodnocení</span>
-            )}
+      {/* Price - restaurants only, cafes don't track it */}
+      {isRestaurant && visit.restaurant && (
+        <div className="pt-3 border-t border-purple-900/30 flex items-center justify-end">
+          <span
+            className={`px-2.5 py-1 rounded text-xs font-semibold border ${getPriceInfo(visit.restaurant.price).color}`}
+          >
+            {getPriceInfo(visit.restaurant.price).label}
           </span>
-          {isRestaurant && visit.restaurant && (
-            <span
-              className={`px-2.5 py-1 rounded text-xs font-semibold border ${getPriceInfo(visit.restaurant.price).color}`}
-            >
-              {getPriceInfo(visit.restaurant.price).label}
-            </span>
-          )}
         </div>
       )}
     </>

@@ -1336,65 +1336,6 @@ export async function updateEventOrder(updates: { id: number; display_order: num
 
 const VISIT_SELECT = `*, restaurant:restaurants(*), cafe:cafes(*)`;
 
-// Averages overall_rating across a place's rated visits, keyed by place id.
-// One query per entity type regardless of how many places are in the list.
-async function getVisitRatingAverages(
-  column: "restaurant_id" | "cafe_id",
-  ids: number[]
-): Promise<Map<number, number>> {
-  const map = new Map<number, number>();
-  if (ids.length === 0) return map;
-
-  const { data, error } = await supabase
-    .from("visits")
-    .select(`${column}, overall_rating`)
-    .in(column, ids)
-    .not("overall_rating", "is", null);
-
-  if (error) {
-    console.error("Error fetching visit rating averages:", error);
-    return map;
-  }
-
-  const grouped = new Map<number, number[]>();
-  for (const row of data as unknown as Record<string, number>[]) {
-    const id = row[column];
-    const rating = row.overall_rating;
-    if (id == null || rating == null) continue;
-    if (!grouped.has(id)) grouped.set(id, []);
-    grouped.get(id)!.push(rating);
-  }
-
-  grouped.forEach((ratings, id) => {
-    map.set(id, ratings.reduce((sum, r) => sum + r, 0) / ratings.length);
-  });
-
-  return map;
-}
-
-// Attaches each visit's placeRating: the average overall_rating across that
-// place's rated visits, falling back to the restaurant's static rating when
-// there's no visit history yet (cafes have no static rating to fall back to).
-async function attachPlaceRatings(visits: Visit[]): Promise<Visit[]> {
-  const restaurantIds = [...new Set(visits.filter((v) => v.restaurant_id).map((v) => v.restaurant_id as number))];
-  const cafeIds = [...new Set(visits.filter((v) => v.cafe_id).map((v) => v.cafe_id as number))];
-
-  const [restaurantAverages, cafeAverages] = await Promise.all([
-    getVisitRatingAverages("restaurant_id", restaurantIds),
-    getVisitRatingAverages("cafe_id", cafeIds),
-  ]);
-
-  return visits.map((v) => {
-    const average = v.restaurant_id
-      ? restaurantAverages.get(v.restaurant_id)
-      : v.cafe_id
-        ? cafeAverages.get(v.cafe_id)
-        : undefined;
-    const fallback = v.restaurant?.rating ?? null;
-    return { ...v, placeRating: average ?? fallback };
-  });
-}
-
 export async function getRecentVisits(limit: number = 10): Promise<Visit[]> {
   const { data, error } = await supabase
     .from("visits")
@@ -1408,7 +1349,7 @@ export async function getRecentVisits(limit: number = 10): Promise<Visit[]> {
     throw error;
   }
 
-  return attachPlaceRatings(data as unknown as Visit[]);
+  return data as unknown as Visit[];
 }
 
 export async function getAllVisits(): Promise<Visit[]> {
@@ -1423,7 +1364,7 @@ export async function getAllVisits(): Promise<Visit[]> {
     throw error;
   }
 
-  return attachPlaceRatings(data as unknown as Visit[]);
+  return data as unknown as Visit[];
 }
 
 export async function createVisit(input: VisitInput): Promise<Visit> {

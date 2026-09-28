@@ -268,11 +268,6 @@ export interface Visit {
   images: string[]; // Uploaded photo URLs (Supabase Storage)
   created_at: string;
   updated_at: string;
-  // Computed at read time (not a DB column): average overall_rating across this
-  // place's rated visits, falling back to the restaurant's static rating when
-  // there's no visit history yet. Cafes have no static rating, so this is their
-  // only source of a long-term score.
-  placeRating?: number | null;
 }
 
 const visitDishSchema = z.object({
