@@ -98,6 +98,7 @@ DŮLEŽITÉ:
 - Specialty obsahuje konkrétní specializaci restaurace (co dělají nejlépe)
 - Vždy vysvětli své rozhodnutí stručně a přátelsky
 - Pokud nejsou žádné perfektní shody, nabídni nejbližší alternativy
+- V poli "explanation" NIKDY neuváděj interní databázové ID restaurací (např. "(id 2338)") - to je vnitřní údaj, který uživatel nemá vidět. Restaurace zmiňuj vždy jen jejich názvem.
 
 Odpověz POUZE ve formátu JSON:
 {
@@ -152,9 +153,15 @@ Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.
       .map((id: number) => restaurants.find((r: Restaurant) => r.id === id))
       .filter((r: Restaurant | undefined) => r !== undefined);
 
+    // Safety net: strip any internal id references the model might slip into
+    // the explanation despite the system prompt telling it not to (e.g. "(id 2338)").
+    const cleanExplanation = typeof aiResponse.explanation === "string"
+      ? aiResponse.explanation.replace(/\s*\(?\bid[:\s]*\d+\)?/gi, "")
+      : aiResponse.explanation;
+
     return NextResponse.json({
       restaurants: selectedRestaurants,
-      explanation: aiResponse.explanation,
+      explanation: cleanExplanation,
     });
   } catch (error) {
     console.error("AI search error:", error);
