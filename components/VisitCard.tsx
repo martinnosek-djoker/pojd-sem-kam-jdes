@@ -9,14 +9,6 @@ interface VisitCardProps {
   visit: Visit;
 }
 
-function getPriceInfo(price: number) {
-  if (price === 0) return { label: "Cena neuvedena", color: "bg-gray-800/40 text-gray-300 border-gray-600/40" };
-  if (price < 500) return { label: "Do 500 Kč", color: "bg-emerald-900/40 text-emerald-300 border-emerald-600/40" };
-  if (price < 1000) return { label: "500-1000 Kč", color: "bg-blue-900/40 text-blue-300 border-blue-600/40" };
-  if (price < 2000) return { label: "1000-2000 Kč", color: "bg-amber-900/40 text-amber-300 border-amber-600/40" };
-  return { label: "2000+ Kč", color: "bg-rose-900/40 text-rose-300 border-rose-600/40" };
-}
-
 export default function VisitCard({ visit }: VisitCardProps) {
   const [imageError, setImageError] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -97,11 +89,31 @@ export default function VisitCard({ visit }: VisitCardProps) {
         )}
       </div>
 
-      {/* Name + location - single line each, so length never shifts what follows */}
-      <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors truncate">
-        {place.name}
-      </h3>
-      <p className="text-sm text-gray-400 mb-3 truncate">📍 {place.location}</p>
+      {/* Name + location, with a small thumbnail of extra photos alongside -
+          never anything stacked above/below that could push this around. */}
+      <div className="flex items-start justify-between gap-3 mb-3 min-h-[48px]">
+        <div className="min-w-0">
+          <h3 className="text-xl font-bold text-purple-300 mb-1 tracking-wide group-hover:text-purple-200 transition-colors truncate">
+            {place.name}
+          </h3>
+          <p className="text-sm text-gray-400 truncate">📍 {place.location}</p>
+        </div>
+        {extraPhotos.length > 0 && (
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={openLightbox(1)}
+            className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0 cursor-zoom-in"
+          >
+            <img src={extraPhotos[0]} alt="" className="w-full h-full object-cover" />
+            {extraPhotos.length > 1 && (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-semibold">
+                +{extraPhotos.length}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Short overall comment - reserved 4-line height whether present or not */}
       <div className="mb-3 min-h-[92px]">
@@ -132,39 +144,6 @@ export default function VisitCard({ visit }: VisitCardProps) {
         )}
       </div>
 
-      {/* Extra photos from this visit, beyond the hero image - down at the bottom
-          so their presence/absence doesn't push the name/comment/dishes around. */}
-      {extraPhotos.length > 0 && (
-        <div className="flex gap-1.5 mb-4">
-          {extraPhotos.slice(0, 4).map((url, i) => (
-            <div
-              key={url}
-              role="button"
-              tabIndex={0}
-              onClick={openLightbox(i + 1)}
-              className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0 cursor-zoom-in"
-            >
-              <img src={url} alt="" className="w-full h-full object-cover" />
-              {i === 3 && extraPhotos.length > 4 && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xs font-semibold">
-                  +{extraPhotos.length - 4}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Price - restaurants only, cafes don't track it */}
-      {isRestaurant && visit.restaurant && (
-        <div className="pt-3 border-t border-purple-900/30 flex items-center justify-end">
-          <span
-            className={`px-2.5 py-1 rounded text-xs font-semibold border ${getPriceInfo(visit.restaurant.price).color}`}
-          >
-            {getPriceInfo(visit.restaurant.price).label}
-          </span>
-        </div>
-      )}
     </>
   );
 
