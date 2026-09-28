@@ -13,6 +13,11 @@ const TAG_COLORS: Record<string, string> = {
   dezert: "bg-terracotta/10 text-terracotta",
   matcha: "bg-emerald-800/10 text-emerald-800",
   snídaně: "bg-sky-800/10 text-sky-800",
+  "top-kava": "bg-amber-800/10 text-amber-800",
+};
+
+const TAG_LABELS: Record<string, string> = {
+  "top-kava": "TOP káva",
 };
 
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
@@ -49,7 +54,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
                 key={idx}
                 className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${TAG_COLORS[tag] || "bg-surface-2 text-ink-mid"}`}
               >
-                {tag}
+                {TAG_LABELS[tag] || tag}
               </span>
             ))}
           </div>

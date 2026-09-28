@@ -172,26 +172,31 @@ export default function CafeForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Kategorie
           </label>
-          <div className="flex gap-4">
-            {['dezert', 'matcha', 'snídaně'].map((tag) => (
-              <label key={tag} className="flex items-center gap-2 cursor-pointer">
+          <div className="flex gap-4 flex-wrap">
+            {[
+              { value: 'dezert', label: 'Dezert' },
+              { value: 'matcha', label: 'Matcha' },
+              { value: 'snídaně', label: 'Snídaně' },
+              { value: 'top-kava', label: 'TOP káva' },
+            ].map((tag) => (
+              <label key={tag.value} className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={tags.includes(tag)}
+                  checked={tags.includes(tag.value)}
                   onChange={(e) => {
                     const newTags = e.target.checked
-                      ? [...tags, tag]
-                      : tags.filter((t: string) => t !== tag);
+                      ? [...tags, tag.value]
+                      : tags.filter((t: string) => t !== tag.value);
                     setValue('tags', newTags);
                   }}
                   className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700 capitalize">{tag}</span>
+                <span className="text-sm text-gray-700">{tag.label}</span>
               </label>
             ))}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            Vyber kategorie pro filtrování (dezert = z původních cukráren, snídaně = původní snídaně)
+            Vyber kategorie pro filtrování (dezert = z původních cukráren, snídaně = původní snídaně, TOP káva = špičková kvalita kávy)
           </p>
         </div>
 

@@ -60,9 +60,16 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
         return 'bg-green-100 text-green-800';
       case 'snídaně':
         return 'bg-sky-100 text-sky-800';
+      case 'top-kava':
+        return 'bg-amber-100 text-amber-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const getTagLabel = (tag: string): string => {
+    if (tag === 'top-kava') return 'TOP káva';
+    return tag;
   };
 
   const sortedCafes = [...cafes].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
@@ -150,7 +157,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                             key={idx}
                             className={`px-2 py-0.5 text-xs font-semibold rounded ${getTagBadgeColor(tag)}`}
                           >
-                            {tag}
+                            {getTagLabel(tag)}
                           </span>
                         ))
                       ) : (
@@ -237,7 +244,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                     key={idx}
                     className={`px-2 py-0.5 text-xs font-semibold rounded ${getTagBadgeColor(tag)}`}
                   >
-                    {tag}
+                    {getTagLabel(tag)}
                   </span>
                 ))
               ) : (

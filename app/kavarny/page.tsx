@@ -176,24 +176,17 @@ export default function CafesPage() {
             <label className="text-sm font-medium text-ink-mid">Kategorie:</label>
             <div className="flex flex-wrap gap-2">
               {[
-                { value: '', label: 'Všechny', color: 'bg-surface-2 text-ink-mid border-hairline hover:bg-surface-tint' },
-                { value: 'dezert', label: 'Dezert', color: 'bg-orange-50 text-orange-800 border-orange-200 hover:bg-orange-100' },
-                { value: 'matcha', label: 'Matcha', color: 'bg-green-50 text-green-800 border-green-200 hover:bg-green-100' },
-                { value: 'snídaně', label: 'Snídaně', color: 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100' },
+                { value: '', label: 'Všechny', color: 'bg-surface-2 text-ink-mid border-hairline hover:bg-surface-tint', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-black/10' },
+                { value: 'dezert', label: 'Dezert', color: 'bg-orange-50 text-orange-800 border-orange-200 hover:bg-orange-100', activeColor: 'bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-900/50' },
+                { value: 'matcha', label: 'Matcha', color: 'bg-green-50 text-green-800 border-green-200 hover:bg-green-100', activeColor: 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50' },
+                { value: 'snídaně', label: 'Snídaně', color: 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100', activeColor: 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-900/50' },
+                { value: 'top-kava', label: 'TOP káva', color: 'bg-terracotta/10 text-terracotta border-terracotta/20 hover:bg-terracotta/20', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-terracotta/40' },
               ].map((tag) => (
                 <button
                   key={tag.value}
                   onClick={() => setSelectedTag(tag.value)}
                   className={`px-4 py-2 rounded-xl border transition-all duration-200 font-medium ${
-                    selectedTag === tag.value
-                      ? tag.value === ''
-                        ? 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-black/10'
-                        : tag.value === 'dezert'
-                        ? 'bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-900/50'
-                        : tag.value === 'matcha'
-                        ? 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50'
-                        : 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-900/50'
-                      : tag.color
+                    selectedTag === tag.value ? tag.activeColor : tag.color
                   }`}
                 >
                   {tag.label}
