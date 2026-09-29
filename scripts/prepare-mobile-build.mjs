@@ -10,6 +10,9 @@ const API_ROUTES_TO_EXCLUDE = [
   'app/api/bakeries/[id]',
   'app/api/breakfasts',
   'app/api/visits/[id]',
+  // Admin-only address autocomplete (LocationAddressFields) added after this
+  // list was last updated - reads a query param, so it fails static export.
+  'app/api/geocode',
 ];
 
 console.log('🔧 Preparing for mobile build...');

@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    // Umožní build i při ESLint chybách (deployment nezablokuje lint)
     ignoreDuringBuilds: true,
   },
   images: {
@@ -11,10 +10,11 @@ const nextConfig = {
         hostname: '*.supabase.co',
       },
     ],
+    unoptimized: true,
   },
-  // IMPORTANT: This config is for web/production builds with API routes
-  // Mobile builds use build-mobile.mjs which swaps in next.config.mobile.mjs
-  // DO NOT add output: 'export' here - it breaks API routes!
+  // Static export for mobile Capacitor builds
+  output: 'export',
+  trailingSlash: true,
 };
 
 export default nextConfig;
