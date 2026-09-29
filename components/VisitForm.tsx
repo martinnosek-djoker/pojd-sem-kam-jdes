@@ -157,7 +157,7 @@ export default function VisitForm({
       onClick={onCancel}
     >
       <div
-        className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm"
+        className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold mb-1 text-gray-900">
