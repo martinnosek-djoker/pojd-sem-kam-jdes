@@ -8,6 +8,8 @@ import Logo from "@/components/Logo";
 import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition, geocodeAddress } from "@/lib/geolocation";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantWithDistance extends Restaurant {
   distance: number;
@@ -30,12 +32,14 @@ interface CafeWithDistance extends Cafe {
 type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance | CafeWithDistance;
 
 interface NearbyPageClientProps {
+  locale?: Locale;
   initialRestaurants: Restaurant[];
   initialBakeries: Bakery[];
   initialCafes: Cafe[];
 }
 
-export default function NearbyPageClient({ initialRestaurants, initialBakeries, initialCafes }: NearbyPageClientProps) {
+export default function NearbyPageClient({ locale = "cs", initialRestaurants, initialBakeries, initialCafes }: NearbyPageClientProps) {
+  const t = getDictionary(locale).pobliz;
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
   const [bakeries, setBakeries] = useState<Bakery[]>(initialBakeries);
@@ -201,12 +205,12 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
     setIsPermissionDenied(false);
 
     try {
-      const position = await getCurrentPosition();
+      const position = await getCurrentPosition(locale);
       setUserLocation(position);
       setLocationDisplayName(null); // Clear any previous address search
       setIsPermissionDenied(false);
     } catch (error: any) {
-      const errorMsg = error.message || "Nepodařilo se získat polohu";
+      const errorMsg = error.message || t.errorGenericTitle;
       setError(errorMsg);
 
       // Detekovat jestli byl přístup zamítnut
@@ -222,7 +226,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
 
   const handleAddressSearch = async () => {
     if (!searchAddress.trim()) {
-      setError("Zadej prosím adresu nebo místo");
+      setError(t.addressRequired);
       return;
     }
 
@@ -231,11 +235,11 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
     setIsPermissionDenied(false);
 
     try {
-      const result = await geocodeAddress(searchAddress);
+      const result = await geocodeAddress(searchAddress, locale);
       setUserLocation(result.coordinates);
       setLocationDisplayName(result.displayName);
     } catch (error: any) {
-      const errorMsg = error.message || "Nepodařilo se najít adresu";
+      const errorMsg = error.message || t.errorGenericTitle;
       setError(errorMsg);
       console.error("Error geocoding address:", error);
     } finally {
@@ -244,6 +248,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -252,10 +257,10 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
             <Logo />
           </div>
           <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6">
-            Restaurace v okolí
+            {t.title}
           </h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
-            Najdi skvělá místa poblíž tvé polohy
+            {t.subtitle}
           </p>
         </div>
 
@@ -271,7 +276,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                   : 'bg-surface-2 text-text-muted border-2 border-hairline hover:border-ink-mid'
               }`}
             >
-              📍 Moje poloha
+              {t.modeGps}
             </button>
             <button
               onClick={() => setSearchMode('address')}
@@ -281,7 +286,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                   : 'bg-surface-2 text-text-muted border-2 border-hairline hover:border-ink-mid'
               }`}
             >
-              🔍 Hledat adresu
+              {t.modeAddress}
             </button>
           </div>
 
@@ -297,12 +302,12 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                   {gettingLocation ? (
                     <span className="flex items-center justify-center gap-2">
                       <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                      Zjišťuji polohu...
+                      {t.gettingLocation}
                     </span>
                   ) : userLocation && !locationDisplayName ? (
-                    "Aktualizovat polohu"
+                    t.updateLocation
                   ) : (
-                    "Najít restaurace v okolí"
+                    t.findNearby
                   )}
                 </button>
               </div>
@@ -321,7 +326,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                         handleAddressSearch();
                       }
                     }}
-                    placeholder="např. Václavské náměstí, Praha"
+                    placeholder={t.addressPlaceholder}
                     className="flex-1 px-4 py-3 border border-hairline rounded-lg bg-surface text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                   />
                   <button
@@ -332,12 +337,12 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                     {gettingLocation ? (
                       <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     ) : (
-                      "Hledat"
+                      t.search
                     )}
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-text-muted text-center">
-                  Zadej adresu, ulici, náměstí nebo městskou část
+                  {t.addressHint}
                 </p>
               </div>
             )}
@@ -345,7 +350,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
             {/* Radius Selector */}
             {userLocation && (
               <div className="w-full flex justify-center items-center gap-4">
-                <label className="text-ink font-medium">Poloměr hledání:</label>
+                <label className="text-ink font-medium">{t.radiusLabel}</label>
                 <select
                   value={radiusKm}
                   onChange={(e) => setRadiusKm(Number(e.target.value))}
@@ -371,11 +376,11 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
             <div className="mt-4 text-sm text-text-muted text-center">
               {locationDisplayName ? (
                 <>
-                  <div className="font-medium text-terracotta mb-1">📍 Vyhledaná adresa:</div>
+                  <div className="font-medium text-terracotta mb-1">{t.foundAddressLabel}</div>
                   <div>{locationDisplayName}</div>
                 </>
               ) : (
-                <>Tvá poloha: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}</>
+                <>{t.yourLocation(userLocation.lat.toFixed(4), userLocation.lng.toFixed(4))}</>
               )}
             </div>
           )}
@@ -387,31 +392,31 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                 <div className="text-2xl flex-shrink-0">📍</div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-red-800 font-serif font-semibold mb-1">
-                    {isPermissionDenied ? "Přístup k poloze není povolen" : "Nepodařilo se získat tvou polohu"}
+                    {isPermissionDenied ? t.errorPermissionTitle : t.errorGenericTitle}
                   </h3>
                   <p className="text-red-700 text-sm mb-4">{error}</p>
 
                   {isPermissionDenied && (
                     <div className="bg-white/60 border border-red-100 p-4 rounded-xl mb-4">
-                      <p className="text-red-800 text-xs font-semibold mb-3">Jak povolit přístup k poloze:</p>
+                      <p className="text-red-800 text-xs font-semibold mb-3">{t.howToAllow}</p>
 
                       {/* Instrukce pro WEB */}
                       <div className="mb-3">
-                        <p className="text-red-700 text-xs font-semibold mb-1.5">🌐 Na webu (Chrome, Safari, Firefox)</p>
+                        <p className="text-red-700 text-xs font-semibold mb-1.5">{t.webInstructionsTitle}</p>
                         <ol className="text-red-700/80 text-xs space-y-1 list-decimal list-inside ml-1">
-                          <li>Klikni na <strong>zámek 🔒</strong> nebo <strong>info ikonu ⓘ</strong> vlevo od URL v horní liště</li>
-                          <li>Najdi nastavení <strong>„Poloha"</strong></li>
-                          <li>Vyber <strong>„Povolit"</strong></li>
-                          <li>Stránka se může obnovit – klikni znovu na tlačítko níže</li>
+                          <li>{t.webStep1}</li>
+                          <li>{t.webStep2}</li>
+                          <li>{t.webStep3}</li>
+                          <li>{t.webStep4}</li>
                         </ol>
                       </div>
 
                       {/* Instrukce pro MOBIL */}
                       <div>
-                        <p className="text-red-700 text-xs font-semibold mb-1.5">📱 V mobilní aplikaci</p>
+                        <p className="text-red-700 text-xs font-semibold mb-1.5">{t.mobileInstructionsTitle}</p>
                         <ul className="text-red-700/80 text-xs space-y-1 list-disc list-inside ml-1">
-                          <li><strong>iPhone:</strong> Nastavení → Soukromí → Polohové služby → Gastro Tips → Povolit</li>
-                          <li><strong>Android:</strong> Nastavení → Aplikace → Gastro Tips → Oprávnění → Poloha → Povolit</li>
+                          <li>{t.mobileIphone}</li>
+                          <li>{t.mobileAndroid}</li>
                         </ul>
                       </div>
                     </div>
@@ -419,11 +424,11 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
 
                   {!isPermissionDenied && (
                     <div className="bg-white/60 border border-red-100 p-4 rounded-xl mb-4">
-                      <p className="text-red-800 text-xs font-semibold mb-2">Co zkusit:</p>
+                      <p className="text-red-800 text-xs font-semibold mb-2">{t.whatToTryTitle}</p>
                       <ul className="text-red-700/80 text-xs space-y-1 list-disc list-inside">
-                        <li>Zkontroluj, že máš zapnutou GPS na zařízení</li>
-                        <li>Zkus se přesunout blíž k oknu (lepší GPS signál)</li>
-                        <li>Zkus to za chvíli znovu</li>
+                        <li>{t.tryTip1}</li>
+                        <li>{t.tryTip2}</li>
+                        <li>{t.tryTip3}</li>
                       </ul>
                     </div>
                   )}
@@ -437,7 +442,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                       }}
                       className="px-4 py-2 bg-terracotta hover:bg-terracotta-dark text-white rounded-lg transition-colors text-sm font-medium shadow-sm"
                     >
-                      {isPermissionDenied ? "Zkusit povolit znovu" : "Zkusit znovu"}
+                      {isPermissionDenied ? t.retryPermission : t.retryGeneric}
                     </button>
                     <button
                       onClick={() => {
@@ -447,7 +452,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                       }}
                       className="px-4 py-2 bg-white text-red-800 border border-red-200 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium"
                     >
-                      🔍 Zadat adresu ručně
+                      {t.enterAddressManually}
                     </button>
                   </div>
                 </div>
@@ -461,27 +466,27 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
           <div className="text-center py-8">
             <div className="text-6xl mb-4">📍</div>
             <p className="text-xl text-text-muted mb-4">
-              Použij svou GPS polohu nebo vyhledej adresu
+              {t.emptyPromptTitle}
             </p>
             <p className="text-sm text-text-muted">
-              Najdeme ti nejbližší restaurace, kavárny a cukrárny
+              {t.emptyPromptSubtitle}
             </p>
           </div>
         ) : nearbyPlaces.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
             <p className="text-xl text-text-muted mb-4">
-              {`V okruhu ${radiusKm} km nenalezena žádná místa`}
+              {t.noResultsInRadius(radiusKm)}
             </p>
             <p className="text-sm text-text-muted mb-6">
-              Zkus zvětšit poloměr hledání
+              {t.tryLargerRadius}
             </p>
             <button
               onClick={() => setRadiusKm(getNextRadius(radiusKm))}
               disabled={radiusKm >= 10}
               className="px-6 py-3 bg-terracotta text-white rounded-md hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {`Zvětšit na ${getNextRadius(radiusKm)} km`}
+              {t.expandTo(getNextRadius(radiusKm))}
             </button>
           </div>
         ) : (
@@ -489,12 +494,7 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
             {/* Results Count */}
             <div className="mb-6 text-center">
               <p className="text-text-muted">
-                Nalezeno{" "}
-                <span className="font-semibold text-terracotta">
-                  {nearbyPlaces.length}
-                </span>{" "}
-                {nearbyPlaces.length === 1 ? "místo" : nearbyPlaces.length < 5 ? "místa" : "míst"}{" "}
-                v okruhu <span className="font-semibold text-terracotta">{radiusKm} km</span>
+                {t.resultsCount(nearbyPlaces.length, radiusKm)}
               </p>
             </div>
 
@@ -529,5 +529,6 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
         )}
       </div>
     </main>
+    </LocaleProvider>
   );
 }

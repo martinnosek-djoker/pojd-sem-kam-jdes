@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   keywords: ["restaurace v okolí", "restaurace poblíž", "GPS restaurace", "restaurace blízko mě", "kde se najíst poblíž"],
   alternates: {
     canonical: "/pobliz",
+    languages: {
+      cs: "/pobliz",
+      en: "/en/pobliz",
+    },
   },
   openGraph: {
     title: "Restaurace poblíž | Pojď sem! Kam jdeš?",

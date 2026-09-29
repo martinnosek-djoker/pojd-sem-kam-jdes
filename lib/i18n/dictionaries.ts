@@ -68,6 +68,74 @@ export const dictionaries = {
       priceUnder: (v: number) => `Do ${v} Kč`,
       priceRange: (a: number, b: number) => `${a}-${b} Kč`,
       priceOver: (v: number) => `${v}+ Kč`,
+      restaurantCount: (n: number) => `${n} ${pluralCs(n, "restaurace", "restaurace", "restaurací")}`,
+    },
+    cukrarny: {
+      title: "Cukrárny a pekárny v Praze",
+      subtitlePrefix: "Nejlepší cukrárny v Praze od",
+      count: (n: number) => `Nalezeno ${n} ${pluralCs(n, "cukrárnu", "cukrárny", "cukráren")}`,
+      emptyTitle: "Nebyly nalezeny žádné cukrárny",
+    },
+    kuchyne: {
+      title: "Světové kuchyně",
+      subtitle: "Najdi nejlepší restaurace podle typu kuchyně",
+      emptyTitle: "Nebyly nalezeny žádné kuchyně",
+    },
+    lokality: {
+      title: "Podle lokality",
+      subtitle: "Nejlepší restaurace v Praze roztříděné podle lokality",
+      emptyTitle: "Nebyly nalezeny žádné lokality s dostatečným počtem restaurací",
+    },
+    trendy: {
+      title: "🔥 TOP 10 trendů",
+      subtitlePrefix: "Nejžhavější tipy v pražské gastronomii od",
+      emptyTitle: "Momentálně nejsou k dispozici žádné trendy",
+    },
+    akce: {
+      title: "Gastro akce",
+      subtitle: "Nejlepší gastro akce v Praze a okolí",
+      emptyTitle: "Momentálně nejsou k dispozici žádné akce",
+    },
+    pobliz: {
+      title: "Restaurace v okolí",
+      subtitle: "Najdi skvělá místa poblíž tvé polohy",
+      modeGps: "📍 Moje poloha",
+      modeAddress: "🔍 Hledat adresu",
+      gettingLocation: "Zjišťuji polohu...",
+      updateLocation: "Aktualizovat polohu",
+      findNearby: "Najít restaurace v okolí",
+      addressPlaceholder: "např. Václavské náměstí, Praha",
+      search: "Hledat",
+      addressHint: "Zadej adresu, ulici, náměstí nebo městskou část",
+      addressRequired: "Zadej prosím adresu nebo místo",
+      radiusLabel: "Poloměr hledání:",
+      foundAddressLabel: "📍 Vyhledaná adresa:",
+      yourLocation: (lat: string, lng: string) => `Tvá poloha: ${lat}, ${lng}`,
+      errorPermissionTitle: "Přístup k poloze není povolen",
+      errorGenericTitle: "Nepodařilo se získat tvou polohu",
+      howToAllow: "Jak povolit přístup k poloze:",
+      webInstructionsTitle: "🌐 Na webu (Chrome, Safari, Firefox)",
+      webStep1: "Klikni na zámek 🔒 nebo info ikonu ⓘ vlevo od URL v horní liště",
+      webStep2: "Najdi nastavení „Poloha“",
+      webStep3: "Vyber „Povolit“",
+      webStep4: "Stránka se může obnovit – klikni znovu na tlačítko níže",
+      mobileInstructionsTitle: "📱 V mobilní aplikaci",
+      mobileIphone: "iPhone: Nastavení → Soukromí → Polohové služby → Gastro Tips → Povolit",
+      mobileAndroid: "Android: Nastavení → Aplikace → Gastro Tips → Oprávnění → Poloha → Povolit",
+      whatToTryTitle: "Co zkusit:",
+      tryTip1: "Zkontroluj, že máš zapnutou GPS na zařízení",
+      tryTip2: "Zkus se přesunout blíž k oknu (lepší GPS signál)",
+      tryTip3: "Zkus to za chvíli znovu",
+      retryPermission: "Zkusit povolit znovu",
+      retryGeneric: "Zkusit znovu",
+      enterAddressManually: "🔍 Zadat adresu ručně",
+      emptyPromptTitle: "Použij svou GPS polohu nebo vyhledej adresu",
+      emptyPromptSubtitle: "Najdeme ti nejbližší restaurace, kavárny a cukrárny",
+      noResultsInRadius: (km: number) => `V okruhu ${km} km nenalezena žádná místa`,
+      tryLargerRadius: "Zkus zvětšit poloměr hledání",
+      expandTo: (km: number) => `Zvětšit na ${km} km`,
+      resultsCount: (n: number, km: number) =>
+        `Nalezeno ${n} ${pluralCs(n, "místo", "místa", "míst")} v okruhu ${km} km`,
     },
   },
   en: {
@@ -131,6 +199,74 @@ export const dictionaries = {
       priceUnder: (v: number) => `Under ${v} CZK`,
       priceRange: (a: number, b: number) => `${a}-${b} CZK`,
       priceOver: (v: number) => `${v}+ CZK`,
+      restaurantCount: (n: number) => `${n} ${n === 1 ? "restaurant" : "restaurants"}`,
+    },
+    cukrarny: {
+      title: "Bakeries in Prague",
+      subtitlePrefix: "The best bakeries in Prague from",
+      count: (n: number) => `Found ${n} ${n === 1 ? "bakery" : "bakeries"}`,
+      emptyTitle: "No bakeries found",
+    },
+    kuchyne: {
+      title: "World Cuisines",
+      subtitle: "Find the best restaurants by cuisine type",
+      emptyTitle: "No cuisines found",
+    },
+    lokality: {
+      title: "By Location",
+      subtitle: "The best restaurants in Prague sorted by neighborhood",
+      emptyTitle: "No locations with enough restaurants found",
+    },
+    trendy: {
+      title: "🔥 TOP 10 Trends",
+      subtitlePrefix: "The hottest tips in Prague's food scene from",
+      emptyTitle: "No trends available right now",
+    },
+    akce: {
+      title: "Food Events",
+      subtitle: "The best food events in and around Prague",
+      emptyTitle: "No events available right now",
+    },
+    pobliz: {
+      title: "Restaurants Nearby",
+      subtitle: "Find great places near your location",
+      modeGps: "📍 My location",
+      modeAddress: "🔍 Search address",
+      gettingLocation: "Getting your location...",
+      updateLocation: "Update location",
+      findNearby: "Find restaurants nearby",
+      addressPlaceholder: "e.g. Wenceslas Square, Prague",
+      search: "Search",
+      addressHint: "Enter an address, street, square or neighborhood",
+      addressRequired: "Please enter an address or place",
+      radiusLabel: "Search radius:",
+      foundAddressLabel: "📍 Address found:",
+      yourLocation: (lat: string, lng: string) => `Your location: ${lat}, ${lng}`,
+      errorPermissionTitle: "Location access not allowed",
+      errorGenericTitle: "Couldn't get your location",
+      howToAllow: "How to allow location access:",
+      webInstructionsTitle: "🌐 On the web (Chrome, Safari, Firefox)",
+      webStep1: "Click the lock icon 🔒 or info icon ⓘ to the left of the URL in the address bar",
+      webStep2: "Find the \"Location\" setting",
+      webStep3: "Select \"Allow\"",
+      webStep4: "The page may reload — click the button below again",
+      mobileInstructionsTitle: "📱 In the mobile app",
+      mobileIphone: "iPhone: Settings → Privacy → Location Services → Gastro Tips → Allow",
+      mobileAndroid: "Android: Settings → Apps → Gastro Tips → Permissions → Location → Allow",
+      whatToTryTitle: "What to try:",
+      tryTip1: "Check that GPS is turned on for your device",
+      tryTip2: "Try moving closer to a window (better GPS signal)",
+      tryTip3: "Try again in a moment",
+      retryPermission: "Try allowing again",
+      retryGeneric: "Try again",
+      enterAddressManually: "🔍 Enter address manually",
+      emptyPromptTitle: "Use your GPS location or search an address",
+      emptyPromptSubtitle: "We'll find the nearest restaurants, cafes and bakeries",
+      noResultsInRadius: (km: number) => `No places found within ${km} km`,
+      tryLargerRadius: "Try expanding the search radius",
+      expandTo: (km: number) => `Expand to ${km} km`,
+      resultsCount: (n: number, km: number) =>
+        `Found ${n} ${n === 1 ? "place" : "places"} within ${km} km`,
     },
   },
 } satisfies Record<Locale, unknown>;
@@ -186,6 +322,22 @@ export function translateCuisineType(cuisineType: string, locale: Locale): strin
       return CUISINE_EN[trimmed.toLowerCase()] || trimmed;
     })
     .join(", ");
+}
+
+const MONTHS_CS = ["ledna", "února", "března", "dubna", "května", "června", "července", "srpna", "září", "října", "listopadu", "prosince"];
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+// Deliberately not Date.toLocaleDateString(): its output can differ between
+// Node's ICU (server) and the browser's Intl (client) for the exact same
+// locale/options, which breaks hydration once a date renders in the initial
+// server HTML. Also reads UTC fields so the calendar day can't shift between
+// the server's timezone and the visitor's.
+export function formatLongDate(dateString: string, locale: Locale): string {
+  const d = new Date(dateString);
+  const day = d.getUTCDate();
+  const month = d.getUTCMonth();
+  const year = d.getUTCFullYear();
+  return locale === "en" ? `${MONTHS_EN[month]} ${day}, ${year}` : `${day}. ${MONTHS_CS[month]} ${year}`;
 }
 
 export function formatPrice(price: number, locale: Locale): string {

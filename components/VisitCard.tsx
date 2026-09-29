@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { Visit } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
 
 interface VisitCardProps {
   visit: Visit;
@@ -55,11 +55,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
 
   if (!place) return null;
 
-  const visitDate = new Date(visit.visit_date).toLocaleDateString(locale === "en" ? "en-GB" : "cs-CZ", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const visitDate = formatLongDate(visit.visit_date, locale);
 
   const CardContent = () => (
     <>

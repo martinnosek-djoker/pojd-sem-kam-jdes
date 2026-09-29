@@ -1,21 +1,28 @@
 import { Event } from "@/lib/types";
+import { Locale } from "@/lib/i18n/LocaleContext";
 
 interface EventCardProps {
   event: Event;
+  locale?: Locale;
 }
 
-export default function EventCard({ event }: EventCardProps) {
+// Deliberately not a client component: date formatting only needs to run
+// once, on the server, and giving it "use client" for useLocale() caused a
+// hydration mismatch (Date.toLocaleDateString can render a byte-for-byte
+// different string between Node's ICU and the browser's).
+export default function EventCard({ event, locale = "cs" }: EventCardProps) {
   const formatEventDate = () => {
     if (event.start_date && event.end_date) {
       const start = new Date(event.start_date);
       const end = new Date(event.end_date);
+      const dateLocale = locale === "en" ? "en-GB" : "cs-CZ";
 
-      const startDate = start.toLocaleDateString("cs-CZ", {
+      const startDate = start.toLocaleDateString(dateLocale, {
         day: "numeric",
         month: "numeric"
       }).replace(/\s/g, ''); // Remove spaces: "20. 11." -> "20.11."
 
-      const endDate = end.toLocaleDateString("cs-CZ", {
+      const endDate = end.toLocaleDateString(dateLocale, {
         day: "numeric",
         month: "numeric"
       }).replace(/\s/g, '');

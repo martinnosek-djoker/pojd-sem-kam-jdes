@@ -1,8 +1,36 @@
 import { Coordinates } from "./types";
 import { Geolocation } from "@capacitor/geolocation";
+import { Locale } from "./i18n/LocaleContext";
 
 // Detekce mobilní aplikace (Capacitor)
 const IS_MOBILE = typeof window !== 'undefined' && !!(window as any).Capacitor;
+
+const GEO_MESSAGES = {
+  cs: {
+    deniedSettings: "Přístup k poloze byl zamítnut. Povol GPS v nastavení aplikace.",
+    denied: "Přístup k poloze byl zamítnut",
+    gpsFailed: "Nepodařilo se získat polohu z GPS",
+    webOnlyNotice: "Přístup k poloze není v této verzi podporován. Používáš webovou verzi? Zkus mobilní aplikaci.",
+    notSupported: "Geolocation není podporována tímto prohlížečem",
+    unknown: "Neznámá chyba",
+    unavailable: "Informace o poloze nejsou dostupné",
+    timeout: "Vypršel čas pro získání polohy",
+    searchFailed: "Nepodařilo se vyhledat adresu",
+    notFound: "Adresa nebyla nalezena. Zkus zadat konkrétnější místo nebo použít formát: ulice, město",
+  },
+  en: {
+    deniedSettings: "Location access was denied. Enable GPS in the app settings.",
+    denied: "Location access was denied",
+    gpsFailed: "Could not get your location from GPS",
+    webOnlyNotice: "Location access isn't supported in this version. Using the web version? Try the mobile app instead.",
+    notSupported: "Geolocation isn't supported by this browser",
+    unknown: "Unknown error",
+    unavailable: "Location information is unavailable",
+    timeout: "Timed out while getting your location",
+    searchFailed: "Could not search for the address",
+    notFound: "Address not found. Try a more specific place or the format: street, city",
+  },
+} satisfies Record<Locale, Record<string, string>>;
 
 // Haversine formula to calculate distance between two GPS points in kilometers
 export function calculateDistance(
@@ -39,7 +67,9 @@ export function formatDistance(distanceKm: number): string {
 }
 
 // Get user's current location using Capacitor Geolocation (mobile) or browser API (web)
-export async function getCurrentPosition(): Promise<Coordinates> {
+export async function getCurrentPosition(locale: Locale = "cs"): Promise<Coordinates> {
+  const m = GEO_MESSAGES[locale];
+
   if (IS_MOBILE) {
     // Používáme Capacitor Geolocation plugin v mobilní appce
     try {
@@ -47,13 +77,13 @@ export async function getCurrentPosition(): Promise<Coordinates> {
       const permission = await Geolocation.checkPermissions();
 
       if (permission.location === 'denied') {
-        throw new Error("Přístup k poloze byl zamítnut. Povol GPS v nastavení aplikace.");
+        throw new Error(m.deniedSettings);
       }
 
       if (permission.location !== 'granted') {
         const requestResult = await Geolocation.requestPermissions();
         if (requestResult.location !== 'granted') {
-          throw new Error("Přístup k poloze byl zamítnut");
+          throw new Error(m.denied);
         }
       }
 
@@ -71,11 +101,11 @@ export async function getCurrentPosition(): Promise<Coordinates> {
     } catch (error: any) {
       console.error('[Geolocation] Capacitor error:', error);
 
-      // Přeložit technické hlášky do češtiny
-      let message = error.message || "Nepodařilo se získat polohu z GPS";
+      // Přeložit technické hlášky do srozumitelného textu
+      let message = error.message || m.gpsFailed;
 
       if (message.includes("not implemented") || message.includes("Not implemented")) {
-        message = "Přístup k poloze není v této verzi podporován. Používáš webovou verzi? Zkus mobilní aplikaci.";
+        message = m.webOnlyNotice;
       }
 
       throw new Error(message);
@@ -84,7 +114,7 @@ export async function getCurrentPosition(): Promise<Coordinates> {
     // Používáme browser's Geolocation API na webu
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error("Geolocation není podporována tímto prohlížečem"));
+        reject(new Error(m.notSupported));
         return;
       }
 
@@ -96,16 +126,16 @@ export async function getCurrentPosition(): Promise<Coordinates> {
           });
         },
         (error) => {
-          let errorMessage = "Neznámá chyba";
+          let errorMessage = m.unknown;
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              errorMessage = "Přístup k poloze byl zamítnut";
+              errorMessage = m.denied;
               break;
             case error.POSITION_UNAVAILABLE:
-              errorMessage = "Informace o poloze nejsou dostupné";
+              errorMessage = m.unavailable;
               break;
             case error.TIMEOUT:
-              errorMessage = "Vypršel čas pro získání polohy";
+              errorMessage = m.timeout;
               break;
           }
           reject(new Error(errorMessage));
@@ -121,12 +151,13 @@ export async function getCurrentPosition(): Promise<Coordinates> {
 }
 
 // Geocode an address to coordinates using Nominatim API
-export async function geocodeAddress(address: string): Promise<{ coordinates: Coordinates; displayName: string }> {
+export async function geocodeAddress(address: string, locale: Locale = "cs"): Promise<{ coordinates: Coordinates; displayName: string }> {
+  const m = GEO_MESSAGES[locale];
   try {
     // Použijeme OpenStreetMap Nominatim API (zdarma, bez API klíče)
     const encodedAddress = encodeURIComponent(address);
     // Limit 5 - dostaneme více výsledků pro lepší výběr
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=5&countrycodes=cz&addressdetails=1&extratags=1`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=5&countrycodes=cz&addressdetails=1&extratags=1&accept-language=${locale}`;
 
     const response = await fetch(url, {
       headers: {
@@ -135,13 +166,13 @@ export async function geocodeAddress(address: string): Promise<{ coordinates: Co
     });
 
     if (!response.ok) {
-      throw new Error("Nepodařilo se vyhledat adresu");
+      throw new Error(m.searchFailed);
     }
 
     const data = await response.json();
 
     if (!data || data.length === 0) {
-      throw new Error("Adresa nebyla nalezena. Zkus zadat konkrétnější místo nebo použít formát: ulice, město");
+      throw new Error(m.notFound);
     }
 
     // Funkce pro skórování relevance výsledku
@@ -212,6 +243,6 @@ export async function geocodeAddress(address: string): Promise<{ coordinates: Co
     };
   } catch (error: any) {
     console.error('[Geocoding] Error:', error);
-    throw new Error(error.message || "Nepodařilo se vyhledat adresu");
+    throw new Error(error.message || m.searchFailed);
   }
 }
