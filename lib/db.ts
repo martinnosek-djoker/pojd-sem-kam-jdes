@@ -1,7 +1,16 @@
 import { supabase } from "./supabase";
 import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, Visit, VisitInput } from "./types";
 import { normalizeLocationName } from "./location-utils";
-import { downloadAndSaveImage } from "./image-downloader";
+
+// Lazily imported (not at module scope) so read-only queries used from Server
+// Components (e.g. app/kavarny/page.tsx) don't pull image-downloader's
+// Node-only fs/https imports into the app router's client build graph.
+async function downloadAndSaveImage(
+  ...args: Parameters<typeof import("./image-downloader").downloadAndSaveImage>
+) {
+  const { downloadAndSaveImage: run } = await import("./image-downloader");
+  return run(...args);
+}
 
 // CRUD operations
 
