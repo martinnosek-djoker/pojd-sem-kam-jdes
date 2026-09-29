@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "/akce",
+    languages: {
+      cs: "/akce",
+      en: "/en/akce",
+    },
   },
   openGraph: {
     title: "Gastro akce v Praze | Adventní trhy a food festivaly",

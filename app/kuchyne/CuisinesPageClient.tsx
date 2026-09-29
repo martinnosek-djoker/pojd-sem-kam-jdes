@@ -5,6 +5,8 @@ import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
+import { getDictionary, translateCuisineType } from "@/lib/i18n/dictionaries";
 
 // Helper function to normalize strings for comparison (removes diacritics)
 function normalizeString(str: string): string {
@@ -85,11 +87,14 @@ function getCuisineEmoji(cuisine: string): string {
 }
 
 interface CuisinesPageClientProps {
+  locale?: Locale;
   initialRestaurants: Restaurant[];
   initialCuisineTypes: string[];
 }
 
-export default function CuisinesPageClient({ initialRestaurants, initialCuisineTypes }: CuisinesPageClientProps) {
+export default function CuisinesPageClient({ locale = "cs", initialRestaurants, initialCuisineTypes }: CuisinesPageClientProps) {
+  const t = getDictionary(locale).kuchyne;
+  const tCommon = getDictionary(locale).common;
   const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>(initialCuisineTypes);
   const [scrollIndices, setScrollIndices] = useState<Record<string, number>>({});
@@ -162,6 +167,7 @@ export default function CuisinesPageClient({ initialRestaurants, initialCuisineT
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -169,9 +175,9 @@ export default function CuisinesPageClient({ initialRestaurants, initialCuisineT
           <div className="inline-block border-b-2 border-hairline pb-6 mb-4">
             <Logo />
           </div>
-          <h1 className="text-4xl font-serif font-bold text-ink mt-6 mb-2">Světové kuchyně</h1>
+          <h1 className="text-4xl font-serif font-bold text-ink mt-6 mb-2">{t.title}</h1>
           <p className="text-lg text-text-muted">
-            Najdi nejlepší restaurace podle typu kuchyně
+            {t.subtitle}
           </p>
         </div>
 
@@ -182,10 +188,10 @@ export default function CuisinesPageClient({ initialRestaurants, initialCuisineT
               {/* Cuisine Header */}
               <div className="mb-6">
                 <h2 className="text-3xl font-serif font-bold text-ink mb-2">
-                  {cuisine.emoji} {cuisine.name}
+                  {cuisine.emoji} {translateCuisineType(cuisine.name, locale)}
                 </h2>
                 <p className="text-text-muted">
-                  {cuisine.count} {cuisine.count === 1 ? "restaurace" : cuisine.count < 5 ? "restaurace" : "restaurací"}
+                  {tCommon.restaurantCount(cuisine.count)}
                 </p>
               </div>
 
@@ -224,11 +230,12 @@ export default function CuisinesPageClient({ initialRestaurants, initialCuisineT
         {sortedCuisines.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-text-muted">
-              Nebyly nalezeny žádné kuchyně
+              {t.emptyTitle}
             </p>
           </div>
         )}
       </div>
     </main>
+    </LocaleProvider>
   );
 }

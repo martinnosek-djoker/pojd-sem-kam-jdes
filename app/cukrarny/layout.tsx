@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   keywords: ["cukrárna Praha", "pekárna Praha", "dorty Praha", "zákusky Praha", "croissanty Praha", "dezerty Praha"],
   alternates: {
     canonical: "/cukrarny",
+    languages: {
+      cs: "/cukrarny",
+      en: "/en/cukrarny",
+    },
   },
   openGraph: {
     title: "Cukrárny a pekárny v Praze | Pojď sem! Kam jdeš?",

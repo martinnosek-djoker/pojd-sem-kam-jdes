@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   keywords: ["restaurace Karlín", "restaurace Vinohrady", "restaurace Holešovice", "restaurace Žižkov", "restaurace podle čtvrtí Praha"],
   alternates: {
     canonical: "/lokality",
+    languages: {
+      cs: "/lokality",
+      en: "/en/lokality",
+    },
   },
   openGraph: {
     title: "Restaurace podle lokalit | Pojď sem! Kam jdeš?",

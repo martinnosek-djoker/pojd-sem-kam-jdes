@@ -5,13 +5,19 @@ import BakeryCard from "@/components/BakeryCard";
 import Logo from "@/components/Logo";
 import { Bakery } from "@/lib/types";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface BakeriesPageClientProps {
+  locale?: Locale;
   initialBakeries: Bakery[];
   initialLocations: string[];
 }
 
-export default function BakeriesPageClient({ initialBakeries, initialLocations }: BakeriesPageClientProps) {
+export default function BakeriesPageClient({ locale = "cs", initialBakeries, initialLocations }: BakeriesPageClientProps) {
+  const t = getDictionary(locale).cukrarny;
+  const tFilter = getDictionary(locale).filter;
+  const tCommon = getDictionary(locale).common;
   const [bakeries, setBakeries] = useState<Bakery[]>(initialBakeries);
   const [filteredBakeries, setFilteredBakeries] = useState<Bakery[]>(initialBakeries);
   const [allLocations, setAllLocations] = useState<string[]>(initialLocations);
@@ -70,6 +76,7 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -77,9 +84,9 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
           <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Cukrárny a pekárny v Praze</h1>
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">{t.title}</h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
-            Nejlepší cukrárny v Praze od{" "}
+            {t.subtitlePrefix}{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -113,7 +120,7 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
                     backgroundSize: "1.5em 1.5em"
                   }}
                 >
-                  <option value="">Všechny lokality</option>
+                  <option value="">{tFilter.allLocations}</option>
                   {allLocations.map((location) => (
                     <option key={location} value={location}>
                       {location}
@@ -130,7 +137,7 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span>Zrušit</span>
+                  <span>{tFilter.reset}</span>
                 </button>
               )}
             </div>
@@ -140,19 +147,19 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
         {/* Count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-text-muted text-sm">
-            Nalezeno <span className="font-semibold text-terracotta">{filteredBakeries.length}</span> {filteredBakeries.length === 1 ? "cukrárnu" : filteredBakeries.length < 5 ? "cukrárny" : "cukráren"}
+            {t.count(filteredBakeries.length)}
           </p>
         </div>
 
         {/* Bakery grid */}
         {filteredBakeries.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-text-muted mb-8">Nebyly nalezeny žádné cukrárny</p>
+            <p className="text-xl text-text-muted mb-8">{t.emptyTitle}</p>
             <button
               onClick={handleReset}
               className="px-6 py-3 bg-terracotta text-white rounded-md hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5"
             >
-              Resetovat filtry
+              {tCommon.resetFilters}
             </button>
           </div>
         ) : (
@@ -164,5 +171,6 @@ export default function BakeriesPageClient({ initialBakeries, initialLocations }
         )}
       </div>
     </main>
+    </LocaleProvider>
   );
 }

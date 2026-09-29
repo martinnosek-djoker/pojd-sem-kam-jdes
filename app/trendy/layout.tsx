@@ -3,6 +3,10 @@ export const metadata = {
   description: "Nejžhavější tipy a trendy v pražské gastronomii. Objevte TOP 10 nejlepších podniků doporučených Peču si život.",
   alternates: {
     canonical: "/trendy",
+    languages: {
+      cs: "/trendy",
+      en: "/en/trendy",
+    },
   },
   openGraph: {
     title: "TOP 10 trendů v pražské gastronomii | Pojď sem! Kam jdeš?",

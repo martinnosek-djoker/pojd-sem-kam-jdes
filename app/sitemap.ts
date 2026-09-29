@@ -1,85 +1,33 @@
 import { MetadataRoute } from 'next'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.pojdsemkamjdes.cz'
+const baseUrl = 'https://www.pojdsemkamjdes.cz'
 
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      changeFrequency: 'daily',
-      priority: 1,
-      alternates: {
-        languages: {
-          cs: baseUrl,
-          en: `${baseUrl}/en`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/en`,
-      changeFrequency: 'daily',
-      priority: 1,
-      alternates: {
-        languages: {
-          cs: baseUrl,
-          en: `${baseUrl}/en`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/akce`,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/kavarny`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          cs: `${baseUrl}/kavarny`,
-          en: `${baseUrl}/en/kavarny`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/en/kavarny`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          cs: `${baseUrl}/kavarny`,
-          en: `${baseUrl}/en/kavarny`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/cukrarny`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/lokality`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/kuchyne`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/pobliz`,
-      changeFrequency: 'always',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/trendy`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+// Each entry gets both its Czech and English URL in the sitemap, each
+// pointing at the other via hreflang alternates.
+function localizedPair(
+  csPath: string,
+  changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
+  priority: number
+): MetadataRoute.Sitemap {
+  const csUrl = csPath === '/' ? baseUrl : `${baseUrl}${csPath}`
+  const enUrl = csPath === '/' ? `${baseUrl}/en` : `${baseUrl}/en${csPath}`
+  const alternates = { languages: { cs: csUrl, en: enUrl } }
+
+  return [
+    { url: csUrl, changeFrequency, priority, alternates },
+    { url: enUrl, changeFrequency, priority, alternates },
   ]
+}
 
-  return staticPages
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  return [
+    ...localizedPair('/', 'daily', 1),
+    ...localizedPair('/akce', 'daily', 0.9),
+    ...localizedPair('/kavarny', 'weekly', 0.8),
+    ...localizedPair('/cukrarny', 'weekly', 0.8),
+    ...localizedPair('/lokality', 'weekly', 0.8),
+    ...localizedPair('/kuchyne', 'weekly', 0.8),
+    ...localizedPair('/pobliz', 'always', 0.7),
+    ...localizedPair('/trendy', 'weekly', 0.8),
+  ]
 }

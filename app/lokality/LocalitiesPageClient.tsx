@@ -5,13 +5,18 @@ import RestaurantCard from "@/components/RestaurantCard";
 import Logo from "@/components/Logo";
 import { Restaurant } from "@/lib/types";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface LocalitiesPageClientProps {
+  locale?: Locale;
   initialRestaurants: Restaurant[];
   initialLocations: string[];
 }
 
-export default function LocalitiesPageClient({ initialRestaurants, initialLocations }: LocalitiesPageClientProps) {
+export default function LocalitiesPageClient({ locale = "cs", initialRestaurants, initialLocations }: LocalitiesPageClientProps) {
+  const t = getDictionary(locale).lokality;
+  const tCommon = getDictionary(locale).common;
   const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
   const [allLocations, setAllLocations] = useState<string[]>(initialLocations);
   const [scrollIndices, setScrollIndices] = useState<Record<string, number>>({});
@@ -88,6 +93,7 @@ export default function LocalitiesPageClient({ initialRestaurants, initialLocati
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -95,9 +101,9 @@ export default function LocalitiesPageClient({ initialRestaurants, initialLocati
           <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Podle lokality</h1>
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">{t.title}</h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
-            Nejlepší restaurace v Praze roztříděné podle lokality
+            {t.subtitle}
           </p>
         </div>
 
@@ -112,7 +118,7 @@ export default function LocalitiesPageClient({ initialRestaurants, initialLocati
                   <span>{location.name}</span>
                 </h2>
                 <p className="text-text-muted">
-                  {location.count} {location.count === 1 ? "restaurace" : location.count < 5 ? "restaurace" : "restaurací"}
+                  {tCommon.restaurantCount(location.count)}
                 </p>
               </div>
 
@@ -151,11 +157,12 @@ export default function LocalitiesPageClient({ initialRestaurants, initialLocati
         {sortedLocations.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-text-muted">
-              Nebyly nalezeny žádné lokality s dostatečným počtem restaurací
+              {t.emptyTitle}
             </p>
           </div>
         )}
       </div>
     </main>
+    </LocaleProvider>
   );
 }

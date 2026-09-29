@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 // Czech-side paths that already have a working /en counterpart. Extend this
 // as more pages get an English version - a stale link is worse than no
 // switcher at all, so it stays hidden until a page has actually been built.
-const TRANSLATED_PATHS = ["/", "/kavarny"];
+const TRANSLATED_PATHS = ["/", "/kavarny", "/cukrarny", "/kuchyne", "/lokality", "/trendy", "/akce", "/pobliz"];
 
 export default function LanguageSwitcher() {
   const pathname = usePathname();

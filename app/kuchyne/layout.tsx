@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   keywords: ["italská restaurace Praha", "asijská restaurace Praha", "mexická restaurace Praha", "vietnamská restaurace", "japonská restaurace", "česká kuchyně"],
   alternates: {
     canonical: "/kuchyne",
+    languages: {
+      cs: "/kuchyne",
+      en: "/en/kuchyne",
+    },
   },
   openGraph: {
     title: "Světové kuchyně | Pojď sem! Kam jdeš?",
