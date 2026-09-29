@@ -382,34 +382,34 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 p-4 bg-red-900/30 border border-red-500/50 rounded-lg">
+            <div className="mt-4 p-5 bg-red-50 border border-red-200 rounded-2xl">
               <div className="flex items-start gap-3">
-                <div className="text-2xl">⚠️</div>
-                <div className="flex-1">
-                  <h3 className="text-red-300 font-semibold mb-1">
+                <div className="text-2xl flex-shrink-0">📍</div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-red-800 font-serif font-semibold mb-1">
                     {isPermissionDenied ? "Přístup k poloze není povolen" : "Nepodařilo se získat tvou polohu"}
                   </h3>
-                  <p className="text-red-200 text-sm mb-3">{error}</p>
+                  <p className="text-red-700 text-sm mb-4">{error}</p>
 
                   {isPermissionDenied && (
-                    <div className="bg-red-900/20 p-3 rounded mb-3">
-                      <p className="text-red-200/90 text-xs font-semibold mb-2">💡 Jak povolit přístup k poloze:</p>
+                    <div className="bg-white/60 border border-red-100 p-4 rounded-xl mb-4">
+                      <p className="text-red-800 text-xs font-semibold mb-3">Jak povolit přístup k poloze:</p>
 
                       {/* Instrukce pro WEB */}
-                      <div className="bg-red-800/30 p-2 rounded mb-2">
-                        <p className="text-red-200 text-xs font-semibold mb-1">🌐 Na webu (Chrome, Safari, Firefox):</p>
-                        <ol className="text-red-200/70 text-xs space-y-1 list-decimal list-inside ml-2">
-                          <li>Klikni na <strong>🔒 zámek</strong> nebo <strong>ⓘ info ikonu</strong> vlevo od URL v horní liště</li>
-                          <li>Najdi nastavení <strong>"Poloha"</strong> nebo <strong>"Location"</strong></li>
-                          <li>Vyber <strong>"Povolit"</strong> nebo <strong>"Allow"</strong></li>
-                          <li>Stránka se může obnovit - klikni znovu na tlačítko níže</li>
+                      <div className="mb-3">
+                        <p className="text-red-700 text-xs font-semibold mb-1.5">🌐 Na webu (Chrome, Safari, Firefox)</p>
+                        <ol className="text-red-700/80 text-xs space-y-1 list-decimal list-inside ml-1">
+                          <li>Klikni na <strong>zámek 🔒</strong> nebo <strong>info ikonu ⓘ</strong> vlevo od URL v horní liště</li>
+                          <li>Najdi nastavení <strong>„Poloha"</strong></li>
+                          <li>Vyber <strong>„Povolit"</strong></li>
+                          <li>Stránka se může obnovit – klikni znovu na tlačítko níže</li>
                         </ol>
                       </div>
 
                       {/* Instrukce pro MOBIL */}
-                      <div className="bg-red-800/30 p-2 rounded">
-                        <p className="text-red-200 text-xs font-semibold mb-1">📱 V mobilní aplikaci:</p>
-                        <ul className="text-red-200/70 text-xs space-y-1 list-disc list-inside ml-2">
+                      <div>
+                        <p className="text-red-700 text-xs font-semibold mb-1.5">📱 V mobilní aplikaci</p>
+                        <ul className="text-red-700/80 text-xs space-y-1 list-disc list-inside ml-1">
                           <li><strong>iPhone:</strong> Nastavení → Soukromí → Polohové služby → Gastro Tips → Povolit</li>
                           <li><strong>Android:</strong> Nastavení → Aplikace → Gastro Tips → Oprávnění → Poloha → Povolit</li>
                         </ul>
@@ -418,9 +418,9 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                   )}
 
                   {!isPermissionDenied && (
-                    <div className="bg-red-900/20 p-3 rounded mb-3">
-                      <p className="text-red-200/90 text-xs font-semibold mb-2">💡 Co zkusit:</p>
-                      <ul className="text-red-200/70 text-xs space-y-1 list-disc list-inside">
+                    <div className="bg-white/60 border border-red-100 p-4 rounded-xl mb-4">
+                      <p className="text-red-800 text-xs font-semibold mb-2">Co zkusit:</p>
+                      <ul className="text-red-700/80 text-xs space-y-1 list-disc list-inside">
                         <li>Zkontroluj, že máš zapnutou GPS na zařízení</li>
                         <li>Zkus se přesunout blíž k oknu (lepší GPS signál)</li>
                         <li>Zkus to za chvíli znovu</li>
@@ -428,16 +428,28 @@ export default function NearbyPageClient({ initialRestaurants, initialBakeries, 
                     </div>
                   )}
 
-                  <button
-                    onClick={() => {
-                      setError(null);
-                      setIsPermissionDenied(false);
-                      handleGetLocation();
-                    }}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors text-sm font-medium"
-                  >
-                    {isPermissionDenied ? "🔓 Zkusit povolit znovu" : "🔄 Zkusit znovu"}
-                  </button>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => {
+                        setError(null);
+                        setIsPermissionDenied(false);
+                        handleGetLocation();
+                      }}
+                      className="px-4 py-2 bg-terracotta hover:bg-terracotta-dark text-white rounded-lg transition-colors text-sm font-medium shadow-sm"
+                    >
+                      {isPermissionDenied ? "Zkusit povolit znovu" : "Zkusit znovu"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setError(null);
+                        setIsPermissionDenied(false);
+                        setSearchMode('address');
+                      }}
+                      className="px-4 py-2 bg-white text-red-800 border border-red-200 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium"
+                    >
+                      🔍 Zadat adresu ručně
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
