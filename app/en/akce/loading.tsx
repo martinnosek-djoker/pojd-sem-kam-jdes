@@ -10,7 +10,7 @@ export default function Loading() {
             <Logo />
           </div>
         </div>
-        <LoadingPot />
+        <LoadingPot locale="en" />
       </div>
     </main>
   );

@@ -1,4 +1,13 @@
-export default function LoadingPot() {
+import { Locale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+
+interface LoadingPotProps {
+  locale?: Locale;
+}
+
+export default function LoadingPot({ locale = "cs" }: LoadingPotProps) {
+  const t = getDictionary(locale).loading;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px]">
       {/* Cooking pot animation */}
@@ -114,10 +123,10 @@ export default function LoadingPot() {
 
       {/* Loading text */}
       <p className="mt-6 text-xl font-semibold text-terracotta animate-pulse">
-        Vaříme pro vás...
+        {t.cooking}
       </p>
       <p className="mt-2 text-sm text-text-muted">
-        Načítání dat
+        {t.loadingData}
       </p>
     </div>
   );

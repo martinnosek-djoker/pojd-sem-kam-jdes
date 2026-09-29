@@ -8,7 +8,7 @@ export default function Loading() {
         <div className="pt-10 md:pt-8 mb-8">
           <Logo />
         </div>
-        <LoadingPot />
+        <LoadingPot locale="en" />
       </div>
     </main>
   );

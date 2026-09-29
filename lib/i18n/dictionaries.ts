@@ -61,6 +61,10 @@ export const dictionaries = {
     visitCard: {
       moreDishes: (n: number) => `+${n} další`,
     },
+    loading: {
+      cooking: "Vaříme pro vás...",
+      loadingData: "Načítání dat",
+    },
     common: {
       nearMe: "V mém okolí",
       resetFilters: "Resetovat filtry",
@@ -191,6 +195,10 @@ export const dictionaries = {
     },
     visitCard: {
       moreDishes: (n: number) => `+${n} more`,
+    },
+    loading: {
+      cooking: "Cooking for you...",
+      loadingData: "Loading data",
     },
     common: {
       nearMe: "Near me",

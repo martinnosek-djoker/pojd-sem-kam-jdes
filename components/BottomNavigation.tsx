@@ -82,11 +82,16 @@ export default function BottomNavigation() {
     { href: `${prefix}/akce`, label: t.events, icon: CalendarIcon },
   ];
 
+  const homeHref = prefix || '/';
+
   const isActive = (href: string) => {
     const normalizedPathname = pathname.replace(/\/$/, '') || '/';
     const normalizedHref = href.replace(/\/$/, '') || '/';
-    return normalizedPathname === normalizedHref ||
-           (normalizedHref !== '/' && normalizedPathname.startsWith(normalizedHref + '/'));
+    if (normalizedPathname === normalizedHref) return true;
+    // Prefix-matching would make the home tab ("/" or "/en") match every
+    // other page too, since they all start with that same prefix.
+    if (normalizedHref === homeHref) return false;
+    return normalizedPathname.startsWith(normalizedHref + '/');
   };
 
   return (
