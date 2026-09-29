@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: "https://www.pojdsemkamjdes.cz/en/kavarny",
     locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cafes in Prague",
+    description: "Discover the best cafes in Prague",
+  },
 };
 
 export default function EnglishKavarnyLayout({ children }: { children: React.ReactNode }) {

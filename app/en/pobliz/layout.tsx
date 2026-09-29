@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: "https://www.pojdsemkamjdes.cz/en/pobliz",
     locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Restaurants Nearby",
+    description: "Find the best restaurants near you using GPS location",
+  },
 };
 
 export default function EnglishPoblizLayout({ children }: { children: React.ReactNode }) {

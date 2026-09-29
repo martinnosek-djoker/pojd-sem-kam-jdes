@@ -3,6 +3,8 @@
 import { Bakery } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface BakeryCardProps {
   bakery: Bakery;
@@ -10,6 +12,8 @@ interface BakeryCardProps {
 }
 
 export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).common;
   const proxiedImageUrl = getProxiedImageUrl(bakery.image_url, bakery.name, "bakeries");
   const [imageError, setImageError] = useState(false);
   const location = forceLocation || bakery.location;
@@ -20,7 +24,7 @@ export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={`${bakery.name} – cukrárna ${location}`}
+            alt={`${bakery.name} – ${t.altBakery} ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

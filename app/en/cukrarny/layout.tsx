@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: "https://www.pojdsemkamjdes.cz/en/cukrarny",
     locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bakeries in Prague",
+    description: "Find the best bakeries in Prague",
+  },
 };
 
 export default function EnglishCukrarnyLayout({ children }: { children: React.ReactNode }) {

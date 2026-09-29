@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: "https://www.pojdsemkamjdes.cz/en/kuchyne",
     locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "World Cuisines",
+    description: "Find the best restaurants in Prague by cuisine type",
+  },
 };
 
 export default function EnglishKuchyneLayout({ children }: { children: React.ReactNode }) {

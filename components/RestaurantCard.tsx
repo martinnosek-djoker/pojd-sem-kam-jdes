@@ -4,7 +4,7 @@ import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import { formatPrice, translateCuisineType } from "@/lib/i18n/dictionaries";
+import { formatPrice, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -13,6 +13,7 @@ interface RestaurantCardProps {
 
 export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
   const locale = useLocale();
+  const t = getDictionary(locale).common;
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
   const [imageError, setImageError] = useState(false);
   const location = forceLocation || restaurant.location;
@@ -23,7 +24,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={`${restaurant.name} – restaurace ${location}`}
+            alt={`${restaurant.name} – ${t.altRestaurant} ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

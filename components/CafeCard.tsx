@@ -21,6 +21,7 @@ const TAG_COLORS: Record<string, string> = {
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).kavarny;
+  const tCommon = getDictionary(locale).common;
   const tagLabels: Record<string, string> = {
     dezert: t.tagDezert,
     matcha: t.tagMatcha,
@@ -37,7 +38,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
         {proxiedImageUrl && !imageError ? (
           <img
             src={proxiedImageUrl}
-            alt={`${cafe.name} – kavárna ${location}`}
+            alt={`${cafe.name} – ${tCommon.altCafe} ${location}`}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />

@@ -18,6 +18,16 @@ export const metadata: Metadata = {
   openGraph: {
     locale: "en_US",
     url: "https://www.pojdsemkamjdes.cz/en",
+    title: "Best restaurants, cafes and bakeries in Prague | Personal recommendations",
+    description:
+      "Discover the best food spots in Prague with personal recommendations from @Peču si život. Filter by location, cuisine type, or find a place near you.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Best restaurants, cafes and bakeries in Prague",
+    description:
+      "Personal recommendations for the best food spots in Prague from @Peču si život. Filter by location, cuisine type, or distance.",
+    images: ["/og-image.jpg"],
   },
 };
 

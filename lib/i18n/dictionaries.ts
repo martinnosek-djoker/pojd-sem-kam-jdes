@@ -73,6 +73,9 @@ export const dictionaries = {
       priceRange: (a: number, b: number) => `${a}-${b} Kč`,
       priceOver: (v: number) => `${v}+ Kč`,
       restaurantCount: (n: number) => `${n} ${pluralCs(n, "restaurace", "restaurace", "restaurací")}`,
+      altRestaurant: "restaurace",
+      altCafe: "kavárna",
+      altBakery: "cukrárna",
     },
     cukrarny: {
       title: "Cukrárny a pekárny v Praze",
@@ -208,6 +211,9 @@ export const dictionaries = {
       priceRange: (a: number, b: number) => `${a}-${b} CZK`,
       priceOver: (v: number) => `${v}+ CZK`,
       restaurantCount: (n: number) => `${n} ${n === 1 ? "restaurant" : "restaurants"}`,
+      altRestaurant: "restaurant",
+      altCafe: "cafe",
+      altBakery: "bakery",
     },
     cukrarny: {
       title: "Bakeries in Prague",

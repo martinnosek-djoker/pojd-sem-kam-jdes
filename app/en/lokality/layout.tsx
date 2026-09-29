@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: "https://www.pojdsemkamjdes.cz/en/lokality",
     locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Restaurants by Location",
+    description: "Find the best restaurants in each Prague neighborhood",
+  },
 };
 
 export default function EnglishLokalityLayout({ children }: { children: React.ReactNode }) {
