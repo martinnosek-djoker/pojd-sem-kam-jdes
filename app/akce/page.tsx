@@ -1,31 +1,14 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
-import LoadingPot from "@/components/LoadingPot";
 import EventCard from "@/components/EventCard";
-import { Event } from "@/lib/types";
-import { getApiUrl } from "@/lib/api-config";
+import { getAllEvents } from "@/lib/db";
 
-export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+// The mobile app builds with `output: 'export'` (fully static, no per-request
+// server) — force-dynamic isn't compatible with that, so only force it on web,
+// where the DB is queried fresh on every request instead of once at build time.
+export const dynamic = process.env.MOBILE_BUILD === "true" ? "auto" : "force-dynamic";
 
-  useEffect(() => {
-    async function fetchEvents() {
-      try {
-        const response = await fetch(getApiUrl("/api/events"));
-        const data = await response.json();
-        setEvents(data);
-      } catch (error) {
-        console.error("Error loading events:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEvents();
-  }, []);
+export default async function EventsPage() {
+  const events = await getAllEvents();
 
   return (
     <main className="min-h-screen p-4 sm:p-6 md:p-8 bg-bg">
@@ -45,11 +28,9 @@ export default function EventsPage() {
           </p>
         </div>
 
-        {loading ? (
-          <LoadingPot />
-        ) : events && events.length > 0 ? (
+        {events && events.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {events.map((event: Event) => (
+            {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>

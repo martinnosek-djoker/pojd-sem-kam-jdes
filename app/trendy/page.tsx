@@ -1,57 +1,14 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import TrendingCard from "@/components/TrendingCard";
 import Logo from "@/components/Logo";
-import { Trending } from "@/lib/types";
-import { getApiUrl } from "@/lib/api-config";
+import { getAllTrendings } from "@/lib/db";
 
-export default function TrendyPage() {
-  const [trendings, setTrendings] = useState<Trending[]>([]);
-  const [loading, setLoading] = useState(true);
+// The mobile app builds with `output: 'export'` (fully static, no per-request
+// server) — force-dynamic isn't compatible with that, so only force it on web,
+// where the DB is queried fresh on every request instead of once at build time.
+export const dynamic = process.env.MOBILE_BUILD === "true" ? "auto" : "force-dynamic";
 
-  // Fetch trendings
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch(getApiUrl("/api/trendings"));
-        const data = await res.json();
-
-        // Validate that data is an array
-        if (Array.isArray(data)) {
-          setTrendings(data);
-        } else {
-          console.error("Trendings data is not an array:", data);
-          setTrendings([]);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setTrendings([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-bg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="text-center mb-12">
-            <Logo />
-          </div>
-          {/* Loading skeleton */}
-          <div className="space-y-4 max-w-3xl mx-auto">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="bg-surface-2 rounded-lg p-4 h-24 animate-pulse" />
-            ))}
-          </div>
-        </div>
-      </main>
-    );
-  }
+export default async function TrendyPage() {
+  const trendings = await getAllTrendings();
 
   return (
     <main className="min-h-screen px-4 sm:px-8 pb-8 bg-bg">
