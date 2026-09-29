@@ -23,7 +23,7 @@ export default function FloatingNearbyButton() {
   }, []);
 
   const handleClick = () => {
-    router.push("/pobliz");
+    router.push(locale === "en" ? "/en/pobliz" : "/pobliz");
   };
 
   return (
