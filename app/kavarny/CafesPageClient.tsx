@@ -5,13 +5,18 @@ import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import { Cafe } from "@/lib/types";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface CafesPageClientProps {
+  locale?: Locale;
   initialCafes: Cafe[];
   initialLocations: string[];
 }
 
-export default function CafesPageClient({ initialCafes, initialLocations }: CafesPageClientProps) {
+export default function CafesPageClient({ locale = "cs", initialCafes, initialLocations }: CafesPageClientProps) {
+  const t = getDictionary(locale).kavarny;
+  const tCommon = getDictionary(locale).common;
   const [cafes, setCafes] = useState<Cafe[]>(initialCafes);
   const [filteredCafes, setFilteredCafes] = useState<Cafe[]>(initialCafes);
   const [allLocations, setAllLocations] = useState<string[]>(initialLocations);
@@ -78,6 +83,7 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="min-h-screen px-8 pb-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -85,9 +91,9 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
           <div className="inline-block border-b-2 border-hairline pb-3 md:pb-6 mb-2 md:mb-4">
             <Logo />
           </div>
-          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">Kavárny v Praze</h1>
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-ink mt-4 md:mt-6 mb-2">{t.title}</h1>
           <p className="text-sm md:text-lg text-text-muted mt-2">
-            Nejlepší kavárny v Praze od{" "}
+            {t.subtitlePrefix}{" "}
             <a
               href="https://www.instagram.com/pecu_si_zivot/"
               target="_blank"
@@ -122,7 +128,7 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
                     backgroundSize: "1.5em 1.5em"
                   }}
                 >
-                  <option value="">Všechny lokality</option>
+                  <option value="">{t.allLocations}</option>
                   {allLocations.map((location) => (
                     <option key={location} value={location}>
                       {location}
@@ -139,7 +145,7 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <span>Zrušit</span>
+                  <span>{t.reset}</span>
                 </button>
               )}
             </div>
@@ -147,14 +153,14 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
 
           {/* Tag Filter Buttons */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-ink-mid">Kategorie:</label>
+            <label className="text-sm font-medium text-ink-mid">{t.categoryLabel}</label>
             <div className="flex flex-wrap gap-2">
               {[
-                { value: '', label: 'Všechny', color: 'bg-surface-2 text-ink-mid border-hairline hover:bg-surface-tint', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-black/10' },
-                { value: 'dezert', label: 'Dezert', color: 'bg-orange-50 text-orange-800 border-orange-200 hover:bg-orange-100', activeColor: 'bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-900/50' },
-                { value: 'matcha', label: 'Matcha', color: 'bg-green-50 text-green-800 border-green-200 hover:bg-green-100', activeColor: 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50' },
-                { value: 'snídaně', label: 'Snídaně', color: 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100', activeColor: 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-900/50' },
-                { value: 'top-kava', label: 'TOP káva', color: 'bg-terracotta/10 text-terracotta border-terracotta/20 hover:bg-terracotta/20', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-terracotta/40' },
+                { value: '', label: t.tagAll, color: 'bg-surface-2 text-ink-mid border-hairline hover:bg-surface-tint', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-black/10' },
+                { value: 'dezert', label: t.tagDezert, color: 'bg-orange-50 text-orange-800 border-orange-200 hover:bg-orange-100', activeColor: 'bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-900/50' },
+                { value: 'matcha', label: t.tagMatcha, color: 'bg-green-50 text-green-800 border-green-200 hover:bg-green-100', activeColor: 'bg-green-600 text-white border-green-500 shadow-lg shadow-green-900/50' },
+                { value: 'snídaně', label: t.tagSnidane, color: 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100', activeColor: 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-900/50' },
+                { value: 'top-kava', label: t.tagTopKava, color: 'bg-terracotta/10 text-terracotta border-terracotta/20 hover:bg-terracotta/20', activeColor: 'bg-terracotta text-white border-terracotta-dark shadow-lg shadow-terracotta/40' },
               ].map((tag) => (
                 <button
                   key={tag.value}
@@ -173,19 +179,19 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
         {/* Count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-text-muted text-sm">
-            Nalezeno <span className="font-semibold text-terracotta">{filteredCafes.length}</span> {filteredCafes.length === 1 ? "kavárnu" : filteredCafes.length < 5 ? "kavárny" : "kaváren"}
+            {t.count(filteredCafes.length)}
           </p>
         </div>
 
         {/* Cafe grid */}
         {filteredCafes.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-text-muted mb-8">Nebyly nalezeny žádné kavárny</p>
+            <p className="text-xl text-text-muted mb-8">{t.emptyTitle}</p>
             <button
               onClick={handleReset}
               className="px-6 py-3 bg-terracotta text-white rounded-md hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5"
             >
-              Resetovat filtry
+              {tCommon.resetFilters}
             </button>
           </div>
         ) : (
@@ -200,5 +206,6 @@ export default function CafesPageClient({ initialCafes, initialLocations }: Cafe
         )}
       </div>
     </main>
+    </LocaleProvider>
   );
 }

@@ -3,6 +3,8 @@
 import { Cafe } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface CafeCardProps {
   cafe: Cafe;
@@ -16,11 +18,15 @@ const TAG_COLORS: Record<string, string> = {
   "top-kava": "bg-amber-800/10 text-amber-800",
 };
 
-const TAG_LABELS: Record<string, string> = {
-  "top-kava": "TOP káva",
-};
-
 export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).kavarny;
+  const tagLabels: Record<string, string> = {
+    dezert: t.tagDezert,
+    matcha: t.tagMatcha,
+    "snídaně": t.tagSnidane,
+    "top-kava": t.tagTopKava,
+  };
   const proxiedImageUrl = getProxiedImageUrl(cafe.image_url, cafe.name, "cafes");
   const [imageError, setImageError] = useState(false);
   const location = forceLocation || cafe.location;
@@ -54,7 +60,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
                 key={idx}
                 className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${TAG_COLORS[tag] || "bg-surface-2 text-ink-mid"}`}
               >
-                {TAG_LABELS[tag] || tag}
+                {tagLabels[tag] || tag}
               </span>
             ))}
           </div>

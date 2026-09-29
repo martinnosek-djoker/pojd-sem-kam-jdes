@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, Visit, VisitInput } from "./types";
+import { Restaurant, RestaurantInput, Trending, TrendingInput, Bakery, BakeryInput, Cafe, CafeInput, Breakfast, BreakfastInput, Event, EventInput, Visit, VisitInput, VisitDish } from "./types";
 import { normalizeLocationName } from "./location-utils";
 
 // Lazily imported (not at module scope) so read-only queries used from Server
@@ -1377,21 +1377,43 @@ export async function getAllVisits(): Promise<Visit[]> {
 }
 
 export async function createVisit(input: VisitInput): Promise<Visit> {
+  const { translateVisitContent } = await import("./translate");
+  const { comment_en, dishes_en } = await translateVisitContent(input.comment ?? null, input.dishes || []);
+
+  const baseRow = {
+    restaurant_id: input.restaurant_id || null,
+    cafe_id: input.cafe_id || null,
+    visit_date: input.visit_date,
+    dishes: input.dishes || [],
+    overall_rating: input.overall_rating ?? null,
+    comment: input.comment || null,
+    images: input.images || [],
+  };
+
   const { data, error } = await supabase
     .from("visits")
-    .insert({
-      restaurant_id: input.restaurant_id || null,
-      cafe_id: input.cafe_id || null,
-      visit_date: input.visit_date,
-      dishes: input.dishes || [],
-      overall_rating: input.overall_rating ?? null,
-      comment: input.comment || null,
-      images: input.images || [],
-    })
+    .insert({ ...baseRow, dishes_en, comment_en })
     .select(VISIT_SELECT)
     .single();
 
   if (error) {
+    // comment_en/dishes_en columns may not exist yet (migration not run) -
+    // fall back to a plain insert so logging a visit still works.
+    if (error.code === "PGRST204" || error.message?.includes("comment_en") || error.message?.includes("dishes_en")) {
+      console.warn("[createVisit] comment_en/dishes_en columns missing, inserting without translation:", error.message);
+      const { data: fallbackData, error: fallbackError } = await supabase
+        .from("visits")
+        .insert(baseRow)
+        .select(VISIT_SELECT)
+        .single();
+
+      if (fallbackError) {
+        console.error("Error creating visit:", fallbackError);
+        throw fallbackError;
+      }
+      return fallbackData as unknown as Visit;
+    }
+
     console.error("Error creating visit:", error);
     throw error;
   }
@@ -1400,20 +1422,57 @@ export async function createVisit(input: VisitInput): Promise<Visit> {
 }
 
 export async function updateVisit(id: number, input: Partial<VisitInput>): Promise<Visit | null> {
+  let comment_en: string | null | undefined;
+  let dishes_en: VisitDish[] | null | undefined;
+
+  if (input.comment !== undefined || input.dishes !== undefined) {
+    const { translateVisitContent } = await import("./translate");
+    const translated = await translateVisitContent(
+      input.comment !== undefined ? input.comment : null,
+      input.dishes !== undefined ? input.dishes : []
+    );
+    if (input.comment !== undefined) comment_en = translated.comment_en;
+    if (input.dishes !== undefined) dishes_en = translated.dishes_en;
+  }
+
+  const baseUpdate = {
+    ...(input.visit_date !== undefined && { visit_date: input.visit_date }),
+    ...(input.dishes !== undefined && { dishes: input.dishes }),
+    ...(input.overall_rating !== undefined && { overall_rating: input.overall_rating }),
+    ...(input.comment !== undefined && { comment: input.comment || null }),
+    ...(input.images !== undefined && { images: input.images }),
+  };
+
   const { data, error } = await supabase
     .from("visits")
     .update({
-      ...(input.visit_date !== undefined && { visit_date: input.visit_date }),
-      ...(input.dishes !== undefined && { dishes: input.dishes }),
-      ...(input.overall_rating !== undefined && { overall_rating: input.overall_rating }),
-      ...(input.comment !== undefined && { comment: input.comment || null }),
-      ...(input.images !== undefined && { images: input.images }),
+      ...baseUpdate,
+      ...(input.dishes !== undefined && { dishes_en }),
+      ...(input.comment !== undefined && { comment_en }),
     })
     .eq("id", id)
     .select(VISIT_SELECT)
     .single();
 
   if (error) {
+    // comment_en/dishes_en columns may not exist yet (migration not run) -
+    // fall back to a plain update so editing a visit still works.
+    if (error.code === "PGRST204" || error.message?.includes("comment_en") || error.message?.includes("dishes_en")) {
+      console.warn("[updateVisit] comment_en/dishes_en columns missing, updating without translation:", error.message);
+      const { data: fallbackData, error: fallbackError } = await supabase
+        .from("visits")
+        .update(baseUpdate)
+        .eq("id", id)
+        .select(VISIT_SELECT)
+        .single();
+
+      if (fallbackError) {
+        console.error("Error updating visit:", fallbackError);
+        return null;
+      }
+      return fallbackData as unknown as Visit;
+    }
+
     console.error("Error updating visit:", error);
     return null;
   }

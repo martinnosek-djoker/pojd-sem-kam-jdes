@@ -3,21 +3,16 @@
 import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { formatPrice, translateCuisineType } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   forceLocation?: string; // If provided, only show this location instead of all
 }
 
-function getPriceInfo(price: number) {
-  if (price === 0) return "Cena neuvedena";
-  if (price < 500) return "Do 500 Kč";
-  if (price < 1000) return "500-1000 Kč";
-  if (price < 2000) return "1000-2000 Kč";
-  return "2000+ Kč";
-}
-
 export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
+  const locale = useLocale();
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
   const [imageError, setImageError] = useState(false);
   const location = forceLocation || restaurant.location;
@@ -44,7 +39,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
           {restaurant.name}
         </div>
         <div className="text-sm text-text-muted mb-1.5 truncate">
-          {location} · {restaurant.cuisine_type}
+          {location} · {translateCuisineType(restaurant.cuisine_type, locale)}
         </div>
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1 text-sm font-semibold text-ink">
@@ -54,7 +49,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
             {restaurant.rating}/10
           </span>
           <span className="text-xs font-semibold bg-surface-2 text-ink-mid px-2.5 py-1 rounded-full whitespace-nowrap">
-            {getPriceInfo(restaurant.price)}
+            {formatPrice(restaurant.price, locale)}
           </span>
         </div>
       </div>

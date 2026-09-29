@@ -3,10 +3,14 @@
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 export default function FloatingNearbyButton() {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+  const locale = useLocale();
+  const t = getDictionary(locale).common;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,7 +38,7 @@ export default function FloatingNearbyButton() {
         flex items-center
         ${isScrolled ? "rounded-full p-4 justify-center" : "rounded-full px-5 py-3 gap-2"}
       `}
-      aria-label="V mém okolí"
+      aria-label={t.nearMe}
     >
       <MapPin className="w-6 h-6 flex-shrink-0" />
       <span
@@ -43,7 +47,7 @@ export default function FloatingNearbyButton() {
           ${isScrolled ? "w-0 opacity-0" : "w-auto opacity-100"}
         `}
       >
-        V mém okolí
+        {t.nearMe}
       </span>
     </button>
   );

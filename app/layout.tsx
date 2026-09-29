@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Lora, Work_Sans } from "next/font/google";
 import BottomNavigation from "@/components/BottomNavigation";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import PushNotificationHandler from "@/components/PushNotificationHandler";
 import BackButtonHandler from "@/components/BackButtonHandler";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -42,6 +43,10 @@ export const metadata = {
   themeColor: '#FBF3E7',
   alternates: {
     canonical: "/",
+    languages: {
+      cs: "/",
+      en: "/en",
+    },
   },
   description:
     "Osobní doporučení nejlepších restaurací, kaváren a cukráren v Praze od @Peču si život. Vyhledávání podle lokality, typu kuchyně a vzdálenosti. TOP 10 trendů a prémiová káva.",
@@ -170,6 +175,7 @@ export default function RootLayout({
           {children}
         </main>
         <BottomNavigation />
+        <LanguageSwitcher />
         <Analytics />
         <SpeedInsights />
       </body>

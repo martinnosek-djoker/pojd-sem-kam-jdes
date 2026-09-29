@@ -265,8 +265,10 @@ export interface Visit {
   cafe?: Cafe; // Optional joined cafe data
   visit_date: string;
   dishes: VisitDish[];
+  dishes_en: VisitDish[] | null; // Auto-translated English version of dishes
   overall_rating: number | null; // 1-10, how this specific visit went
   comment: string | null; // Short 1-2 sentence take on the visit
+  comment_en: string | null; // Auto-translated English version of comment
   images: string[]; // Uploaded photo URLs (Supabase Storage)
   created_at: string;
   updated_at: string;

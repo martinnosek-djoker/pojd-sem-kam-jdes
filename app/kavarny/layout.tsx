@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   keywords: ["kavárna Praha", "specialitní káva", "nejlepší káva Praha", "kde na kávu Praha", "kavárna s wifi"],
   alternates: {
     canonical: "/kavarny",
+    languages: {
+      cs: "/kavarny",
+      en: "/en/kavarny",
+    },
   },
   openGraph: {
     title: "Kavárny v Praze | Pojď sem! Kam jdeš?",

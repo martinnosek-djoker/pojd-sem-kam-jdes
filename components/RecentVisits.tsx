@@ -3,12 +3,16 @@
 import { useRef } from "react";
 import { Visit } from "@/lib/types";
 import VisitCard from "./VisitCard";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RecentVisitsProps {
   visits: Visit[];
 }
 
 export default function RecentVisits({ visits }: RecentVisitsProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).recentVisits;
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollCarousel = (direction: "prev" | "next") => {
@@ -29,10 +33,10 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
       <div className="flex items-end justify-between mb-6">
         <div>
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-ink tracking-wide mb-1 md:mb-2">
-            ✨ Nejnovější návštěvy
+            {t.heading}
           </h2>
           <p className="text-sm md:text-base text-text-muted">
-            Moje poslední návštěvy restaurací a kaváren
+            {t.subtitle}
           </p>
         </div>
         {visits.length > 1 && (
@@ -40,7 +44,7 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
             <button
               onClick={() => scrollCarousel("prev")}
               className="w-10 h-10 flex items-center justify-center rounded-full border border-hairline bg-surface text-terracotta hover:border-terracotta hover:bg-terracotta/10 transition-all duration-200"
-              aria-label="Předchozí návštěva"
+              aria-label={t.prevAria}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -49,7 +53,7 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
             <button
               onClick={() => scrollCarousel("next")}
               className="w-10 h-10 flex items-center justify-center rounded-full border border-hairline bg-surface text-terracotta hover:border-terracotta hover:bg-terracotta/10 transition-all duration-200"
-              aria-label="Další návštěva"
+              aria-label={t.nextAria}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

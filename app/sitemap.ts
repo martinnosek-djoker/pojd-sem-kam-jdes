@@ -9,6 +9,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: baseUrl,
       changeFrequency: 'daily',
       priority: 1,
+      alternates: {
+        languages: {
+          cs: baseUrl,
+          en: `${baseUrl}/en`,
+        },
+      },
+    },
+    {
+      url: `${baseUrl}/en`,
+      changeFrequency: 'daily',
+      priority: 1,
+      alternates: {
+        languages: {
+          cs: baseUrl,
+          en: `${baseUrl}/en`,
+        },
+      },
     },
     {
       url: `${baseUrl}/akce`,
@@ -19,6 +36,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/kavarny`,
       changeFrequency: 'weekly',
       priority: 0.8,
+      alternates: {
+        languages: {
+          cs: `${baseUrl}/kavarny`,
+          en: `${baseUrl}/en/kavarny`,
+        },
+      },
+    },
+    {
+      url: `${baseUrl}/en/kavarny`,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+      alternates: {
+        languages: {
+          cs: `${baseUrl}/kavarny`,
+          en: `${baseUrl}/en/kavarny`,
+        },
+      },
     },
     {
       url: `${baseUrl}/cukrarny`,

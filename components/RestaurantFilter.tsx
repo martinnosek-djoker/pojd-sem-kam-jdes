@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary, translateCuisineType } from "@/lib/i18n/dictionaries";
+
 interface RestaurantFilterProps {
   locations: string[];
   cuisineTypes: string[];
@@ -19,6 +22,8 @@ export default function RestaurantFilter({
   onCuisineTypeChange,
   onReset,
 }: RestaurantFilterProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).filter;
   const hasActiveFilters = selectedLocation || selectedCuisineType;
 
   return (
@@ -41,7 +46,7 @@ export default function RestaurantFilter({
               className="w-full pl-11 pr-10 py-3 sm:py-3.5 border border-hairline rounded-xl focus:ring-2 focus:ring-terracotta focus:border-terracotta bg-surface text-ink focus:outline-none transition-all duration-200 appearance-none bg-no-repeat bg-right font-medium"
               style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238A6A56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
             >
-              <option value="">Všechny lokality</option>
+              <option value="">{t.allLocations}</option>
               {locations.map((location) => (
                 <option key={location} value={location}>
                   {location}
@@ -72,10 +77,10 @@ export default function RestaurantFilter({
               className="w-full pl-11 pr-10 py-3 sm:py-3.5 border border-hairline rounded-xl focus:ring-2 focus:ring-terracotta focus:border-terracotta bg-surface text-ink focus:outline-none transition-all duration-200 appearance-none bg-no-repeat bg-right font-medium"
               style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238A6A56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
             >
-              <option value="">Všechny typy</option>
+              <option value="">{t.allCuisineTypes}</option>
               {cuisineTypes.map((type) => (
                 <option key={type} value={type}>
-                  {type}
+                  {translateCuisineType(type, locale)}
                 </option>
               ))}
             </select>
@@ -90,7 +95,7 @@ export default function RestaurantFilter({
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <span>Zrušit</span>
+              <span>{t.reset}</span>
             </button>
           )}
         </div>

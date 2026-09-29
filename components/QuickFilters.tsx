@@ -1,6 +1,8 @@
 "use client";
 
 import { Restaurant, cuisineMatchesFilter } from "@/lib/types";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary, translateCuisineType } from "@/lib/i18n/dictionaries";
 
 interface QuickFiltersProps {
   selectedCuisineType: string;
@@ -25,6 +27,8 @@ export default function QuickFilters({
   onCuisineTypeChange,
   restaurants,
 }: QuickFiltersProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).quickFilters;
   const handleFilterClick = (value: string) => {
     // Toggle filter - if already selected, deselect it
     if (selectedCuisineType === value) {
@@ -51,7 +55,7 @@ export default function QuickFilters({
   return (
     <div className="mb-6 sm:mb-8">
       <h3 className="text-sm font-semibold text-text-muted mb-3 px-1">
-        Rychlé filtry
+        {t.heading}
       </h3>
       {/* Horizontal scrollable on mobile, wrapped on desktop */}
       <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -74,7 +78,7 @@ export default function QuickFilters({
                 `}
               >
                 <span className="mr-2">{filter.emoji}</span>
-                {filter.label}
+                {translateCuisineType(filter.label, locale)}
               </button>
             );
           })}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 // Modern SVG Icons
 const HomeIcon = () => (
@@ -70,11 +71,15 @@ export default function BottomNavigation() {
     return null;
   }
 
+  const locale = pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'cs';
+  const t = getDictionary(locale).nav;
+  const prefix = locale === 'en' ? '/en' : '';
+
   const mainItems = [
-    { href: '/', label: 'Restaurace', icon: HomeIcon },
-    { href: '/kavarny', label: 'Kavárny', icon: CoffeeIcon },
-    { href: '/pobliz', label: 'Okolí', icon: MapPinIcon },
-    { href: '/akce', label: 'Akce', icon: CalendarIcon },
+    { href: prefix || '/', label: t.restaurants, icon: HomeIcon },
+    { href: `${prefix}/kavarny`, label: t.cafes, icon: CoffeeIcon },
+    { href: `${prefix}/pobliz`, label: t.nearby, icon: MapPinIcon },
+    { href: `${prefix}/akce`, label: t.events, icon: CalendarIcon },
   ];
 
   const isActive = (href: string) => {

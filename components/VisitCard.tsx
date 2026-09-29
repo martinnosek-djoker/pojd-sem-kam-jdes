@@ -4,15 +4,21 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Visit } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface VisitCardProps {
   visit: Visit;
 }
 
 export default function VisitCard({ visit }: VisitCardProps) {
+  const locale = useLocale();
+  const t = getDictionary(locale).visitCard;
   const [imageError, setImageError] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const place = visit.restaurant || visit.cafe;
+  const comment = locale === "en" ? (visit.comment_en || visit.comment) : visit.comment;
+  const dishes = locale === "en" ? (visit.dishes_en || visit.dishes) : visit.dishes;
 
   const isRestaurant = !!visit.restaurant;
   // Prefer an actual photo from this visit over the place's generic photo
@@ -49,7 +55,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
 
   if (!place) return null;
 
-  const visitDate = new Date(visit.visit_date).toLocaleDateString("cs-CZ", {
+  const visitDate = new Date(visit.visit_date).toLocaleDateString(locale === "en" ? "en-GB" : "cs-CZ", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -117,16 +123,16 @@ export default function VisitCard({ visit }: VisitCardProps) {
 
       {/* Short overall comment - reserved 4-line height whether present or not */}
       <div className="mb-3 min-h-[92px]">
-        {visit.comment && (
-          <p className="text-sm text-text-muted italic leading-relaxed line-clamp-4">&quot;{visit.comment}&quot;</p>
+        {comment && (
+          <p className="text-sm text-text-muted italic leading-relaxed line-clamp-4">&quot;{comment}&quot;</p>
         )}
       </div>
 
       {/* Dishes with optional per-dish rating - capped count, reserved height */}
       <div className="h-[60px] overflow-hidden mb-4">
-        {visit.dishes && visit.dishes.length > 0 && (
+        {dishes && dishes.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
-            {visit.dishes.slice(0, 3).map((dish, i) => (
+            {dishes.slice(0, 3).map((dish, i) => (
               <span
                 key={i}
                 className="px-2.5 py-1 bg-surface-2 text-ink-mid text-xs rounded-full"
@@ -135,9 +141,9 @@ export default function VisitCard({ visit }: VisitCardProps) {
                 {dish.rating ? <span className="text-terracotta font-semibold"> {dish.rating}/10</span> : null}
               </span>
             ))}
-            {visit.dishes.length > 3 && (
+            {dishes.length > 3 && (
               <span className="px-2.5 py-1 bg-surface-2/70 text-text-muted text-xs rounded-full">
-                +{visit.dishes.length - 3} další
+                {t.moreDishes(dishes.length - 3)}
               </span>
             )}
           </div>
