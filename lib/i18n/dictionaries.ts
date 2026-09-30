@@ -362,3 +362,14 @@ export function formatPrice(price: number, locale: Locale): string {
   if (price < 2000) return t.priceRange(1000, 2000);
   return t.priceOver(2000);
 }
+
+// Same warm terracotta family used everywhere else in the app, just ramping
+// from a light gold tint (budget) up to a solid dark badge (splurge) so the
+// four price tiers read apart from across the room, not just up close.
+export function getPriceBadgeClasses(price: number): string {
+  if (price === 0) return "bg-surface-2 text-ink-mid";
+  if (price < 500) return "bg-[#F2B84B]/20 text-[#8A6412]";
+  if (price < 1000) return "bg-terracotta/10 text-terracotta";
+  if (price < 2000) return "bg-terracotta/20 text-terracotta-dark";
+  return "bg-terracotta-dark text-[#FFF8EF]";
+}

@@ -4,7 +4,7 @@ import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import { formatPrice, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
+import { formatPrice, getPriceBadgeClasses, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -49,7 +49,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
             </svg>
             {restaurant.rating}/10
           </span>
-          <span className="text-xs font-semibold bg-surface-2 text-ink-mid px-2.5 py-1 rounded-full whitespace-nowrap">
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${getPriceBadgeClasses(restaurant.price)}`}>
             {formatPrice(restaurant.price, locale)}
           </span>
         </div>
