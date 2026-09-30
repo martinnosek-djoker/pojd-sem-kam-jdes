@@ -765,19 +765,27 @@ export async function getCafeById(id: number): Promise<Cafe | null> {
 }
 
 export async function createCafe(input: CafeInput): Promise<Cafe> {
-  const { data, error } = await supabase
+  const baseRow = {
+    name: input.name,
+    location: input.location,
+    addresses: input.addresses || null,
+    coordinates: input.coordinates || null,
+    website_url: input.website_url || null,
+    image_url: input.image_url || null,
+    tags: input.tags || [],
+  };
+
+  let { data, error } = await supabase
     .from("cafes")
-    .insert({
-      name: input.name,
-      location: input.location,
-      addresses: input.addresses || null,
-      coordinates: input.coordinates || null,
-      website_url: input.website_url || null,
-      image_url: input.image_url || null,
-      tags: input.tags || [],
-    })
+    .insert({ ...baseRow, specialty: input.specialty || null })
     .select()
     .single();
+
+  if (error && (error.code === "PGRST204" || error.message?.includes("specialty"))) {
+    // specialty column may not exist yet (migration not run) - fall back so saving still works.
+    console.warn("[createCafe] specialty column missing, inserting without it:", error.message);
+    ({ data, error } = await supabase.from("cafes").insert(baseRow).select().single());
+  }
 
   if (error) {
     console.error("Error creating cafe:", error);
@@ -814,20 +822,28 @@ export async function updateCafe(
   id: number,
   input: CafeInput
 ): Promise<Cafe | null> {
-  const { data, error } = await supabase
+  const baseUpdate = {
+    name: input.name,
+    location: input.location,
+    addresses: input.addresses || null,
+    coordinates: input.coordinates || null,
+    website_url: input.website_url || null,
+    image_url: input.image_url || null,
+    tags: input.tags || [],
+  };
+
+  let { data, error } = await supabase
     .from("cafes")
-    .update({
-      name: input.name,
-      location: input.location,
-      addresses: input.addresses || null,
-      coordinates: input.coordinates || null,
-      website_url: input.website_url || null,
-      image_url: input.image_url || null,
-      tags: input.tags || [],
-    })
+    .update({ ...baseUpdate, specialty: input.specialty || null })
     .eq("id", id)
     .select()
     .single();
+
+  if (error && (error.code === "PGRST204" || error.message?.includes("specialty"))) {
+    // specialty column may not exist yet (migration not run) - fall back so saving still works.
+    console.warn("[updateCafe] specialty column missing, updating without it:", error.message);
+    ({ data, error } = await supabase.from("cafes").update(baseUpdate).eq("id", id).select().single());
+  }
 
   if (error) {
     console.error("Error updating cafe:", error);

@@ -154,6 +154,7 @@ export interface Cafe {
   website_url: string | null;
   image_url: string | null;
   tags: string[]; // ["dezert", "matcha", "snídaně"]
+  specialty: string | null; // A specific thing to order, e.g. "Turecká vejce"
   created_at: string;
   updated_at: string;
 }
@@ -170,6 +171,7 @@ export const cafeSchema = z.object({
   website_url: z.string().url("Neplatná URL").optional().nullable().or(z.literal("")),
   image_url: imageUrlSchema,
   tags: z.array(z.string()),
+  specialty: z.string().optional().nullable(),
 });
 
 export type CafeInput = z.infer<typeof cafeSchema>;

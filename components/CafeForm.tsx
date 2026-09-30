@@ -35,6 +35,7 @@ export default function CafeForm({
       website_url: "",
       image_url: "",
       tags: [],
+      specialty: "",
     },
   });
 
@@ -58,6 +59,7 @@ export default function CafeForm({
             website_url: data.website_url || "",
             image_url: data.image_url || "",
             tags: data.tags || [],
+            specialty: data.specialty || "",
           });
         })
         .catch((err) => {
@@ -75,6 +77,7 @@ export default function CafeForm({
       ...data,
       addresses: data.addresses || null,
       coordinates: data.coordinates || null,
+      specialty: data.specialty || null,
     };
 
     try {
@@ -198,6 +201,18 @@ export default function CafeForm({
           <p className="text-xs text-gray-500 mt-1">
             Vyber kategorie pro filtrování (dezert = z původních cukráren, snídaně = původní snídaně, TOP káva = špičková kvalita kávy)
           </p>
+        </div>
+
+        {/* Specialty - a specific thing to order, shown on the public card */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Co si dát <span className="text-xs text-gray-500">(nepovinné, zobrazí se na kartičce)</span>
+          </label>
+          <input
+            {...register("specialty")}
+            placeholder="např. turecká vejce, malinový danish..."
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
 
         {/* Addresses + auto-geocoded coordinates */}

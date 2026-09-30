@@ -53,7 +53,9 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
         <div className="font-serif text-base font-semibold text-ink mb-0.5 truncate">
           {cafe.name}
         </div>
-        <div className="text-sm text-text-muted mb-1.5 truncate">{location}</div>
+        <div className="text-sm text-text-muted mb-1.5 truncate">
+          {location}{cafe.specialty ? ` · ${cafe.specialty}` : ""}
+        </div>
         {cafe.tags && cafe.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {cafe.tags.map((tag, idx) => (
