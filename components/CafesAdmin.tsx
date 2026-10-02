@@ -108,29 +108,29 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
       )}
 
       {/* Desktop table */}
-      <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="hidden md:block bg-white rounded-lg shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Název
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Lokalita
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Kategorie
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Hodnocení
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Web/Instagram
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Foto
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Akce
               </th>
             </tr>
@@ -139,7 +139,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
             {sortedCafes.map((cafe) => (
               <React.Fragment key={cafe.id}>
                 <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <div className="text-sm font-medium text-gray-900">{cafe.name}</div>
                       {(!cafe.coordinates || Object.keys(cafe.coordinates).length === 0) && (
@@ -149,10 +149,10 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                     {cafe.location}
                   </td>
-                  <td className="px-6 py-4 text-sm">
+                  <td className="px-4 py-4 text-sm">
                     <div className="flex flex-wrap gap-1">
                       {cafe.tags && cafe.tags.length > 0 ? (
                         cafe.tags.map((tag, idx) => (
@@ -168,10 +168,10 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                     {cafe.rating != null ? `★ ${cafe.rating}/10` : <span className="text-gray-400">—</span>}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm">
                     {cafe.website_url ? (
                       <a
                         href={cafe.website_url}
@@ -185,14 +185,14 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                       <span className="text-gray-400">Bez URL</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm">
                     {cafe.image_url ? (
                       <span className="text-green-600">✓ Ano</span>
                     ) : (
                       <span className="text-gray-400">Bez fotky</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <AdminRowActions
                       onVisit={() => setVisitFor(cafe)}
                       onEdit={() => {
@@ -205,7 +205,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                 </tr>
                 {editingId === cafe.id && (
                   <tr>
-                    <td colSpan={7} className="px-6 py-4 bg-gray-50">
+                    <td colSpan={7} className="px-4 py-4 bg-gray-50">
                       <CafeForm
                         cafeId={cafe.id}
                         onSave={handleSave}
