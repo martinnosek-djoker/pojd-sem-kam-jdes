@@ -155,6 +155,7 @@ export interface Cafe {
   image_url: string | null;
   tags: string[]; // ["dezert", "matcha", "snídaně"]
   specialty: string | null; // A specific thing to order, e.g. "Turecká vejce"
+  rating: number | null; // 1-10, optional - shown as a star rating on the card
   created_at: string;
   updated_at: string;
 }
@@ -172,6 +173,7 @@ export const cafeSchema = z.object({
   image_url: imageUrlSchema,
   tags: z.array(z.string()),
   specialty: z.string().optional().nullable(),
+  rating: z.number().min(1).max(10, "Hodnocení musí být mezi 1-10").optional().nullable(),
 });
 
 export type CafeInput = z.infer<typeof cafeSchema>;

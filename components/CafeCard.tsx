@@ -56,9 +56,17 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
         <div className="text-sm text-text-muted mb-1.5 truncate">
           {location}{cafe.specialty ? ` · ${cafe.specialty}` : ""}
         </div>
-        {cafe.tags && cafe.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {cafe.tags.map((tag, idx) => (
+        {(cafe.rating != null || (cafe.tags && cafe.tags.length > 0)) && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {cafe.rating != null && (
+              <span className="flex items-center gap-1 text-sm font-semibold text-ink mr-0.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#F2B84B" className="flex-shrink-0">
+                  <path d="M12 2.5l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 16.6 6.4 19.6l1.4-6.3-4.8-4.3 6.4-.6L12 2.5Z" />
+                </svg>
+                {cafe.rating}/10
+              </span>
+            )}
+            {cafe.tags?.map((tag, idx) => (
               <span
                 key={idx}
                 className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${TAG_COLORS[tag] || "bg-surface-2 text-ink-mid"}`}

@@ -36,6 +36,7 @@ export default function CafeForm({
       image_url: "",
       tags: [],
       specialty: "",
+      rating: null,
     },
   });
 
@@ -60,6 +61,7 @@ export default function CafeForm({
             image_url: data.image_url || "",
             tags: data.tags || [],
             specialty: data.specialty || "",
+            rating: data.rating ?? null,
           });
         })
         .catch((err) => {
@@ -78,6 +80,7 @@ export default function CafeForm({
       addresses: data.addresses || null,
       coordinates: data.coordinates || null,
       specialty: data.specialty || null,
+      rating: data.rating ?? null,
     };
 
     try {
@@ -213,6 +216,27 @@ export default function CafeForm({
             placeholder="např. turecká vejce, malinový danish..."
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+
+        {/* Rating */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Hodnocení <span className="text-xs text-gray-500">(1-10, nepovinné)</span>
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            min="1"
+            max="10"
+            placeholder="8.5"
+            {...register("rating", {
+              setValueAs: (v) => (v === "" || v == null || Number.isNaN(Number(v)) ? null : Number(v)),
+            })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.rating && (
+            <p className="mt-1 text-xs text-red-600">{errors.rating.message}</p>
+          )}
         </div>
 
         {/* Addresses + auto-geocoded coordinates */}

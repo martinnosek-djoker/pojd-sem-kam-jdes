@@ -122,6 +122,9 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                 Kategorie
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Hodnocení
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Web/Instagram
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -165,6 +168,9 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                       )}
                     </div>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {cafe.rating != null ? `★ ${cafe.rating}/10` : <span className="text-gray-400">—</span>}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {cafe.website_url ? (
                       <a
@@ -199,7 +205,7 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
                 </tr>
                 {editingId === cafe.id && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 bg-gray-50">
+                    <td colSpan={7} className="px-6 py-4 bg-gray-50">
                       <CafeForm
                         cafeId={cafe.id}
                         onSave={handleSave}
@@ -253,6 +259,9 @@ export default function CafesAdmin({ initialCafes }: CafesAdminProps) {
             </div>
 
             <div className="flex items-center gap-3 mt-2 text-sm">
+              {cafe.rating != null && (
+                <span className="text-gray-700">★ {cafe.rating}/10</span>
+              )}
               {cafe.website_url ? (
                 <a
                   href={cafe.website_url}

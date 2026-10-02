@@ -764,8 +764,17 @@ export async function getCafeById(id: number): Promise<Cafe | null> {
   return data;
 }
 
+// Optional cafe columns added by later migrations (specialty, rating). If one
+// isn't in the database yet, PostgREST answers PGRST204 naming the column -
+// drop just that column and retry so saving still works until it's migrated.
+type CafeWrite = Record<string, unknown>;
+function missingColumn(error: { code?: string; message?: string } | null, keys: string[]): string | null {
+  if (!error || error.code !== "PGRST204") return null;
+  return keys.find((k) => error.message?.includes(`'${k}'`)) ?? null;
+}
+
 export async function createCafe(input: CafeInput): Promise<Cafe> {
-  const baseRow = {
+  const row: CafeWrite = {
     name: input.name,
     location: input.location,
     addresses: input.addresses || null,
@@ -773,18 +782,16 @@ export async function createCafe(input: CafeInput): Promise<Cafe> {
     website_url: input.website_url || null,
     image_url: input.image_url || null,
     tags: input.tags || [],
+    specialty: input.specialty || null,
+    rating: input.rating ?? null,
   };
 
-  let { data, error } = await supabase
-    .from("cafes")
-    .insert({ ...baseRow, specialty: input.specialty || null })
-    .select()
-    .single();
+  let { data, error } = await supabase.from("cafes").insert(row).select().single();
 
-  if (error && (error.code === "PGRST204" || error.message?.includes("specialty"))) {
-    // specialty column may not exist yet (migration not run) - fall back so saving still works.
-    console.warn("[createCafe] specialty column missing, inserting without it:", error.message);
-    ({ data, error } = await supabase.from("cafes").insert(baseRow).select().single());
+  for (let missing = missingColumn(error, ["specialty", "rating"]); missing; missing = missingColumn(error, ["specialty", "rating"])) {
+    console.warn(`[createCafe] ${missing} column missing, inserting without it`);
+    delete row[missing];
+    ({ data, error } = await supabase.from("cafes").insert(row).select().single());
   }
 
   if (error) {
@@ -822,7 +829,7 @@ export async function updateCafe(
   id: number,
   input: CafeInput
 ): Promise<Cafe | null> {
-  const baseUpdate = {
+  const row: CafeWrite = {
     name: input.name,
     location: input.location,
     addresses: input.addresses || null,
@@ -830,19 +837,17 @@ export async function updateCafe(
     website_url: input.website_url || null,
     image_url: input.image_url || null,
     tags: input.tags || [],
+    specialty: input.specialty || null,
+    // Only touch rating when the caller sent it, so a partial payload can't wipe it.
+    ...(input.rating !== undefined && { rating: input.rating }),
   };
 
-  let { data, error } = await supabase
-    .from("cafes")
-    .update({ ...baseUpdate, specialty: input.specialty || null })
-    .eq("id", id)
-    .select()
-    .single();
+  let { data, error } = await supabase.from("cafes").update(row).eq("id", id).select().single();
 
-  if (error && (error.code === "PGRST204" || error.message?.includes("specialty"))) {
-    // specialty column may not exist yet (migration not run) - fall back so saving still works.
-    console.warn("[updateCafe] specialty column missing, updating without it:", error.message);
-    ({ data, error } = await supabase.from("cafes").update(baseUpdate).eq("id", id).select().single());
+  for (let missing = missingColumn(error, ["specialty", "rating"]); missing; missing = missingColumn(error, ["specialty", "rating"])) {
+    console.warn(`[updateCafe] ${missing} column missing, updating without it`);
+    delete row[missing];
+    ({ data, error } = await supabase.from("cafes").update(row).eq("id", id).select().single());
   }
 
   if (error) {
