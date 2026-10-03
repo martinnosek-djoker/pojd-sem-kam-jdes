@@ -15,12 +15,15 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Vercel - explicitly forcing no-store here removes any ambiguity.
 const noStoreFetch: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' });
 
+// The native app is a static export that has to read the DB once at build time;
+// a no-store fetch makes that prerender fail ("Dynamic server usage"), so only
+// the web build gets the no-store behavior.
+const clientOptions = process.env.MOBILE_BUILD === 'true' ? {} : { global: { fetch: noStoreFetch } };
+
 // Public client - respects RLS
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  global: { fetch: noStoreFetch },
-});
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, clientOptions);
 
 // Admin client - bypasses RLS (use only for admin operations)
 export const supabaseAdmin = supabaseServiceRoleKey
-  ? createClient(supabaseUrl, supabaseServiceRoleKey, { global: { fetch: noStoreFetch } })
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, clientOptions)
   : supabase;

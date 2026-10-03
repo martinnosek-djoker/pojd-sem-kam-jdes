@@ -12,6 +12,8 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
+  // Lets shared code (e.g. card links) know it's the static app build, at compile time
+  env: { NEXT_PUBLIC_MOBILE_BUILD: 'true' },
   // Static export for mobile Capacitor builds
   output: 'export',
   trailingSlash: true,

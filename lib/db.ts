@@ -1397,6 +1397,37 @@ export async function getAllVisits(): Promise<Visit[]> {
   return data as unknown as Visit[];
 }
 
+export async function getVisitById(id: number): Promise<Visit | null> {
+  const { data, error } = await supabase
+    .from("visits")
+    .select(VISIT_SELECT)
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error fetching visit:", error);
+    return null;
+  }
+
+  return (data as unknown as Visit) ?? null;
+}
+
+export async function getVisitsForPlace(kind: "restaurant" | "cafe", placeId: number): Promise<Visit[]> {
+  const { data, error } = await supabase
+    .from("visits")
+    .select(VISIT_SELECT)
+    .eq(kind === "restaurant" ? "restaurant_id" : "cafe_id", placeId)
+    .order("visit_date", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching visits for place:", error);
+    return [];
+  }
+
+  return data as unknown as Visit[];
+}
+
 export async function createVisit(input: VisitInput): Promise<Visit> {
   const { translateVisitContent } = await import("./translate");
   const { comment_en, dishes_en } = await translateVisitContent(input.comment ?? null, input.dishes || []);

@@ -16,7 +16,8 @@ export default function LanguageSwitcher() {
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
   const normalizedCsPath = (isEnglish ? pathname.replace(/^\/en/, "") || "/" : pathname).replace(/\/$/, "") || "/";
 
-  if (!TRANSLATED_PATHS.includes(normalizedCsPath)) return null;
+  const isDetailPage = /^\/(restaurace|kavarny|navstevy)\/[^/]+$/.test(normalizedCsPath);
+  if (!TRANSLATED_PATHS.includes(normalizedCsPath) && !isDetailPage) return null;
 
   const targetHref = isEnglish
     ? normalizedCsPath

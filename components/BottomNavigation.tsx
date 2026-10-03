@@ -88,6 +88,10 @@ export default function BottomNavigation() {
     const normalizedPathname = pathname.replace(/\/$/, '') || '/';
     const normalizedHref = href.replace(/\/$/, '') || '/';
     if (normalizedPathname === normalizedHref) return true;
+    // Restaurant and visit detail pages live under the home ("Restaurace") tab.
+    if (normalizedHref === homeHref) {
+      return /^(\/en)?\/(restaurace|navstevy)\//.test(normalizedPathname);
+    }
     // Prefix-matching would make the home tab ("/" or "/en") match every
     // other page too, since they all start with that same prefix.
     if (normalizedHref === homeHref) return false;

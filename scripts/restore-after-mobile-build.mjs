@@ -10,6 +10,15 @@ const API_ROUTES_TO_RESTORE = [
   'app/api/bakeries/[id]',
   'app/api/breakfasts',
   'app/api/visits/[id]',
+  'app/api/geocode',
+  // Dynamic detail pages (restaurant/cafe/visit) - not part of the static app,
+  // whose cards link out instead (see IS_STATIC_APP in lib/slug.ts).
+  'app/restaurace',
+  'app/navstevy',
+  'app/kavarny/[slug]',
+  'app/en/restaurace',
+  'app/en/navstevy',
+  'app/en/kavarny/[slug]',
 ];
 
 console.log('🔧 Restoring API routes after mobile build...');

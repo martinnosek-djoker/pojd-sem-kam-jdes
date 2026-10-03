@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import { Visit } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { IS_STATIC_APP, visitPath } from "@/lib/slug";
 import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
 
 interface VisitCardProps {
@@ -152,7 +154,12 @@ export default function VisitCard({ visit }: VisitCardProps) {
   const cardClasses =
     "group bg-surface rounded-lg shadow-md shadow-black/5 hover:shadow-lg hover:shadow-black/10 transition-all duration-500 p-6 border border-hairline hover:border-terracotta/40 relative overflow-hidden h-full";
 
-  const card = place.website_url ? (
+  // The native app is a static export without the detail pages, so it keeps linking out.
+  const card = !IS_STATIC_APP ? (
+    <Link href={visitPath(place.name, visit.visit_date, visit.id, locale)} className={`block ${cardClasses}`}>
+      <CardContent />
+    </Link>
+  ) : place.website_url ? (
     <a href={place.website_url} target="_blank" rel="noopener noreferrer" className={`block ${cardClasses}`}>
       <CardContent />
     </a>

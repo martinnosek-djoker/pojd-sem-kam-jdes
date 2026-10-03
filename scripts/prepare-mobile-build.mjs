@@ -13,6 +13,14 @@ const API_ROUTES_TO_EXCLUDE = [
   // Admin-only address autocomplete (LocationAddressFields) added after this
   // list was last updated - reads a query param, so it fails static export.
   'app/api/geocode',
+  // Dynamic detail pages (restaurant/cafe/visit) - not part of the static app,
+  // whose cards link out instead (see IS_STATIC_APP in lib/slug.ts).
+  'app/restaurace',
+  'app/navstevy',
+  'app/kavarny/[slug]',
+  'app/en/restaurace',
+  'app/en/navstevy',
+  'app/en/kavarny/[slug]',
 ];
 
 console.log('🔧 Preparing for mobile build...');

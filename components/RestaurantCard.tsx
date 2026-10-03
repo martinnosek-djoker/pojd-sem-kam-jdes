@@ -3,7 +3,9 @@
 import { Restaurant } from "@/lib/types";
 import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
+import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { IS_STATIC_APP, placePath } from "@/lib/slug";
 import { formatPrice, getPriceBadgeClasses, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
@@ -60,11 +62,20 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
   const rowClasses =
     "flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl hover:border-terracotta/40 transition-colors";
 
-  if (restaurant.website_url) {
+  // The native app is a static export without the detail pages, so it keeps linking out.
+  if (IS_STATIC_APP && restaurant.website_url) {
     return (
       <a href={restaurant.website_url} target="_blank" rel="noopener noreferrer" className={rowClasses}>
         <CardContent />
       </a>
+    );
+  }
+
+  if (!IS_STATIC_APP) {
+    return (
+      <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} className={rowClasses}>
+        <CardContent />
+      </Link>
     );
   }
 
