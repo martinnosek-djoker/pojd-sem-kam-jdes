@@ -36,6 +36,34 @@ export async function translateToEnglish(text: string): Promise<string | null> {
   }
 }
 
+// Short menu items / specialties ("turecká vejce", "špička, kremrole"). Differs
+// from the review translator in how it treats Czech-only food: keep the Czech
+// name and add a short descriptor, since foreigners can't look it up otherwise.
+export async function translateSpecialtyToEnglish(text: string): Promise<string | null> {
+  if (!text || !text.trim()) return text;
+
+  try {
+    const anthropic = getClient();
+    const message = await anthropic.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 200,
+      messages: [{ role: "user", content: text }],
+      system:
+        "You translate short lists of dishes/drinks recommended at Prague cafes and restaurants from Czech to natural English menu wording. " +
+        "Use the normal English name where one exists (turecká vejce = Turkish eggs, párky = sausages, kremrole = cream horn). " +
+        "For traditional Czech foods with no real English equivalent (e.g. špička, věneček, větrník, svíčková), keep the Czech name and add a brief descriptor such as 'Czech classic', e.g. 'špička (Czech classic cake)'. " +
+        "Keep foreign loanword dishes and proper nouns unchanged. Keep the same comma-separated structure. " +
+        "Reply with ONLY the translation, no preamble, no quotes.",
+    });
+
+    const block = message.content[0];
+    return block.type === "text" ? block.text.trim() : null;
+  } catch (error) {
+    console.error("[translate] Error translating specialty:", error);
+    return null;
+  }
+}
+
 // Translates a visit's comment and its dish names together in one call, to
 // avoid extra round-trips (a visit is small: a comment plus a handful of
 // dishes at most).

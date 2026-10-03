@@ -782,8 +782,8 @@ type CafeWrite = Record<string, unknown>;
 // back to showing the Czech original.
 async function translateSpecialty(specialty: string | null | undefined): Promise<string | null> {
   if (!specialty || !specialty.trim()) return null;
-  const { translateToEnglish } = await import("./translate");
-  return translateToEnglish(specialty);
+  const { translateSpecialtyToEnglish } = await import("./translate");
+  return translateSpecialtyToEnglish(specialty);
 }
 function missingColumn(error: { code?: string; message?: string } | null, keys: string[]): string | null {
   if (!error || error.code !== "PGRST204") return null;

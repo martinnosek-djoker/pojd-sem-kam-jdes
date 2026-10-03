@@ -27,8 +27,10 @@ async function translate(text) {
     max_tokens: 200,
     messages: [{ role: "user", content: text }],
     system:
-      "Translate the following Czech text to natural, casual English, as a food reviewer would write it. " +
-      "Keep proper nouns (dish names that are already foreign loanwords, restaurant/place names) unchanged. " +
+      "You translate short lists of dishes/drinks recommended at Prague cafes and restaurants from Czech to natural English menu wording. " +
+      "Use the normal English name where one exists (turecká vejce = Turkish eggs, párky = sausages, kremrole = cream horn). " +
+      "For traditional Czech foods with no real English equivalent (e.g. špička, věneček, větrník, svíčková), keep the Czech name and add a brief descriptor such as 'Czech classic', e.g. 'špička (Czech classic cake)'. " +
+      "Keep foreign loanword dishes and proper nouns unchanged. Keep the same comma-separated structure. " +
       "Reply with ONLY the translation, no preamble, no quotes.",
   });
   return msg.content[0].type === "text" ? msg.content[0].text.trim() : null;
