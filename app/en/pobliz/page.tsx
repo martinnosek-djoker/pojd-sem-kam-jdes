@@ -1,4 +1,4 @@
-import { getAllRestaurants, getAllBakeries, getAllCafes } from "@/lib/db";
+import { getAllRestaurants, getAllCafes } from "@/lib/db";
 import NearbyPageClient from "@/app/pobliz/NearbyPageClient";
 
 // The mobile app builds with `output: 'export'` (fully static, no per-request
@@ -7,9 +7,8 @@ import NearbyPageClient from "@/app/pobliz/NearbyPageClient";
 export const dynamic = process.env.MOBILE_BUILD === "true" ? "auto" : "force-dynamic";
 
 export default async function EnglishNearbyPage() {
-  const [restaurants, bakeries, cafes] = await Promise.all([
+  const [restaurants, cafes] = await Promise.all([
     getAllRestaurants(),
-    getAllBakeries(),
     getAllCafes(),
   ]);
 
@@ -17,7 +16,6 @@ export default async function EnglishNearbyPage() {
     <NearbyPageClient
       locale="en"
       initialRestaurants={restaurants}
-      initialBakeries={bakeries}
       initialCafes={cafes}
     />
   );

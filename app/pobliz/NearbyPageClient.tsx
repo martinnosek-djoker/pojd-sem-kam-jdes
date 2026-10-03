@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
-import BakeryCard from "@/components/BakeryCard";
 import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
-import { Restaurant, Bakery, Cafe, Coordinates } from "@/lib/types";
+import { Restaurant, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition, geocodeAddress } from "@/lib/geolocation";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
 import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
@@ -17,32 +16,24 @@ interface RestaurantWithDistance extends Restaurant {
   type: 'restaurant';
 }
 
-interface BakeryWithDistance extends Bakery {
-  distance: number;
-  displayLocation?: string;
-  type: 'bakery';
-}
-
 interface CafeWithDistance extends Cafe {
   distance: number;
   displayLocation?: string;
   type: 'cafe';
 }
 
-type PlaceWithDistance = RestaurantWithDistance | BakeryWithDistance | CafeWithDistance;
+type PlaceWithDistance = RestaurantWithDistance | CafeWithDistance;
 
 interface NearbyPageClientProps {
   locale?: Locale;
   initialRestaurants: Restaurant[];
-  initialBakeries: Bakery[];
   initialCafes: Cafe[];
 }
 
-export default function NearbyPageClient({ locale = "cs", initialRestaurants, initialBakeries, initialCafes }: NearbyPageClientProps) {
+export default function NearbyPageClient({ locale = "cs", initialRestaurants, initialCafes }: NearbyPageClientProps) {
   const t = getDictionary(locale).pobliz;
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
-  const [bakeries, setBakeries] = useState<Bakery[]>(initialBakeries);
   const [cafes, setCafes] = useState<Cafe[]>(initialCafes);
   const [nearbyPlaces, setNearbyPlaces] = useState<PlaceWithDistance[]>([]);
   const [gettingLocation, setGettingLocation] = useState(false);
@@ -73,21 +64,16 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
 
     async function refreshData() {
       try {
-        const [restaurantsRes, bakeriesRes, cafesRes] = await Promise.all([
+        const [restaurantsRes, cafesRes] = await Promise.all([
           fetch(getApiUrl("/api/restaurants")),
-          fetch(getApiUrl("/api/bakeries")),
           fetch(getApiUrl("/api/cafes")),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
-        const bakeriesData = await bakeriesRes.json();
         const cafesData = await cafesRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
-        }
-        if (Array.isArray(bakeriesData)) {
-          setBakeries(bakeriesData);
         }
         if (Array.isArray(cafesData)) {
           setCafes(cafesData);
@@ -100,9 +86,9 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
     refreshData();
   }, []);
 
-  // Calculate nearby places (restaurants, bakeries and cafes) when user location or radius changes
+  // Calculate nearby places (restaurants and cafes) when user location or radius changes
   useEffect(() => {
-    if (!userLocation || (!restaurants.length && !bakeries.length && !cafes.length)) {
+    if (!userLocation || (!restaurants.length && !cafes.length)) {
       setNearbyPlaces([]);
       return;
     }
@@ -129,30 +115,6 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
             distance,
             displayLocation: location,
             type: 'restaurant',
-          });
-        }
-      });
-    });
-
-    // Process bakeries
-    bakeries.forEach((bakery) => {
-      if (!bakery.coordinates) return;
-
-      // Split locations and process each branch
-      const locations = bakery.location.split(',').map(l => l.trim());
-
-      locations.forEach((location) => {
-        const coords = bakery.coordinates![location];
-        if (!coords) return;
-
-        const distance = calculateDistance(userLocation, coords);
-
-        if (distance <= radiusKm) {
-          placesWithDistance.push({
-            ...bakery,
-            distance,
-            displayLocation: location,
-            type: 'bakery',
           });
         }
       });
@@ -186,7 +148,7 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
     placesWithDistance.sort((a, b) => a.distance - b.distance);
 
     // Deduplicate - keep only the closest occurrence of each place
-    // Use name for deduplication since same place can be in multiple tables (restaurants/cafes/bakeries)
+    // Use name for deduplication since same place can be in multiple tables (restaurants/cafes)
     const seenNames = new Set<string>();
     const deduplicatedPlaces = placesWithDistance.filter(place => {
       if (seenNames.has(place.name)) {
@@ -197,7 +159,7 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
     });
 
     setNearbyPlaces(deduplicatedPlaces);
-  }, [userLocation, radiusKm, restaurants, bakeries, cafes]);
+  }, [userLocation, radiusKm, restaurants, cafes]);
 
   const handleGetLocation = async () => {
     setGettingLocation(true);
@@ -509,11 +471,6 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
                   {place.type === 'restaurant' ? (
                     <RestaurantCard
                       restaurant={place}
-                      forceLocation={place.displayLocation}
-                    />
-                  ) : place.type === 'bakery' ? (
-                    <BakeryCard
-                      bakery={place}
                       forceLocation={place.displayLocation}
                     />
                   ) : (
