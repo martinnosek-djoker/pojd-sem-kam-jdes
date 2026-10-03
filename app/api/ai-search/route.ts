@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
+import { cleanCzechText } from "@/lib/clean-czech-text";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -98,6 +99,7 @@ DŮLEŽITÉ:
 - Specialty obsahuje konkrétní specializaci restaurace (co dělají nejlépe)
 - Vždy vysvětli své rozhodnutí stručně a přátelsky
 - Pokud nejsou žádné perfektní shody, nabídni nejbližší alternativy
+- Piš výhradně česky latinkou se správnou českou diakritikou. NIKDY nepoužívej azbuku (cyrilici) ani jiná písma, a to ani v jednotlivých písmenech uprostřed slova.
 - V poli "explanation" NIKDY neuváděj interní databázové ID restaurací (např. "(id 2338)") - to je vnitřní údaj, který uživatel nemá vidět. Restaurace zmiňuj vždy jen jejich názvem.
 
 Odpověz POUZE ve formátu JSON:
@@ -116,6 +118,8 @@ Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 2000,
+      // Lower than default: reduces stray non-Latin characters creeping into Czech text.
+      temperature: 0.3,
       messages: [
         {
           role: "user",
@@ -155,8 +159,9 @@ Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.
 
     // Safety net: strip any internal id references the model might slip into
     // the explanation despite the system prompt telling it not to (e.g. "(id 2338)").
+    // It also transliterates any stray Cyrillic letters back to Latin.
     const cleanExplanation = typeof aiResponse.explanation === "string"
-      ? aiResponse.explanation.replace(/\s*\(?\bid[:\s]*\d+\)?/gi, "")
+      ? cleanCzechText(aiResponse.explanation.replace(/\s*\(?\bid[:\s]*\d+\)?/gi, ""))
       : aiResponse.explanation;
 
     return NextResponse.json({
