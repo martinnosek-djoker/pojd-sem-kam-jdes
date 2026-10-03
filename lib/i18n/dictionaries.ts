@@ -106,6 +106,8 @@ export const dictionaries = {
     },
     common: {
       nearMe: "V mém okolí",
+      addFavorite: "Přidat do oblíbených",
+      removeFavorite: "Odebrat z oblíbených",
       resetFilters: "Resetovat filtry",
       priceUnspecified: "Cena neuvedena",
       priceUnder: (v: number) => `Do ${v} Kč`,
@@ -283,6 +285,8 @@ export const dictionaries = {
     },
     common: {
       nearMe: "Near me",
+      addFavorite: "Add to favorites",
+      removeFavorite: "Remove from favorites",
       resetFilters: "Reset filters",
       priceUnspecified: "Price not listed",
       priceUnder: (v: number) => `Under ${v} CZK`,

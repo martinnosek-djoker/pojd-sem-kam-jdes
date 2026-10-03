@@ -5,6 +5,7 @@ import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
 import { Cafe } from "@/lib/types";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { useFavorites, pinFavorites } from "@/lib/favorites";
 import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
@@ -23,6 +24,7 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "rating">("name");
+  const { ids: favoriteIds } = useFavorites("cafe");
 
   // In the native app, refresh with a live fetch after the initial (build-time) data paints,
   // since a static mobile build can otherwise go stale between app releases.
@@ -81,8 +83,9 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
       return a.name.localeCompare(b.name, 'cs');
     });
 
-    setFilteredCafes(filtered);
-  }, [selectedLocation, selectedTag, cafes, sortBy]);
+    // Favorites stay pinned on top whatever the sort order is.
+    setFilteredCafes(pinFavorites(filtered, favoriteIds));
+  }, [selectedLocation, selectedTag, cafes, sortBy, favoriteIds]);
 
   const handleReset = () => {
     setSelectedLocation("");
@@ -223,6 +226,7 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
               <CafeCard
                 key={cafe.id}
                 cafe={cafe}
+                showFavorite
               />
             ))}
           </div>

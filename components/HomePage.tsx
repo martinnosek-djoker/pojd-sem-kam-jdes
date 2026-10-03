@@ -11,6 +11,7 @@ import RecentVisits from "@/components/RecentVisits";
 import { Restaurant, Visit, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { useFavorites, pinFavorites } from "@/lib/favorites";
 import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
@@ -32,6 +33,7 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCuisineType, setSelectedCuisineType] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price" | "name">("name");
+  const { ids: favoriteIds } = useFavorites("restaurant");
 
   // In the native app, refresh with a live fetch after the initial (build-time) data paints,
   // since a static mobile build can otherwise go stale between app releases.
@@ -177,8 +179,9 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
       return 0;
     });
 
-    setFilteredRestaurants(filtered);
-  }, [selectedLocation, selectedCuisineType, restaurants, sortBy]);
+    // Favorites stay pinned on top whatever the sort order is.
+    setFilteredRestaurants(pinFavorites(filtered, favoriteIds));
+  }, [selectedLocation, selectedCuisineType, restaurants, sortBy, favoriteIds]);
 
   const handleReset = () => {
     setSelectedLocation("");
@@ -291,6 +294,7 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
                 <RestaurantCard
                   key={restaurant.id}
                   restaurant={restaurant}
+                  showFavorite
                 />
               ))}
             </div>

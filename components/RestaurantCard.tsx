@@ -5,15 +5,17 @@ import { getProxiedImageUrl } from "@/lib/api-config";
 import { useState } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import FavoriteButton from "@/components/FavoriteButton";
 import { IS_STATIC_APP, placePath } from "@/lib/slug";
 import { formatPrice, getPriceBadgeClasses, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
+  showFavorite?: boolean; // star on the right; only the Restaurace/Kavárny lists turn it on
   restaurant: Restaurant;
   forceLocation?: string; // If provided, only show this location instead of all
 }
 
-export default function RestaurantCard({ restaurant, forceLocation }: RestaurantCardProps) {
+export default function RestaurantCard({ restaurant, forceLocation, showFavorite = false }: RestaurantCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).common;
   const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
@@ -59,29 +61,34 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
     </>
   );
 
-  const rowClasses =
-    "flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl hover:border-terracotta/40 transition-colors";
+  const rowClasses = `flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl hover:border-terracotta/40 transition-colors ${
+    showFavorite ? "pr-12" : ""
+  }`;
 
   // The native app is a static export without the detail pages, so it keeps linking out.
-  if (IS_STATIC_APP && restaurant.website_url) {
-    return (
-      <a href={restaurant.website_url} target="_blank" rel="noopener noreferrer" className={rowClasses}>
-        <CardContent />
-      </a>
-    );
-  }
-
-  if (!IS_STATIC_APP) {
-    return (
+  const card =
+    IS_STATIC_APP ? (
+      restaurant.website_url ? (
+        <a href={restaurant.website_url} target="_blank" rel="noopener noreferrer" className={rowClasses}>
+          <CardContent />
+        </a>
+      ) : (
+        <div className={rowClasses}>
+          <CardContent />
+        </div>
+      )
+    ) : (
       <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} scroll={false} className={rowClasses}>
         <CardContent />
       </Link>
     );
-  }
+
+  if (!showFavorite) return card;
 
   return (
-    <div className={rowClasses}>
-      <CardContent />
+    <div className="relative">
+      {card}
+      <FavoriteButton kind="restaurant" id={restaurant.id} />
     </div>
   );
 }
