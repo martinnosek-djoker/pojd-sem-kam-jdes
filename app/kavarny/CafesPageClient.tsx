@@ -22,6 +22,7 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
   const [allLocations, setAllLocations] = useState<string[]>(initialLocations);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
+  const [sortBy, setSortBy] = useState<"name" | "rating">("name");
 
   // In the native app, refresh with a live fetch after the initial (build-time) data paints,
   // since a static mobile build can otherwise go stale between app releases.
@@ -71,11 +72,17 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
       });
     }
 
-    // Sort by name
-    filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+    // Default A-Z; by rating, best first with unrated cafes last (then A-Z)
+    filtered = [...filtered].sort((a, b) => {
+      if (sortBy === "rating") {
+        const diff = (b.rating ?? -1) - (a.rating ?? -1);
+        if (diff !== 0) return diff;
+      }
+      return a.name.localeCompare(b.name, 'cs');
+    });
 
     setFilteredCafes(filtered);
-  }, [selectedLocation, selectedTag, cafes]);
+  }, [selectedLocation, selectedTag, cafes, sortBy]);
 
   const handleReset = () => {
     setSelectedLocation("");
@@ -181,6 +188,22 @@ export default function CafesPageClient({ locale = "cs", initialCafes, initialLo
           <p className="text-text-muted text-sm">
             {t.count(filteredCafes.length)}
           </p>
+
+          <div className="flex items-center gap-3">
+            <label htmlFor="sort" className="text-sm text-text-muted">
+              {t.sortLabel}
+            </label>
+            <select
+              id="sort"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "name" | "rating")}
+              className="pl-4 pr-12 py-2 border border-hairline rounded-md text-sm bg-surface text-ink focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent appearance-none bg-no-repeat bg-right"
+              style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238A6A56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.75rem center", backgroundSize: "1.5em 1.5em" }}
+            >
+              <option value="name">{t.sortName}</option>
+              <option value="rating">{t.sortRating}</option>
+            </select>
+          </div>
         </div>
 
         {/* Cafe grid */}
