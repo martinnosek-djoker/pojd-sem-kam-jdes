@@ -156,7 +156,7 @@ export function PlaceDetailBody({ kind, place, visits, similar, locale, withJson
       <SimilarPlaces
         kind={kind}
         places={similar}
-        title={t.similarTitle}
+        title={isRestaurant ? t.similarTitle : t.similarCafesTitle}
         subtitle={isRestaurant ? t.similarByCuisine(translateCuisineType(restaurant!.cuisine_type, locale)) : t.similarByTags}
         locale={locale}
       />
