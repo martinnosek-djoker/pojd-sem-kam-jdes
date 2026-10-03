@@ -158,8 +158,12 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  // Parallel slot: card detail dialogs (intercepted routes). Undefined in the
+  // static mobile build, where app/@modal is excluded.
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="cs" className={`${lora.variable} ${workSans.variable}`}>
@@ -174,6 +178,7 @@ export default function RootLayout({
         <main className="min-h-screen">
           {children}
         </main>
+        {modal}
         <BottomNavigation />
         <LanguageSwitcher />
         <Analytics />

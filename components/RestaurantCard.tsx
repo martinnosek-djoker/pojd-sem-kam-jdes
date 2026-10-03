@@ -73,7 +73,7 @@ export default function RestaurantCard({ restaurant, forceLocation }: Restaurant
 
   if (!IS_STATIC_APP) {
     return (
-      <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} className={rowClasses}>
+      <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} scroll={false} className={rowClasses}>
         <CardContent />
       </Link>
     );

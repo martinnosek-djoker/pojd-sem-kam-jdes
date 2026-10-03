@@ -96,7 +96,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
 
   if (!IS_STATIC_APP) {
     return (
-      <Link href={placePath("cafe", cafe.name, cafe.id, locale)} className={rowClasses}>
+      <Link href={placePath("cafe", cafe.name, cafe.id, locale)} scroll={false} className={rowClasses}>
         <CardContent />
       </Link>
     );

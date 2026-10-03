@@ -62,6 +62,7 @@ export default function VisitEntry({ visit, locale, placeName, showPermalink = t
       {showPermalink && (
         <Link
           href={visitPath(placeName, visit.visit_date, visit.id, locale)}
+          scroll={false}
           className="text-sm font-semibold text-terracotta hover:text-terracotta-dark transition-colors"
         >
           {t.fullVisit}

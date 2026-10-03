@@ -1,13 +1,15 @@
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { getCafeById, getRestaurantById, getVisitById, getVisitsForPlace } from "@/lib/db";
+import { getAllCafes, getAllRestaurants, getCafeById, getRestaurantById, getVisitById, getVisitsForPlace } from "@/lib/db";
+import { similarCafes, similarRestaurants } from "@/lib/similar";
 import type { Cafe, Restaurant } from "@/lib/types";
 import type { Locale } from "@/lib/i18n/LocaleContext";
 import { getDictionary, formatLongDate, translateCuisineType } from "@/lib/i18n/dictionaries";
 import { parseTrailingId, placePath, visitPath, type PlaceKind } from "@/lib/slug";
-import PlaceDetail from "@/components/detail/PlaceDetail";
-import VisitDetail from "@/components/detail/VisitDetail";
+import PlaceDetail, { PlaceDetailBody } from "@/components/detail/PlaceDetail";
+import VisitDetail, { VisitDetailBody } from "@/components/detail/VisitDetail";
+import DetailModal from "@/components/detail/DetailModal";
 
 
 const SITE = "https://www.pojdsemkamjdes.cz";
@@ -17,6 +19,14 @@ const loadPlace = cache(async (kind: PlaceKind, id: number): Promise<Restaurant 
 );
 const loadPlaceVisits = cache(getVisitsForPlace);
 const loadVisit = cache(getVisitById);
+const loadAllRestaurants = cache(getAllRestaurants);
+const loadAllCafes = cache(getAllCafes);
+
+async function loadSimilar(kind: PlaceKind, place: Restaurant | Cafe): Promise<(Restaurant | Cafe)[]> {
+  return kind === "restaurant"
+    ? similarRestaurants(place as Restaurant, await loadAllRestaurants())
+    : similarCafes(place as Cafe, await loadAllCafes());
+}
 
 function snippet(text: string | null | undefined, max = 130): string {
   if (!text) return "";
@@ -100,8 +110,22 @@ export async function PlacePage({ kind, slug, locale }: { kind: PlaceKind; slug:
   const requested = `${locale === "en" ? "/en" : ""}${kind === "restaurant" ? "/restaurace" : "/kavarny"}/${slug}`;
   if (requested !== canonical) permanentRedirect(canonical);
 
-  const visits = await loadPlaceVisits(kind, place.id);
-  return <PlaceDetail kind={kind} place={place} visits={visits} locale={locale} />;
+  const [visits, similar] = await Promise.all([loadPlaceVisits(kind, place.id), loadSimilar(kind, place)]);
+  return <PlaceDetail kind={kind} place={place} visits={visits} similar={similar} locale={locale} />;
+}
+
+// Same content as PlacePage, but as a dialog over whatever page the card was clicked on.
+export async function PlaceModal({ kind, slug, locale }: { kind: PlaceKind; slug: string; locale: Locale }) {
+  const found = await resolvePlace(kind, slug);
+  if (!found) notFound();
+
+  const { place } = found;
+  const [visits, similar] = await Promise.all([loadPlaceVisits(kind, place.id), loadSimilar(kind, place)]);
+  return (
+    <DetailModal>
+      <PlaceDetailBody kind={kind} place={place} visits={visits} similar={similar} locale={locale} withJsonLd={false} />
+    </DetailModal>
+  );
 }
 
 async function resolveVisit(slug: string) {
@@ -164,4 +188,18 @@ export async function VisitPage({ slug, locale }: { slug: string; locale: Locale
 
   const siblings = (await loadPlaceVisits(kind, place.id)).filter((v) => v.id !== visit.id);
   return <VisitDetail visit={visit} otherVisits={siblings} locale={locale} />;
+}
+
+export async function VisitModal({ slug, locale }: { slug: string; locale: Locale }) {
+  const visit = await resolveVisit(slug);
+  if (!visit) notFound();
+
+  const place = (visit.restaurant || visit.cafe) as Restaurant | Cafe;
+  const kind: PlaceKind = visit.restaurant ? "restaurant" : "cafe";
+  const siblings = (await loadPlaceVisits(kind, place.id)).filter((v) => v.id !== visit.id);
+  return (
+    <DetailModal>
+      <VisitDetailBody visit={visit} otherVisits={siblings} locale={locale} withJsonLd={false} />
+    </DetailModal>
+  );
 }

@@ -9,18 +9,22 @@ import PlaceMap from "./PlaceMap";
 import PhotoGallery from "./PhotoGallery";
 import HeroImage from "./HeroImage";
 import VisitEntry from "./VisitEntry";
+import SimilarPlaces from "./SimilarPlaces";
 import JsonLd from "./JsonLd";
 
 interface PlaceDetailProps {
   kind: PlaceKind;
   place: Restaurant | Cafe;
   visits: Visit[];
+  similar: (Restaurant | Cafe)[];
   locale: Locale;
+  withJsonLd?: boolean;
 }
 
 const SITE = "https://www.pojdsemkamjdes.cz";
 
-export default function PlaceDetail({ kind, place, visits, locale }: PlaceDetailProps) {
+// The page content on its own, so it can sit in a full page (PlaceDetail) or a dialog.
+export function PlaceDetailBody({ kind, place, visits, similar, locale, withJsonLd = true }: PlaceDetailProps) {
   const dict = getDictionary(locale);
   const t = dict.detail;
   const isRestaurant = kind === "restaurant";
@@ -72,12 +76,8 @@ export default function PlaceDetail({ kind, place, visits, locale }: PlaceDetail
   if ((jsonLd.review as unknown[]).length === 0) delete jsonLd.review;
 
   return (
-    <DetailShell
-      locale={locale}
-      backHref={isRestaurant ? (locale === "en" ? "/en" : "/") : locale === "en" ? "/en/kavarny" : "/kavarny"}
-      backLabel={isRestaurant ? t.backRestaurants : t.backCafes}
-    >
-      <JsonLd data={jsonLd} />
+    <>
+      {withJsonLd && <JsonLd data={jsonLd} />}
 
       <article>
         <HeroImage
@@ -152,6 +152,30 @@ export default function PlaceDetail({ kind, place, visits, locale }: PlaceDetail
           </div>
         )}
       </section>
+
+      <SimilarPlaces
+        kind={kind}
+        places={similar}
+        title={t.similarTitle}
+        subtitle={isRestaurant ? t.similarByCuisine(translateCuisineType(restaurant!.cuisine_type, locale)) : t.similarByTags}
+        locale={locale}
+      />
+    </>
+  );
+}
+
+export default function PlaceDetail(props: PlaceDetailProps) {
+  const { kind, locale } = props;
+  const t = getDictionary(locale).detail;
+  const isRestaurant = kind === "restaurant";
+
+  return (
+    <DetailShell
+      locale={locale}
+      backHref={isRestaurant ? (locale === "en" ? "/en" : "/") : locale === "en" ? "/en/kavarny" : "/kavarny"}
+      backLabel={isRestaurant ? t.backRestaurants : t.backCafes}
+    >
+      <PlaceDetailBody {...props} />
     </DetailShell>
   );
 }

@@ -156,7 +156,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
 
   // The native app is a static export without the detail pages, so it keeps linking out.
   const card = !IS_STATIC_APP ? (
-    <Link href={visitPath(place.name, visit.visit_date, visit.id, locale)} className={`block ${cardClasses}`}>
+    <Link href={visitPath(place.name, visit.visit_date, visit.id, locale)} scroll={false} className={`block ${cardClasses}`}>
       <CardContent />
     </Link>
   ) : place.website_url ? (

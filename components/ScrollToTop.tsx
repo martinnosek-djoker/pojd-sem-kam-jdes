@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+
+const isDetailPath = (path: string | null) => !!path && /^(\/en)?\/(restaurace|navstevy|kavarny\/[^/]+$)/.test(path);
 
 export default function ScrollToTop() {
   const pathname = usePathname();
+  const previous = useRef<string | null>(null);
 
   useEffect(() => {
-    // Scroll to top on route change
-    window.scrollTo(0, 0);
+    // Opening/closing a detail dialog changes the URL but must not jump the page behind it.
+    const skip = previous.current !== null && (isDetailPath(pathname) || isDetailPath(previous.current));
+    previous.current = pathname;
+    if (!skip) window.scrollTo(0, 0);
   }, [pathname]);
-
-  useEffect(() => {
-    // Scroll to top on page load/refresh
-    window.scrollTo(0, 0);
-  }, []);
 
   return null;
 }

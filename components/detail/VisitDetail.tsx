@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Cafe, Restaurant, Visit } from "@/lib/types";
 import type { Locale } from "@/lib/i18n/LocaleContext";
 import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
@@ -15,11 +14,13 @@ interface VisitDetailProps {
   visit: Visit;
   otherVisits: Visit[];
   locale: Locale;
+  withJsonLd?: boolean;
 }
 
 const SITE = "https://www.pojdsemkamjdes.cz";
 
-export default function VisitDetail({ visit, otherVisits, locale }: VisitDetailProps) {
+// The page content on its own, so it can sit in a full page (VisitDetail) or a dialog.
+export function VisitDetailBody({ visit, otherVisits, locale, withJsonLd = true }: VisitDetailProps) {
   const t = getDictionary(locale).detail;
   const kind = visit.restaurant ? "restaurant" : "cafe";
   const place = (visit.restaurant || visit.cafe) as Restaurant | Cafe;
@@ -49,18 +50,13 @@ export default function VisitDetail({ visit, otherVisits, locale }: VisitDetailP
   };
 
   return (
-    <DetailShell locale={locale} backHref={locale === "en" ? "/en" : "/"} backLabel={t.backHome}>
-      <JsonLd data={jsonLd} />
+    <>
+      {withJsonLd && <JsonLd data={jsonLd} />}
 
       <HeroImage src={heroImage} alt={`${place.name} – ${date}`} fallbackEmoji={kind === "restaurant" ? "🍽️" : "☕"} />
 
       <h1 className="font-serif text-3xl sm:text-4xl font-bold text-ink mb-2">{t.visitOf(place.name)}</h1>
-      <p className="text-text-muted mb-5">
-        {place.location} ·{" "}
-        <Link href={placeHref} className="text-terracotta hover:text-terracotta-dark font-semibold transition-colors">
-          {t.placeLink(place.name)}
-        </Link>
-      </p>
+      <p className="text-text-muted mb-5">{place.location}</p>
 
       {place.website_url && (
         <div className="mb-8">
@@ -87,6 +83,15 @@ export default function VisitDetail({ visit, otherVisits, locale }: VisitDetailP
           </div>
         </section>
       )}
+    </>
+  );
+}
+
+export default function VisitDetail(props: VisitDetailProps) {
+  const t = getDictionary(props.locale).detail;
+  return (
+    <DetailShell locale={props.locale} backHref={props.locale === "en" ? "/en" : "/"} backLabel={t.backHome}>
+      <VisitDetailBody {...props} />
     </DetailShell>
   );
 }
