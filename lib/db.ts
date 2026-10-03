@@ -45,22 +45,27 @@ export async function getRestaurantById(id: number): Promise<Restaurant | null> 
 }
 
 export async function createRestaurant(input: RestaurantInput): Promise<Restaurant> {
-  const { data, error } = await supabase
-    .from("restaurants")
-    .insert({
-      name: input.name,
-      location: input.location,
-      addresses: input.addresses || null,
-      coordinates: input.coordinates || null,
-      cuisine_type: input.cuisine_type,
-      specialty: input.specialty || null,
-      price: input.price,
-      rating: input.rating,
-      website_url: input.website_url || null,
-      image_url: input.image_url || null,
-    })
-    .select()
-    .single();
+  const row: CafeWrite = {
+    name: input.name,
+    location: input.location,
+    addresses: input.addresses || null,
+    coordinates: input.coordinates || null,
+    cuisine_type: input.cuisine_type,
+    specialty: input.specialty || null,
+    specialty_en: await translateSpecialty(input.specialty),
+    price: input.price,
+    rating: input.rating,
+    website_url: input.website_url || null,
+    image_url: input.image_url || null,
+  };
+
+  let { data, error } = await supabase.from("restaurants").insert(row).select().single();
+
+  if (missingColumn(error, ["specialty_en"])) {
+    console.warn("[createRestaurant] specialty_en column missing, inserting without it");
+    delete row.specialty_en;
+    ({ data, error } = await supabase.from("restaurants").insert(row).select().single());
+  }
 
   if (error) {
     console.error("Error creating restaurant:", error);
@@ -98,23 +103,27 @@ export async function updateRestaurant(
   id: number,
   input: RestaurantInput
 ): Promise<Restaurant | null> {
-  const { data, error } = await supabase
-    .from("restaurants")
-    .update({
-      name: input.name,
-      location: input.location,
-      addresses: input.addresses || null,
-      coordinates: input.coordinates || null,
-      cuisine_type: input.cuisine_type,
-      specialty: input.specialty || null,
-      price: input.price,
-      rating: input.rating,
-      website_url: input.website_url || null,
-      image_url: input.image_url || null,
-    })
-    .eq("id", id)
-    .select()
-    .single();
+  const row: CafeWrite = {
+    name: input.name,
+    location: input.location,
+    addresses: input.addresses || null,
+    coordinates: input.coordinates || null,
+    cuisine_type: input.cuisine_type,
+    specialty: input.specialty || null,
+    specialty_en: await translateSpecialty(input.specialty),
+    price: input.price,
+    rating: input.rating,
+    website_url: input.website_url || null,
+    image_url: input.image_url || null,
+  };
+
+  let { data, error } = await supabase.from("restaurants").update(row).eq("id", id).select().single();
+
+  if (missingColumn(error, ["specialty_en"])) {
+    console.warn("[updateRestaurant] specialty_en column missing, updating without it");
+    delete row.specialty_en;
+    ({ data, error } = await supabase.from("restaurants").update(row).eq("id", id).select().single());
+  }
 
   if (error) {
     console.error("Error updating restaurant:", error);
@@ -764,10 +773,18 @@ export async function getCafeById(id: number): Promise<Cafe | null> {
   return data;
 }
 
-// Optional cafe columns added by later migrations (specialty, rating). If one
+// Optional place columns added by later migrations (specialty, specialty_en, rating). If one
 // isn't in the database yet, PostgREST answers PGRST204 naming the column -
 // drop just that column and retry so saving still works until it's migrated.
 type CafeWrite = Record<string, unknown>;
+
+// Czech -> English for the short "what to order" / specialty text; null falls
+// back to showing the Czech original.
+async function translateSpecialty(specialty: string | null | undefined): Promise<string | null> {
+  if (!specialty || !specialty.trim()) return null;
+  const { translateToEnglish } = await import("./translate");
+  return translateToEnglish(specialty);
+}
 function missingColumn(error: { code?: string; message?: string } | null, keys: string[]): string | null {
   if (!error || error.code !== "PGRST204") return null;
   return keys.find((k) => error.message?.includes(`'${k}'`)) ?? null;
@@ -783,12 +800,13 @@ export async function createCafe(input: CafeInput): Promise<Cafe> {
     image_url: input.image_url || null,
     tags: input.tags || [],
     specialty: input.specialty || null,
+    specialty_en: await translateSpecialty(input.specialty),
     rating: input.rating ?? null,
   };
 
   let { data, error } = await supabase.from("cafes").insert(row).select().single();
 
-  for (let missing = missingColumn(error, ["specialty", "rating"]); missing; missing = missingColumn(error, ["specialty", "rating"])) {
+  for (let missing = missingColumn(error, ["specialty", "specialty_en", "rating"]); missing; missing = missingColumn(error, ["specialty", "specialty_en", "rating"])) {
     console.warn(`[createCafe] ${missing} column missing, inserting without it`);
     delete row[missing];
     ({ data, error } = await supabase.from("cafes").insert(row).select().single());
@@ -838,13 +856,14 @@ export async function updateCafe(
     image_url: input.image_url || null,
     tags: input.tags || [],
     specialty: input.specialty || null,
+    specialty_en: await translateSpecialty(input.specialty),
     // Only touch rating when the caller sent it, so a partial payload can't wipe it.
     ...(input.rating !== undefined && { rating: input.rating }),
   };
 
   let { data, error } = await supabase.from("cafes").update(row).eq("id", id).select().single();
 
-  for (let missing = missingColumn(error, ["specialty", "rating"]); missing; missing = missingColumn(error, ["specialty", "rating"])) {
+  for (let missing = missingColumn(error, ["specialty", "specialty_en", "rating"]); missing; missing = missingColumn(error, ["specialty", "specialty_en", "rating"])) {
     console.warn(`[updateCafe] ${missing} column missing, updating without it`);
     delete row[missing];
     ({ data, error } = await supabase.from("cafes").update(row).eq("id", id).select().single());

@@ -1,6 +1,6 @@
 import type { Cafe, Restaurant, Visit } from "@/lib/types";
 import type { Locale } from "@/lib/i18n/LocaleContext";
-import { getDictionary, formatPrice, getPriceBadgeClasses, translateCuisineType } from "@/lib/i18n/dictionaries";
+import { getDictionary, formatPrice, getPriceBadgeClasses, localizedSpecialty, translateCuisineType } from "@/lib/i18n/dictionaries";
 import { getPlacePoints } from "@/lib/place-geo";
 import { placePath, type PlaceKind } from "@/lib/slug";
 import DetailShell from "./DetailShell";
@@ -39,7 +39,7 @@ export function PlaceDetailBody({ kind, place, visits, similar, locale, withJson
     "top-kava": dict.kavarny.tagTopKava,
   };
   const rating = isRestaurant ? restaurant!.rating : cafe!.rating;
-  const specialty = place.specialty;
+  const specialty = localizedSpecialty(place, locale);
   const path = placePath(kind, place.name, place.id, locale);
   const mainPoint = points.find((p) => p.lat != null) ?? points[0];
 

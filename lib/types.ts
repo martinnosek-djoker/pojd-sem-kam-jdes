@@ -40,6 +40,7 @@ export interface Restaurant {
   coordinates: Record<string, Coordinates> | null; // { "Anděl": {"lat": 50.07, "lng": 14.40} }
   cuisine_type: string;
   specialty: string | null;
+  specialty_en: string | null; // machine translation of `specialty`, set on save
   price: number;
   rating: number;
   website_url: string | null;
@@ -155,6 +156,7 @@ export interface Cafe {
   image_url: string | null;
   tags: string[]; // ["dezert", "matcha", "snídaně"]
   specialty: string | null; // A specific thing to order, e.g. "Turecká vejce"
+  specialty_en: string | null; // machine translation of `specialty`, set on save
   rating: number | null; // 1-10, optional - shown as a star rating on the card
   created_at: string;
   updated_at: string;

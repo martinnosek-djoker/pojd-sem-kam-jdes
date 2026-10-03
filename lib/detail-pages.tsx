@@ -5,7 +5,7 @@ import { getAllCafes, getAllRestaurants, getCafeById, getRestaurantById, getVisi
 import { similarCafes, similarRestaurants } from "@/lib/similar";
 import type { Cafe, Restaurant } from "@/lib/types";
 import type { Locale } from "@/lib/i18n/LocaleContext";
-import { getDictionary, formatLongDate, translateCuisineType } from "@/lib/i18n/dictionaries";
+import { getDictionary, formatLongDate, localizedSpecialty, translateCuisineType } from "@/lib/i18n/dictionaries";
 import { parseTrailingId, placePath, visitPath, type PlaceKind } from "@/lib/slug";
 import PlaceDetail, { PlaceDetailBody } from "@/components/detail/PlaceDetail";
 import VisitDetail, { VisitDetailBody } from "@/components/detail/VisitDetail";
@@ -75,7 +75,7 @@ export async function placeMetadata(kind: PlaceKind, slug: string, locale: Local
   const description = [
     `${place.name}: ${typeWord} ${t.inPrague} (${place.location}).`,
     rating != null ? `${t.ratingLabel} ${rating}/10.` : "",
-    place.specialty ? `${kind === "restaurant" ? t.specialty : t.whatToOrder}: ${place.specialty}.` : "",
+    localizedSpecialty(place, locale) ? `${kind === "restaurant" ? t.specialty : t.whatToOrder}: ${localizedSpecialty(place, locale)}.` : "",
     snippet(latestComment),
   ]
     .filter(Boolean)

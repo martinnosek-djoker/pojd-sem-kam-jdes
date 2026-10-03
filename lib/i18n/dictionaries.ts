@@ -432,6 +432,14 @@ export function formatLongDate(dateString: string, locale: Locale): string {
   return locale === "en" ? `${MONTHS_EN[month]} ${day}, ${year}` : `${day}. ${MONTHS_CS[month]} ${year}`;
 }
 
+// The owner types specialties in Czech; an English version is machine-translated on save.
+export function localizedSpecialty(
+  place: { specialty: string | null; specialty_en?: string | null },
+  locale: Locale
+): string | null {
+  return locale === "en" ? place.specialty_en || place.specialty : place.specialty;
+}
+
 export function formatPrice(price: number, locale: Locale): string {
   const t = getDictionary(locale).common;
   if (price === 0) return t.priceUnspecified;

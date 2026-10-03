@@ -6,7 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { IS_STATIC_APP, placePath } from "@/lib/slug";
-import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getDictionary, localizedSpecialty } from "@/lib/i18n/dictionaries";
 
 interface CafeCardProps {
   cafe: Cafe;
@@ -56,7 +56,7 @@ export default function CafeCard({ cafe, forceLocation }: CafeCardProps) {
           {cafe.name}
         </div>
         <div className="text-sm text-text-muted mb-1.5 truncate">
-          {location}{cafe.specialty ? ` · ${cafe.specialty}` : ""}
+          {location}{localizedSpecialty(cafe, locale) ? ` · ${localizedSpecialty(cafe, locale)}` : ""}
         </div>
         {(cafe.rating != null || (cafe.tags && cafe.tags.length > 0)) && (
           <div className="flex flex-wrap items-center gap-1.5">
