@@ -17,13 +17,21 @@ async function runCommand(command, description) {
   }
 }
 
+// Tracks whether the configs are currently swapped, so the cleanup in `finally`
+// can't restore a second time (that second rename moved the web config over
+// next.config.mobile.mjs and deleted next.config.mjs).
+let configsSwapped = false;
+
 async function swapConfigs() {
   // Swap next.config.mjs with next.config.mobile.mjs for mobile build
   renameSync(join(rootDir, 'next.config.mjs'), join(rootDir, 'next.config.web.mjs'));
   renameSync(join(rootDir, 'next.config.mobile.mjs'), join(rootDir, 'next.config.mjs'));
+  configsSwapped = true;
 }
 
 async function restoreConfigs() {
+  if (!configsSwapped) return;
+  configsSwapped = false;
   // Restore original config files
   renameSync(join(rootDir, 'next.config.mjs'), join(rootDir, 'next.config.mobile.mjs'));
   renameSync(join(rootDir, 'next.config.web.mjs'), join(rootDir, 'next.config.mjs'));
@@ -49,7 +57,7 @@ async function buildMobile() {
     await restoreConfigs();
 
     // Step 7: Sync with Capacitor
-    await runCommand('npx cap sync', 'Syncing with Capacitor');
+    await runCommand('npx cap sync android', 'Syncing with Capacitor (Android)');
 
     console.log('\n✅ Mobile build completed successfully!\n');
   } catch (error) {
