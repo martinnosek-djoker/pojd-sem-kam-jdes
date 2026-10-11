@@ -6,6 +6,7 @@ import PushNotificationHandler from "@/components/PushNotificationHandler";
 import BackButtonHandler from "@/components/BackButtonHandler";
 import ScrollToTop from "@/components/ScrollToTop";
 import StructuredData from "@/components/StructuredData";
+import AndroidAppBanner from "@/components/AndroidAppBanner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -175,6 +176,7 @@ export default function RootLayout({
         <ScrollToTop />
         <PushNotificationHandler />
         <BackButtonHandler />
+        <AndroidAppBanner />
         <main className="min-h-screen">
           {children}
         </main>
