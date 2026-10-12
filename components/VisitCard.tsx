@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Visit } from "@/lib/types";
-import { getProxiedImageUrl } from "@/lib/api-config";
+import { usePlaceImage } from "@/lib/use-place-image";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { IS_STATIC_APP, visitPath } from "@/lib/slug";
 import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
@@ -16,7 +16,6 @@ interface VisitCardProps {
 export default function VisitCard({ visit }: VisitCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).visitCard;
-  const [imageError, setImageError] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const place = visit.restaurant || visit.cafe;
   const comment = locale === "en" ? (visit.comment_en || visit.comment) : visit.comment;
@@ -25,7 +24,14 @@ export default function VisitCard({ visit }: VisitCardProps) {
   const isRestaurant = !!visit.restaurant;
   // Prefer an actual photo from this visit over the place's generic photo
   const visitPhotos = visit.images || [];
-  const heroImageUrl = place ? (visitPhotos.length > 0 ? visitPhotos[0] : getProxiedImageUrl(place.image_url, place.name)) : null;
+  // Cafe photos live in a different bundled folder than restaurant ones
+  const placeImage = usePlaceImage(place?.image_url, place?.name, isRestaurant ? "restaurants" : "cafes");
+  const [photoError, setPhotoError] = useState(false);
+  useEffect(() => {
+    setPhotoError(false);
+  }, [visitPhotos[0]]);
+  const showVisitPhoto = visitPhotos.length > 0 && !photoError;
+  const heroImageUrl = place ? (showVisitPhoto ? visitPhotos[0] : placeImage.src) : null;
   const extraPhotos = visitPhotos.slice(1);
 
   const showPrev = (e: React.MouseEvent) => {
@@ -63,7 +69,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
     <>
       {/* Image */}
       <div className="relative h-48 -m-6 mb-4 overflow-hidden rounded-t-lg">
-        {heroImageUrl && !imageError ? (
+        {heroImageUrl ? (
           <div
             role={visitPhotos.length > 0 ? "button" : undefined}
             tabIndex={visitPhotos.length > 0 ? 0 : undefined}
@@ -74,7 +80,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
               src={heroImageUrl}
               alt={place.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              onError={() => setImageError(true)}
+              onError={() => (showVisitPhoto ? setPhotoError(true) : placeImage.onError())}
             />
           </div>
         ) : (

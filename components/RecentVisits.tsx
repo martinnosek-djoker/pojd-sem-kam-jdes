@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Visit } from "@/lib/types";
 import VisitCard from "./VisitCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
@@ -14,6 +14,14 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
   const locale = useLocale();
   const t = getDictionary(locale).recentVisits;
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // The native app first paints build-time data, then swaps in live data that can have newer
+  // visits in front. Without this the browser's scroll anchoring keeps the old first card in
+  // view, so the carousel opens on an older visit instead of the newest one.
+  const newestId = visits[0]?.id;
+  useEffect(() => {
+    carouselRef.current?.scrollTo({ left: 0, behavior: "instant" });
+  }, [newestId]);
 
   const scrollCarousel = (direction: "prev" | "next") => {
     if (!carouselRef.current) return;
@@ -65,7 +73,7 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
 
       <div
         ref={carouselRef}
-        className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+        className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 [overflow-anchor:none] scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
       >
         {visits.map((visit) => (
           <div

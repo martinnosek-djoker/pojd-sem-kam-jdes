@@ -1,8 +1,7 @@
 "use client";
 
 import { Cafe } from "@/lib/types";
-import { getProxiedImageUrl } from "@/lib/api-config";
-import { useState } from "react";
+import { usePlaceImage } from "@/lib/use-place-image";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -32,19 +31,18 @@ export default function CafeCard({ cafe, forceLocation, showFavorite = false }: 
     "snídaně": t.tagSnidane,
     "top-kava": t.tagTopKava,
   };
-  const proxiedImageUrl = getProxiedImageUrl(cafe.image_url, cafe.name, "cafes");
-  const [imageError, setImageError] = useState(false);
+  const image = usePlaceImage(cafe.image_url, cafe.name, "cafes");
   const location = forceLocation || cafe.location;
 
   const CardContent = () => (
     <>
       <div className="w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden bg-surface-2">
-        {proxiedImageUrl && !imageError ? (
+        {image.src ? (
           <img
-            src={proxiedImageUrl}
+            src={image.src}
             alt={`${cafe.name} – ${tCommon.altCafe} ${location}`}
             className="w-full h-full object-cover"
-            onError={() => setImageError(true)}
+            onError={image.onError}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

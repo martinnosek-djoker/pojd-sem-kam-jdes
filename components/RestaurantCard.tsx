@@ -1,8 +1,7 @@
 "use client";
 
 import { Restaurant } from "@/lib/types";
-import { getProxiedImageUrl } from "@/lib/api-config";
-import { useState } from "react";
+import { usePlaceImage } from "@/lib/use-place-image";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -18,19 +17,18 @@ interface RestaurantCardProps {
 export default function RestaurantCard({ restaurant, forceLocation, showFavorite = false }: RestaurantCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).common;
-  const proxiedImageUrl = getProxiedImageUrl(restaurant.image_url, restaurant.name);
-  const [imageError, setImageError] = useState(false);
+  const image = usePlaceImage(restaurant.image_url, restaurant.name);
   const location = forceLocation || restaurant.location;
 
   const CardContent = () => (
     <>
       <div className="w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden bg-surface-2">
-        {proxiedImageUrl && !imageError ? (
+        {image.src ? (
           <img
-            src={proxiedImageUrl}
+            src={image.src}
             alt={`${restaurant.name} – ${t.altRestaurant} ${location}`}
             className="w-full h-full object-cover"
-            onError={() => setImageError(true)}
+            onError={image.onError}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

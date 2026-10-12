@@ -56,6 +56,16 @@ export function getProxiedImageUrl(imageUrl: string | null | undefined, name?: s
   return imageUrl;
 }
 
+// Live (non-bundled) version of a place image, used by the native app when the bundled
+// copy is missing. Null on the web, where there is no bundled copy to fall back from.
+export function getImageFallbackUrl(imageUrl: string | null | undefined): string | null {
+  if (!IS_MOBILE || !imageUrl) return null;
+  if (imageUrl.includes('maps.googleapis.com') || imageUrl.includes('googleusercontent.com')) {
+    return `${API_BASE_URL}/api/proxy/image?url=${encodeURIComponent(imageUrl)}`;
+  }
+  return imageUrl.startsWith('/') ? `${API_BASE_URL}${imageUrl}` : imageUrl;
+}
+
 // Log environment info (useful for debugging)
 if (typeof window !== 'undefined') {
   console.log('[API Config]', {
