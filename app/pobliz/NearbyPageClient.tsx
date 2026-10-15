@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
+import NearbyMap, { NearbyMapPlace } from "@/components/NearbyMap";
 import { Restaurant, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition, geocodeAddress } from "@/lib/geolocation";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
@@ -160,6 +161,23 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
 
     setNearbyPlaces(deduplicatedPlaces);
   }, [userLocation, radiusKm, restaurants, cafes]);
+
+  const mapPlaces = useMemo<NearbyMapPlace[]>(
+    () =>
+      nearbyPlaces.flatMap((place) => {
+        const coords = place.displayLocation ? place.coordinates?.[place.displayLocation] : undefined;
+        return coords
+          ? [{
+              key: `${place.type}-${place.id}-${place.displayLocation}`,
+              name: place.name,
+              kind: place.type,
+              distanceLabel: `📍 ${formatDistance(place.distance)}`,
+              coords,
+            }]
+          : [];
+      }),
+    [nearbyPlaces]
+  );
 
   const handleGetLocation = async () => {
     setGettingLocation(true);
@@ -422,6 +440,18 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
             </div>
           )}
         </div>
+
+        {/* Map of you + the places in the chosen radius */}
+        {userLocation && (
+          <NearbyMap
+            user={userLocation}
+            radiusKm={radiusKm}
+            places={mapPlaces}
+            youLabel={t.mapYou}
+            directionsLabel={t.mapDirections}
+            mapLabel={t.mapLabel}
+          />
+        )}
 
         {/* Results */}
         {!userLocation ? (

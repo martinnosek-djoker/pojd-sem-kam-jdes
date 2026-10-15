@@ -26,7 +26,7 @@ export default function LanguageSwitcher() {
   return (
     <Link
       href={targetHref}
-      className="fixed top-3 right-3 z-40 flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-hairline rounded-full shadow-md shadow-black/5 text-xs font-semibold text-ink-mid hover:border-terracotta hover:text-terracotta transition-colors"
+      className="fixed top-[calc(0.75rem+env(safe-area-inset-top))] right-3 z-40 flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-hairline rounded-full shadow-md shadow-black/5 text-xs font-semibold text-ink-mid hover:border-terracotta hover:text-terracotta transition-colors"
     >
       {isEnglish ? "🇨🇿 CS" : "🇬🇧 EN"}
     </Link>

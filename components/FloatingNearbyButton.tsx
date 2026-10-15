@@ -30,7 +30,7 @@ export default function FloatingNearbyButton() {
     <button
       onClick={handleClick}
       className={`
-        fixed bottom-20 right-4 z-40
+        fixed bottom-[calc(6.25rem+env(safe-area-inset-bottom))] right-4 z-40
         bg-terracotta hover:bg-terracotta-dark
         text-white font-semibold
         shadow-lg hover:shadow-xl

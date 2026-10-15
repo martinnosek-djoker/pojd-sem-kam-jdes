@@ -15,6 +15,14 @@ const TEXT = {
     step2Text: "Potom otevři odkaz na svém Androidu, potvrď účast v testu a appku nainstaluj.",
     step2Button: "Stáhnout z Google Play",
     note: "Až bude appka schválená pro všechny, objeví se normálně v Obchodě Play. Děkujeme, že nám pomáháš ji vyladit!",
+    helpTitle: "Nejde to nainstalovat?",
+    helpIntro: "Hláška typu „Položku, kterou jste chtěli zakoupit, nelze najít“ se u testů v Google Play stává. Většinou pomůže tohle:",
+    help: [
+      "Použij ve všech krocích stejný Google účet: ten, který se připojil do skupiny, který potvrdil test na webu a který je přihlášený v aplikaci Obchod Play (profilová ikona vpravo nahoře).",
+      "Hned po připojení do skupiny může trvat až několik hodin, než Google účast propíše. Zkus to za chvíli znovu.",
+      "V telefonu otevři Nastavení → Aplikace → Obchod Google Play → Úložiště → Vymazat mezipaměť, pak Obchod Play zavři a otevři znovu.",
+      "Appku hledej přímo v Obchodě Play podle názvu „Pojď sem! Kam jdeš?“ a klepni na Instalovat.",
+    ],
   },
   en: {
     back: "← Home",
@@ -27,6 +35,14 @@ const TEXT = {
     step2Text: "Then open the link on your Android phone, accept the test invitation and install the app.",
     step2Button: "Get it on Google Play",
     note: "Once the app is approved for everyone it will appear in the Play Store as usual. Thanks for helping us polish it!",
+    helpTitle: "Can't install it?",
+    helpIntro: "A message like “The item you wanted to buy could not be found” sometimes appears with Google Play tests. This usually helps:",
+    help: [
+      "Use the same Google account in every step: the one that joined the group, accepted the test on the web and is signed in to the Play Store app (profile icon at the top right).",
+      "Right after joining the group it can take a few hours for Google to register you. Try again a bit later.",
+      "On your phone open Settings → Apps → Google Play Store → Storage → Clear cache, then close and reopen the Play Store.",
+      "Search for the app in the Play Store by name, “Pojď sem! Kam jdeš?”, and tap Install.",
+    ],
   },
 } as const;
 
@@ -59,6 +75,16 @@ export default function AndroidAppPage({ locale }: { locale: Locale }) {
         <a href={ANDROID_OPT_IN_URL} target="_blank" rel="noopener noreferrer" className={buttonClasses}>
           {t.step2Button}
         </a>
+      </section>
+
+      <section className="bg-surface-2 border border-hairline rounded-2xl p-5 sm:p-6 mb-6">
+        <h2 className="font-serif text-lg font-semibold text-ink mb-2">{t.helpTitle}</h2>
+        <p className="text-text-muted text-sm mb-3">{t.helpIntro}</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-ink-mid">
+          {t.help.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </section>
 
       <p className="text-sm text-text-muted">{t.note}</p>

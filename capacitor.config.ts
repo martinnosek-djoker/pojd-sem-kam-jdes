@@ -7,6 +7,11 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https',
   },
+  android: {
+    // targetSdk 35+ draws the app edge-to-edge under the status/navigation bars; this keeps the
+    // WebView (and its fixed header/nav elements) inside them.
+    adjustMarginsForEdgeToEdge: 'auto',
+  },
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,

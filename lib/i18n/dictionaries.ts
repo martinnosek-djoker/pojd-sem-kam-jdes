@@ -182,6 +182,9 @@ export const dictionaries = {
       noResultsInRadius: (km: number) => `V okruhu ${km} km nenalezena žádná místa`,
       tryLargerRadius: "Zkus zvětšit poloměr hledání",
       expandTo: (km: number) => `Zvětšit na ${km} km`,
+      mapYou: "Jsi tady",
+      mapDirections: "Navigovat",
+      mapLabel: "Mapa míst v okolí",
       resultsCount: (n: number, km: number) =>
         `Nalezeno ${n} ${pluralCs(n, "místo", "místa", "míst")} v okruhu ${km} km`,
     },
@@ -361,6 +364,9 @@ export const dictionaries = {
       noResultsInRadius: (km: number) => `No places found within ${km} km`,
       tryLargerRadius: "Try expanding the search radius",
       expandTo: (km: number) => `Expand to ${km} km`,
+      mapYou: "You are here",
+      mapDirections: "Directions",
+      mapLabel: "Map of nearby places",
       resultsCount: (n: number, km: number) =>
         `Found ${n} ${n === 1 ? "place" : "places"} within ${km} km`,
     },
