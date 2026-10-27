@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import NotificationDialog from "./NotificationDialog";
 import { Visit, VisitDish } from "@/lib/types";
 import { getApiUrl } from "@/lib/api-config";
 import { resizeImageFile } from "@/lib/image-resize";
@@ -66,6 +67,8 @@ export default function VisitForm({
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // A visit only goes public once it has a comment, so that is the moment to offer a push notification
+  const [justSaved, setJustSaved] = useState<Visit | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFilesSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,7 +141,12 @@ export default function VisitForm({
 
       if (response.ok) {
         const saved = await response.json();
-        onSave(saved);
+        const becamePublic = !!saved.comment?.trim() && !visit?.comment?.trim();
+        if (becamePublic) {
+          setJustSaved(saved);
+        } else {
+          onSave(saved);
+        }
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Nepodařilo se uložit návštěvu");
@@ -150,6 +158,18 @@ export default function VisitForm({
       setLoading(false);
     }
   };
+
+  if (justSaved) {
+    return (
+      <NotificationDialog
+        isOpen
+        onClose={() => onSave(justSaved)}
+        itemName={placeName}
+        itemType="visit"
+        itemId={justSaved.id}
+      />
+    );
+  }
 
   return (
     <div

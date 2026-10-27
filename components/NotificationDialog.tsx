@@ -6,7 +6,7 @@ interface NotificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   itemName: string;
-  itemType: 'restaurant' | 'cafe' | 'bakery' | 'breakfast' | 'trending' | 'event';
+  itemType: 'restaurant' | 'cafe' | 'bakery' | 'breakfast' | 'trending' | 'event' | 'visit';
   itemId?: number;
 }
 
@@ -17,6 +17,7 @@ const itemTypeLabels = {
   breakfast: 'snídaně',
   trending: 'trending podnik',
   event: 'gastro akce',
+  visit: 'recenze',
 };
 
 const itemTypeTitlePrefix = {
@@ -26,6 +27,7 @@ const itemTypeTitlePrefix = {
   breakfast: 'Nová',
   trending: 'Nový',
   event: 'Nová',
+  visit: 'Nová',
 };
 
 const itemTypeBodyPrefix = {
@@ -35,6 +37,7 @@ const itemTypeBodyPrefix = {
   breakfast: 'novou',
   trending: 'nový',
   event: 'novou',
+  visit: 'novou',
 };
 
 const itemTypeAccusative = {
@@ -44,6 +47,7 @@ const itemTypeAccusative = {
   breakfast: 'snídani',
   trending: 'trending podnik',
   event: 'gastro akci',
+  visit: 'recenzi',
 };
 
 const itemTypeEmojis = {
@@ -53,6 +57,7 @@ const itemTypeEmojis = {
   breakfast: '🍳',
   trending: '🔥',
   event: '🎉',
+  visit: '📸',
 };
 
 export default function NotificationDialog({
@@ -145,7 +150,7 @@ export default function NotificationDialog({
         </h3>
 
         <p className="text-gray-700 mb-6">
-          Chcete odeslat push notifikaci všem uživatelům o nové položce{' '}
+          Chcete odeslat push notifikaci všem uživatelům o {itemType === 'visit' ? 'nové recenzi podniku' : 'nové položce'}{' '}
           <strong className="text-gray-900">{itemName}</strong>?
         </p>
 
