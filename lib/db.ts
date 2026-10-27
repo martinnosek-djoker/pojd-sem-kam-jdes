@@ -1385,20 +1385,32 @@ export async function updateEventOrder(updates: { id: number; display_order: num
 
 const VISIT_SELECT = `*, restaurant:restaurants(*), cafe:cafes(*)`;
 
+// A visit without a written description looks unfinished, so it stays out of everything
+// public (homepage carousel, detail pages, API, sitemap) until the comment is filled in.
+// It's still saved and listed in the admin (getAllVisits) so the visit isn't forgotten.
+export const hasVisitText = (visit: Pick<Visit, "comment">): boolean => !!visit.comment?.trim();
+
 export async function getRecentVisits(limit: number = 10): Promise<Visit[]> {
   const { data, error } = await supabase
     .from("visits")
     .select(VISIT_SELECT)
+    .not("comment", "is", null)
+    .neq("comment", "")
     .order("visit_date", { ascending: false })
-    .order("created_at", { ascending: false })
-    .limit(limit);
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching recent visits:", error);
     throw error;
   }
 
-  return data as unknown as Visit[];
+  // Whitespace-only comments can't be excluded in the query, so trim before applying the limit
+  return (data as unknown as Visit[]).filter(hasVisitText).slice(0, limit);
+}
+
+// Visits that may be shown publicly (see hasVisitText)
+export async function getPublicVisits(): Promise<Visit[]> {
+  return (await getAllVisits()).filter(hasVisitText);
 }
 
 export async function getAllVisits(): Promise<Visit[]> {
@@ -1428,7 +1440,9 @@ export async function getVisitById(id: number): Promise<Visit | null> {
     return null;
   }
 
-  return (data as unknown as Visit) ?? null;
+  // Only used by the public detail pages, which must not expose a visit that is still a draft
+  const visit = (data as unknown as Visit) ?? null;
+  return visit && hasVisitText(visit) ? visit : null;
 }
 
 export async function getVisitsForPlace(kind: "restaurant" | "cafe", placeId: number): Promise<Visit[]> {
@@ -1444,7 +1458,7 @@ export async function getVisitsForPlace(kind: "restaurant" | "cafe", placeId: nu
     return [];
   }
 
-  return data as unknown as Visit[];
+  return (data as unknown as Visit[]).filter(hasVisitText);
 }
 
 export async function createVisit(input: VisitInput): Promise<Visit> {

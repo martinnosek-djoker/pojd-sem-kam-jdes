@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRecentVisits, getAllVisits, createVisit } from "@/lib/db";
+import { getRecentVisits, getPublicVisits, createVisit } from "@/lib/db";
 import { visitSchema } from "@/lib/types";
 import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
 
@@ -8,13 +8,13 @@ export async function OPTIONS() {
   return handleOptionsRequest();
 }
 
-// GET /api/visits - Get visits, optionally limited (?limit=10) for the homepage carousel
+// GET /api/visits - Public visits (those with a written comment), optionally limited (?limit=10) for the homepage carousel
 export async function GET(request: NextRequest) {
   try {
     const limitParam = request.nextUrl.searchParams.get("limit");
     const visits = limitParam
       ? await getRecentVisits(parseInt(limitParam, 10))
-      : await getAllVisits();
+      : await getPublicVisits();
 
     return jsonWithCors(visits);
   } catch (error: any) {

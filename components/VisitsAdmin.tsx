@@ -10,6 +10,18 @@ interface VisitsAdminProps {
   initialVisits: Visit[];
 }
 
+// Visits without a written comment aren't shown on the public site (see hasVisitText in lib/db)
+const isHidden = (visit: Visit): boolean => !visit.comment?.trim();
+
+const HiddenBadge = () => (
+  <span
+    className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800"
+    title="Návštěva se na webu zobrazí, až doplníte popis"
+  >
+    skryto – chybí popis
+  </span>
+);
+
 function placeName(visit: Visit): string {
   return visit.restaurant?.name || visit.cafe?.name || "Neznámý podnik";
 }
@@ -93,6 +105,7 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
                   {visit.images && visit.images.length > 0 && (
                     <span className="ml-2 text-xs text-gray-400 font-normal">📷 {visit.images.length}</span>
                   )}
+                  {isHidden(visit) && <HiddenBadge />}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {new Date(visit.visit_date).toLocaleDateString("cs-CZ")}
@@ -136,6 +149,7 @@ export default function VisitsAdmin({ initialVisits }: VisitsAdminProps) {
               {visit.images && visit.images.length > 0 && (
                 <span className="text-xs text-gray-400">📷 {visit.images.length}</span>
               )}
+              {isHidden(visit) && <HiddenBadge />}
             </div>
             <div className="text-sm text-gray-600 mt-1">
               📅 {new Date(visit.visit_date).toLocaleDateString("cs-CZ")}

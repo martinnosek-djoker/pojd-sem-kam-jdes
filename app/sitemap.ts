@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { getAllRestaurants, getAllCafes, getAllVisits } from '@/lib/db'
+import { getAllRestaurants, getAllCafes, getPublicVisits } from '@/lib/db'
 import { placePath, visitPath } from '@/lib/slug'
 
 const baseUrl = 'https://www.pojdsemkamjdes.cz'
@@ -26,7 +26,7 @@ function localizedPair(
 export const dynamic = process.env.MOBILE_BUILD === 'true' ? 'auto' : 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [restaurants, cafes, visits] = await Promise.all([getAllRestaurants(), getAllCafes(), getAllVisits()])
+  const [restaurants, cafes, visits] = await Promise.all([getAllRestaurants(), getAllCafes(), getPublicVisits()])
 
   const detailPages = [
     ...restaurants.flatMap((r) => localizedPair(placePath('restaurant', r.name, r.id), 'weekly', 0.7)),
