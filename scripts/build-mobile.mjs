@@ -42,8 +42,8 @@ async function buildMobile() {
     // Step 1: Prepare (exclude dynamic API routes)
     await runCommand('node scripts/prepare-mobile-build.mjs', 'Preparing mobile build');
 
-    // Step 2: Download all images for offline use
-    await runCommand('node scripts/download-all-images.mjs', 'Downloading images for all categories');
+    // (Place photos are no longer bundled or downloaded here: the app loads them live from the
+    // website, so new places/photos don't need an app release. See lib/api-config.ts.)
 
     // Step 4: Swap config files for mobile build
     console.log('\n🔄 Swapping config files for mobile build...');

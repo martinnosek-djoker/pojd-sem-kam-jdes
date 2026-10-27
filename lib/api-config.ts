@@ -35,35 +35,37 @@ export function getLocalImageUrl(name: string, category: string = 'restaurants')
   return `/images/${category}/${normalized}.webp`;
 }
 
-// Helper pro proxy obrázků (Google Maps API)
+const isGoogleImage = (url: string) => url.includes('maps.googleapis.com') || url.includes('googleusercontent.com');
+
+// Helper pro obrázky podniků.
+// Na webu se vrací původní URL. V nativní appce se fotky NEbalí do balíčku (aby nový podnik nebo
+// nová fotka nevyžadovaly nový release), ale berou se živě z webu:
+//  - relativní cesta (/images/...) -> stejný soubor na webu
+//  - odkaz na Google s názvem podniku -> uložená kopie na webu (Google odkazy expirují),
+//    teprve při chybě proxy (viz getImageFallbackUrl)
+//  - odkaz na Google bez názvu -> proxy
 export function getProxiedImageUrl(imageUrl: string | null | undefined, name?: string, category: string = 'restaurants'): string | null {
   if (!imageUrl) return null;
+  if (!IS_MOBILE) return imageUrl;
 
-  // Pro mobile build: pokud máme název, zkusíme lokální obrázek
-  if (IS_MOBILE && name) {
-    const localUrl = getLocalImageUrl(name, category);
-    if (localUrl) return localUrl;
+  if (imageUrl.startsWith('/')) return `${API_BASE_URL}${imageUrl}`;
+
+  if (isGoogleImage(imageUrl)) {
+    if (name) {
+      const localUrl = getLocalImageUrl(name, category);
+      if (localUrl) return `${API_BASE_URL}${localUrl}`;
+    }
+    return `${API_BASE_URL}/api/proxy/image?url=${encodeURIComponent(imageUrl)}`;
   }
 
-  // V mobilní appce používáme proxy endpoint pro obrázky z Google
-  // Podporujeme jak maps.googleapis.com tak lh3.googleusercontent.com (Google Photos)
-  if (IS_MOBILE && (imageUrl.includes('maps.googleapis.com') || imageUrl.includes('googleusercontent.com'))) {
-    const encodedUrl = encodeURIComponent(imageUrl);
-    return `${API_BASE_URL}/api/proxy/image?url=${encodedUrl}`;
-  }
-
-  // Na webu vrátíme původní URL
   return imageUrl;
 }
 
-// Live (non-bundled) version of a place image, used by the native app when the bundled
-// copy is missing. Null on the web, where there is no bundled copy to fall back from.
+// Second choice when the first image fails in the native app: for Google-hosted photos the
+// proxy (the first choice is the copy stored on the site), otherwise nothing more to try.
 export function getImageFallbackUrl(imageUrl: string | null | undefined): string | null {
-  if (!IS_MOBILE || !imageUrl) return null;
-  if (imageUrl.includes('maps.googleapis.com') || imageUrl.includes('googleusercontent.com')) {
-    return `${API_BASE_URL}/api/proxy/image?url=${encodeURIComponent(imageUrl)}`;
-  }
-  return imageUrl.startsWith('/') ? `${API_BASE_URL}${imageUrl}` : imageUrl;
+  if (!IS_MOBILE || !imageUrl || !isGoogleImage(imageUrl)) return null;
+  return `${API_BASE_URL}/api/proxy/image?url=${encodeURIComponent(imageUrl)}`;
 }
 
 // Log environment info (useful for debugging)

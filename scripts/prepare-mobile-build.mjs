@@ -15,6 +15,13 @@ const API_ROUTES_TO_EXCLUDE = [
   'app/api/geocode',
   // Live detail data for the app's card dialogs (reads query params, so it can't be static)
   'app/api/detail',
+  // Place photos: loaded live from the website in the app instead of being bundled
+  // (logo-mark.png stays, the UI uses it)
+  'public/images/restaurants',
+  'public/images/cafes',
+  'public/images/bakeries',
+  'public/images/trendings',
+  'public/images/reviews',
   // Dynamic detail pages (restaurant/cafe/visit) - not part of the static app,
   // whose cards link out instead (see IS_STATIC_APP in lib/slug.ts).
   'app/@modal',
