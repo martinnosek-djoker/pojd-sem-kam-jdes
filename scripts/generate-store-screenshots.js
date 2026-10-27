@@ -1,15 +1,17 @@
 // Google Play screenshots (phone + 7" + 10" tablet) taken from the real static
 // app build (`out/`, produced by `npm run build:mobile`), with window.Capacitor
-// stubbed so the page behaves like the native app: local images, live data
-// from the production API.
+// stubbed so the page behaves like the native app: photos and data live from the
+// production website/API (so it needs network).
 //
-//   npm run build:mobile && node scripts/generate-store-screenshots.js
+//   npm run build:mobile && node scripts/generate-store-screenshots.js            # Czech
+//   npm run build:mobile && LOCALE=en node scripts/generate-store-screenshots.js  # English -> screenshots-en/
 const puppeteer = require('puppeteer');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const OUT_DIR = path.join(__dirname, '..', 'out');
+const LOCALE = process.env.LOCALE === 'en' ? 'en' : 'cs';
 const PORT = 8099;
 const BASE = `http://localhost:${PORT}`;
 
@@ -27,14 +29,28 @@ const FAVORITES = { restaurant: [2336, 885, 884], cafe: [11, 10] };
 // scrollTo: text of an element to bring near the top of the viewport before the
 // shot (offset = px of breathing room above it); carouselPhoto: scroll the
 // "Nejnovější návštěvy" carousel to the first visit that has a real photo.
-const SHOTS = [
+const SHOTS_CS = [
   { file: '1-homepage', url: '/', scrollTo: 'Nejnovější návštěvy', offset: 130, carouselPhoto: true },
   { file: '2-restaurants', url: '/', scrollTo: 'Rychlé filtry', offset: 24 },
-  { file: '3-cafes', url: '/kavarny/', scrollTo: 'Kategorie:', offset: 24 },
-  { file: '4-cuisines', url: '/kuchyne/' },
-  { file: '5-events', url: '/akce/' },
-  { file: '6-localities', url: '/lokality/' },
+  { file: '3-place-detail', url: '/', scrollTo: 'Rychlé filtry', offset: 24, openFirstPlace: true },
+  { file: '4-cafes', url: '/kavarny/', scrollTo: 'Kategorie:', offset: 24 },
+  { file: '5-cuisines', url: '/kuchyne/' },
+  { file: '6-events', url: '/akce/' },
+  { file: '7-localities', url: '/lokality/' },
 ];
+
+// openFirstPlace: tap the first restaurant card so the detail dialog is in the shot
+const SHOTS_EN = [
+  { file: '1-homepage', url: '/en', scrollTo: 'Latest visits', offset: 130, carouselPhoto: true },
+  { file: '2-restaurants', url: '/en', scrollTo: 'Quick filters', offset: 24 },
+  { file: '3-place-detail', url: '/en', scrollTo: 'Quick filters', offset: 24, openFirstPlace: true },
+  { file: '4-cafes', url: '/en/kavarny/', scrollTo: 'Category:', offset: 24 },
+  { file: '5-cuisines', url: '/en/kuchyne/' },
+  { file: '6-events', url: '/en/akce/' },
+  { file: '7-localities', url: '/en/lokality/' },
+];
+
+const SHOTS = LOCALE === 'en' ? SHOTS_EN : SHOTS_CS;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain' };
 
@@ -56,7 +72,7 @@ function serve() {
   const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
 
   for (const [device, viewport] of Object.entries(DEVICES)) {
-    const dir = path.join(__dirname, '..', 'store-listing', 'screenshots', device);
+    const dir = path.join(__dirname, '..', 'store-listing', LOCALE === 'en' ? 'screenshots-en' : 'screenshots', device);
     fs.mkdirSync(dir, { recursive: true });
     console.log(`\n📱 ${device} ${viewport.width * viewport.deviceScaleFactor}x${viewport.height * viewport.deviceScaleFactor}`);
 
@@ -88,6 +104,14 @@ function serve() {
           const el = Array.from(document.querySelectorAll('h1,h2,h3,p,label')).find((h) => h.textContent.trim().includes(text));
           if (el) window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset);
         }, shot.scrollTo, shot.offset || 16);
+      }
+      if (shot.openFirstPlace) {
+        await page.evaluate(() => {
+          const card = Array.from(document.querySelectorAll('[role=button]')).find((e) => e.querySelector('.font-serif') && /\/10/.test(e.textContent) && !e.closest('[data-carousel-card]'));
+          if (card) card.click();
+        });
+        // the dialog loads visits and similar places from the live API
+        await new Promise((r) => setTimeout(r, 4000));
       }
       await new Promise((r) => setTimeout(r, 1500));
 
