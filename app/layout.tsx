@@ -7,6 +7,7 @@ import BackButtonHandler from "@/components/BackButtonHandler";
 import ScrollToTop from "@/components/ScrollToTop";
 import StructuredData from "@/components/StructuredData";
 import AndroidAppBanner from "@/components/AndroidAppBanner";
+import AppDetailHost from "@/components/detail/AppDetailHost";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -181,6 +182,7 @@ export default function RootLayout({
           {children}
         </main>
         {modal}
+        <AppDetailHost />
         <BottomNavigation />
         <LanguageSwitcher />
         <Analytics />

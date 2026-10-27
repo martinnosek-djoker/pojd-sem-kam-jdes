@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { usePlaceImage } from "@/lib/use-place-image";
 
 interface HeroImageProps {
   src: string | null | undefined;
@@ -11,16 +11,18 @@ interface HeroImageProps {
 // Many place photos are third-party URLs that can go stale, so fall back to a
 // neutral placeholder instead of a broken-image icon.
 export default function HeroImage({ src, alt, fallbackEmoji }: HeroImageProps) {
-  const [failed, setFailed] = useState(false);
+  // In the native app the place photo may be a bundled file, a Google URL needing the proxy,
+  // or missing from the bundle; the hook sorts that out (on the web it is just `src`).
+  const image = usePlaceImage(src, undefined);
 
   return (
     <div className="h-56 sm:h-72 rounded-2xl overflow-hidden bg-surface-2 mb-5 shadow-md shadow-black/5">
-      {src && !failed ? (
+      {image.src ? (
         <img
-          src={src}
+          src={image.src}
           alt={alt}
           referrerPolicy="no-referrer"
-          onError={() => setFailed(true)}
+          onError={image.onError}
           className="w-full h-full object-cover"
         />
       ) : (

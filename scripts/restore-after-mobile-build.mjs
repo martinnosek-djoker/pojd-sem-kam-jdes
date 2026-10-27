@@ -11,6 +11,8 @@ const API_ROUTES_TO_RESTORE = [
   'app/api/breakfasts',
   'app/api/visits/[id]',
   'app/api/geocode',
+  // Live detail data for the app's card dialogs (reads query params, so it can't be static)
+  'app/api/detail',
   // Dynamic detail pages (restaurant/cafe/visit) - not part of the static app,
   // whose cards link out instead (see IS_STATIC_APP in lib/slug.ts).
   'app/@modal',

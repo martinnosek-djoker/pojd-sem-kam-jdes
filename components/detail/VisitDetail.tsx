@@ -15,12 +15,13 @@ interface VisitDetailProps {
   otherVisits: Visit[];
   locale: Locale;
   withJsonLd?: boolean;
+  otherVisitsLoading?: boolean;
 }
 
 const SITE = "https://www.pojdsemkamjdes.cz";
 
 // The page content on its own, so it can sit in a full page (VisitDetail) or a dialog.
-export function VisitDetailBody({ visit, otherVisits, locale, withJsonLd = true }: VisitDetailProps) {
+export function VisitDetailBody({ visit, otherVisits, locale, withJsonLd = true, otherVisitsLoading = false }: VisitDetailProps) {
   const t = getDictionary(locale).detail;
   const kind = visit.restaurant ? "restaurant" : "cafe";
   const place = (visit.restaurant || visit.cafe) as Restaurant | Cafe;
@@ -73,7 +74,9 @@ export function VisitDetailBody({ visit, otherVisits, locale, withJsonLd = true 
         <PlaceMap points={points} navigateLabel={t.navigate} largerMapLabel={t.largerMap} mapWord={t.mapWord} />
       </section>
 
-      {otherVisits.length > 0 && (
+      {otherVisitsLoading && <div className="h-32 rounded-2xl bg-surface-2 animate-pulse" aria-hidden="true" />}
+
+      {!otherVisitsLoading && otherVisits.length > 0 && (
         <section aria-labelledby="more">
           <h2 id="more" className="font-serif text-2xl font-semibold text-ink mb-4">{t.otherVisits}</h2>
           <div className="space-y-4">

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { closeDetail } from "@/lib/app-detail";
 
 /**
  * BackButtonHandler - Handles Android back button behavior
@@ -28,6 +29,9 @@ export default function BackButtonHandler() {
 
         // Listen to back button events (not an async function, no await needed)
         backButtonListener = App.addListener("backButton", () => {
+          // An open card dialog goes away first (one level, since cards can open similar places)
+          if (closeDetail()) return;
+
           // Check if we're on the homepage
           const isHomepage = window.location.pathname === "/" || window.location.pathname === "";
 

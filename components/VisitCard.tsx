@@ -7,6 +7,7 @@ import { Visit } from "@/lib/types";
 import { usePlaceImage } from "@/lib/use-place-image";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { IS_STATIC_APP, visitPath } from "@/lib/slug";
+import { openDetail } from "@/lib/app-detail";
 import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
 
 interface VisitCardProps {
@@ -160,17 +161,22 @@ export default function VisitCard({ visit }: VisitCardProps) {
   const cardClasses =
     "group bg-surface rounded-lg shadow-md shadow-black/5 hover:shadow-lg hover:shadow-black/10 transition-all duration-500 p-6 border border-hairline hover:border-terracotta/40 relative overflow-hidden h-full";
 
-  // The native app is a static export without the detail pages, so it keeps linking out.
+  // The native app has no per-visit routes (static export), so a tap opens the same detail
+  // in an in-app dialog instead (see AppDetailHost).
   const card = !IS_STATIC_APP ? (
     <Link href={visitPath(place.name, visit.visit_date, visit.id, locale)} scroll={false} className={`block ${cardClasses}`}>
       <CardContent />
     </Link>
-  ) : place.website_url ? (
-    <a href={place.website_url} target="_blank" rel="noopener noreferrer" className={`block ${cardClasses}`}>
-      <CardContent />
-    </a>
   ) : (
-    <div className={cardClasses}>
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => openDetail({ type: "visit", visit, locale })}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") openDetail({ type: "visit", visit, locale });
+      }}
+      className={`block cursor-pointer ${cardClasses}`}
+    >
       <CardContent />
     </div>
   );

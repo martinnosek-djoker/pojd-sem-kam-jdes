@@ -3,7 +3,8 @@ import type { Locale } from "@/lib/i18n/LocaleContext";
 export type PlaceKind = "restaurant" | "cafe";
 
 // True only in the Capacitor static-export build (set in next.config.mobile.mjs).
-// That build can't contain the dynamic detail routes, so cards keep linking out.
+// That build can't contain the dynamic detail routes, so cards open the in-app detail dialog
+// (see lib/app-detail.ts) instead of navigating.
 export const IS_STATIC_APP = process.env.NEXT_PUBLIC_MOBILE_BUILD === "true";
 
 export function slugify(name: string): string {

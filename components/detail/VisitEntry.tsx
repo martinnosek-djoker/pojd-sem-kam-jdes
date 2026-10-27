@@ -1,8 +1,7 @@
-import Link from "next/link";
 import type { Visit } from "@/lib/types";
 import type { Locale } from "@/lib/i18n/LocaleContext";
 import { getDictionary, formatLongDate } from "@/lib/i18n/dictionaries";
-import { visitPath } from "@/lib/slug";
+import VisitPermalink from "./VisitPermalink";
 import PhotoGallery from "./PhotoGallery";
 
 interface VisitEntryProps {
@@ -60,13 +59,7 @@ export default function VisitEntry({ visit, locale, placeName, showPermalink = t
       )}
 
       {showPermalink && (
-        <Link
-          href={visitPath(placeName, visit.visit_date, visit.id, locale)}
-          scroll={false}
-          className="text-sm font-semibold text-terracotta hover:text-terracotta-dark transition-colors"
-        >
-          {t.fullVisit}
-        </Link>
+        <VisitPermalink visit={visit} placeName={placeName} locale={locale} label={t.fullVisit} />
       )}
     </article>
   );

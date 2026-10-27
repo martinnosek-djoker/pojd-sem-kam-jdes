@@ -19,12 +19,14 @@ interface PlaceDetailProps {
   similar: (Restaurant | Cafe)[];
   locale: Locale;
   withJsonLd?: boolean;
+  // The native app opens the card instantly and loads visits afterwards
+  visitsLoading?: boolean;
 }
 
 const SITE = "https://www.pojdsemkamjdes.cz";
 
 // The page content on its own, so it can sit in a full page (PlaceDetail) or a dialog.
-export function PlaceDetailBody({ kind, place, visits, similar, locale, withJsonLd = true }: PlaceDetailProps) {
+export function PlaceDetailBody({ kind, place, visits, similar, locale, withJsonLd = true, visitsLoading = false }: PlaceDetailProps) {
   const dict = getDictionary(locale);
   const t = dict.detail;
   const isRestaurant = kind === "restaurant";
@@ -142,7 +144,9 @@ export function PlaceDetailBody({ kind, place, visits, similar, locale, withJson
 
       <section aria-labelledby="visits">
         <h2 id="visits" className="font-serif text-2xl font-semibold text-ink mb-4">{t.myVisits}</h2>
-        {visits.length === 0 ? (
+        {visitsLoading ? (
+          <div className="h-32 rounded-2xl bg-surface-2 animate-pulse" aria-hidden="true" />
+        ) : visits.length === 0 ? (
           <p className="text-text-muted">{t.noVisits}</p>
         ) : (
           <div className="space-y-4">

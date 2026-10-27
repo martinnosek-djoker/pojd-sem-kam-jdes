@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import FavoriteButton from "@/components/FavoriteButton";
 import { IS_STATIC_APP, placePath } from "@/lib/slug";
+import { openDetail } from "@/lib/app-detail";
 import { formatPrice, getPriceBadgeClasses, translateCuisineType, getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RestaurantCardProps {
@@ -63,23 +64,25 @@ export default function RestaurantCard({ restaurant, forceLocation, showFavorite
     showFavorite ? "pr-12" : ""
   }`;
 
-  // The native app is a static export without the detail pages, so it keeps linking out.
-  const card =
-    IS_STATIC_APP ? (
-      restaurant.website_url ? (
-        <a href={restaurant.website_url} target="_blank" rel="noopener noreferrer" className={rowClasses}>
-          <CardContent />
-        </a>
-      ) : (
-        <div className={rowClasses}>
-          <CardContent />
-        </div>
-      )
-    ) : (
-      <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} scroll={false} className={rowClasses}>
-        <CardContent />
-      </Link>
-    );
+  // The native app has no per-place routes (static export), so a tap opens the same detail
+  // in an in-app dialog instead (see AppDetailHost).
+  const card = IS_STATIC_APP ? (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => openDetail({ type: "place", kind: "restaurant", place: restaurant, locale })}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") openDetail({ type: "place", kind: "restaurant", place: restaurant, locale });
+      }}
+      className={`${rowClasses} cursor-pointer`}
+    >
+      <CardContent />
+    </div>
+  ) : (
+    <Link href={placePath("restaurant", restaurant.name, restaurant.id, locale)} scroll={false} className={rowClasses}>
+      <CardContent />
+    </Link>
+  );
 
   if (!showFavorite) return card;
 
