@@ -86,6 +86,36 @@ for dens, legacy in DENSITIES.items():
     for name, shape in (("ic_launcher.png", "square"), ("ic_launcher_round.png", "circle")):
         save(shaped(base, shape).resize((legacy, legacy), Image.LANCZOS), d, name)
 
+# --- Notification small icon ---------------------------------------------------
+# Android draws the status-bar icon as a flat silhouette (only alpha counts), so it needs a
+# white-on-transparent shape. The mark is line art, so fill its closed areas first.
+def silhouette_alpha():
+    pad = 20
+    a = MARK.point(lambda v: 255 if v > 127 else 0)
+    canvas = Image.new("L", (a.width + 2 * pad, a.height + 2 * pad), 0)
+    canvas.paste(a, (pad, pad))
+    outside = canvas.copy()
+    ImageDraw.floodfill(outside, (0, 0), 128)
+    # everything the flood did not reach is the mark itself or sits inside it
+    filled = outside.point(lambda v: 0 if v == 128 else 255)
+    return filled.crop((pad, pad, pad + a.width, pad + a.height))
+
+
+SILHOUETTE = silhouette_alpha()
+NOTIFICATION_SIZES = {"mdpi": 24, "hdpi": 36, "xhdpi": 48, "xxhdpi": 72, "xxxhdpi": 96}
+for dens, size in NOTIFICATION_SIZES.items():
+    d = path("android", "app", "src", "main", "res", f"drawable-{dens}")
+    os.makedirs(d, exist_ok=True)
+    w = round(size * 0.9)
+    h = round(w * SILHOUETTE.height / SILHOUETTE.width)
+    big = SILHOUETTE.resize((w * 4, h * 4), Image.LANCZOS)
+    mask = big.resize((w, h), Image.LANCZOS)
+    icon = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    white = Image.new("RGBA", (w, h), (255, 255, 255, 255))
+    white.putalpha(mask)
+    icon.alpha_composite(white, ((size - w) // 2, (size - h) // 2))
+    save(icon, d, "ic_notification.png")
+
 # --- Store / source icons ---------------------------------------------------
 icon_1024 = flat(1024, TERRACOTTA, 0.68, CREAM)
 save(icon_1024, "resources", "icon.png")

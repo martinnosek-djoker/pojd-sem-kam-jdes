@@ -12,6 +12,8 @@ interface NotificationPayload {
   body: string;
   type: 'restaurant' | 'cafe' | 'bakery' | 'trending' | 'event' | 'visit';
   itemId?: number;
+  // Name shown in the localized body (app string resources push_<type>_title / push_<type>_body)
+  itemName?: string;
 }
 
 // Získat OAuth2 access token pro FCM V1 API
@@ -40,7 +42,7 @@ async function getAccessToken(): Promise<string> {
 export async function POST(request: NextRequest) {
   try {
     const payload: NotificationPayload = await request.json();
-    const { title, body, type, itemId } = payload;
+    const { title, body, type, itemId, itemName } = payload;
 
     if (!title || !body || !type) {
       return NextResponse.json(
@@ -107,6 +109,15 @@ export async function POST(request: NextRequest) {
               notification: {
                 sound: "default",
                 icon: "ic_notification",
+                color: "#C1572E",
+                // The app picks the text in the phone's language from its string resources
+                // (Czech/English). Apps without those resources (older versions) fall back to
+                // the plain Czech title/body above.
+                ...(itemName && {
+                  title_loc_key: `push_${type}_title`,
+                  body_loc_key: `push_${type}_body`,
+                  body_loc_args: [itemName],
+                }),
               },
             },
           },

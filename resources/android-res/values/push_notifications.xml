@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Push notification texts, picked by FCM from the phone's language (title_loc_key / body_loc_key,
+     see app/api/notifications/send/route.ts). Default = English; Czech lives in values-cs. -->
+<resources>
+    <string name="push_restaurant_title">🍽️ New restaurant!</string>
+    <string name="push_restaurant_body">We\'ve added a new restaurant: %1$s</string>
+    <string name="push_cafe_title">☕ New cafe!</string>
+    <string name="push_cafe_body">We\'ve added a new cafe: %1$s</string>
+    <string name="push_bakery_title">🍰 New bakery!</string>
+    <string name="push_bakery_body">We\'ve added a new bakery: %1$s</string>
+    <string name="push_trending_title">🔥 New trending place!</string>
+    <string name="push_trending_body">We\'ve added a new trending place: %1$s</string>
+    <string name="push_event_title">🎉 New food event!</string>
+    <string name="push_event_body">We\'ve added a new food event: %1$s</string>
+    <string name="push_visit_title">📸 New review!</string>
+    <string name="push_visit_body">We\'ve added a new review: %1$s</string>
+</resources>

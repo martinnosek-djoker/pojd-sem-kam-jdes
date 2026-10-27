@@ -2,7 +2,7 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { renameSync } from 'fs';
+import { renameSync, cpSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -58,6 +58,11 @@ async function buildMobile() {
 
     // Step 7: Sync with Capacitor
     await runCommand('npx cap sync android', 'Syncing with Capacitor (Android)');
+
+    // Step 8: Android resources that live in git (the android/ folder itself is ignored),
+    // e.g. the localized push notification texts
+    cpSync(join(rootDir, 'resources', 'android-res'), join(rootDir, 'android', 'app', 'src', 'main', 'res'), { recursive: true });
+    console.log('✓ Copied resources/android-res into the Android project');
 
     console.log('\n✅ Mobile build completed successfully!\n');
   } catch (error) {

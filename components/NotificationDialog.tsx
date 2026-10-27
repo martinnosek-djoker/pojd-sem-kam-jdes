@@ -102,6 +102,7 @@ export default function NotificationDialog({
           body,
           type: itemType,
           itemId,
+          itemName,
         }),
       });
 

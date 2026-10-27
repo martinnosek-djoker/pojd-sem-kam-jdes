@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="push_restaurant_title">🍽️ Nová restaurace!</string>
+    <string name="push_restaurant_body">Přidali jsme novou restauraci: %1$s</string>
+    <string name="push_cafe_title">☕ Nová kavárna!</string>
+    <string name="push_cafe_body">Přidali jsme novou kavárnu: %1$s</string>
+    <string name="push_bakery_title">🍰 Nová cukrárna!</string>
+    <string name="push_bakery_body">Přidali jsme novou cukrárnu: %1$s</string>
+    <string name="push_trending_title">🔥 Nový trending podnik!</string>
+    <string name="push_trending_body">Přidali jsme nový trending podnik: %1$s</string>
+    <string name="push_event_title">🎉 Nová gastro akce!</string>
+    <string name="push_event_body">Přidali jsme novou gastro akci: %1$s</string>
+    <string name="push_visit_title">📸 Nová recenze!</string>
+    <string name="push_visit_body">Přidali jsme novou recenzi: %1$s</string>
+</resources>
