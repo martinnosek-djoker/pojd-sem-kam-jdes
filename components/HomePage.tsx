@@ -257,8 +257,8 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
             <p className="text-sm md:text-base text-text-muted">{t.sectionSubtitle}</p>
           </div>
 
-          {/* AI Restaurant Search - Czech only for now, the AI backend doesn't speak English yet */}
-          {locale === "cs" && <AIRestaurantSearch />}
+          {/* AI assistant: searches restaurants, cafes and bakeries, answers in the page language */}
+          <AIRestaurantSearch />
 
           {/* Filters */}
           <RestaurantFilter

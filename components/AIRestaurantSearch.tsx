@@ -1,12 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Restaurant } from "@/lib/types";
+import { Bakery, Cafe, Restaurant } from "@/lib/types";
 import RestaurantCard from "./RestaurantCard";
+import CafeCard from "./CafeCard";
+import BakeryCard from "./BakeryCard";
 import { getApiUrl } from "@/lib/api-config";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+
+type AIPlace =
+  | { type: "restaurant"; data: Restaurant }
+  | { type: "cafe"; data: Cafe }
+  | { type: "bakery"; data: Bakery };
 
 interface AISearchResult {
-  restaurants: Restaurant[];
+  places: AIPlace[];
   explanation: string;
 }
 
@@ -24,6 +33,8 @@ function renderFormattedExplanation(text: string) {
 }
 
 export default function AIRestaurantSearch() {
+  const locale = useLocale();
+  const t = getDictionary(locale).aiSearch;
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AISearchResult | null>(null);
@@ -47,20 +58,24 @@ export default function AIRestaurantSearch() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: query.trim() }),
+        body: JSON.stringify({ query: query.trim(), locale }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Nepodařilo se vyhledat restaurace");
+        throw new Error(data.error || t.error);
       }
 
-      setResult(data);
+      // Older servers only answer with `restaurants`
+      setResult({
+        places: data.places ?? (data.restaurants ?? []).map((r: Restaurant) => ({ type: "restaurant", data: r })),
+        explanation: data.explanation,
+      });
       setIsExpanded(true);
     } catch (err) {
       console.error("AI search error:", err);
-      setError(err instanceof Error ? err.message : "Něco se pokazilo");
+      setError(err instanceof Error ? err.message : t.error);
     } finally {
       setLoading(false);
     }
@@ -88,10 +103,10 @@ export default function AIRestaurantSearch() {
           </div>
           <div className="text-left">
             <h3 className="text-lg font-serif font-bold text-ink flex items-center gap-2">
-              <span className="text-terracotta">AI Asistent</span>
-              <span className="px-2 py-0.5 bg-terracotta/10 border border-terracotta/30 rounded-full text-xs text-terracotta font-semibold">NOVÉ</span>
+              <span className="text-terracotta">{t.title}</span>
+              <span className="px-2 py-0.5 bg-terracotta/10 border border-terracotta/30 rounded-full text-xs text-terracotta font-semibold">{t.badge}</span>
             </h3>
-            <p className="text-sm text-text-muted">Inteligentní vyhledávání restaurací</p>
+            <p className="text-sm text-text-muted">{t.subtitle}</p>
           </div>
         </div>
         <svg
@@ -113,7 +128,7 @@ export default function AIRestaurantSearch() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder='Např. "chci na řízek na Andělu" nebo "burger do 600 Kč"'
+                placeholder={t.placeholder}
                 className="w-full px-4 py-3 pr-24 bg-bg border border-hairline rounded-lg text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                 disabled={loading}
               />
@@ -125,7 +140,7 @@ export default function AIRestaurantSearch() {
                     className="px-3 py-1.5 text-sm text-text-muted hover:text-ink transition-colors"
                     disabled={loading}
                   >
-                    Vymazat
+                    {t.clear}
                   </button>
                 )}
                 <button
@@ -136,14 +151,14 @@ export default function AIRestaurantSearch() {
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Hledám...</span>
+                      <span>{t.searching}</span>
                     </>
                   ) : (
                     <>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
-                      <span>Hledat</span>
+                      <span>{t.search}</span>
                     </>
                   )}
                 </button>
@@ -152,13 +167,8 @@ export default function AIRestaurantSearch() {
 
             {/* Example queries */}
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="text-xs text-text-muted">Zkuste například:</span>
-              {[
-                "nejlepší pizza na Vinohradech",
-                "vietnamská restaurace na Andělu",
-                "degustační menu do 3000 Kč",
-                "kde mají skvělý tatarák"
-              ].map((example) => (
+              <span className="text-xs text-text-muted">{t.tryExample}</span>
+              {t.examples.map((example) => (
                 <button
                   key={example}
                   type="button"
@@ -196,27 +206,31 @@ export default function AIRestaurantSearch() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-terracotta mb-2">AI doporučuje:</h4>
+                    <h4 className="text-sm font-semibold text-terracotta mb-2">{t.recommends}</h4>
                     <p className="text-ink-mid text-sm leading-relaxed whitespace-pre-line">{renderFormattedExplanation(result.explanation)}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Restaurant results */}
-              {result.restaurants.length > 0 ? (
+              {/* Place results: restaurants, cafes and bakeries can be mixed */}
+              {result.places.length > 0 ? (
                 <div>
-                  <h4 className="text-lg font-serif font-semibold text-ink mb-4">
-                    Nalezeno {result.restaurants.length} {result.restaurants.length === 1 ? "restaurace" : result.restaurants.length < 5 ? "restaurace" : "restaurací"}
-                  </h4>
+                  <h4 className="text-lg font-serif font-semibold text-ink mb-4">{t.found(result.places.length)}</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {result.restaurants.map((restaurant) => (
-                      <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-                    ))}
+                    {result.places.map((place) =>
+                      place.type === "restaurant" ? (
+                        <RestaurantCard key={`r${place.data.id}`} restaurant={place.data} />
+                      ) : place.type === "cafe" ? (
+                        <CafeCard key={`c${place.data.id}`} cafe={place.data} />
+                      ) : (
+                        <BakeryCard key={`b${place.data.id}`} bakery={place.data} />
+                      )
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-text-muted">Bohužel jsem nenašel žádné vhodné restaurace.</p>
+                  <p className="text-text-muted">{t.nothingFound}</p>
                 </div>
               )}
             </div>
