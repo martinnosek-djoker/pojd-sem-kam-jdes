@@ -17,6 +17,7 @@ const GEO_MESSAGES = {
     timeout: "Vypršel čas pro získání polohy",
     searchFailed: "Nepodařilo se vyhledat adresu",
     notFound: "Adresa nebyla nalezena. Zkus zadat konkrétnější místo nebo použít formát: ulice, město",
+    notFoundPrague: "Adresa v Praze nebyla nalezena. Hledáme jen v Praze, zkus konkrétnější místo nebo formát: ulice, čtvrť",
   },
   en: {
     deniedSettings: "Location access was denied. Enable GPS in the app settings.",
@@ -29,6 +30,7 @@ const GEO_MESSAGES = {
     timeout: "Timed out while getting your location",
     searchFailed: "Could not search for the address",
     notFound: "Address not found. Try a more specific place or the format: street, city",
+    notFoundPrague: "Address not found in Prague. We only search within Prague, so try a more specific place or the format: street, neighborhood",
   },
 } satisfies Record<Locale, Record<string, string>>;
 
@@ -151,13 +153,28 @@ export async function getCurrentPosition(locale: Locale = "cs"): Promise<Coordin
 }
 
 // Geocode an address to coordinates using Nominatim API
-export async function geocodeAddress(address: string, locale: Locale = "cs"): Promise<{ coordinates: Coordinates; displayName: string }> {
+// Rough box around Prague (lon/lat) for Nominatim's viewbox: left, top, right, bottom.
+const PRAGUE_VIEWBOX = "14.22,50.18,14.71,49.94";
+// Region code of "Hlavní město Praha" in the result's address (the box alone also lets in Central Bohemia).
+const PRAGUE_REGION = "CZ-10";
+
+// `pragueOnly`: the visitor-facing search only returns places in Prague (the product is Prague
+// only, and street names repeat all over the country, e.g. "I. P. Pavlova" also exists in Olomouc).
+// The admin keeps searching the whole country.
+export async function geocodeAddress(
+  address: string,
+  locale: Locale = "cs",
+  options: { pragueOnly?: boolean } = {}
+): Promise<{ coordinates: Coordinates; displayName: string }> {
   const m = GEO_MESSAGES[locale];
+  const pragueOnly = !!options.pragueOnly;
   try {
     // Použijeme OpenStreetMap Nominatim API (zdarma, bez API klíče)
     const encodedAddress = encodeURIComponent(address);
-    // Limit 5 - dostaneme více výsledků pro lepší výběr
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=5&countrycodes=cz&addressdetails=1&extratags=1&accept-language=${locale}`;
+    // Limit 5 - dostaneme více výsledků pro lepší výběr (v Praze víc, protože se ještě filtruje podle kraje)
+    const url =
+      `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=${pragueOnly ? 15 : 5}&countrycodes=cz&addressdetails=1&extratags=1&accept-language=${locale}` +
+      (pragueOnly ? `&viewbox=${PRAGUE_VIEWBOX}&bounded=1` : "");
 
     const response = await fetch(url, {
       headers: {
@@ -169,10 +186,13 @@ export async function geocodeAddress(address: string, locale: Locale = "cs"): Pr
       throw new Error(m.searchFailed);
     }
 
-    const data = await response.json();
+    const found = await response.json();
+    const data = pragueOnly
+      ? (found || []).filter((result: any) => result.address?.["ISO3166-2-lvl4"] === PRAGUE_REGION)
+      : found;
 
     if (!data || data.length === 0) {
-      throw new Error(m.notFound);
+      throw new Error(pragueOnly ? m.notFoundPrague : m.notFound);
     }
 
     // Funkce pro skórování relevance výsledku

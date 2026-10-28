@@ -215,7 +215,7 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
     setIsPermissionDenied(false);
 
     try {
-      const result = await geocodeAddress(searchAddress, locale);
+      const result = await geocodeAddress(searchAddress, locale, { pragueOnly: true });
       setUserLocation(result.coordinates);
       setLocationDisplayName(result.displayName);
     } catch (error: any) {
