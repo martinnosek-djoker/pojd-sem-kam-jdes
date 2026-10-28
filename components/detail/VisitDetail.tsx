@@ -74,7 +74,7 @@ export function VisitDetailBody({ visit, otherVisits, locale, withJsonLd = true,
         <PlaceMap points={points} navigateLabel={t.navigate} largerMapLabel={t.largerMap} mapWord={t.mapWord} />
       </section>
 
-      {otherVisitsLoading && <div className="h-32 rounded-2xl bg-surface-2 animate-pulse" aria-hidden="true" />}
+      {otherVisitsLoading && <div className="h-32 rounded-2xl skeleton" aria-hidden="true" />}
 
       {!otherVisitsLoading && otherVisits.length > 0 && (
         <section aria-labelledby="more">

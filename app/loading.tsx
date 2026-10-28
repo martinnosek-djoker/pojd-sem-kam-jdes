@@ -9,20 +9,20 @@ export default function Loading() {
           <div className="inline-block mb-4 sm:mb-6">
             <Logo />
           </div>
-          <div className="h-6 sm:h-10 md:h-12 bg-surface-2 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 animate-pulse" />
-          <div className="h-4 sm:h-6 bg-surface-2 rounded-lg max-w-md mx-auto animate-pulse" />
+          <div className="h-6 sm:h-10 md:h-12 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 skeleton" />
+          <div className="h-4 sm:h-6 rounded-lg max-w-md mx-auto skeleton" />
         </div>
 
         {/* Restaurant Section Skeleton */}
         <div className="mb-6 md:mb-8">
-          <div className="h-8 bg-surface-2 rounded-lg max-w-md mb-2 animate-pulse" />
-          <div className="h-5 bg-surface-2 rounded-lg max-w-lg animate-pulse" />
+          <div className="h-8 rounded-lg max-w-md mb-2 skeleton" />
+          <div className="h-5 rounded-lg max-w-lg skeleton" />
         </div>
 
         {/* Filters Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="h-12 bg-surface-2 rounded-md animate-pulse" />
-          <div className="h-12 bg-surface-2 rounded-md animate-pulse" />
+          <div className="h-12 rounded-md skeleton" />
+          <div className="h-12 rounded-md skeleton" />
         </div>
 
         {/* Restaurant Cards Skeleton */}

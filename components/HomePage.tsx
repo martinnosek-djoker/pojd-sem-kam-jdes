@@ -314,7 +314,7 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-16 stagger-children">
               {filteredRestaurants.map((restaurant) => (
                 <RestaurantCard
                   key={restaurant.id}

@@ -42,8 +42,10 @@ export default function CafeCard({ cafe, forceLocation, showFavorite = false }: 
           <img
             src={image.src}
             alt={`${cafe.name} – ${tCommon.altCafe} ${location}`}
-            className="w-full h-full object-cover"
+            ref={image.ref}
+            onLoad={image.onLoad}
             onError={image.onError}
+            className={`w-full h-full object-cover img-fade ${image.loaded ? "is-loaded" : ""}`}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -83,7 +85,7 @@ export default function CafeCard({ cafe, forceLocation, showFavorite = false }: 
     </>
   );
 
-  const rowClasses = `flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl hover:border-terracotta/40 transition-colors ${
+  const rowClasses = `flex gap-4 items-center p-3 bg-surface border border-hairline rounded-2xl hover:border-terracotta/40 transition-all active:scale-[0.985] ${
     showFavorite ? "pr-12" : ""
   }`;
 

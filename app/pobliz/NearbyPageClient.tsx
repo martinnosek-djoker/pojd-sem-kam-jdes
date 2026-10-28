@@ -491,7 +491,7 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
             </div>
 
             {/* Places Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 stagger-children">
               {nearbyPlaces.map((place, index) => (
                 <div key={`${place.type}-${place.id}-${place.displayLocation}-${index}`} className="relative">
                   {/* Distance Badge */}

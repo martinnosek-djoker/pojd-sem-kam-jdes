@@ -338,3 +338,85 @@ button, a {
   background: none !important;
   padding: 0 !important;
 }
+
+/* ---------------------------------------------------------------------------
+   Motion. Only opacity/transform/background-position are animated (cheap on
+   low-end Android WebViews). Everything is switched off by the "reduce motion"
+   setting at the bottom.
+--------------------------------------------------------------------------- */
+
+/* Loading placeholder with a soft shimmer instead of a plain pulse */
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.skeleton {
+  background-color: #F5EDE1;
+  background-image: linear-gradient(90deg, #F5EDE1 25%, #FDF8F0 50%, #F5EDE1 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* Cards/items appear one after another. "backwards" (not "both") so the element keeps its own
+   transform afterwards (press feedback, hover). */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.stagger-children > * {
+  animation: fade-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: 320ms;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 40ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 280ms; }
+
+/* Photos fade in once loaded (the box behind them already has the placeholder colour) */
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+.img-fade.is-loaded {
+  opacity: 1;
+}
+
+/* Detail dialog: backdrop fades, the sheet slides up from the bottom (phones) or fades/scales
+   in (wider screens); closing plays the reverse. */
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes sheet-down { from { transform: none; } to { transform: translateY(100%); } }
+@keyframes sheet-pop-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes sheet-pop-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(0.96); } }
+
+.dialog-backdrop { animation: backdrop-in 0.22s ease-out both; }
+.dialog-backdrop.is-closing { animation: backdrop-out 0.2s ease-in both; }
+.dialog-sheet { animation: sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) backwards; } /* backwards: leaves inline transform (swipe) free afterwards */
+.dialog-sheet.is-closing { animation: sheet-down 0.2s ease-in both; }
+@media (min-width: 640px) {
+  .dialog-sheet { animation-name: sheet-pop-in; animation-duration: 0.25s; }
+  .dialog-sheet.is-closing { animation-name: sheet-pop-out; }
+}
+
+/* The favourite star pops when it gets switched on */
+@keyframes star-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.45) rotate(-8deg); }
+  100% { transform: scale(1); }
+}
+.star-pop { animation: star-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

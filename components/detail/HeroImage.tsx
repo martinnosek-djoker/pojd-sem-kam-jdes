@@ -22,8 +22,10 @@ export default function HeroImage({ src, alt, fallbackEmoji }: HeroImageProps) {
           src={image.src}
           alt={alt}
           referrerPolicy="no-referrer"
+          ref={image.ref}
+          onLoad={image.onLoad}
           onError={image.onError}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover img-fade ${image.loaded ? "is-loaded" : ""}`}
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center text-6xl opacity-30" aria-hidden="true">

@@ -35,7 +35,7 @@ export default function HappeningNow() {
               <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-terracotta" />
               <h2 className="text-xl md:text-3xl font-serif font-bold text-ink tracking-wide">Aktuální gastro akce</h2>
             </div>
-            <div className="h-10 w-28 bg-surface-2 rounded-md animate-pulse"></div>
+            <div className="h-10 w-28 rounded-md skeleton"></div>
           </div>
           <p className="text-sm md:text-base text-text-muted">Události začínající v nejbližších 3 dnech</p>
         </div>

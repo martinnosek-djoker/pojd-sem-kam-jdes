@@ -9,7 +9,7 @@ export default function Loading() {
         </div>
         <div className="space-y-4 max-w-3xl mx-auto">
           {[...Array(10)].map((_, i) => (
-            <div key={i} className="bg-surface-2 rounded-lg p-4 h-24 animate-pulse" />
+            <div key={i} className="rounded-lg p-4 h-24 skeleton" />
           ))}
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function SimilarPlaces({ kind, places, title, subtitle, locale }:
       <h2 id="similar" className="font-serif text-2xl font-semibold text-ink mb-1">{title}</h2>
       <p className="text-sm text-text-muted mb-4">{subtitle}</p>
       <LocaleProvider locale={locale}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 stagger-children">
           {places.map((p) =>
             kind === "restaurant" ? (
               <RestaurantCard key={p.id} restaurant={p as Restaurant} />

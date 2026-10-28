@@ -74,12 +74,12 @@ export default function RecentVisits({ visits, loading = false }: RecentVisitsPr
 
       <div
         ref={carouselRef}
-        className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 [overflow-anchor:none] scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+        className="stagger-children flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 [overflow-anchor:none] scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
       >
         {visits.length === 0 &&
           [0, 1].map((i) => (
             <div key={i} className="flex-none w-[85vw] sm:w-[380px] lg:w-[420px] snap-start" aria-hidden="true">
-              <div className="h-[420px] rounded-lg border border-hairline bg-surface-2 animate-pulse" />
+              <div className="h-[420px] rounded-lg border border-hairline skeleton" />
             </div>
           ))}
         {visits.map((visit) => (

@@ -145,7 +145,7 @@ export function PlaceDetailBody({ kind, place, visits, similar, locale, withJson
       <section aria-labelledby="visits">
         <h2 id="visits" className="font-serif text-2xl font-semibold text-ink mb-4">{t.myVisits}</h2>
         {visitsLoading ? (
-          <div className="h-32 rounded-2xl bg-surface-2 animate-pulse" aria-hidden="true" />
+          <div className="h-32 rounded-2xl skeleton" aria-hidden="true" />
         ) : visits.length === 0 ? (
           <p className="text-text-muted">{t.noVisits}</p>
         ) : (

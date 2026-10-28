@@ -8,8 +8,8 @@ export default function Loading() {
           <div className="inline-block mb-4 sm:mb-6">
             <Logo />
           </div>
-          <div className="h-6 sm:h-10 md:h-12 bg-surface-2 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 animate-pulse" />
-          <div className="h-4 sm:h-6 bg-surface-2 rounded-lg max-w-md mx-auto animate-pulse" />
+          <div className="h-6 sm:h-10 md:h-12 rounded-lg max-w-2xl mx-auto mb-3 sm:mb-4 skeleton" />
+          <div className="h-4 sm:h-6 rounded-lg max-w-md mx-auto skeleton" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-8">
           {[...Array(6)].map((_, i) => (

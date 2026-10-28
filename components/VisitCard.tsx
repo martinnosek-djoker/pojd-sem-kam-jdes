@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Visit } from "@/lib/types";
@@ -33,6 +33,18 @@ export default function VisitCard({ visit }: VisitCardProps) {
   }, [visitPhotos[0]]);
   const showVisitPhoto = visitPhotos.length > 0 && !photoError;
   const heroImageUrl = place ? (showVisitPhoto ? visitPhotos[0] : placeImage.src) : null;
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  // reset only when the picture really changes (a reset on mount would undo the check below)
+  const previousHero = useRef(heroImageUrl);
+  useEffect(() => {
+    if (previousHero.current === heroImageUrl) return;
+    previousHero.current = heroImageUrl;
+    setHeroLoaded(false);
+  }, [heroImageUrl]);
+  // already loaded before onLoad could be attached (server-rendered / cached image)
+  const heroRef = (el: HTMLImageElement | null) => {
+    if (el && el.complete && el.naturalWidth > 0) setHeroLoaded(true);
+  };
   const extraPhotos = visitPhotos.slice(1);
 
   const showPrev = (e: React.MouseEvent) => {
@@ -80,7 +92,9 @@ export default function VisitCard({ visit }: VisitCardProps) {
             <img
               src={heroImageUrl}
               alt={place.name}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              ref={heroRef}
+              onLoad={() => setHeroLoaded(true)}
+              className={`w-full h-full object-cover group-hover:scale-110 transition-[transform,opacity] duration-700 ${heroLoaded ? "opacity-100" : "opacity-0"}`}
               onError={() => (showVisitPhoto ? setPhotoError(true) : placeImage.onError())}
             />
           </div>
@@ -159,7 +173,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
   );
 
   const cardClasses =
-    "group bg-surface rounded-lg shadow-md shadow-black/5 hover:shadow-lg hover:shadow-black/10 transition-all duration-500 p-6 border border-hairline hover:border-terracotta/40 relative overflow-hidden h-full";
+    "group bg-surface rounded-lg shadow-md shadow-black/5 hover:shadow-lg hover:shadow-black/10 transition-all duration-500 active:scale-[0.985] active:duration-150 p-6 border border-hairline hover:border-terracotta/40 relative overflow-hidden h-full";
 
   // The native app has no per-visit routes (static export), so a tap opens the same detail
   // in an in-app dialog instead (see AppDetailHost).
