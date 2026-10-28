@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Restaurant } from "@/lib/types";
 import RestaurantCard from "./RestaurantCard";
+import { getApiUrl } from "@/lib/api-config";
 
 interface AISearchResult {
   restaurants: Restaurant[];
@@ -41,7 +42,7 @@ export default function AIRestaurantSearch() {
     setResult(null);
 
     try {
-      const response = await fetch("/api/ai-search", {
+      const response = await fetch(getApiUrl("/api/ai-search"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

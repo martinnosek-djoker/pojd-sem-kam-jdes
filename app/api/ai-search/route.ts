@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
 import { cleanCzechText } from "@/lib/clean-czech-text";
+import { jsonWithCors, handleOptionsRequest } from "@/lib/cors";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -19,19 +20,24 @@ interface Restaurant {
   image_url?: string;
 }
 
+// The native app calls this from another origin, so it needs CORS + a preflight answer
+export async function OPTIONS() {
+  return handleOptionsRequest();
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
 
     if (!query || typeof query !== "string") {
-      return NextResponse.json(
+      return jsonWithCors(
         { error: "Query je povinný parametr" },
         { status: 400 }
       );
     }
 
     if (!anthropicApiKey) {
-      return NextResponse.json(
+      return jsonWithCors(
         { error: "AI služba není dostupná - chybí API klíč" },
         { status: 500 }
       );
@@ -46,14 +52,14 @@ export async function POST(request: NextRequest) {
 
     if (dbError) {
       console.error("Database error:", dbError);
-      return NextResponse.json(
+      return jsonWithCors(
         { error: "Nepodařilo se načíst restaurace" },
         { status: 500 }
       );
     }
 
     if (!restaurants || restaurants.length === 0) {
-      return NextResponse.json({
+      return jsonWithCors({
         restaurants: [],
         explanation: "V databázi nejsou žádné restaurace.",
       });
@@ -146,7 +152,7 @@ Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.
       }
     } catch (parseError) {
       console.error("Failed to parse AI response:", responseText);
-      return NextResponse.json(
+      return jsonWithCors(
         { error: "Nepodařilo se zpracovat odpověď AI" },
         { status: 500 }
       );
@@ -164,13 +170,13 @@ Vyber nejlepší restaurace podle kritérií a vrať odpověď ve formátu JSON.
       ? cleanCzechText(aiResponse.explanation.replace(/\s*\(?\bid[:\s]*\d+\)?/gi, ""))
       : aiResponse.explanation;
 
-    return NextResponse.json({
+    return jsonWithCors({
       restaurants: selectedRestaurants,
       explanation: cleanExplanation,
     });
   } catch (error) {
     console.error("AI search error:", error);
-    return NextResponse.json(
+    return jsonWithCors(
       {
         error: error instanceof Error
           ? error.message
