@@ -307,12 +307,12 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
                       }
                     }}
                     placeholder={t.addressPlaceholder}
-                    className="flex-1 px-4 py-3 border border-hairline rounded-lg bg-surface text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
+                    className="flex-1 min-w-0 px-4 py-3 border border-hairline rounded-lg bg-surface text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                   />
                   <button
                     onClick={handleAddressSearch}
                     disabled={gettingLocation || !searchAddress.trim()}
-                    className="px-6 py-3 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                    className="flex-shrink-0 whitespace-nowrap px-4 sm:px-6 py-3 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
                   >
                     {gettingLocation ? (
                       <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
