@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Bakery, Cafe, Restaurant } from "@/lib/types";
 import RestaurantCard from "./RestaurantCard";
 import CafeCard from "./CafeCard";
@@ -8,6 +8,19 @@ import BakeryCard from "./BakeryCard";
 import { getApiUrl } from "@/lib/api-config";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { suggestCompletions, type SuggestionKind, type SuggestionTerm } from "@/lib/ai-suggest";
+
+const KIND_ICON: Record<SuggestionKind, string> = {
+  area: "📍",
+  cuisine: "🍽️",
+  dish: "🍴",
+  tag: "☕",
+  place: "🏠",
+  keyword: "🔎",
+};
+
+// Vocabulary for the autocomplete, fetched once per language and kept for the session
+const termsCache = new Map<string, SuggestionTerm[]>();
 
 type AIPlace =
   | { type: "restaurant"; data: Restaurant }
@@ -40,11 +53,43 @@ export default function AIRestaurantSearch() {
   const [result, setResult] = useState<AISearchResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [terms, setTerms] = useState<SuggestionTerm[]>(() => termsCache.get(locale) ?? []);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Load the autocomplete vocabulary the first time the panel opens; without it the example chips just stay
+  useEffect(() => {
+    if (!isExpanded || termsCache.has(locale)) return;
+    let cancelled = false;
+    fetch(getApiUrl("/api/ai-search/suggestions"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locale }),
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data?.terms?.length) return;
+        termsCache.set(locale, data.terms);
+        if (!cancelled) setTerms(data.terms);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [isExpanded, locale]);
+
+  const completions = useMemo(() => suggestCompletions(query, terms), [query, terms]);
+
+  const pickCompletion = (value: string) => {
+    setQuery(value);
+    inputRef.current?.focus();
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // The button always looks active; an empty search just puts the cursor in the field
     if (!query.trim()) {
+      inputRef.current?.focus();
       return;
     }
 
@@ -85,7 +130,7 @@ export default function AIRestaurantSearch() {
     setQuery("");
     setResult(null);
     setError(null);
-    setIsExpanded(false);
+    inputRef.current?.focus();
   };
 
   return (
@@ -121,65 +166,92 @@ export default function AIRestaurantSearch() {
 
       {/* Expandable content */}
       {isExpanded && (
-        <div className="bg-surface border border-hairline rounded-xl p-6 animate-in slide-in-from-top-2 duration-300">
-          <form onSubmit={handleSearch} className="mb-6">
-            <div className="relative">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t.placeholder}
-                className="w-full px-4 py-3 pr-24 bg-bg border border-hairline rounded-lg text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
-                disabled={loading}
-              />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-2">
-                {query && (
+        <div className="bg-surface border border-hairline rounded-xl p-4 sm:p-6 animate-in slide-in-from-top-2 duration-300">
+          <form onSubmit={handleSearch} className={result || error ? "mb-6" : ""}>
+            <div className="flex gap-2">
+              <div className="relative flex-1 min-w-0">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t.placeholder}
+                  enterKeyHint="search"
+                  autoComplete="off"
+                  className="w-full px-4 py-3 pr-10 bg-bg border border-hairline rounded-lg text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
+                  disabled={loading}
+                />
+                {query && !loading && (
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="px-3 py-1.5 text-sm text-text-muted hover:text-ink transition-colors"
-                    disabled={loading}
+                    aria-label={t.clear}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-text-muted hover:text-ink hover:bg-surface-2 transition-colors"
                   >
-                    {t.clear}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12M18 6L6 18" />
+                    </svg>
                   </button>
                 )}
-                <button
-                  type="submit"
-                  disabled={loading || !query.trim()}
-                  className="px-4 py-1.5 bg-terracotta hover:bg-terracotta-dark disabled:bg-surface-2 disabled:text-text-muted text-white rounded-md transition-colors font-medium flex items-center gap-2"
-                >
-                  {loading ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>{t.searching}</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                      <span>{t.search}</span>
-                    </>
-                  )}
-                </button>
               </div>
+              <button
+                type="submit"
+                disabled={loading}
+                aria-label={t.search}
+                className="flex-shrink-0 whitespace-nowrap px-4 sm:px-5 py-3 bg-terracotta hover:bg-terracotta-dark text-white rounded-lg border border-terracotta-dark shadow-lg shadow-black/5 transition-colors font-semibold flex items-center gap-2 disabled:cursor-wait"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="hidden sm:inline">{t.searching}</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    {/* icon only on phones so the placeholder gets the room */}
+                    <span className="hidden sm:inline">{t.search}</span>
+                  </>
+                )}
+              </button>
             </div>
 
-            {/* Example queries */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="text-xs text-text-muted">{t.tryExample}</span>
-              {t.examples.map((example) => (
-                <button
-                  key={example}
-                  type="button"
-                  onClick={() => setQuery(example)}
-                  className="text-xs px-2 py-1 bg-surface-2 border border-hairline rounded-full text-ink-mid hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
-                  disabled={loading}
-                >
-                  {example}
-                </button>
-              ))}
-            </div>
+            {/* While typing: complete the word being typed. Otherwise: example queries */}
+            {query.trim() ? (
+              completions.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-2" aria-live="polite">
+                  <span className="text-xs text-text-muted">{t.suggestions}</span>
+                  {completions.map(({ term, value }) => (
+                    <button
+                      key={`${term.kind}-${term.text}`}
+                      type="button"
+                      onClick={() => pickCompletion(value)}
+                      className="text-sm px-3 py-1.5 bg-surface-2 border border-hairline rounded-full text-ink-mid hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
+                      disabled={loading}
+                    >
+                      <span aria-hidden="true" className="mr-1">{KIND_ICON[term.kind]}</span>
+                      {term.text}
+                    </button>
+                  ))}
+                </div>
+              )
+            ) : (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span className="text-xs text-text-muted">{t.tryExample}</span>
+                {t.examples.map((example) => (
+                  <button
+                    key={example}
+                    type="button"
+                    onClick={() => pickCompletion(example)}
+                    className="text-xs px-2 py-1 bg-surface-2 border border-hairline rounded-full text-ink-mid hover:bg-terracotta/10 hover:border-terracotta/40 transition-all"
+                    disabled={loading}
+                  >
+                    {example}
+                  </button>
+                ))}
+              </div>
+            )}
           </form>
 
           {/* Error message */}

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import RestaurantCard from "@/components/RestaurantCard";
 import CafeCard from "@/components/CafeCard";
 import Logo from "@/components/Logo";
+import AddressSuggestInput from "@/components/AddressSuggestInput";
 import NearbyMap, { NearbyMapPlace } from "@/components/NearbyMap";
 import { Restaurant, Cafe, Coordinates } from "@/lib/types";
 import { calculateDistance, formatDistance, getCurrentPosition, geocodeAddress } from "@/lib/geolocation";
@@ -297,27 +298,34 @@ export default function NearbyPageClient({ locale = "cs", initialRestaurants, in
             {searchMode === 'address' && (
               <div className="w-full max-w-md">
                 <div className="flex gap-2">
-                  <input
-                    type="text"
+                  <AddressSuggestInput
                     value={searchAddress}
-                    onChange={(e) => setSearchAddress(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        handleAddressSearch();
-                      }
+                    onChange={setSearchAddress}
+                    onSubmit={handleAddressSearch}
+                    onSelect={(suggestion) => {
+                      setError(null);
+                      setIsPermissionDenied(false);
+                      setUserLocation(suggestion.coordinates);
+                      setLocationDisplayName([suggestion.label, suggestion.secondary].filter(Boolean).join(", "));
                     }}
                     placeholder={t.addressPlaceholder}
-                    className="flex-1 min-w-0 px-4 py-3 border border-hairline rounded-lg bg-surface text-ink placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
                   />
                   <button
                     onClick={handleAddressSearch}
-                    disabled={gettingLocation || !searchAddress.trim()}
-                    className="flex-shrink-0 whitespace-nowrap px-4 sm:px-6 py-3 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                    disabled={gettingLocation}
+                    aria-label={t.search}
+                    className="flex-shrink-0 whitespace-nowrap px-4 sm:px-6 py-3 bg-terracotta text-white rounded-lg hover:bg-terracotta-dark transition-all duration-300 border border-terracotta-dark shadow-lg shadow-black/5 disabled:cursor-wait font-semibold flex items-center justify-center gap-2"
                   >
                     {gettingLocation ? (
                       <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     ) : (
-                      t.search
+                      <>
+                        {/* icon only on phones so the placeholder gets the room */}
+                        <svg className="w-5 h-5 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span className="hidden sm:inline">{t.search}</span>
+                      </>
                     )}
                   </button>
                 </div>
