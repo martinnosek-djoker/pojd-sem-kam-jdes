@@ -8,16 +8,17 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 
 interface RecentVisitsProps {
   visits: Visit[];
+  loading?: boolean; // native app: waiting for live data, show placeholders instead of stale cards
 }
 
-export default function RecentVisits({ visits }: RecentVisitsProps) {
+export default function RecentVisits({ visits, loading = false }: RecentVisitsProps) {
   const locale = useLocale();
   const t = getDictionary(locale).recentVisits;
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // The native app first paints build-time data, then swaps in live data that can have newer
-  // visits in front. Without this the browser's scroll anchoring keeps the old first card in
-  // view, so the carousel opens on an older visit instead of the newest one.
+  // When the list changes (e.g. the app swaps in live data that has newer visits in front), the
+  // browser's scroll anchoring would keep the old first card in view, so the carousel would
+  // open on an older visit instead of the newest one. Always go back to the start.
   const newestId = visits[0]?.id;
   useEffect(() => {
     carouselRef.current?.scrollTo({ left: 0, behavior: "instant" });
@@ -34,7 +35,7 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
   };
 
   // Nothing to show (no visits logged, or table not migrated) - stay invisible
-  if (visits.length === 0) return null;
+  if (visits.length === 0 && !loading) return null;
 
   return (
     <div className="mb-12 sm:mb-16">
@@ -75,6 +76,12 @@ export default function RecentVisits({ visits }: RecentVisitsProps) {
         ref={carouselRef}
         className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 [overflow-anchor:none] scrollbar-hide -mx-3 px-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
       >
+        {visits.length === 0 &&
+          [0, 1].map((i) => (
+            <div key={i} className="flex-none w-[85vw] sm:w-[380px] lg:w-[420px] snap-start" aria-hidden="true">
+              <div className="h-[420px] rounded-lg border border-hairline bg-surface-2 animate-pulse" />
+            </div>
+          ))}
         {visits.map((visit) => (
           <div
             key={visit.id}

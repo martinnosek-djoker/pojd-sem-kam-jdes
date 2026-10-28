@@ -11,6 +11,7 @@ import RecentVisits from "@/components/RecentVisits";
 import { Restaurant, Visit, cuisineMatchesFilter, CUISINE_HIERARCHY } from "@/lib/types";
 import { normalizeLocationName } from "@/lib/location-utils";
 import { getApiUrl, IS_MOBILE } from "@/lib/api-config";
+import { IS_STATIC_APP } from "@/lib/slug";
 import { useFavorites, pinFavorites } from "@/lib/favorites";
 import { Locale, LocaleProvider } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -28,6 +29,8 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
   const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(initialRestaurants);
   const [visits, setVisits] = useState<Visit[]>(initialVisits);
+  // In the native app the carousel waits for live data (no stale build-time cards to swap out)
+  const [visitsLoading, setVisitsLoading] = useState(IS_STATIC_APP);
   const [allLocations, setAllLocations] = useState<string[]>(initialLocations);
   const [allCuisineTypes, setAllCuisineTypes] = useState<string[]>(initialCuisineTypes);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -44,17 +47,14 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
       try {
         const restaurantsUrl = getApiUrl("/api/restaurants");
         const filtersUrl = getApiUrl("/api/restaurants/filters");
-        const visitsUrl = getApiUrl("/api/visits?limit=10");
 
-        const [restaurantsRes, filtersRes, visitsRes] = await Promise.all([
+        const [restaurantsRes, filtersRes] = await Promise.all([
           fetch(restaurantsUrl),
           fetch(filtersUrl),
-          fetch(visitsUrl),
         ]);
 
         const restaurantsData = await restaurantsRes.json();
         const filtersData = await filtersRes.json();
-        const visitsData = await visitsRes.json();
 
         if (Array.isArray(restaurantsData)) {
           setRestaurants(restaurantsData);
@@ -65,15 +65,40 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
         if (filtersData && Array.isArray(filtersData.cuisineTypes)) {
           setAllCuisineTypes(filtersData.cuisineTypes);
         }
-        if (Array.isArray(visitsData)) {
-          setVisits(visitsData);
-        }
       } catch (error) {
         console.error("[HomePage] Error refreshing data:", error);
       }
     }
 
+    // Visits are fetched on their own (a small request) so the carousel doesn't wait for the
+    // much bigger restaurants list. The last live copy is kept as an offline fallback.
+    async function refreshVisits() {
+      const CACHE_KEY = "recentVisits:v1";
+      try {
+        const res = await fetch(getApiUrl("/api/visits?limit=10"));
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Unexpected visits response");
+        setVisits(data);
+        try {
+          window.localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        } catch {
+          // storage unavailable: just skip the cache
+        }
+      } catch (error) {
+        console.error("[HomePage] Error refreshing visits:", error);
+        try {
+          const cached = JSON.parse(window.localStorage.getItem(CACHE_KEY) || "null");
+          if (Array.isArray(cached)) setVisits(cached);
+        } catch {
+          // no usable cache
+        }
+      } finally {
+        setVisitsLoading(false);
+      }
+    }
+
     refreshData();
+    refreshVisits();
   }, []);
 
   const getOptionsFromRestaurants = useCallback((restaurantList: Restaurant[]) => {
@@ -214,7 +239,7 @@ export default function HomePage({ locale = "cs", initialRestaurants, initialLoc
           </div>
 
           {/* Recent Visits Carousel */}
-          <RecentVisits visits={visits} />
+          <RecentVisits visits={visits} loading={visitsLoading} />
 
           {/* Restaurants Section Header */}
           <div className="mb-6 md:mb-8">
