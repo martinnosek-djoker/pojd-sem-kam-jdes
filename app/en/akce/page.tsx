@@ -1,4 +1,5 @@
 import { getAllEvents } from "@/lib/db";
+import { IS_STATIC_APP } from "@/lib/slug";
 import EventsPageContent from "@/app/akce/EventsPageContent";
 
 // The mobile app builds with `output: 'export'` (fully static, no per-request
@@ -7,7 +8,7 @@ import EventsPageContent from "@/app/akce/EventsPageContent";
 export const dynamic = process.env.MOBILE_BUILD === "true" ? "auto" : "force-dynamic";
 
 export default async function EnglishEventsPage() {
-  const events = await getAllEvents();
+  const events = IS_STATIC_APP ? [] : await getAllEvents();
 
-  return <EventsPageContent locale="en" events={events} />;
+  return <EventsPageContent locale="en" events={events} live={IS_STATIC_APP} />;
 }

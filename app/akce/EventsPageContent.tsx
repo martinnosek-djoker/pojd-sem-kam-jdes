@@ -1,5 +1,5 @@
 import Logo from "@/components/Logo";
-import EventCard from "@/components/EventCard";
+import EventsList from "@/components/EventsList";
 import { Event } from "@/lib/types";
 import { Locale } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -7,11 +7,12 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 interface EventsPageContentProps {
   locale?: Locale;
   events: Event[];
+  live?: boolean; // native app: load the events live instead of using a baked-in list
 }
 
 // No interactivity, so this stays a plain (server-renderable) function
 // shared between the cs and en pages.
-export default function EventsPageContent({ locale = "cs", events }: EventsPageContentProps) {
+export default function EventsPageContent({ locale = "cs", events, live = false }: EventsPageContentProps) {
   const t = getDictionary(locale).akce;
 
   return (
@@ -32,19 +33,7 @@ export default function EventsPageContent({ locale = "cs", events }: EventsPageC
           </p>
         </div>
 
-        {events && events.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} locale={locale} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <p className="text-xl text-text-muted">
-              {t.emptyTitle}
-            </p>
-          </div>
-        )}
+        <EventsList locale={locale} events={events} live={live} />
       </div>
     </main>
   );

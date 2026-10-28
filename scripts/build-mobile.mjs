@@ -2,7 +2,7 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { renameSync, cpSync } from 'fs';
+import { renameSync, cpSync, rmSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,6 +44,11 @@ async function buildMobile() {
 
     // (Place photos are no longer bundled or downloaded here: the app loads them live from the
     // website, so new places/photos don't need an app release. See lib/api-config.ts.)
+
+    // The mobile build reads the database through Next's fetch cache (the no-store client would
+    // break the static export), and that cache survives between builds: a build once baked in
+    // events from weeks earlier. Start every mobile build from a cold data cache.
+    rmSync(join(rootDir, '.next', 'cache', 'fetch-cache'), { recursive: true, force: true });
 
     // Step 4: Swap config files for mobile build
     console.log('\n🔄 Swapping config files for mobile build...');
