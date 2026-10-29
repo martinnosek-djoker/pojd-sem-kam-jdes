@@ -18,14 +18,18 @@ interface RestaurantCardProps {
 export default function RestaurantCard({ restaurant, forceLocation, showFavorite = false }: RestaurantCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).common;
-  const image = usePlaceImage(restaurant.image_url, restaurant.name);
+  const image = usePlaceImage(restaurant.image_url, restaurant.name, "restaurants", 192);
   const location = forceLocation || restaurant.location;
 
   const CardContent = () => (
     <>
-      <div className="w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden bg-surface-2">
+      <div className={`w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden ${image.src && !image.loaded ? "skeleton" : "bg-surface-2"}`}>
         {image.src ? (
+          // loading/decoding come before src on purpose: React applies props in this order, and an image
+          // whose src is set before loading="lazy" is fetched immediately instead of lazily
           <img
+            loading="lazy"
+            decoding="async"
             src={image.src}
             alt={`${restaurant.name} – ${t.altRestaurant} ${location}`}
             ref={image.ref}

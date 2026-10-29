@@ -1,37 +1,9 @@
 #!/usr/bin/env node
 import { renameSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
+import { MOBILE_EXCLUDED_PATHS } from './mobile-excluded-paths.mjs';
 
-const API_ROUTES_TO_EXCLUDE = [
-  'app/api/cafes/[id]',
-  'app/api/restaurants/[id]',
-  'app/api/admin/events/[id]',
-  'app/api/trendings/[id]',
-  'app/api/bakeries/[id]',
-  'app/api/breakfasts',
-  'app/api/visits/[id]',
-  // Admin-only address autocomplete (LocationAddressFields) added after this
-  // list was last updated - reads a query param, so it fails static export.
-  'app/api/geocode',
-  // Live detail data for the app's card dialogs (reads query params, so it can't be static)
-  'app/api/detail',
-  // Place photos: loaded live from the website in the app instead of being bundled
-  // (logo-mark.png stays, the UI uses it)
-  'public/images/restaurants',
-  'public/images/cafes',
-  'public/images/bakeries',
-  'public/images/trendings',
-  'public/images/reviews',
-  // Dynamic detail pages (restaurant/cafe/visit) - not part of the static app,
-  // whose cards link out instead (see IS_STATIC_APP in lib/slug.ts).
-  'app/@modal',
-  'app/restaurace',
-  'app/navstevy',
-  'app/kavarny/[slug]',
-  'app/en/restaurace',
-  'app/en/navstevy',
-  'app/en/kavarny/[slug]',
-];
+
 
 console.log('🔧 Preparing for mobile build...');
 
@@ -41,7 +13,7 @@ if (!existsSync(backupDir)) {
   mkdirSync(backupDir, { recursive: true });
 }
 
-for (const route of API_ROUTES_TO_EXCLUDE) {
+for (const route of MOBILE_EXCLUDED_PATHS) {
   const fullPath = join(process.cwd(), route);
   // Move to temp directory outside app folder to avoid Next.js compilation
   const backupPath = join(backupDir, route.replace(/\//g, '_'));

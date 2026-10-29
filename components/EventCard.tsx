@@ -19,6 +19,8 @@ export default function EventCard({ event, locale = "cs" }: EventCardProps) {
       <div className="relative h-40 sm:h-44 overflow-hidden bg-gradient-to-br from-terracotta via-terracotta to-terracotta-dark">
         {event.image_url ? (
           <img
+            loading="lazy"
+            decoding="async"
             src={event.image_url}
             alt={event.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

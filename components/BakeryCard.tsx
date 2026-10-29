@@ -1,8 +1,7 @@
 "use client";
 
 import { Bakery } from "@/lib/types";
-import { getProxiedImageUrl } from "@/lib/api-config";
-import { useState } from "react";
+import { usePlaceImage } from "@/lib/use-place-image";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
@@ -14,19 +13,22 @@ interface BakeryCardProps {
 export default function BakeryCard({ bakery, forceLocation }: BakeryCardProps) {
   const locale = useLocale();
   const t = getDictionary(locale).common;
-  const proxiedImageUrl = getProxiedImageUrl(bakery.image_url, bakery.name, "bakeries");
-  const [imageError, setImageError] = useState(false);
+  const image = usePlaceImage(bakery.image_url, bakery.name, "bakeries", 192);
   const location = forceLocation || bakery.location;
 
   const CardContent = () => (
     <>
-      <div className="w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden bg-surface-2">
-        {proxiedImageUrl && !imageError ? (
+      <div className={`w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden ${image.src && !image.loaded ? "skeleton" : "bg-surface-2"}`}>
+        {image.src ? (
           <img
-            src={proxiedImageUrl}
+            loading="lazy"
+            decoding="async"
+            src={image.src}
             alt={`${bakery.name} – ${t.altBakery} ${location}`}
-            className="w-full h-full object-cover"
-            onError={() => setImageError(true)}
+            ref={image.ref}
+            onLoad={image.onLoad}
+            onError={image.onError}
+            className={`w-full h-full object-cover img-fade ${image.loaded ? "is-loaded" : ""}`}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

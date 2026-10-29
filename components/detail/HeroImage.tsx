@@ -13,15 +13,16 @@ interface HeroImageProps {
 export default function HeroImage({ src, alt, fallbackEmoji }: HeroImageProps) {
   // In the native app the place photo may be a bundled file, a Google URL needing the proxy,
   // or missing from the bundle; the hook sorts that out (on the web it is just `src`).
-  const image = usePlaceImage(src, undefined);
+  const image = usePlaceImage(src, undefined, "restaurants", 960);
 
   return (
-    <div className="h-56 sm:h-72 rounded-2xl overflow-hidden bg-surface-2 mb-5 shadow-md shadow-black/5">
+    <div className={`h-56 sm:h-72 rounded-2xl overflow-hidden mb-5 shadow-md shadow-black/5 ${image.src && !image.loaded ? "skeleton" : "bg-surface-2"}`}>
       {image.src ? (
         <img
           src={image.src}
           alt={alt}
           referrerPolicy="no-referrer"
+          decoding="async"
           ref={image.ref}
           onLoad={image.onLoad}
           onError={image.onError}

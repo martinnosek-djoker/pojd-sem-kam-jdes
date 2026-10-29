@@ -1,8 +1,7 @@
 "use client";
 
 import { Trending } from "@/lib/types";
-import { getProxiedImageUrl } from "@/lib/api-config";
-import { useState } from "react";
+import { usePlaceImage } from "@/lib/use-place-image";
 
 interface TrendingCardProps {
   trending: Trending;
@@ -10,19 +9,22 @@ interface TrendingCardProps {
 }
 
 export default function TrendingCard({ trending, rank }: TrendingCardProps) {
-  const [imageError, setImageError] = useState(false);
-  const proxiedImageUrl = getProxiedImageUrl(trending.image_url, trending.name, 'trendings');
+  const image = usePlaceImage(trending.image_url, trending.name, "trendings", 640);
   const CardContent = () => (
     <>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-0 relative overflow-hidden">
         {/* Image section - top on mobile, left on desktop */}
-        {proxiedImageUrl && !imageError ? (
-          <div className="relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden">
+        {image.src ? (
+          <div className={`relative w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden ${image.loaded ? "" : "skeleton"}`}>
             <img
-              src={proxiedImageUrl}
+              loading="lazy"
+              decoding="async"
+              src={image.src}
               alt={trending.name}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              onError={() => setImageError(true)}
+              ref={image.ref}
+              onLoad={image.onLoad}
+              onError={image.onError}
+              className={`w-full h-full object-cover group-hover:scale-110 transition-[transform,opacity] duration-500 ${image.loaded ? "opacity-100" : "opacity-0"}`}
             />
             <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-transparent via-transparent to-ink/50 sm:to-ink/90"></div>
             {/* Rank badge overlaid on image */}

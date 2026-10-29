@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import PhotoImg from "@/components/PhotoImg";
 import { createPortal } from "react-dom";
 
 interface PhotoGalleryProps {
@@ -36,7 +37,7 @@ export default function PhotoGallery({ photos, altBase, photoWord, columns = "3"
             onClick={() => setOpen(i)}
             className="aspect-square overflow-hidden rounded-xl bg-surface-2 cursor-zoom-in"
           >
-            <img src={url} alt={`${altBase} – ${photoWord} ${i + 1}`} loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            <PhotoImg src={url} width={384} alt={`${altBase} – ${photoWord} ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-[transform,opacity] duration-500" />
           </button>
         ))}
       </div>
@@ -62,7 +63,7 @@ export default function PhotoGallery({ photos, altBase, photoWord, columns = "3"
                 ‹
               </button>
             )}
-            <img src={photos[open]} alt={`${altBase} – ${photoWord} ${open + 1}`} className="max-w-full max-h-full object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
+            <PhotoImg key={photos[open]} src={photos[open]} width={960} alt={`${altBase} – ${photoWord} ${open + 1}`} className="max-w-full max-h-full object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
             {photos.length > 1 && (
               <button
                 type="button"

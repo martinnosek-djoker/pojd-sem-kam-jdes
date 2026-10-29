@@ -32,14 +32,16 @@ export default function CafeCard({ cafe, forceLocation, showFavorite = false }: 
     "snídaně": t.tagSnidane,
     "top-kava": t.tagTopKava,
   };
-  const image = usePlaceImage(cafe.image_url, cafe.name, "cafes");
+  const image = usePlaceImage(cafe.image_url, cafe.name, "cafes", 192);
   const location = forceLocation || cafe.location;
 
   const CardContent = () => (
     <>
-      <div className="w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden bg-surface-2">
+      <div className={`w-[72px] h-[72px] rounded-xl flex-shrink-0 overflow-hidden ${image.src && !image.loaded ? "skeleton" : "bg-surface-2"}`}>
         {image.src ? (
           <img
+            loading="lazy"
+            decoding="async"
             src={image.src}
             alt={`${cafe.name} – ${tCommon.altCafe} ${location}`}
             ref={image.ref}

@@ -61,6 +61,33 @@ export function getProxiedImageUrl(imageUrl: string | null | undefined, name?: s
   return imageUrl;
 }
 
+// Widths the site's /api/img route serves (see app/api/img/route.ts): pick the smallest that still
+// looks sharp where the picture is shown - 192 for the 72 px list thumbnails, 640 for a card
+// photo, 960 for a detail dialog's hero.
+export type ImageWidth = 192 | 384 | 640 | 960;
+
+const isSupabaseStorageUrl = (url: string) => /^https:\/\/[^/]+\.supabase\.co\/storage\/v1\/object\/public\//.test(url);
+
+// A right-sized copy of a photo that lives on the site or in our Supabase Storage, or null for photos
+// hosted elsewhere (those can only be shown as they are). Works on the web and in the app alike;
+// the app gets it from the live site, so it never depends on an app release.
+export function getImageVariantUrl(
+  imageUrl: string | null | undefined,
+  width: ImageWidth,
+  name?: string,
+  category: string = 'restaurants'
+): string | null {
+  if (!imageUrl) return null;
+
+  let source: string | null = null;
+  if (imageUrl.startsWith('/images/')) source = imageUrl;
+  else if (isGoogleImage(imageUrl)) source = name ? getLocalImageUrl(name, category) : null;
+  else if (isSupabaseStorageUrl(imageUrl)) source = imageUrl;
+  if (!source) return null;
+
+  return `${API_BASE_URL}/api/img?src=${encodeURIComponent(source)}&w=${width}`;
+}
+
 // Second choice when the first image fails in the native app: for Google-hosted photos the
 // proxy (the first choice is the copy stored on the site), otherwise nothing more to try.
 export function getImageFallbackUrl(imageUrl: string | null | undefined): string | null {

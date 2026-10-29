@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Visit } from "@/lib/types";
 import { usePlaceImage } from "@/lib/use-place-image";
+import PhotoImg from "@/components/PhotoImg";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { IS_STATIC_APP, visitPath } from "@/lib/slug";
 import { openDetail } from "@/lib/app-detail";
@@ -25,26 +26,12 @@ export default function VisitCard({ visit }: VisitCardProps) {
   const isRestaurant = !!visit.restaurant;
   // Prefer an actual photo from this visit over the place's generic photo
   const visitPhotos = visit.images || [];
-  // Cafe photos live in a different bundled folder than restaurant ones
-  const placeImage = usePlaceImage(place?.image_url, place?.name, isRestaurant ? "restaurants" : "cafes");
-  const [photoError, setPhotoError] = useState(false);
-  useEffect(() => {
-    setPhotoError(false);
-  }, [visitPhotos[0]]);
-  const showVisitPhoto = visitPhotos.length > 0 && !photoError;
-  const heroImageUrl = place ? (showVisitPhoto ? visitPhotos[0] : placeImage.src) : null;
-  const [heroLoaded, setHeroLoaded] = useState(false);
-  // reset only when the picture really changes (a reset on mount would undo the check below)
-  const previousHero = useRef(heroImageUrl);
-  useEffect(() => {
-    if (previousHero.current === heroImageUrl) return;
-    previousHero.current = heroImageUrl;
-    setHeroLoaded(false);
-  }, [heroImageUrl]);
-  // already loaded before onLoad could be attached (server-rendered / cached image)
-  const heroRef = (el: HTMLImageElement | null) => {
-    if (el && el.complete && el.naturalWidth > 0) setHeroLoaded(true);
-  };
+  // The card shows the photo at about 340 px, so a 640 px copy is plenty (and a fraction of the size)
+  const placeImage = usePlaceImage(place?.image_url, place?.name, isRestaurant ? "restaurants" : "cafes", 640);
+  const visitImage = usePlaceImage(visitPhotos[0], undefined, "restaurants", 640);
+  // Falls back to the place's own photo when the visit photo can't be loaded at all
+  const hero = visitPhotos.length > 0 && visitImage.src ? visitImage : placeImage;
+  const heroImageUrl = place ? hero.src : null;
   const extraPhotos = visitPhotos.slice(1);
 
   const showPrev = (e: React.MouseEvent) => {
@@ -90,12 +77,14 @@ export default function VisitCard({ visit }: VisitCardProps) {
             className={`w-full h-full ${visitPhotos.length > 0 ? "cursor-zoom-in" : ""}`}
           >
             <img
+              loading="lazy"
+              decoding="async"
               src={heroImageUrl}
               alt={place.name}
-              ref={heroRef}
-              onLoad={() => setHeroLoaded(true)}
-              className={`w-full h-full object-cover group-hover:scale-110 transition-[transform,opacity] duration-700 ${heroLoaded ? "opacity-100" : "opacity-0"}`}
-              onError={() => (showVisitPhoto ? setPhotoError(true) : placeImage.onError())}
+              ref={hero.ref}
+              onLoad={hero.onLoad}
+              className={`w-full h-full object-cover group-hover:scale-110 transition-[transform,opacity] duration-700 ${hero.loaded ? "opacity-100" : "opacity-0"}`}
+              onError={hero.onError}
             />
           </div>
         ) : (
@@ -130,7 +119,7 @@ export default function VisitCard({ visit }: VisitCardProps) {
             onClick={openLightbox(1)}
             className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0 cursor-zoom-in"
           >
-            <img src={extraPhotos[0]} alt="" className="w-full h-full object-cover" />
+            <PhotoImg src={extraPhotos[0]} width={192} alt="" className="w-full h-full object-cover" />
             {extraPhotos.length > 1 && (
               <div className="absolute inset-0 bg-ink/50 flex items-center justify-center text-white text-xs font-semibold">
                 +{extraPhotos.length}
@@ -224,8 +213,10 @@ export default function VisitCard({ visit }: VisitCardProps) {
               </button>
             )}
 
-            <img
+            <PhotoImg
+              key={visitPhotos[lightboxIndex]}
               src={visitPhotos[lightboxIndex]}
+              width={960}
               alt={place.name}
               className="max-w-full max-h-full object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
